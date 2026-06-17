@@ -9,7 +9,6 @@ export default function FinalCTA() {
       id="cta"
       className="min-h-[80vh] w-full flex flex-col justify-center items-center text-[#1A1814] px-8 relative overflow-hidden select-none bg-[#F7F4EE] border-t border-[#C4B9A8]/30 scroll-mt-28"
     >
-      <div className="absolute top-10 left-1/2 h-32 w-[2px] -translate-x-1/2 bg-[#1A1814]/15 shadow-[0_0_20px_rgba(26,24,20,0.1)]"></div>
  
       {/* Decorative floating badge */}
       <div className="relative border border-[#1A1814]/10 bg-white/40 px-4 py-1.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest mb-6 flex items-center gap-1.5">
