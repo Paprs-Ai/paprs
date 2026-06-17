@@ -38,10 +38,8 @@ export default function AILearns() {
       </div>
 
       {/* Right Column: AI Orbit Simulator */}
-      <div className="w-full md:w-6/12 flex items-center justify-center">
-        <div className="w-full max-w-lg">
-          <AIOrbit progress={progress} />
-        </div>
+      <div className="w-full md:w-6/12 flex items-center justify-center overflow-hidden">
+        <AIOrbit progress={progress} />
       </div>
 
     </section>

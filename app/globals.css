@@ -109,13 +109,15 @@ h1, h2, h3, h4, h5, h6 {
 .scan-sweep::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
+  left: -40px;
+  right: -40px;
   top: 18%;
   height: 28%;
-  background: linear-gradient(180deg, transparent, rgba(34, 197, 94, 0.22), transparent);
+  background: linear-gradient(180deg, transparent, rgba(34, 197, 94, 0.30), transparent);
   animation: scanSweep 3.4s ease-in-out infinite;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
 }
 
 .scrollbar-none {
