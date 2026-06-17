@@ -126,6 +126,10 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
+.ai-orbit .react-flow__node {
+  visibility: visible !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -136,4 +140,3 @@ h1, h2, h3, h4, h5, h6 {
     transition-duration: 0.001ms !important;
   }
 }
-
