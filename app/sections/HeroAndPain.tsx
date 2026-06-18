@@ -220,6 +220,16 @@ export default function HeroAndPain() {
   const activeSlide = Math.round((translatePercent / SW));
   const sliderOpacity = interp(progress, 0.97, 1.0, 1, 0);
 
+  // ── Bridge gather: starts when slide 5 enters (p=0.83) and completes by p=0.97
+  //    Cards move ~50% toward the scanner centre (x≈-24vw, y≈0) — dramatically visible
+  const bridgeGather = interp(progress, 0.83, 0.97, 0, 1);
+  const bc1 = { x: interp(bridgeGather, 0, 1, -32, -28), y: interp(bridgeGather, 0, 1, -22, -11), r: interp(bridgeGather, 0, 1, -15, -8) };
+  const bc2 = { x: interp(bridgeGather, 0, 1, -24, -24), y: interp(bridgeGather, 0, 1,  18,   9), r: interp(bridgeGather, 0, 1,  12,  6) };
+  const bc3 = { x: interp(bridgeGather, 0, 1,   2, -11), y: interp(bridgeGather, 0, 1, -32, -16), r: interp(bridgeGather, 0, 1,  -5, -3) };
+  const bc4 = { x: interp(bridgeGather, 0, 1,   8,  -8), y: interp(bridgeGather, 0, 1,  24,  12), r: interp(bridgeGather, 0, 1,  20, 10) };
+  const bc5 = { x: interp(bridgeGather, 0, 1,  34,   5), y: interp(bridgeGather, 0, 1, -20, -10), r: interp(bridgeGather, 0, 1, -18, -9) };
+  const bc6 = { x: interp(bridgeGather, 0, 1,  24,   0), y: interp(bridgeGather, 0, 1,  30,  15), r: interp(bridgeGather, 0, 1,   8,  4) };
+
   const headlineLeft = "Drowning in paperwork?";
   const headlineRight = "Everything sorted. Step by step.";
 
@@ -565,8 +575,12 @@ export default function HeroAndPain() {
               {/* ──────────────────────────────────────────────────────────── */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
 
+                {/* Static chaos cards removed — bridge cards (z-[25], outside slider)
+                     start at exactly the same positions and take over from slide 5 entry.
+                     Having both rendered at identical coords caused the double-document issue. */}
+
                 {/* Left */}
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4 relative z-10">
                   <div className="flex items-center gap-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-red-600 font-bold">Average experience without help</span>
@@ -594,34 +608,34 @@ export default function HeroAndPain() {
                 </div>
 
                 {/* Right — Scary stat grid */}
-                <div className="hidden md:flex w-6/12 flex-col gap-2.5">
+                <div className="hidden md:flex w-6/12 flex-col gap-2.5 relative z-10">
                   <div className="grid grid-cols-2 gap-2.5">
                     <StatCounter
                       target={12} suffix="+"
                       label="Appointments"
                       sublabel="avg 3 tries for NIE alone"
-                      isActive={activeSlide === 4}
+                      isActive={activeSlide === 5}
                       variant="danger"
                     />
                     <StatCounter
                       target={14}
                       label="Documents"
                       sublabel="originals — copies rejected"
-                      isActive={activeSlide === 4}
+                      isActive={activeSlide === 5}
                       variant="danger"
                     />
                     <StatCounter
                       target={6}
                       label="Offices"
                       sublabel="different buildings, different hours"
-                      isActive={activeSlide === 4}
+                      isActive={activeSlide === 5}
                       variant="warning"
                     />
                     <StatCounter
                       target={60} suffix="+"
                       label="Days"
                       sublabel="minimum until fully legal & covered"
-                      isActive={activeSlide === 4}
+                      isActive={activeSlide === 5}
                       variant="danger"
                     />
                   </div>
@@ -630,13 +644,13 @@ export default function HeroAndPain() {
                       target={127} suffix="€"
                       label="Government fees"
                       sublabel="just the basic procedures"
-                      isActive={activeSlide === 4}
+                      isActive={activeSlide === 5}
                       variant="warning"
                     />
                     <StatCounter
                       target={0}
                       label="Hours of confusion"
-                      isActive={activeSlide === 4}
+                      isActive={activeSlide === 5}
                       variant="infinity"
                     />
                   </div>
@@ -645,17 +659,53 @@ export default function HeroAndPain() {
                   </p>
                 </div>
 
-                {/* Bridge element — chaos doc card bleeding off bottom-right.
-                    Visual thread that carries into HowItWorks' clean cards rising from below. */}
-                <div
-                  className="absolute pointer-events-none opacity-25 rotate-[10deg]"
-                  style={{ bottom: "-80px", right: "80px" }}
-                >
-                  <DocumentCard type="nie" status="chaos" />
-                </div>
-
               </div>
 
+            </div>
+          </div>
+        )}
+
+        {/* ── BRIDGE CHAOS CARDS ──────────────────────────────────────────────
+             Live OUTSIDE sliderOpacity so they persist as pain fades out.
+             From progress=0.88→1.0 they pre-gather 30% toward scanner center
+             so HowItWorks fc cards pick up the motion already in progress.  */}
+        {/* Bridge chaos cards appear as slide 5 enters (progress ≥ 0.80) and
+             remain visible as the section exits — they scroll off naturally,
+             and HowItWorks fc cards pick up from the same half-gathered positions. */}
+        {progress >= 0.80 && (
+          <div
+            className="absolute inset-0 pointer-events-none z-[15]"
+            style={{ opacity: interp(progress, 0.80, 0.86, 0, 0.55) }}
+          >
+            <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
+              <div style={{ transform: `translate(calc(-50% + ${bc1.x}vw), calc(-50% + ${bc1.y}vh)) rotate(${bc1.r}deg)` }}>
+                <DocumentCard type="nie" status="chaos" />
+              </div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.2s]" style={{ "--paper-rotate": `${bc2.r}deg` } as React.CSSProperties}>
+              <div style={{ transform: `translate(calc(-50% + ${bc2.x}vw), calc(-50% + ${bc2.y}vh)) rotate(${bc2.r}deg)` }}>
+                <DocumentCard type="padron" status="chaos" />
+              </div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.5s]" style={{ "--paper-rotate": `${bc3.r}deg` } as React.CSSProperties}>
+              <div style={{ transform: `translate(calc(-50% + ${bc3.x}vw), calc(-50% + ${bc3.y}vh)) rotate(${bc3.r}deg)` }}>
+                <DocumentCard type="seg_social" status="chaos" />
+              </div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.8s]" style={{ "--paper-rotate": `${bc4.r}deg` } as React.CSSProperties}>
+              <div style={{ transform: `translate(calc(-50% + ${bc4.x}vw), calc(-50% + ${bc4.y}vh)) rotate(${bc4.r}deg)` }}>
+                <DocumentCard type="hacienda" status="chaos" />
+              </div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-0.7s]" style={{ "--paper-rotate": `${bc5.r}deg` } as React.CSSProperties}>
+              <div style={{ transform: `translate(calc(-50% + ${bc5.x}vw), calc(-50% + ${bc5.y}vh)) rotate(${bc5.r}deg)` }}>
+                <DocumentCard type="nie" status="chaos" />
+              </div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.9s]" style={{ "--paper-rotate": `${bc6.r}deg` } as React.CSSProperties}>
+              <div style={{ transform: `translate(calc(-50% + ${bc6.x}vw), calc(-50% + ${bc6.y}vh)) rotate(${bc6.r}deg)` }}>
+                <DocumentCard type="seg_social" status="chaos" />
+              </div>
             </div>
           </div>
         )}
