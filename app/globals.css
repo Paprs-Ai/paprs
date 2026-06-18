@@ -106,6 +106,31 @@ h1, h2, h3, h4, h5, h6 {
   animation: paperFloat 5.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
+@keyframes pileSweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  18% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { transform: translateY(450%); opacity: 0; }
+}
+
+.pile-scan {
+  pointer-events: none;
+}
+.pile-scan::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: -5%;
+  right: -5%;
+  height: 12%;
+  background: linear-gradient(180deg, transparent 0%, rgba(22,163,74,0.20) 50%, transparent 100%);
+  box-shadow: 0 0 12px 4px rgba(22,163,74,0.12);
+  animation: pileSweep 2.4s ease-in-out infinite;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%, black 65%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 35%, black 65%, transparent 100%);
+}
+
 .scan-sweep::after {
   content: "";
   position: absolute;

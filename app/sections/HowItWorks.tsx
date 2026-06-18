@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useScrollProgress } from "../hooks/useScrollProgress";
 import { Globe, MapPin, FileText, Target, Check, ArrowRight } from "lucide-react";
 import DocumentCard from "../components/DocumentCard";
@@ -27,6 +27,7 @@ const SLIDE_LABELS = ["Paprs appears", "Step 01", "Step 02", "Step 03"];
 
 export default function HowItWorks() {
   const { ref, progress } = useScrollProgress();
+
 
   const interp = (val: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
     if (val <= inMin) return outMin;
@@ -63,41 +64,26 @@ export default function HowItWorks() {
   const bgG = Math.round(interp(progress, 0, 1, 250, 245));
   const bgB = Math.round(interp(progress, 0, 1, 252, 249));
 
-  // ── Flying chaos cards — fly from pain-slide-5 positions into scanner ────
-  const flyProgress = clamp01(s0p / 0.45);
-  // Fade chaos cards to 0 as scanning completes (full visual handoff to clean cards)
-  const cardOpacity = flyProgress < 1 ? 1 : interp(s0p, 0.45, 0.82, 0.95, 0.0);
+  // ── Chaos card pile — cards stay at gathered positions, no flying ────────
+  // Pile stays solid throughout Slide 0, aligned with HeroAndPain bridge cards
+  const cardOpacity = 1.0;
 
-  const getFlyingCardStyle = (
-    start: { x: number; y: number; r: number },
-    end: { x: number; y: number; r: number }
-  ) => {
-    const x = interp(flyProgress, 0, 1, start.x, end.x);
-    const y = interp(flyProgress, 0, 1, start.y, end.y);
-    const r = interp(flyProgress, 0, 1, start.r, end.r);
-    // Start at full scale (matching bridge cards), shrink as absorbed by scanner
-    const scale = interp(flyProgress, 0, 1, 1.0, 0.46);
-    return {
-      transform: `translate(calc(-50% + ${x}vw), calc(-50% + ${y}vh)) rotate(${r}deg) scale(${scale})`,
-      opacity: cardOpacity,
-      transition: "transform 0.1s ease-out, opacity 0.3s ease",
-    };
-  };
+  const getPileCardStyle = (pos: { x: number; y: number; r: number }) => ({
+    transform: `translate(calc(-50% + ${pos.x}vw), calc(-50% + ${pos.y}vh)) rotate(${pos.r}deg)`,
+    opacity: cardOpacity,
+  });
 
-  // Start positions match HeroAndPain bridge card END positions (bc1-bc6 at bridgeGather=1)
-  // so the documents are already ~50% gathered toward the scanner when this section begins
-  const fc1 = getFlyingCardStyle({ x: -28, y: -11, r:  -8 }, { x: -26, y: -5, r: -8 });
-  const fc2 = getFlyingCardStyle({ x: -24, y:   9, r:   6 }, { x: -23, y:  3, r:  5 });
-  const fc3 = getFlyingCardStyle({ x: -11, y: -16, r:  -3 }, { x: -25, y: -8, r: -3 });
-  const fc4 = getFlyingCardStyle({ x:  -8, y:  12, r:  10 }, { x: -22, y:  4, r:  9 });
-  const fc5 = getFlyingCardStyle({ x:   5, y: -10, r:  -9 }, { x: -25, y: -3, r: -6 });
-  const fc6 = getFlyingCardStyle({ x:   0, y:  15, r:   4 }, { x: -23, y:  5, r:  7 });
+  // Positions match HeroAndPain bridge card END positions (bc1-bc6 at bridgeGather=1)
+  const fc1 = getPileCardStyle({ x: -30, y: -10, r:  -8 });
+  const fc2 = getPileCardStyle({ x: -26, y:   8, r:   6 });
+  const fc3 = getPileCardStyle({ x: -28, y:  -4, r: -12 });
+  const fc4 = getPileCardStyle({ x: -22, y:  12, r:  10 });
+  const fc5 = getPileCardStyle({ x: -24, y:  -8, r:  -5 });
+  const fc6 = getPileCardStyle({ x: -20, y:   4, r:   4 });
 
   // ── Scanner state ─────────────────────────────────────────────────────────
-  const scanProgress   = Math.round(interp(s0p, 0.45, 0.85, 0, 100));
-  const docsProcessed  = Math.round(interp(s0p, 0.45, 0.85, 0, 6));
   const scannerActive  = s0p >= 0.45;
-  const scannerDone    = s0p >= 0.85;
+  const scannerDone    = s0p >= 0.82;
 
   // ── Staggered clean-card reveals (right side output) ──────────────────────
   const c1Opacity = interp(s0p, 0.45, 0.62, 0, 1);
@@ -149,185 +135,61 @@ export default function HowItWorks() {
         >
 
           {/* ────────────────────────────────────────────────────────────── */}
-          {/* SLIDE 0 — Scanner transition: chaos → organised               */}
-          {/* Left: scanner machine absorbs flying docs                     */}
-          {/* Right: organised clean cards materialise as output            */}
+          {/* SLIDE 0 — Paprs appears                                       */}
+          {/* Left: chaos pile stays in place, laser scans it               */}
+          {/* Right: text + organised clean cards rise out                  */}
           {/* ────────────────────────────────────────────────────────────── */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
 
-            {/* ── 6 flying chaos cards (desktop only, z-[3]) ── */}
-            <div className="hidden md:block absolute inset-0 pointer-events-none z-[3]">
-              <div className="absolute left-1/2 top-1/2 paper-float"
-                style={{ "--paper-rotate": `${interp(flyProgress, 0, 1, -15, -8)}deg`, ...fc1 } as React.CSSProperties}>
-                <DocumentCard type="nie" status="chaos" />
-              </div>
-              <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.2s]"
-                style={{ "--paper-rotate": `${interp(flyProgress, 0, 1, 12, 5)}deg`, ...fc2 } as React.CSSProperties}>
-                <DocumentCard type="padron" status="chaos" />
-              </div>
-              <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.5s]"
-                style={{ "--paper-rotate": `${interp(flyProgress, 0, 1, -5, -3)}deg`, ...fc3 } as React.CSSProperties}>
-                <DocumentCard type="seg_social" status="chaos" />
-              </div>
-              <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.8s]"
-                style={{ "--paper-rotate": `${interp(flyProgress, 0, 1, 20, 9)}deg`, ...fc4 } as React.CSSProperties}>
-                <DocumentCard type="hacienda" status="chaos" />
-              </div>
-              <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-0.7s]"
-                style={{ "--paper-rotate": `${interp(flyProgress, 0, 1, -18, -6)}deg`, ...fc5 } as React.CSSProperties}>
-                <DocumentCard type="nie" status="chaos" />
-              </div>
-              <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.9s]"
-                style={{ "--paper-rotate": `${interp(flyProgress, 0, 1, 8, 7)}deg`, ...fc6 } as React.CSSProperties}>
-                <DocumentCard type="seg_social" status="chaos" />
-              </div>
-            </div>
 
-            {/* ── Scanner machine — portrait box, left-centre of screen ── */}
-            <div
-              className="hidden md:flex absolute left-1/2 top-1/2 flex-col rounded-2xl overflow-hidden z-[10]"
-              style={{
-                width: "282px",
-                height: "410px",
-                transform: `translate(calc(-50% - 24vw), -50%) translateY(${interp(s0p, 0.05, 0.30, 18, 0)}px)`,
-                opacity: interp(flyProgress, 0.06, 0.32, 0, 1),
-                backgroundColor: scannerActive ? "rgba(22,163,74,0.035)" : "rgba(248,250,252,0.75)",
-                border: `1.5px solid ${scannerActive ? "rgba(22,163,74,0.45)" : "rgba(203,213,225,0.7)"}`,
-                boxShadow: scannerActive
-                  ? "0 0 0 4px rgba(22,163,74,0.07), 0 12px 48px rgba(22,163,74,0.14), 0 4px 24px rgba(0,0,0,0.07)"
-                  : "0 4px 20px rgba(0,0,0,0.06)",
-                backdropFilter: "blur(10px)",
-                transition: "border-color 0.6s ease, box-shadow 0.6s ease, background-color 0.6s ease",
-              }}
-            >
-              {/* ── Header strip ── */}
-              <div
-                className="flex items-center justify-between px-4 py-2.5 flex-shrink-0"
-                style={{ borderBottom: `1px solid ${scannerActive ? "rgba(22,163,74,0.18)" : "rgba(203,213,225,0.55)"}` }}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-2 h-2 rounded-full flex-shrink-0"
-                    style={{
-                      backgroundColor: scannerActive ? "#16A34A" : "#94a3b8",
-                      boxShadow: scannerActive ? "0 0 6px rgba(22,163,74,0.9)" : "none",
-                    }}
-                  />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500 font-semibold">Paprs Engine</span>
-                </div>
-                <span
-                  className="font-mono text-[9px] font-bold transition-colors duration-500"
-                  style={{ color: scannerDone ? "#16A34A" : scannerActive ? "#D4820A" : "#94a3b8" }}
-                >
-                  {scannerDone ? "Done ✓" : scannerActive ? "Scanning…" : "Ready"}
-                </span>
-              </div>
 
-              {/* ── Scanner body — chaos cards pile up behind this via z-index ── */}
-              <div className="relative flex-1 overflow-hidden">
-                {/* Green background wash when active */}
-                <div
-                  className="absolute inset-0 pointer-events-none transition-opacity duration-700"
-                  style={{ opacity: scannerActive ? 1 : 0, background: "rgba(22,163,74,0.04)" }}
-                />
-                {/* Laser sweep */}
-                {scannerActive && (
-                  <div className="scan-sweep absolute inset-0 pointer-events-none" />
-                )}
-                {/* Corner brackets */}
-                <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-[#16A34A]/55 z-20" />
-                <div className="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-[#16A34A]/55 z-20" />
-                <div className="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-[#16A34A]/55 z-20" />
-                <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-[#16A34A]/55 z-20" />
-                {/* Centre status pill */}
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <div
-                    className="font-mono text-[10px] uppercase tracking-[0.18em] font-bold flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500"
-                    style={scannerActive
-                      ? { color: "#16A34A", backgroundColor: "rgba(22,163,74,0.10)", border: "1px solid rgba(22,163,74,0.25)" }
-                      : { color: "#94a3b8", backgroundColor: "rgba(248,250,252,0.8)", border: "1px solid rgba(203,213,225,0.6)" }
-                    }
-                  >
-                    {scannerActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-ping flex-shrink-0" />
-                    )}
-                    {scannerDone ? "Organised ✓" : scannerActive ? "Organising…" : "Assembling…"}
-                  </div>
-                </div>
-              </div>
-
-              {/* ── Footer progress bar ── */}
-              <div
-                className="px-4 py-3 flex-shrink-0"
-                style={{ borderTop: `1px solid ${scannerActive ? "rgba(22,163,74,0.18)" : "rgba(203,213,225,0.55)"}` }}
-              >
-                <div className="flex items-center gap-2 mb-1.5">
-                  <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-300"
-                      style={{ width: `${scanProgress}%`, backgroundColor: "#16A34A" }}
-                    />
-                  </div>
-                  <span className="font-mono text-[9px] text-slate-400 w-7 text-right">{scanProgress}%</span>
-                </div>
-                <div className="font-mono text-[8px] text-slate-400">
-                  {scannerActive
-                    ? `${docsProcessed} / 6 documents organised`
-                    : "6 documents queued"}
-                </div>
-              </div>
-            </div>
-
-            {/* ── LEFT spacer — lets scanner float freely in this zone ── */}
+            {/* ── LEFT spacer — pile occupies this zone ── */}
             <div className="hidden md:block md:w-5/12 h-full flex-shrink-0" />
 
             {/* ── RIGHT — heading + staggered organised-doc output ── */}
-            <div className="w-full md:w-7/12 h-full flex flex-col justify-center gap-8 relative z-20 md:pl-6">
-              <div>
+            <div className="w-full md:w-7/12 h-full flex items-center gap-6 relative z-20 md:pl-6">
+              {/* Text */}
+              <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
                 <span className="font-mono text-xs font-bold text-[#16A34A] uppercase bg-[#16A34A]/10 px-3 py-1 rounded-full w-fit inline-block">
                   Paprs appears
                 </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-slate-950 mt-6 mb-4 leading-tight">
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-slate-950 leading-tight">
                   There&apos;s a better way.
                 </h3>
-                <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-md">
+                <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-sm">
                   The same pile becomes a roadmap: deadlines, dependencies, documents, and the next plain-language step.
                 </p>
               </div>
 
               {/* Staggered clean cards — appear as scanner outputs them */}
-              <div className="relative w-[400px] h-[360px] pointer-events-none">
-                {/* Card 1 — NIE (back layer) */}
+              <div className="relative w-[340px] h-[360px] pointer-events-none flex-shrink-0">
                 <div
                   className="absolute"
                   style={{
-                    opacity: c1Opacity,
-                    transform: `translate(-52px, calc(-34px + ${c1Y}px)) rotate(-11deg) scale(0.88)`,
+                    opacity: 1,
+                    transform: `translate(-40px, calc(-34px + ${c1Y}px)) rotate(-11deg) scale(0.88)`,
                   }}
                 >
                   <DocumentCard type="nie" status="clean" progress={100} />
                 </div>
-                {/* Card 2 — Seg Social (middle) */}
                 <div
                   className="absolute"
                   style={{
-                    opacity: c2Opacity,
-                    transform: `translate(42px, calc(-18px + ${c2Y}px)) rotate(8deg) scale(0.88)`,
+                    opacity: 1,
+                    transform: `translate(36px, calc(-18px + ${c2Y}px)) rotate(8deg) scale(0.88)`,
                   }}
                 >
                   <DocumentCard type="seg_social" status="clean" progress={40} />
                 </div>
-                {/* Card 3 — Padron (front) */}
                 <div
                   className="absolute shadow-2xl"
                   style={{
-                    opacity: c3Opacity,
-                    transform: `translate(6px, calc(26px + ${c3Y}px)) rotate(-2deg) scale(0.94)`,
+                    opacity: 1,
+                    transform: `translate(4px, calc(26px + ${c3Y}px)) rotate(-2deg) scale(0.94)`,
                   }}
                 >
                   <DocumentCard type="padron" status="clean" progress={100} />
                 </div>
-                {/* "Everything organised" label */}
                 <div
                   className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[#16A34A] font-bold whitespace-nowrap transition-opacity duration-500"
                   style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
@@ -534,6 +396,63 @@ export default function HowItWorks() {
             </div>
           </div>
 
+        </div>
+
+        {/* ── Chaos cards wrapper (direct child of sticky container, relative to w-full) ── */}
+        <div
+          className="hidden md:block absolute inset-0 pointer-events-none z-[12]"
+          style={{
+            opacity: `var(--doc-transition-progress, 0)`,
+            transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * 100vh))`,
+          }}
+        >
+          {/* Inner wrapper that handles slider translateX transition */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              transform: `translateX(-${translatePercent * 4}%)`,
+              transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
+              <div style={fc1}><DocumentCard type="nie" status="chaos" /></div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.2s]" style={{ "--paper-rotate": "6deg" } as React.CSSProperties}>
+              <div style={fc2}><DocumentCard type="padron" status="chaos" /></div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.5s]" style={{ "--paper-rotate": "-3deg" } as React.CSSProperties}>
+              <div style={fc3}><DocumentCard type="seg_social" status="chaos" /></div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.8s]" style={{ "--paper-rotate": "10deg" } as React.CSSProperties}>
+              <div style={fc4}><DocumentCard type="hacienda" status="chaos" /></div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-0.7s]" style={{ "--paper-rotate": "-9deg" } as React.CSSProperties}>
+              <div style={fc5}><DocumentCard type="nie" status="chaos" /></div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.9s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
+              <div style={fc6}><DocumentCard type="seg_social" status="chaos" /></div>
+            </div>
+
+            {/* Laser sweep — visible only while scanning, covers the pile area on left */}
+            {scannerActive && !scannerDone && (
+              <div
+                className="pile-scan absolute"
+                style={{ left: "0%", right: "54%", top: "18%", bottom: "18%" }}
+              />
+            )}
+
+            {/* Subtle green glow behind pile when scanning */}
+            {scannerActive && (
+              <div
+                className="absolute rounded-full pointer-events-none transition-opacity duration-700"
+                style={{
+                  left: "10%", right: "44%", top: "20%", bottom: "20%",
+                  background: "radial-gradient(ellipse at center, rgba(22,163,74,0.08) 0%, transparent 70%)",
+                  opacity: scannerDone ? 0 : 1,
+                }}
+              />
+            )}
+          </div>
         </div>
 
         {/* ── Slide dots (green) ── */}

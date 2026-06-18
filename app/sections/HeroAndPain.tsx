@@ -165,6 +165,26 @@ export default function HeroAndPain() {
   const [lettersAnimate, setLettersAnimate] = useState(false);
 
   useEffect(() => {
+    const handleScroll = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const viewHeight = window.innerHeight;
+      const totalScrollable = rect.height - viewHeight;
+      const scrolledPast = -rect.top - totalScrollable;
+      const progressValue = Math.max(0, Math.min(1, scrolledPast / viewHeight));
+      document.documentElement.style.setProperty('--doc-transition-progress', `${progressValue}`);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [ref]);
+
+  useEffect(() => {
     const t = setTimeout(() => setLettersAnimate(true), 500);
     return () => clearTimeout(t);
   }, []);
@@ -223,12 +243,12 @@ export default function HeroAndPain() {
   // ── Bridge gather: starts when slide 5 enters (p=0.83) and completes by p=0.97
   //    Cards move ~50% toward the scanner centre (x≈-24vw, y≈0) — dramatically visible
   const bridgeGather = interp(progress, 0.83, 0.97, 0, 1);
-  const bc1 = { x: interp(bridgeGather, 0, 1, -32, -28), y: interp(bridgeGather, 0, 1, -22, -11), r: interp(bridgeGather, 0, 1, -15, -8) };
-  const bc2 = { x: interp(bridgeGather, 0, 1, -24, -24), y: interp(bridgeGather, 0, 1,  18,   9), r: interp(bridgeGather, 0, 1,  12,  6) };
-  const bc3 = { x: interp(bridgeGather, 0, 1,   2, -11), y: interp(bridgeGather, 0, 1, -32, -16), r: interp(bridgeGather, 0, 1,  -5, -3) };
-  const bc4 = { x: interp(bridgeGather, 0, 1,   8,  -8), y: interp(bridgeGather, 0, 1,  24,  12), r: interp(bridgeGather, 0, 1,  20, 10) };
-  const bc5 = { x: interp(bridgeGather, 0, 1,  34,   5), y: interp(bridgeGather, 0, 1, -20, -10), r: interp(bridgeGather, 0, 1, -18, -9) };
-  const bc6 = { x: interp(bridgeGather, 0, 1,  24,   0), y: interp(bridgeGather, 0, 1,  30,  15), r: interp(bridgeGather, 0, 1,   8,  4) };
+  const bc1 = { x: interp(bridgeGather, 0, 1, -32, -30), y: interp(bridgeGather, 0, 1, -22, -10), r: interp(bridgeGather, 0, 1, -15, -8) };
+  const bc2 = { x: interp(bridgeGather, 0, 1, -24, -26), y: interp(bridgeGather, 0, 1,  18,   8), r: interp(bridgeGather, 0, 1,  12,  6) };
+  const bc3 = { x: interp(bridgeGather, 0, 1,   2, -28), y: interp(bridgeGather, 0, 1, -32,  -4), r: interp(bridgeGather, 0, 1,  -5, -12) };
+  const bc4 = { x: interp(bridgeGather, 0, 1,   8, -22), y: interp(bridgeGather, 0, 1,  24,  12), r: interp(bridgeGather, 0, 1,  20, 10) };
+  const bc5 = { x: interp(bridgeGather, 0, 1,  34, -24), y: interp(bridgeGather, 0, 1, -20,  -8), r: interp(bridgeGather, 0, 1, -18, -5) };
+  const bc6 = { x: interp(bridgeGather, 0, 1,  24, -20), y: interp(bridgeGather, 0, 1,  30,   4), r: interp(bridgeGather, 0, 1,   8,  4) };
 
   const headlineLeft = "Drowning in paperwork?";
   const headlineRight = "Everything sorted. Step by step.";
@@ -326,16 +346,16 @@ export default function HeroAndPain() {
             <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center md:justify-end md:pr-4 lg:pr-8 xl:pr-12">
               <div
                 className="transition-all duration-100 scale-90 md:scale-95 lg:scale-105"
-                style={{ transform: `translateX(${rightCardsX}%)`, opacity: rightCardsOpacity }}
+                style={{ transform: `translateX(${rightCardsX}%)`, opacity: 1 }}
               >
                 <div className="relative w-[400px] h-[430px] flex items-center justify-center">
-                  <div className="absolute translate-x-[-64px] translate-y-[-40px] rotate-[-12deg] opacity-95 scale-95">
+                  <div className="absolute translate-x-[-28px] translate-y-[-48px] rotate-[-5deg] scale-95">
                     <DocumentCard type="nie" status="clean" progress={100} />
                   </div>
-                  <div className="absolute translate-x-[48px] translate-y-[-24px] rotate-[8deg] opacity-95 scale-95">
+                  <div className="absolute translate-x-[32px] translate-y-[-16px] rotate-[4deg] scale-97">
                     <DocumentCard type="seg_social" status="clean" progress={40} />
                   </div>
-                  <div className="absolute translate-x-[8px] translate-y-[32px] rotate-[-2deg] scale-100 shadow-2xl">
+                  <div className="absolute translate-x-[-4px] translate-y-[36px] rotate-[-1deg] scale-100 shadow-2xl">
                     <DocumentCard type="padron" status="clean" progress={100} />
                   </div>
                 </div>
@@ -580,7 +600,7 @@ export default function HeroAndPain() {
                      Having both rendered at identical coords caused the double-document issue. */}
 
                 {/* Left */}
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4 relative z-10">
+                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 p-6 md:p-8 rounded-3xl border border-white/50 bg-white/75 backdrop-blur-md shadow-xl relative z-30 select-text">
                   <div className="flex items-center gap-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-red-600 font-bold">Average experience without help</span>
@@ -675,7 +695,10 @@ export default function HeroAndPain() {
         {progress >= 0.80 && (
           <div
             className="absolute inset-0 pointer-events-none z-[15]"
-            style={{ opacity: interp(progress, 0.80, 0.86, 0, 0.55) }}
+            style={{
+              opacity: `calc((${interp(progress, 0.80, 0.86, 0, 1.0)}) * (1 - var(--doc-transition-progress, 0)))`,
+              transform: `translateY(calc(var(--doc-transition-progress, 0) * 100vh))`,
+            }}
           >
             <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc1.x}vw), calc(-50% + ${bc1.y}vh)) rotate(${bc1.r}deg)` }}>
