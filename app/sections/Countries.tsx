@@ -19,7 +19,7 @@ const Q4 = [
 
 export default function Countries() {
   return (
-    <section id="countries" className="relative min-h-screen w-full bg-[#F7F4EE] overflow-hidden border-t border-[#C4B9A8]/50 scroll-mt-28">
+    <section id="countries" className="relative min-h-screen w-full bg-[#F8FAFC] overflow-hidden scroll-mt-28">
 
       {/* Full-section map background */}
       <div className="absolute inset-0 w-full h-full">
@@ -27,12 +27,12 @@ export default function Countries() {
       </div>
 
       {/* Left column fade — keeps title readable */}
-      <div className="absolute inset-y-0 left-0 w-[44%] bg-gradient-to-r from-[#F7F4EE] via-[#F7F4EE]/90 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 left-0 w-[44%] bg-gradient-to-r from-[#F8FAFC] via-[#F8FAFC]/90 to-transparent pointer-events-none z-10" />
       {/* Right column fade — keeps cards readable */}
-      <div className="absolute inset-y-0 right-0 w-[42%] bg-gradient-to-l from-[#F7F4EE] via-[#F7F4EE]/90 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 right-0 w-[42%] bg-gradient-to-l from-[#F8FAFC] via-[#F8FAFC]/90 to-transparent pointer-events-none z-10" />
       {/* Top + bottom edge fades */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#F7F4EE] to-transparent pointer-events-none z-10" />
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#F7F4EE] to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#F8FAFC] to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#F8FAFC] to-transparent pointer-events-none z-10" />
 
       {/* 3-column content layout */}
       <div className="relative z-20 flex min-h-screen px-10 md:px-16">
@@ -59,7 +59,7 @@ export default function Countries() {
         <div className="w-[34%] flex flex-col justify-center py-20 pl-4 gap-4 select-none">
 
           {/* Spain — Featured live card */}
-          <div className="relative bg-[#F7F4EE]/75 backdrop-blur-sm rounded-xl p-4 flex items-center justify-between shadow-sm">
+          <div className="relative bg-[#F8FAFC]/75 backdrop-blur-sm rounded-xl p-4 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-3">
               <span className="text-3xl leading-none">🇪🇸</span>
               <div>
@@ -75,14 +75,14 @@ export default function Countries() {
 
           {/* Q1 2026 group */}
           <div>
-            <div className="flex items-center gap-2 mb-2.5">
-              <div className="h-px flex-1 bg-[#C4B9A8]/50" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-[#D4820A] font-bold">Q1 2026</span>
-              <div className="h-px flex-1 bg-[#C4B9A8]/50" />
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {Q1.map(c => (
-                <div key={c.code} className="bg-[#F7F4EE]/70 backdrop-blur-sm border border-[#C4B9A8]/50 rounded-xl p-3 flex flex-col items-center gap-1.5 hover:border-[#D4820A]/40 transition-colors duration-200">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="h-px flex-1 bg-slate-200" />
+                <span className="font-mono text-[9px] uppercase tracking-widest text-[#16A34A] font-bold">Q1 2026</span>
+                <div className="h-px flex-1 bg-slate-200" />
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {Q1.map(c => (
+                  <div key={c.code} className="bg-[#F8FAFC]/70 backdrop-blur-sm border border-slate-200 rounded-xl p-3 flex flex-col items-center gap-1.5 hover:border-[#16A34A]/30 transition-colors duration-200">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-slate-500 uppercase tracking-wider">{c.code}</span>
                   <span className="font-syne font-bold text-[11px] text-slate-800 text-center leading-tight">{c.name}</span>
@@ -93,14 +93,14 @@ export default function Countries() {
 
           {/* Q3 2026 group */}
           <div>
-            <div className="flex items-center gap-2 mb-2.5">
-              <div className="h-px flex-1 bg-[#C4B9A8]/50" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-[#A8A09A] font-bold">Q3 2026</span>
-              <div className="h-px flex-1 bg-[#C4B9A8]/50" />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {Q3.map(c => (
-                <div key={c.code} className="bg-[#F7F4EE]/60 backdrop-blur-sm border border-[#C4B9A8]/40 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-80">
+              <div className="flex items-center gap-2 mb-2.5">
+                <div className="h-px flex-1 bg-slate-200/80" />
+                <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-bold">Q3 2026</span>
+                <div className="h-px flex-1 bg-slate-200/80" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {Q3.map(c => (
+                  <div key={c.code} className="bg-[#F8FAFC]/60 backdrop-blur-sm border border-slate-200/80 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-80">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-slate-400 uppercase tracking-wider">{c.code}</span>
                   <span className="font-syne font-bold text-[11px] text-slate-600 text-center leading-tight">{c.name}</span>
@@ -111,14 +111,14 @@ export default function Countries() {
 
           {/* Q4 2026 group */}
           <div>
-            <div className="flex items-center gap-2 mb-2.5">
-              <div className="h-px flex-1 bg-[#C4B9A8]/40" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-[#A8A09A]/70 font-bold">Q4 2026</span>
-              <div className="h-px flex-1 bg-[#C4B9A8]/40" />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {Q4.map(c => (
-                <div key={c.code} className="bg-[#F7F4EE]/50 backdrop-blur-sm border border-[#C4B9A8]/30 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-60">
+              <div className="flex items-center gap-2 mb-2.5">
+                <div className="h-px flex-1 bg-slate-200/60" />
+                <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400/70 font-bold">Q4 2026</span>
+                <div className="h-px flex-1 bg-slate-200/60" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {Q4.map(c => (
+                  <div key={c.code} className="bg-[#F8FAFC]/50 backdrop-blur-sm border border-slate-200/60 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-60">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-slate-400 uppercase tracking-wider">{c.code}</span>
                   <span className="font-syne font-bold text-[11px] text-slate-500 text-center leading-tight">{c.name}</span>

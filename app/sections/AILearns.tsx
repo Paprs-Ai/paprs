@@ -12,7 +12,7 @@ export default function AILearns() {
     <section 
       ref={ref} 
       id="ai-learns" 
-      className="min-h-screen w-full bg-[#F7F4EE] text-slate-900 flex flex-col md:flex-row items-center justify-between py-20 px-8 md:px-16 border-t border-[#C4B9A8]/50 scroll-mt-28"
+      className="min-h-screen w-full bg-[#F8FAFC] text-slate-900 flex flex-col md:flex-row items-center justify-between py-20 px-8 md:px-16 scroll-mt-28"
     >
       
       {/* Left Column: Copy */}

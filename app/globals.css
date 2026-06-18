@@ -39,10 +39,10 @@ h1, h2, h3, h4, h5, h6 {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #F7F4EE;
+  background: #F8FAFC;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C4B9A8;
+  background: #CBD5E1;
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {

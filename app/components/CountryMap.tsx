@@ -50,13 +50,13 @@ export default function CountryMap() {
               const name = geo.properties.name;
               const isEurope = europeanCountries.includes(name);
 
-              let fill = "#F7F4EE";
+              let fill = "#F8FAFC";
               let stroke = "transparent";
               let opacity = 1;
 
               if (isEurope) {
-                fill = "#EDE8DE";
-                stroke = "#C4B9A8";
+                fill = "#F1F5F9";
+                stroke = "#E2E8F0";
 
                 if (name === "Spain") {
                   fill = "#16A34A"; opacity = 0.75;
@@ -108,7 +108,7 @@ export default function CountryMap() {
                 r={isActive ? 5 : isSoon ? 3.5 : 2.5}
                 fill={isActive ? "#16A34A" : isSoon ? "#16A34A" : "#A8A09A"}
                 fillOpacity={isActive ? 1 : isSoon ? 0.75 : 0.5}
-                stroke="#F7F4EE"
+                stroke="#F8FAFC"
                 strokeWidth={1.5}
               />
               {showLabel && (

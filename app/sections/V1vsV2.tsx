@@ -49,7 +49,7 @@ export default function V1vsV2() {
     <section
       ref={containerRef}
       id="features-v1-v2"
-      className="min-h-screen w-full bg-[#F8FAFC] text-slate-900 flex flex-col justify-center items-center py-20 px-8 relative border-t border-slate-200 overflow-hidden scroll-mt-28"
+      className="min-h-screen w-full bg-[#F8FAFC] text-slate-900 flex flex-col justify-center items-center py-20 px-8 relative overflow-hidden scroll-mt-28"
     >
       
       {/* Title / Copy */}

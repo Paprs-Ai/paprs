@@ -202,9 +202,9 @@ export default function HeroAndPain() {
   const rightCardsX = interp(progress, 0, 0.15, 0, 120);
   const rightCardsOpacity = interp(progress, 0, 0.12, 1, 0);
 
-  const bgR = Math.round(interp(progress, 0.85, 0.97, 247, 248));
-  const bgG = Math.round(interp(progress, 0.85, 0.97, 244, 250));
-  const bgB = Math.round(interp(progress, 0.85, 0.97, 238, 252));
+  const bgR = Math.round(interp(progress, 0.05, 0.18, 247, 248));
+  const bgG = Math.round(interp(progress, 0.05, 0.18, 244, 250));
+  const bgB = Math.round(interp(progress, 0.05, 0.18, 238, 252));
   const leftBgColor = `rgb(${bgR},${bgG},${bgB})`;
 
   // ── chaotic hero floating cards — also used as slide 0 ghost background ───
@@ -255,17 +255,26 @@ export default function HeroAndPain() {
 
   return (
     <div ref={ref} id="pain" className="relative h-[500vh] w-full">
-      <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col md:flex-row z-10">
+      <div 
+        className="sticky top-0 w-full h-screen flex flex-col md:flex-row"
+        style={{
+          zIndex: `calc(15 - clamp(0, (var(--doc-transition-progress, 0) - 0.499) * 1000000, 6))`
+        } as React.CSSProperties}
+      >
 
         {/* ── BACKGROUNDS ── */}
-        <div
-          className="absolute left-0 top-0 h-full transition-all duration-100 z-0"
-          style={{ width: `${leftWidth}%`, backgroundColor: leftBgColor }}
-        />
-        <div
-          className="absolute right-0 top-0 h-full bg-[#F8FAFC] transition-all duration-100 z-0"
-          style={{ width: `${rightWidth}%` }}
-        />
+        {progress < 0.18 && (
+          <>
+            <div
+              className="absolute left-0 top-0 h-full transition-all duration-100 z-0"
+              style={{ width: `${leftWidth}%`, backgroundColor: leftBgColor }}
+            />
+            <div
+              className="absolute right-0 top-0 h-full bg-[#F8FAFC] transition-all duration-100 z-0"
+              style={{ width: `${rightWidth}%` }}
+            />
+          </>
+        )}
 
         {/* ── HERO (progress < 0.18) ── */}
         {progress < 0.18 && (
@@ -366,7 +375,7 @@ export default function HeroAndPain() {
 
         {/* ── PAIN SLIDES (progress >= 0.18) ── */}
         {progress >= 0.18 && (
-          <div className="absolute inset-0 w-full h-full z-20 flex items-center" style={{ opacity: sliderOpacity }}>
+          <div className="absolute inset-0 w-full h-full overflow-hidden z-20 flex items-center" style={{ opacity: sliderOpacity }}>
             <div
               className="flex h-full"
               style={{
@@ -696,36 +705,36 @@ export default function HeroAndPain() {
           <div
             className="absolute inset-0 pointer-events-none z-[15]"
             style={{
-              opacity: `calc((${interp(progress, 0.80, 0.86, 0, 1.0)}) * (1 - var(--doc-transition-progress, 0)))`,
+              opacity: `calc((${interp(progress, 0.80, 0.86, 0, 1.0)}) * (1 - clamp(0, (var(--doc-transition-progress, 0) - 0.45) * 10, 1)))`,
               transform: `translateY(calc(var(--doc-transition-progress, 0) * 100vh))`,
             }}
           >
-            <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc1.x}vw), calc(-50% + ${bc1.y}vh)) rotate(${bc1.r}deg)` }}>
                 <DocumentCard type="nie" status="chaos" />
               </div>
             </div>
-            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.2s]" style={{ "--paper-rotate": `${bc2.r}deg` } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc2.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc2.x}vw), calc(-50% + ${bc2.y}vh)) rotate(${bc2.r}deg)` }}>
                 <DocumentCard type="padron" status="chaos" />
               </div>
             </div>
-            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.5s]" style={{ "--paper-rotate": `${bc3.r}deg` } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc3.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc3.x}vw), calc(-50% + ${bc3.y}vh)) rotate(${bc3.r}deg)` }}>
                 <DocumentCard type="seg_social" status="chaos" />
               </div>
             </div>
-            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.8s]" style={{ "--paper-rotate": `${bc4.r}deg` } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc4.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc4.x}vw), calc(-50% + ${bc4.y}vh)) rotate(${bc4.r}deg)` }}>
                 <DocumentCard type="hacienda" status="chaos" />
               </div>
             </div>
-            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-0.7s]" style={{ "--paper-rotate": `${bc5.r}deg` } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc5.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc5.x}vw), calc(-50% + ${bc5.y}vh)) rotate(${bc5.r}deg)` }}>
                 <DocumentCard type="nie" status="chaos" />
               </div>
             </div>
-            <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.9s]" style={{ "--paper-rotate": `${bc6.r}deg` } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc6.r}deg` } as React.CSSProperties}>
               <div style={{ transform: `translate(calc(-50% + ${bc6.x}vw), calc(-50% + ${bc6.y}vh)) rotate(${bc6.r}deg)` }}>
                 <DocumentCard type="seg_social" status="chaos" />
               </div>

@@ -7,7 +7,7 @@ export default function FinalCTA() {
   return (
     <section
       id="cta"
-      className="min-h-[80vh] w-full flex flex-col justify-center items-center text-[#1A1814] px-8 relative overflow-hidden select-none bg-[#F7F4EE] border-t border-[#C4B9A8]/30 scroll-mt-28"
+      className="min-h-[80vh] w-full flex flex-col justify-center items-center text-[#1A1814] px-8 relative overflow-hidden select-none bg-[#F8FAFC] scroll-mt-28"
     >
  
       {/* Decorative floating badge */}
