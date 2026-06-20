@@ -2,9 +2,156 @@
 
 import React, { useState, useEffect } from "react";
 import { useScrollProgress } from "../hooks/useScrollProgress";
-import { Globe, MapPin, FileText, Target, Check, ArrowRight, Lock, Cpu, Loader2 } from "lucide-react";
+import { Globe, MapPin, FileText, Target, Check, ArrowRight, Lock, Cpu, Loader2, Clock } from "lucide-react";
 import DocumentCard from "../components/DocumentCard";
 import { IPhoneMockup } from "react-device-mockup";
+
+// ─── Microtask Checklist Card (HowItWorks Slide 0) ──────────────────────────
+function MicrotaskCard({
+  type,
+  overview,
+  badgeText,
+  badgeType,
+  tasks,
+  doneCount,
+  totalCount,
+}: {
+  type: "nie" | "seg_social" | "padron";
+  overview: string;
+  badgeText: string;
+  badgeType: "done" | "progress" | "pending";
+  tasks: Array<{ text: string; done: boolean; active?: boolean }>;
+  doneCount: number;
+  totalCount: number;
+}) {
+  const progressPercent = Math.round((doneCount / totalCount) * 100);
+
+  // Document details from type to match DocumentCard exactly
+  const getDocDetails = () => {
+    switch (type) {
+      case "nie":
+        return {
+          title: "Certificado de Registro",
+          subtitle: "Registro de Ciudadanos de la Unión",
+          code: "EXP: NIE-2026-X83",
+          sealColor: "text-[#16A34A]",
+        };
+      case "seg_social":
+        return {
+          title: "Seguridad Social",
+          subtitle: "Resolución de Afiliación",
+          code: "NUSS: 08/12345678/90",
+          sealColor: "text-[#16A34A]",
+        };
+      case "padron":
+        return {
+          title: "Empadronamiento",
+          subtitle: "Volante de Residencia Habitual",
+          code: "REG: 08019-2026",
+          sealColor: "text-[#16A34A]",
+        };
+    }
+  };
+
+  const details = getDocDetails();
+
+  const badgeStyles = {
+    done: "text-emerald-700 bg-emerald-50 border-emerald-200/50",
+    progress: "text-amber-700 bg-amber-50 border-amber-200/50 animate-pulse",
+    pending: "text-slate-500 bg-slate-50 border-slate-200/50",
+  }[badgeType];
+
+  return (
+    <div className="relative w-72 h-[340px] p-6 rounded-2xl border-2 border-slate-200 bg-white shadow-2xl flex flex-col justify-between font-sans select-none overflow-hidden text-slate-900 text-left transition-all duration-300">
+      {/* Background Watermark/Pattern */}
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
+        <svg width="200" height="200" viewBox="0 0 100 100" fill="currentColor">
+          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" fill="none" />
+          <path d="M50 10 L50 90 M10 50 L90 50" stroke="currentColor" strokeWidth="2" />
+        </svg>
+      </div>
+
+      {/* Upper Content */}
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="flex justify-between items-start gap-2">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-md flex items-center justify-center border border-slate-200 bg-slate-50 flex-shrink-0">
+              <span className={`text-[10px] font-bold ${details.sealColor}`}>ES</span>
+            </div>
+            <div>
+              <p className="text-[9px] uppercase tracking-wider opacity-60 font-mono">España</p>
+              <h4 className="text-[11px] font-bold leading-tight font-syne truncate max-w-[130px]">
+                {details.title}
+              </h4>
+            </div>
+          </div>
+          <span className={`text-[8px] font-mono border px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ${badgeStyles}`}>
+            {badgeText}
+          </span>
+        </div>
+
+        <p className="mt-2.5 text-[9px] uppercase font-mono opacity-50">
+          {details.code}
+        </p>
+        <p className="text-[10.5px] font-semibold opacity-85 mt-0.5">
+          {details.subtitle}
+        </p>
+
+        {/* Separator */}
+        <hr className="my-2.5 border-dashed border-slate-200" />
+
+        {/* Overview text (plain, no background container) */}
+        <p className="text-[10px] text-slate-500 leading-normal mb-3">
+          {overview}
+        </p>
+
+        {/* Tasks */}
+        <div className="flex flex-col gap-2">
+          {tasks.map((t, idx) => (
+            <div key={idx} className="flex items-start gap-2.5 min-w-0">
+              {t.done ? (
+                <div className="w-4 h-4 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
+                  <Check className="w-2.5 h-2.5" />
+                </div>
+              ) : t.active ? (
+                <div className="w-4 h-4 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 flex-shrink-0 mt-0.5 relative">
+                  <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-ping" />
+                  <Clock className="w-2.5 h-2.5" />
+                </div>
+              ) : (
+                <div className="w-4 h-4 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-300 flex-shrink-0 mt-0.5">
+                  <div className="w-1 h-1 rounded-full bg-slate-300" />
+                </div>
+              )}
+              <span className={`text-[10.5px] leading-tight min-w-0 break-words ${
+                t.done ? "text-slate-400 line-through decoration-slate-400" : "text-slate-700 font-medium"
+              }`}>
+                {t.text}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer / Progress Bar */}
+      <div className="relative z-10 pt-2 border-t border-dashed border-slate-200">
+        <div className="flex justify-between text-[8px] opacity-60 font-mono mb-1">
+          <span>Action Progress</span>
+          <span>{doneCount} / {totalCount} Done ({progressPercent}%)</span>
+        </div>
+        <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+          <div 
+            className={`h-full transition-all duration-700 ${
+              badgeType === "done" ? "bg-emerald-500" : badgeType === "progress" ? "bg-amber-500" : "bg-slate-300"
+            }`}
+            style={{ width: `${progressPercent}%` }}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ─── Slide dot indicator (green variant for clarity section) ──────────────────
 function SlideDots({ total, active }: { total: number; active: number }) {
@@ -226,28 +373,66 @@ export default function HowItWorks() {
                   className="absolute"
                   style={{
                     opacity: 1,
-                    transform: `translate(-40px, calc(-34px + ${c1Y}px)) rotate(-11deg) scale(0.88)`,
+                    transform: `translate(-40px, calc(-34px + ${c1Y}px)) rotate(-11deg) scale(1)`,
                   }}
                 >
-                  <DocumentCard type="nie" status="clean" progress={100} />
+                  <MicrotaskCard
+                    type="nie"
+                    overview="Foreigner identity & tax number. Essential for work contracts, bank accounts, SIM cards, and renting."
+                    badgeText="In Progress"
+                    badgeType="progress"
+                    doneCount={2}
+                    totalCount={4}
+                    tasks={[
+                      { text: "Generate Tax Model 790-012 PDF with fee info", done: true },
+                      { text: "Pay €12.24 tax fee at ATM and save ticket", done: true },
+                      { text: "Present EX-15 form in person at police station", done: false, active: true },
+                      { text: "Pick up your physical paper NIE certificate", done: false },
+                    ]}
+                  />
                 </div>
                 <div
                   className="absolute"
                   style={{
                     opacity: 1,
-                    transform: `translate(36px, calc(-18px + ${c2Y}px)) rotate(8deg) scale(0.88)`,
+                    transform: `translate(36px, calc(-18px + ${c2Y}px)) rotate(8deg) scale(1)`,
                   }}
                 >
-                  <DocumentCard type="seg_social" status="clean" progress={40} />
+                  <MicrotaskCard
+                    type="seg_social"
+                    overview="Social security number. Required to sign a work contract, pay freelance taxes, or access public health."
+                    badgeText="Next Up"
+                    badgeType="pending"
+                    doneCount={1}
+                    totalCount={3}
+                    tasks={[
+                      { text: "Confirm your Spanish mobile phone number is active", done: true },
+                      { text: "Request NUSS via Import@ss digital portal", done: false },
+                      { text: "Download your official NUSS certificate PDF", done: false },
+                    ]}
+                  />
                 </div>
                 <div
                   className="absolute shadow-2xl"
                   style={{
                     opacity: 1,
-                    transform: `translate(4px, calc(26px + ${c3Y}px)) rotate(-2deg) scale(0.94)`,
+                    transform: `translate(4px, calc(26px + ${c3Y}px)) rotate(-2deg) scale(1)`,
                   }}
                 >
-                  <DocumentCard type="padron" status="clean" progress={100} />
+                  <MicrotaskCard
+                    type="padron"
+                    overview="Town hall address registration. Mandatory first step needed for healthcare cards and NIE booking."
+                    badgeText="Done"
+                    badgeType="done"
+                    doneCount={4}
+                    totalCount={4}
+                    tasks={[
+                      { text: "Collect lease contract signed by landlord & utility bill", done: true },
+                      { text: "Download and fill out the town hall registration form", done: true },
+                      { text: "Book an appointment slot online (Cita Previa)", done: true },
+                      { text: "Attend appointment in person and obtain your Volante", done: true },
+                    ]}
+                  />
                 </div>
                 <div
                   className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[#16A34A] font-bold whitespace-nowrap transition-opacity duration-500"
