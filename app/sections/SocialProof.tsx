@@ -94,7 +94,7 @@ export default function SocialProof() {
   const { ref, progress } = useScrollProgress();
   const [isScrolling, setIsScrolling] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     const onScroll = () => {
@@ -119,7 +119,7 @@ export default function SocialProof() {
       className="relative scroll-mt-28"
       style={{ height: `${N * 62}vh` }}
     >
-      {/* <div className="sticky top-0 h-screen bg-[#F8FAFC] flex flex-col overflow-hidden"> */}
+      <div className="sticky top-0 h-screen bg-[#F8FAFC] flex flex-col overflow-hidden justify-center">
        
 
         <div className="w-full flex flex-col items-center justify-center mb-16 select-none">
@@ -232,6 +232,6 @@ export default function SocialProof() {
           </div>
         </div>
       </div>
-    // </div>
+    </div>
   );
 }
