@@ -5,9 +5,7 @@ import React from "react";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
 import Countries from "./sections/Countries";
-import V1vsV2 from "./sections/V1vsV2";
 import AILearns from "./sections/AILearns";
-import SocialProof from "./sections/SocialProof";
 import FinalCTA from "./sections/FinalCTA";
  
 export default function Home() {
@@ -48,8 +46,8 @@ export default function Home() {
         <HowItWorks />
         <AILearns />
         <Countries />
-        <V1vsV2 />
-        <SocialProof />
+        {/* <V1vsV2 /> */}
+        {/* <SocialProof /> */}
         <FinalCTA />
       </main>
 

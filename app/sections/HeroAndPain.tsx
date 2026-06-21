@@ -567,7 +567,6 @@ export default function HeroAndPain() {
               style={{
                 transform: `translateX(-${translatePercent}%)`,
                 width: "600%",
-                transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
 

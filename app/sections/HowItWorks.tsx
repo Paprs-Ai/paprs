@@ -340,7 +340,6 @@ export default function HowItWorks() {
             style={{
               transform: `translateX(-${translatePercent}%)`,
               width: "900%",
-              transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
               opacity: sliderOpacity,
             }}
           >
@@ -674,7 +673,6 @@ export default function HowItWorks() {
             className="absolute inset-0 pointer-events-none"
             style={{
               transform: `translateX(-${translatePercent * 9}%)`,
-              transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
             <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
@@ -775,8 +773,7 @@ export default function HowItWorks() {
                     className="flex-1 flex"
                     style={{
                       width: "600%",
-                      transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`,
-                      transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)"
+                      transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
                     }}
                   >
                     

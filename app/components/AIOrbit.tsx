@@ -1,14 +1,6 @@
 "use client";
 
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  ReactFlow,
-  useNodesState,
-  Node,
-  Handle,
-  Position,
-} from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -133,23 +125,29 @@ const NEIGHBORS = new Map<string, string[]>(
   ])
 );
 
-// ─── Node components ──────────────────────────────────────────────────────────
+// ─── Node types and UI Components ─────────────────────────────────────────────
 
-const hStyle = {
-  top: "50%", left: "50%",
-  transform: "translate(-50%,-50%)",
-  opacity: 0, width: 1, height: 1,
-} as const;
+interface ProjNode {
+  id: string;
+  kind: "dot" | "pill";
+  x: number;
+  y: number;
+  zIndex: number;
+  opacity: number;
+  scale: number;
+  blur: number;
+  isActive: boolean;
+  label?: string;
+}
 
-type ND = { opacity: number; scale: number; blur: number; isActive: boolean; label?: string };
-type OrbitEdge = {
+interface OrbitEdge {
   id: string;
   x1: number; y1: number;
   x2: number; y2: number;
   opacity: number; width: number; active: boolean;
-};
+}
 
-const DotNode = ({ data: { opacity, scale, blur, isActive } }: { data: ND }) => (
+const DotNode = ({ opacity, scale, blur, isActive }: { opacity: number; scale: number; blur: number; isActive: boolean }) => (
   <div
     className="pointer-events-none relative"
     style={{
@@ -159,8 +157,6 @@ const DotNode = ({ data: { opacity, scale, blur, isActive } }: { data: ND }) => 
       filter: blur > 0 ? `blur(${blur}px)` : undefined,
     }}
   >
-    <Handle type="target" position={Position.Top}    style={hStyle} />
-    <Handle type="source" position={Position.Bottom} style={hStyle} />
     <div style={{
       width: 8, height: 8, borderRadius: "50%",
       background: isActive
@@ -171,7 +167,7 @@ const DotNode = ({ data: { opacity, scale, blur, isActive } }: { data: ND }) => 
   </div>
 );
 
-const PillNode = ({ data: { opacity, scale, blur, isActive, label } }: { data: ND }) => (
+const PillNode = ({ opacity, scale, blur, isActive, label }: { opacity: number; scale: number; blur: number; isActive: boolean; label?: string }) => (
   <div
     className="pointer-events-none relative flex items-center justify-center"
     style={{
@@ -180,8 +176,6 @@ const PillNode = ({ data: { opacity, scale, blur, isActive, label } }: { data: N
       filter: blur > 0 ? `blur(${blur}px)` : undefined,
     }}
   >
-    <Handle type="target" position={Position.Top}    style={hStyle} />
-    <Handle type="source" position={Position.Bottom} style={hStyle} />
     <div
       className="flex items-center gap-1.5 px-2.5 py-1 rounded-full font-mono text-[9px] font-bold uppercase tracking-wider whitespace-nowrap"
       style={isActive ? {
@@ -204,14 +198,12 @@ const PillNode = ({ data: { opacity, scale, blur, isActive, label } }: { data: N
   </div>
 );
 
-const nodeTypes = { dot: DotNode, pill: PillNode };
-
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function AIOrbit({ progress }: { progress: number }) {
-  const [nodes, setNodes]         = useNodesState<Node>([]);
-  const [orbitEdges, setOrbitEdges] = useState<OrbitEdge[]>([]);
+  const [orbitState, setOrbitState] = useState<{ nodes: ProjNode[]; edges: OrbitEdge[] }>({ nodes: [], edges: [] });
   const progressRef = useRef(progress);
+  
   useEffect(() => { progressRef.current = progress; }, [progress]);
 
   // ── Scale to fit parent column ──────────────────────────────────────────
@@ -299,19 +291,21 @@ export default function AIOrbit({ progress }: { progress: number }) {
       const PILL_W = 60; // half of ~120px pill width, centers pill on sphere point
       const PILL_H = 14; // half of ~28px pill height
 
-      const nextNodes: Node[] = ALL_NODES.map(sn => {
+      const nextNodes: ProjNode[] = ALL_NODES.map(sn => {
         const pp   = proj.get(sn.id)!;
         const zIdx = Math.round(pp.depth * 900);
-        const data: ND = {
+        return {
+          id: sn.id,
+          kind: sn.kind,
+          x: sn.kind === "dot" ? CX + pp.sx - 4 : CX + pp.sx - PILL_W,
+          y: sn.kind === "dot" ? CY + pp.sy - 4 : CY + pp.sy - PILL_H,
+          zIndex: zIdx,
           opacity:  pp.opacity,
           scale:    pp.scale,
           blur:     pp.blur,
           isActive: pp.isActive,
           label:    sn.label,
         };
-        return sn.kind === "dot"
-          ? { id: sn.id, type: "dot",  position: { x: CX + pp.sx - 4,      y: CY + pp.sy - 4      }, data, style: { zIndex: zIdx } }
-          : { id: sn.id, type: "pill", position: { x: CX + pp.sx - PILL_W, y: CY + pp.sy - PILL_H }, data, style: { zIndex: zIdx } };
       });
 
       // ── Build edges: only between active nodes, capped at liveK ──────
@@ -349,14 +343,13 @@ export default function AIOrbit({ progress }: { progress: number }) {
         }
       }
 
-      setNodes(nextNodes);
-      setOrbitEdges(nextEdges);
+      setOrbitState({ nodes: nextNodes, edges: nextEdges });
       animId = requestAnimationFrame(tick);
     };
 
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
-  }, [setNodes]);
+  }, []);
 
   return (
     <div
@@ -378,7 +371,7 @@ export default function AIOrbit({ progress }: { progress: number }) {
           viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
           aria-hidden="true"
         >
-          {orbitEdges.map(edge => (
+          {orbitState.edges.map(edge => (
             <line
               key={edge.id}
               x1={edge.x1} y1={edge.y1}
@@ -389,22 +382,40 @@ export default function AIOrbit({ progress }: { progress: number }) {
             />
           ))}
         </svg>
-        <ReactFlow
-          nodes={nodes}
-          edges={[]}
-          nodeTypes={nodeTypes}
-          panOnScroll={false}
-          panOnDrag={false}
-          zoomOnScroll={false}
-          zoomOnDoubleClick={false}
-          zoomOnPinch={false}
-          nodesDraggable={false}
-          nodesConnectable={false}
-          elementsSelectable={false}
-          defaultViewport={{ x: 0, y: 0, zoom: 1 }}
-          proOptions={{ hideAttribution: true }}
-          style={{ background: "transparent", position: "absolute", inset: 0, zIndex: 1 }}
-        />
+
+        <div className="absolute inset-0 pointer-events-none z-10">
+          {orbitState.nodes.map(node => {
+            const isDot = node.kind === "dot";
+            return (
+              <div
+                key={node.id}
+                style={{
+                  position: "absolute",
+                  left: node.x,
+                  top: node.y,
+                  zIndex: node.zIndex,
+                }}
+              >
+                {isDot ? (
+                  <DotNode
+                    opacity={node.opacity}
+                    scale={node.scale}
+                    blur={node.blur}
+                    isActive={node.isActive}
+                  />
+                ) : (
+                  <PillNode
+                    opacity={node.opacity}
+                    scale={node.scale}
+                    blur={node.blur}
+                    isActive={node.isActive}
+                    label={node.label}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
