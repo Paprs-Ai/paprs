@@ -1,157 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useScrollProgress } from "../hooks/useScrollProgress";
-import { Globe, MapPin, FileText, Target, Check, ArrowRight, Lock, Cpu, Loader2, Clock } from "lucide-react";
-import DocumentCard from "../components/DocumentCard";
+import { MicrotaskCard } from "@/app/sections/HeroAndPain";
+import Lottie from "lottie-react";
+import { ArrowRight, Check, Cpu, FileText, Globe, Loader2, Lock } from "lucide-react";
+import React from "react";
 import { IPhoneMockup } from "react-device-mockup";
-
+import aiGeneratingAnimation from "../../assets/animations/AI Generating Response.json";
+import DocumentCard from "../components/DocumentCard";
+import { useScrollProgress } from "../hooks/useScrollProgress";
 // ─── Microtask Checklist Card (HowItWorks Slide 0) ──────────────────────────
-function MicrotaskCard({
-  type,
-  overview,
-  badgeText,
-  badgeType,
-  tasks,
-  doneCount,
-  totalCount,
-}: {
-  type: "nie" | "seg_social" | "padron";
-  overview: string;
-  badgeText: string;
-  badgeType: "done" | "progress" | "pending";
-  tasks: Array<{ text: string; done: boolean; active?: boolean }>;
-  doneCount: number;
-  totalCount: number;
-}) {
-  const progressPercent = Math.round((doneCount / totalCount) * 100);
 
-  // Document details from type to match DocumentCard exactly
-  const getDocDetails = () => {
-    switch (type) {
-      case "nie":
-        return {
-          title: "Certificado de Registro",
-          subtitle: "Registro de Ciudadanos de la Unión",
-          code: "EXP: NIE-2026-X83",
-          sealColor: "text-[#16A34A]",
-        };
-      case "seg_social":
-        return {
-          title: "Seguridad Social",
-          subtitle: "Resolución de Afiliación",
-          code: "NUSS: 08/12345678/90",
-          sealColor: "text-[#16A34A]",
-        };
-      case "padron":
-        return {
-          title: "Empadronamiento",
-          subtitle: "Volante de Residencia Habitual",
-          code: "REG: 08019-2026",
-          sealColor: "text-[#16A34A]",
-        };
-    }
-  };
-
-  const details = getDocDetails();
-
-  const badgeStyles = {
-    done: "text-emerald-700 bg-emerald-50 border-emerald-200/50",
-    progress: "text-amber-700 bg-amber-50 border-amber-200/50 animate-pulse",
-    pending: "text-slate-500 bg-slate-50 border-slate-200/50",
-  }[badgeType];
-
-  return (
-    <div className="relative w-72 h-[340px] p-6 rounded-2xl border-2 border-slate-200 bg-white shadow-2xl flex flex-col justify-between font-sans select-none overflow-hidden text-slate-900 text-left transition-all duration-300">
-      {/* Background Watermark/Pattern */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
-        <svg width="200" height="200" viewBox="0 0 100 100" fill="currentColor">
-          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" fill="none" />
-          <path d="M50 10 L50 90 M10 50 L90 50" stroke="currentColor" strokeWidth="2" />
-        </svg>
-      </div>
-
-      {/* Upper Content */}
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex justify-between items-start gap-2">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-md flex items-center justify-center border border-slate-200 bg-slate-50 flex-shrink-0">
-              <span className={`text-[10px] font-bold ${details.sealColor}`}>ES</span>
-            </div>
-            <div>
-              <p className="text-[9px] uppercase tracking-wider opacity-60 font-mono">España</p>
-              <h4 className="text-[11px] font-bold leading-tight font-syne truncate max-w-[130px]">
-                {details.title}
-              </h4>
-            </div>
-          </div>
-          <span className={`text-[8px] font-mono border px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ${badgeStyles}`}>
-            {badgeText}
-          </span>
-        </div>
-
-        <p className="mt-2.5 text-[9px] uppercase font-mono opacity-50">
-          {details.code}
-        </p>
-        <p className="text-[10.5px] font-semibold opacity-85 mt-0.5">
-          {details.subtitle}
-        </p>
-
-        {/* Separator */}
-        <hr className="my-2.5 border-dashed border-slate-200" />
-
-        {/* Overview text (plain, no background container) */}
-        <p className="text-[10px] text-slate-500 leading-normal mb-3">
-          {overview}
-        </p>
-
-        {/* Tasks */}
-        <div className="flex flex-col gap-2">
-          {tasks.map((t, idx) => (
-            <div key={idx} className="flex items-start gap-2.5 min-w-0">
-              {t.done ? (
-                <div className="w-4 h-4 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
-                  <Check className="w-2.5 h-2.5" />
-                </div>
-              ) : t.active ? (
-                <div className="w-4 h-4 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 flex-shrink-0 mt-0.5 relative">
-                  <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-ping" />
-                  <Clock className="w-2.5 h-2.5" />
-                </div>
-              ) : (
-                <div className="w-4 h-4 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-300 flex-shrink-0 mt-0.5">
-                  <div className="w-1 h-1 rounded-full bg-slate-300" />
-                </div>
-              )}
-              <span className={`text-[10.5px] leading-tight min-w-0 break-words ${
-                t.done ? "text-slate-400 line-through decoration-slate-400" : "text-slate-700 font-medium"
-              }`}>
-                {t.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Footer / Progress Bar */}
-      <div className="relative z-10 pt-2 border-t border-dashed border-slate-200">
-        <div className="flex justify-between text-[8px] opacity-60 font-mono mb-1">
-          <span>Action Progress</span>
-          <span>{doneCount} / {totalCount} Done ({progressPercent}%)</span>
-        </div>
-        <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-          <div 
-            className={`h-full transition-all duration-700 ${
-              badgeType === "done" ? "bg-emerald-500" : badgeType === "progress" ? "bg-amber-500" : "bg-slate-300"
-            }`}
-            style={{ width: `${progressPercent}%` }}
-          ></div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Slide dot indicator (green variant for clarity section) ──────────────────
 function SlideDots({ total, active }: { total: number; active: number }) {
@@ -310,25 +168,24 @@ export default function HowItWorks() {
 
   const sliderOpacity = 1;
 
-  // Dynamic Phone Simulator theme detection (Screen 2 System Figuring is dark mode)
-  const isPhoneDarkMode = (progress >= 0.23 && progress < 0.31 && s2p >= 0.25 && s2p < 0.55);
-  const statusBarBg = isPhoneDarkMode ? "bg-slate-950" : "bg-slate-50";
-  const statusBarText = isPhoneDarkMode ? "text-slate-500" : "text-slate-400";
-  const batteryBorder = isPhoneDarkMode ? "border-slate-700" : "border-slate-300";
-  const batteryBg = isPhoneDarkMode ? "bg-slate-600" : "bg-slate-400";
-  const headerBg = isPhoneDarkMode ? "bg-slate-950" : "bg-white";
-  const headerBorder = isPhoneDarkMode ? "border-slate-800" : "border-slate-100";
-  const headerText = isPhoneDarkMode ? "text-white" : "text-slate-900";
-  const headerSubtext = isPhoneDarkMode ? "text-slate-500" : "text-slate-400";
-  const avatarBg = isPhoneDarkMode ? "bg-slate-900" : "bg-[#16A34A]/10";
-  const avatarBorder = isPhoneDarkMode ? "border-slate-800" : "border-slate-200";
-  const avatarText = isPhoneDarkMode ? "text-slate-500" : "text-[#16A34A]";
-  const screenWrapperBg = isPhoneDarkMode ? "bg-slate-950" : "bg-slate-50";
+  // Phone Simulator chrome stays light across every screen, including Screen 2.
+  const statusBarBg = "bg-slate-50";
+  const statusBarText = "text-slate-400";
+  const batteryBorder = "border-slate-300";
+  const batteryBg = "bg-slate-400";
+  const headerBg = "bg-white";
+  const headerBorder = "border-slate-100";
+  const headerText = "text-slate-900";
+  const headerSubtext = "text-slate-400";
+  const avatarBg = "bg-[#16A34A]/10";
+  const avatarBorder = "border-slate-200";
+  const avatarText = "text-[#16A34A]";
+  const screenWrapperBg = "bg-slate-50";
 
   return (
     <div ref={ref} id="how-it-works" className="relative h-[600vh] w-full scroll-mt-28">
       <div
-        className="sticky top-0 w-full h-screen flex items-center z-10"
+        className="sticky top-0 w-full h-screen flex items-center z-10 overflow-hidden"
       >
         {/* Green radial glow */}
         <div className="absolute right-[-15%] top-[8%] h-[520px] w-[520px] rounded-full bg-[#16A34A]/10 blur-3xl z-0 pointer-events-none" />
@@ -412,7 +269,7 @@ export default function HowItWorks() {
                   />
                 </div>
                 <div
-                  className="absolute shadow-2xl"
+                  className="absolute"
                   style={{
                     opacity: 1,
                     transform: `translate(4px, calc(26px + ${c3Y}px)) rotate(-2deg) scale(1)`,
@@ -951,24 +808,18 @@ export default function HowItWorks() {
                     </div>
 
                     {/* SCREEN 2: System Figuring */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-slate-950 justify-between text-white relative">
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(22,163,74,0.15),transparent_70%)] pointer-events-none" />
-
-                      <div className="flex flex-col items-center gap-4 mt-2 relative z-10">
+                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-slate-50 justify-between relative">
+                      <div className="flex flex-col items-center gap-1 mt-2 relative z-10">
                         <div className="text-[8px] font-mono text-[#16A34A] uppercase tracking-widest font-bold">
                           Computing Roadmap
                         </div>
 
-                        <div className="relative w-24 h-24 flex items-center justify-center">
-                          <div className="absolute inset-0 rounded-full border border-[#16A34A]/30 animate-ping" />
-                          <div className="absolute w-20 h-20 rounded-full border border-[#16A34A]/50 border-dashed animate-spin [animation-duration:10s]" />
-                          <div className="w-12 h-12 rounded-full bg-[#16A34A]/10 border border-[#16A34A] flex items-center justify-center shadow-[0_0_15px_rgba(22,163,74,0.3)]">
-                            <Cpu className="w-6 h-6 text-[#16A34A]" />
-                          </div>
+                        <div className="w-28 h-28 -my-2">
+                          <Lottie animationData={aiGeneratingAnimation} loop autoplay />
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-2 font-mono text-[7.5px] text-slate-400 bg-black/40 border border-slate-800 rounded-lg p-3 z-10">
+                      <div className="flex flex-col gap-2 font-mono text-[7.5px] text-slate-500 bg-white border border-slate-200 rounded-lg p-3 z-10">
                         <div className={`transition-opacity duration-300 ${s2p >= 0.28 ? "opacity-100 text-[#16A34A]" : "opacity-30"}`}>
                           {s2p >= 0.28 ? "✓" : "•"} Parsed 14 relocation decrees
                         </div>

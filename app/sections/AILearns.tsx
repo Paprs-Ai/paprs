@@ -1,16 +1,12 @@
 "use client";
 
 import React from "react";
-import { useScrollProgress } from "../hooks/useScrollProgress";
 import AIOrbit from "../components/AIOrbit";
 import { Lock } from "lucide-react";
 
 export default function AILearns() {
-  const { ref, progress } = useScrollProgress();
-
   return (
-    <section 
-      ref={ref} 
+    <section
       id="ai-learns" 
       className="min-h-screen w-full bg-[#F8FAFC] text-slate-900 flex flex-col md:flex-row items-center justify-between py-20 px-8 md:px-16 scroll-mt-28"
     >
@@ -39,7 +35,7 @@ export default function AILearns() {
 
       {/* Right Column: AI Orbit Simulator */}
       <div className="w-full md:w-6/12 flex items-center justify-center overflow-hidden">
-        <AIOrbit progress={progress} />
+        <AIOrbit />
       </div>
 
     </section>

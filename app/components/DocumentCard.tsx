@@ -10,6 +10,7 @@ interface DocumentCardProps {
   progress?: number;
   className?: string;
   style?: React.CSSProperties;
+  shadow?: string;
 }
 
 export default function DocumentCard({
@@ -18,6 +19,7 @@ export default function DocumentCard({
   progress = 0,
   className = "",
   style,
+  shadow = "shadow-2xl",
 }: DocumentCardProps) {
   const isChaos = status === "chaos";
 
@@ -68,7 +70,7 @@ export default function DocumentCard({
   if (!isChaos) {
     return (
       <div
-        className={`relative w-72 h-[340px] p-6 rounded-2xl border border-slate-200/40 bg-white/55 backdrop-blur-md shadow-2xl flex flex-col justify-between font-sans select-none overflow-hidden text-slate-900 ${className}`}
+        className={`relative w-72 h-[340px] p-6 rounded-3xl border border-slate-200/40 bg-white/55 backdrop-blur-md ${shadow} flex flex-col justify-between font-sans select-none overflow-hidden text-slate-900 ${className}`}
         style={style}
       >
           {/* Background Watermark/Pattern */}
@@ -190,7 +192,7 @@ export default function DocumentCard({
  
   return (
     <div
-      className={`relative w-72 h-[340px] p-6 rounded-2xl border-2 shadow-2xl flex flex-col justify-between transition-colors duration-500 font-sans select-none overflow-hidden ${details.bg} ${details.borderColor} ${className}`}
+      className={`relative w-72 h-[340px] p-6 rounded-3xl border-2 ${shadow} flex flex-col justify-between transition-colors duration-500 font-sans select-none overflow-hidden ${details.bg} ${details.borderColor} ${className}`}
       style={style}
     >
       {/* Background Watermark/Pattern */}

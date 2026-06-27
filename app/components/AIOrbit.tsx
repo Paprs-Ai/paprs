@@ -4,10 +4,13 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const SPIN_DPS = 7;
-const SPHERE_R  = 190;
-const CANVAS_W  = 560;
-const CANVAS_H  = 540;
+const SPIN_DPS = 28;
+// One full sparse → dense → sparse cycle takes this many degrees of rotation,
+// so the graph's "growth" is tied to the sphere's own spin, not to scroll.
+const CYCLE_DEGREES = 360 * 2.5;
+const SPHERE_R  = 260;
+const CANVAS_W  = 730;
+const CANVAS_H  = 710;
 const CX = CANVAS_W / 2;
 const CY = CANVAS_H / 2;
 
@@ -200,11 +203,8 @@ const PillNode = ({ opacity, scale, blur, isActive, label }: { opacity: number; 
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function AIOrbit({ progress }: { progress: number }) {
+export default function AIOrbit() {
   const [orbitState, setOrbitState] = useState<{ nodes: ProjNode[]; edges: OrbitEdge[] }>({ nodes: [], edges: [] });
-  const progressRef = useRef(progress);
-  
-  useEffect(() => { progressRef.current = progress; }, [progress]);
 
   // ── Scale to fit parent column ──────────────────────────────────────────
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -230,7 +230,10 @@ export default function AIOrbit({ progress }: { progress: number }) {
       lastTime    = now;
       angle      += (delta / 1000) * SPIN_DPS;
 
-      const p = progressRef.current;
+      // The graph's density is driven by the sphere's own rotation: each
+      // cycle it grows from sparse to fully connected, then resets and
+      // builds again as the sphere keeps spinning.
+      const p = (angle % CYCLE_DEGREES) / CYCLE_DEGREES;
 
       // Live neighbor count grows 2 → MAX_K as the user scrolls.
       // This drives the sparse-to-dense edge animation.

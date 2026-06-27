@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useScrollProgress } from "../hooks/useScrollProgress";
-import DocumentCard from "../components/DocumentCard";
 import {
   AlertTriangle,
-  ChevronRight,
-  Globe,
-  CreditCard,
-  MapPin,
-  FileText,
   Check,
+  ChevronRight,
   Clock,
+  CreditCard,
+  FileText,
+  Globe,
+  MapPin,
 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import DocumentCard from "../components/DocumentCard";
+import { useScrollProgress } from "../hooks/useScrollProgress";
 
 // ─── Process Step ──────────────────────────────────────────────────────────────
 function PainStep({
@@ -136,7 +136,7 @@ function StatCounter({
 
 // ─── Microtask Checklist Card (Hero Right side) ──────────────────────────────
 // ─── Microtask Checklist Card (Hero Right side) ──────────────────────────────
-function MicrotaskCard({
+export function MicrotaskCard({
   type,
   overview,
   badgeText,
@@ -144,14 +144,16 @@ function MicrotaskCard({
   tasks,
   doneCount,
   totalCount,
+  shadow = "shadow-2xl",
 }: {
-  type: "nie" | "seg_social" | "padron";
+  type: "nie" | "seg_social" | "padron" | "hacienda";
   overview: string;
   badgeText: string;
   badgeType: "done" | "progress" | "pending";
   tasks: Array<{ text: string; done: boolean; active?: boolean }>;
   doneCount: number;
   totalCount: number;
+  shadow?: string;
 }) {
   const progressPercent = Math.round((doneCount / totalCount) * 100);
 
@@ -179,6 +181,13 @@ function MicrotaskCard({
           code: "REG: 08019-2026",
           sealColor: "text-[#16A34A]",
         };
+      case "hacienda":
+        return {
+          title: "Agencia Tributaria",
+          subtitle: "Modelo 303 - IVA Autoliquidación",
+          code: "HAC: 2026-VAT-901",
+          sealColor: "text-[#16A34A]",
+        };
     }
   };
 
@@ -191,7 +200,7 @@ function MicrotaskCard({
   }[badgeType];
 
   return (
-    <div className="relative w-72 h-[340px] p-6 rounded-2xl border-2 border-slate-200 bg-white shadow-2xl flex flex-col justify-between font-sans select-none overflow-hidden text-slate-900 text-left transition-all duration-300">
+    <div className={`relative w-72 min-h-[340px] p-6 pb-4 rounded-3xl border-2 border-slate-200 bg-white ${shadow} flex flex-col justify-between font-sans select-none overflow-hidden text-slate-900 text-left transition-all duration-300`}>
       {/* Background Watermark/Pattern */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
         <svg width="200" height="200" viewBox="0 0 100 100" fill="currentColor">
@@ -264,7 +273,7 @@ function MicrotaskCard({
       </div>
 
       {/* Footer / Progress Bar */}
-      <div className="relative z-10 pt-2 border-t border-dashed border-slate-200">
+      <div className="relative z-10 pt-2 mt-2 border-t border-dashed border-slate-200">
         <div className="flex justify-between text-[8px] opacity-60 font-mono mb-1">
           <span>Action Progress</span>
           <span>{doneCount} / {totalCount} Done ({progressPercent}%)</span>
@@ -403,8 +412,8 @@ export default function HeroAndPain() {
 
   return (
     <div ref={ref} id="pain" className="relative h-[500vh] w-full">
-      <div 
-        className="sticky top-0 w-full h-screen flex flex-col md:flex-row"
+      <div
+        className="sticky top-0 w-full h-screen flex flex-col md:flex-row overflow-hidden"
         style={{
           zIndex: `calc(15 - clamp(0, (var(--doc-transition-progress, 0) - 0.499) * 1000000, 6))`
         } as React.CSSProperties}
@@ -494,7 +503,11 @@ export default function HeroAndPain() {
                   className="absolute left-1/2 top-1/2 transition-all duration-100 ease-out"
                   style={{ transform: `translate(calc(-50% + ${d.x}vw), calc(-50% + ${d.y}vh)) rotate(${d.r}deg)` }}
                 >
-                  <DocumentCard type={["nie","seg_social","padron","hacienda"][i] as "nie"|"seg_social"|"padron"|"hacienda"} status="chaos" />
+                  <DocumentCard
+                    type={["nie","seg_social","padron","hacienda"][i] as "nie"|"seg_social"|"padron"|"hacienda"}
+                    status="chaos"
+                    shadow={i === 3 ? "shadow-2xl" : i === 2 ? "shadow-lg" : "shadow-md"}
+                  />
                 </div>
               ))}
             </div>
@@ -506,6 +519,22 @@ export default function HeroAndPain() {
                 style={{ transform: `translateX(${rightCardsX}%)`, opacity: 1 }}
               >
                 <div className="relative w-[400px] h-[430px] flex items-center justify-center">
+                  <div className="absolute translate-x-[-52px] translate-y-[-60px] rotate-[8deg] scale-100">
+                    <MicrotaskCard
+                      type="hacienda"
+                      overview="Quarterly VAT self-assessment for freelancers and small businesses operating in Spain."
+                      badgeText="Next Up"
+                      badgeType="pending"
+                      doneCount={0}
+                      totalCount={3}
+                      shadow="shadow-sm"
+                      tasks={[
+                        { text: "Gather quarterly invoices and expense receipts", done: false },
+                        { text: "Fill out Modelo 303 via Sede Electrónica", done: false },
+                        { text: "Submit and pay before the filing deadline", done: false },
+                      ]}
+                    />
+                  </div>
                   <div className="absolute translate-x-[-28px] translate-y-[-48px] rotate-[-5deg] scale-100">
                     <MicrotaskCard
                       type="nie"
@@ -514,6 +543,7 @@ export default function HeroAndPain() {
                       badgeType="progress"
                       doneCount={2}
                       totalCount={4}
+                      shadow="shadow-md"
                       tasks={[
                         { text: "Generate Tax Model 790-012 PDF with fee info", done: true },
                         { text: "Pay €12.24 tax fee at ATM and save ticket", done: true },
@@ -530,6 +560,7 @@ export default function HeroAndPain() {
                       badgeType="pending"
                       doneCount={1}
                       totalCount={3}
+                      shadow="shadow-lg"
                       tasks={[
                         { text: "Confirm your Spanish mobile phone number is active", done: true },
                         { text: "Request NUSS via Import@ss digital portal", done: false },
@@ -537,7 +568,7 @@ export default function HeroAndPain() {
                       ]}
                     />
                   </div>
-                  <div className="absolute translate-x-[-4px] translate-y-[36px] rotate-[-1deg] scale-100 shadow-2xl">
+                  <div className="absolute translate-x-[-4px] translate-y-[36px] rotate-[-1deg] scale-100">
                     <MicrotaskCard
                       type="padron"
                       overview="Town hall address registration. Mandatory first step needed for healthcare cards and NIE booking."
