@@ -3,7 +3,7 @@
 import { MicrotaskCard } from "@/app/sections/HeroAndPain";
 import Lottie from "lottie-react";
 import { ArrowRight, Check, Cpu, FileText, Globe, Loader2, Lock } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IPhoneMockup } from "react-device-mockup";
 import aiGeneratingAnimation from "../../assets/animations/AI Generating Response.json";
 import DocumentCard from "../components/DocumentCard";
@@ -160,11 +160,22 @@ export default function HowItWorks() {
   const handOpacity = interp(s8p, 0, 0.8, 0, 1);
 
   // Dashboard components opacities inside Screen 5
+  const stage3CardsOpacity = interp(s3p, 0, 0.5, 0, 1);
   const stage2AlertOpacity = interp(s4p, 0, 0.5, 0, 1);
-  const stage3CardsOpacity = interp(s5p, 0, 0.5, 0, 1);
   const stage4VaultOpacity = interp(s6p, 0, 0.5, 0, 1);
   const stage5SuggestOpacity = interp(s7p, 0, 0.5, 0, 1);
   const stage5SuggestTranslateX = interp(s7p, 0, 0.5, 120, 0);
+
+  // Auto-scroll the dashboard's inner content so each later stage (vault, then
+  // the suggestion card) surfaces into view as its copy appears, instead of
+  // staying clipped below the phone's visible screen height.
+  const dashboardScrollRef = useRef<HTMLDivElement>(null);
+  const dashboardScrollFraction = clamp01(s6p * 0.5 + s7p * 0.5);
+  useEffect(() => {
+    const el = dashboardScrollRef.current;
+    if (!el) return;
+    el.scrollTop = dashboardScrollFraction * (el.scrollHeight - el.clientHeight);
+  }, [dashboardScrollFraction, progress]);
 
   const sliderOpacity = 1;
 
@@ -223,73 +234,89 @@ export default function HowItWorks() {
                 </p>
               </div>
 
-              {/* Staggered clean cards — appear as scanner outputs them */}
-              <div className="relative w-[340px] h-[360px] pointer-events-none flex-shrink-0">
-                <div
-                  className="absolute"
-                  style={{
-                    opacity: 1,
-                    transform: `translate(-40px, calc(-34px + ${c1Y}px)) rotate(-11deg) scale(1)`,
-                  }}
+              {/* Same roadmap, now on-device — the exact cards the scanner just produced */}
+              <div className="relative flex-shrink-0 pointer-events-none">
+                <IPhoneMockup
+                  screenWidth={250}
+                  screenType="island"
+                  frameColor="#1A1814"
+                  statusbarColor="#F8FAFC"
+                  hideStatusBar
+                  transparentNavBar
+                  hideNavBar
                 >
-                  <MicrotaskCard
-                    type="nie"
-                    overview="Foreigner identity & tax number. Essential for work contracts, bank accounts, SIM cards, and renting."
-                    badgeText="In Progress"
-                    badgeType="progress"
-                    doneCount={2}
-                    totalCount={4}
-                    tasks={[
-                      { text: "Generate Tax Model 790-012 PDF with fee info", done: true },
-                      { text: "Pay €12.24 tax fee at ATM and save ticket", done: true },
-                      { text: "Present EX-15 form in person at police station", done: false, active: true },
-                      { text: "Pick up your physical paper NIE certificate", done: false },
-                    ]}
-                  />
-                </div>
-                <div
-                  className="absolute"
-                  style={{
-                    opacity: 1,
-                    transform: `translate(36px, calc(-18px + ${c2Y}px)) rotate(8deg) scale(1)`,
-                  }}
-                >
-                  <MicrotaskCard
-                    type="seg_social"
-                    overview="Social security number. Required to sign a work contract, pay freelance taxes, or access public health."
-                    badgeText="Next Up"
-                    badgeType="pending"
-                    doneCount={1}
-                    totalCount={3}
-                    tasks={[
-                      { text: "Confirm your Spanish mobile phone number is active", done: true },
-                      { text: "Request NUSS via Import@ss digital portal", done: false },
-                      { text: "Download your official NUSS certificate PDF", done: false },
-                    ]}
-                  />
-                </div>
-                <div
-                  className="absolute"
-                  style={{
-                    opacity: 1,
-                    transform: `translate(4px, calc(26px + ${c3Y}px)) rotate(-2deg) scale(1)`,
-                  }}
-                >
-                  <MicrotaskCard
-                    type="padron"
-                    overview="Town hall address registration. Mandatory first step needed for healthcare cards and NIE booking."
-                    badgeText="Done"
-                    badgeType="done"
-                    doneCount={4}
-                    totalCount={4}
-                    tasks={[
-                      { text: "Collect lease contract signed by landlord & utility bill", done: true },
-                      { text: "Download and fill out the town hall registration form", done: true },
-                      { text: "Book an appointment slot online (Cita Previa)", done: true },
-                      { text: "Attend appointment in person and obtain your Volante", done: true },
-                    ]}
-                  />
-                </div>
+                  <div className="w-full h-full flex flex-col bg-[#F8FAFC] select-none">
+                    <div className="px-4 pt-4 pb-2.5 bg-white border-b border-slate-100 flex items-center justify-between flex-shrink-0">
+                      <span className="font-syne font-extrabold text-[12px] tracking-tight text-slate-900">
+                        <span className="text-[#16A34A]">p.</span>aprs
+                      </span>
+                      <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[9px] font-bold font-mono text-slate-400">
+                        JD
+                      </div>
+                    </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto scrollbar-none px-3 py-3 flex flex-col gap-3">
+                      <div
+                        className="origin-top transition-all duration-300"
+                        style={{ opacity: c1Opacity, transform: `translateY(${c1Y}px) scale(0.84)` }}
+                      >
+                        <MicrotaskCard
+                          type="nie"
+                          overview="Foreigner identity & tax number. Essential for work contracts, bank accounts, SIM cards, and renting."
+                          badgeText="In Progress"
+                          badgeType="progress"
+                          doneCount={2}
+                          totalCount={4}
+                          shadow="shadow-sm"
+                          tasks={[
+                            { text: "Generate Tax Model 790-012 PDF with fee info", done: true },
+                            { text: "Pay €12.24 tax fee at ATM and save ticket", done: true },
+                            { text: "Present EX-15 form in person at police station", done: false, active: true },
+                            { text: "Pick up your physical paper NIE certificate", done: false },
+                          ]}
+                        />
+                      </div>
+                      <div
+                        className="origin-top transition-all duration-300 -mt-16"
+                        style={{ opacity: c2Opacity, transform: `translateY(${c2Y}px) scale(0.84)` }}
+                      >
+                        <MicrotaskCard
+                          type="seg_social"
+                          overview="Social security number. Required to sign a work contract, pay freelance taxes, or access public health."
+                          badgeText="Next Up"
+                          badgeType="pending"
+                          doneCount={1}
+                          totalCount={3}
+                          shadow="shadow-sm"
+                          tasks={[
+                            { text: "Confirm your Spanish mobile phone number is active", done: true },
+                            { text: "Request NUSS via Import@ss digital portal", done: false },
+                            { text: "Download your official NUSS certificate PDF", done: false },
+                          ]}
+                        />
+                      </div>
+                      <div
+                        className="origin-top transition-all duration-300 -mt-16 mb-2"
+                        style={{ opacity: c3Opacity, transform: `translateY(${c3Y}px) scale(0.84)` }}
+                      >
+                        <MicrotaskCard
+                          type="padron"
+                          overview="Town hall address registration. Mandatory first step needed for healthcare cards and NIE booking."
+                          badgeText="Done"
+                          badgeType="done"
+                          doneCount={4}
+                          totalCount={4}
+                          shadow="shadow-sm"
+                          tasks={[
+                            { text: "Collect lease contract signed by landlord & utility bill", done: true },
+                            { text: "Download and fill out the town hall registration form", done: true },
+                            { text: "Book an appointment slot online (Cita Previa)", done: true },
+                            { text: "Attend appointment in person and obtain your Volante", done: true },
+                          ]}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </IPhoneMockup>
                 <div
                   className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[#16A34A] font-bold whitespace-nowrap transition-opacity duration-500"
                   style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
@@ -626,8 +653,8 @@ export default function HowItWorks() {
                     </div>
 
                   {/* Phone Screen Slider */}
-                  <div 
-                    className="flex-1 flex"
+                  <div
+                    className="flex-1 flex min-h-0"
                     style={{
                       width: "600%",
                       transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
@@ -941,7 +968,10 @@ export default function HowItWorks() {
                     </div>
 
                     {/* SCREEN 5: Dashboard View */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-3.5 gap-3.5 select-none pb-6 bg-slate-50 overflow-y-auto scrollbar-none">
+                    <div
+                      ref={dashboardScrollRef}
+                      className="w-1/6 h-full min-h-0 flex-shrink-0 flex flex-col p-3.5 gap-3.5 select-none pb-6 bg-slate-50 overflow-y-auto scrollbar-none"
+                    >
                       {/* User Info Header */}
                       <div className="flex justify-between items-center mt-1">
                         <div>
@@ -954,29 +984,38 @@ export default function HowItWorks() {
                       </div>
 
                       {/* STAGE 2: Urgent Deadline Card */}
-                      <div 
-                        className="bg-white border border-red-200 p-3 rounded-xl shadow-md transition-all duration-300"
-                        style={{ 
-                          opacity: stage2AlertOpacity,
-                          transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 12}px)`,
-                          boxShadow: "0 0 10px rgba(239, 68, 68, 0.03)"
-                        }}
+                      <div
+                        className="grid transition-all duration-300"
+                        style={{ gridTemplateRows: stage2AlertOpacity > 0.02 ? "1fr" : "0fr" }}
                       >
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-[7px] uppercase font-mono tracking-wider text-red-600 font-bold flex items-center gap-1">
-                            <span className="w-1 h-1 bg-red-500 rounded-full animate-ping"></span>
-                            Urgent Action
-                          </span>
-                          <span className="text-[7px] font-mono text-red-600 font-bold bg-red-50 px-1 py-0.5 rounded">
-                            52 Days Left
-                          </span>
-                        </div>
-                        <h6 className="font-syne font-bold text-[9.5px] text-slate-900 leading-tight">Student Visa Renewal</h6>
-                        <p className="text-[8px] text-slate-400 mt-1 leading-normal">
-                          Next: Pay government fee Modelo 790 before booking appointment.
-                        </p>
-                        <div className="mt-2 w-full h-6 bg-red-500 text-white rounded-md text-[8.5px] font-bold flex items-center justify-center font-mono cursor-pointer transition-colors shadow-sm">
-                          Continue Procedure →
+                        <div
+                          className="overflow-hidden transition-all duration-300"
+                          style={{
+                            opacity: stage2AlertOpacity,
+                            transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 12}px)`,
+                          }}
+                        >
+                          <div
+                            className="bg-white border border-red-200 p-3 rounded-xl shadow-md"
+                            style={{ boxShadow: "0 0 10px rgba(239, 68, 68, 0.03)" }}
+                          >
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-[7px] uppercase font-mono tracking-wider text-red-600 font-bold flex items-center gap-1">
+                                <span className="w-1 h-1 bg-red-500 rounded-full animate-ping"></span>
+                                Urgent Action
+                              </span>
+                              <span className="text-[7px] font-mono text-red-600 font-bold bg-red-50 px-1 py-0.5 rounded">
+                                52 Days Left
+                              </span>
+                            </div>
+                            <h6 className="font-syne font-bold text-[9.5px] text-slate-900 leading-tight">Student Visa Renewal</h6>
+                            <p className="text-[8px] text-slate-400 mt-1 leading-normal">
+                              Next: Pay government fee Modelo 790 before booking appointment.
+                            </p>
+                            <div className="mt-2 w-full h-6 bg-red-500 text-white rounded-md text-[8.5px] font-bold flex items-center justify-center font-mono cursor-pointer transition-colors shadow-sm">
+                              Continue Procedure →
+                            </div>
+                          </div>
                         </div>
                       </div>
 
@@ -1019,55 +1058,67 @@ export default function HowItWorks() {
                       </div>
 
                       {/* STAGE 4: Document Vault List */}
-                      <div 
-                        className="flex flex-col gap-2 transition-all duration-300"
-                        style={{ 
-                          opacity: stage4VaultOpacity,
-                          transform: `translateY(${stage4VaultOpacity > 0 ? 0 : 12}px)` 
-                        }}
+                      <div
+                        className="grid transition-all duration-300"
+                        style={{ gridTemplateRows: stage4VaultOpacity > 0.02 ? "1fr" : "0fr" }}
                       >
-                        <div className="text-[7px] uppercase font-mono tracking-wider text-slate-400 font-bold">
-                          Document Vault
-                        </div>
-
-                        <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex flex-col gap-2">
-                          <div className="flex justify-between items-center text-[8.5px]">
-                            <span className="text-slate-800 flex items-center gap-1">
-                              <FileText className="w-3 h-3 text-[#16A34A]" /> NIE Certificate
-                            </span>
-                            <span className="text-[7px] font-mono text-[#16A34A] bg-[#16A34A]/10 px-1 py-0.5 rounded">Verified</span>
+                        <div
+                          className="overflow-hidden flex flex-col gap-2 transition-all duration-300"
+                          style={{
+                            opacity: stage4VaultOpacity,
+                            transform: `translateY(${stage4VaultOpacity > 0 ? 0 : 12}px)`,
+                          }}
+                        >
+                          <div className="text-[7px] uppercase font-mono tracking-wider text-slate-400 font-bold">
+                            Document Vault
                           </div>
-                          <div className="flex justify-between items-center text-[8.5px]">
-                            <span className="text-slate-800 flex items-center gap-1">
-                              <FileText className="w-3 h-3 text-[#D4820A]" /> Padrón Volante
-                            </span>
-                            <span className="text-[7px] font-mono text-[#D4820A] bg-[#D4820A]/10 px-1 py-0.5 rounded">Expires soon</span>
+
+                          <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex flex-col gap-2">
+                            <div className="flex justify-between items-center text-[8.5px]">
+                              <span className="text-slate-800 flex items-center gap-1">
+                                <FileText className="w-3 h-3 text-[#16A34A]" /> NIE Certificate
+                              </span>
+                              <span className="text-[7px] font-mono text-[#16A34A] bg-[#16A34A]/10 px-1 py-0.5 rounded">Verified</span>
+                            </div>
+                            <div className="flex justify-between items-center text-[8.5px]">
+                              <span className="text-slate-800 flex items-center gap-1">
+                                <FileText className="w-3 h-3 text-[#D4820A]" /> Padrón Volante
+                              </span>
+                              <span className="text-[7px] font-mono text-[#D4820A] bg-[#D4820A]/10 px-1 py-0.5 rounded">Expires soon</span>
+                            </div>
                           </div>
                         </div>
                       </div>
 
                       {/* STAGE 5: Suggestion Recommendation Tooltip */}
-                      <div 
-                        className="bg-white border border-[#16A34A]/30 p-2.5 rounded-lg shadow-lg transition-all duration-300"
-                        style={{ 
-                          opacity: stage5SuggestOpacity,
-                          transform: `translateX(${stage5SuggestTranslateX}px)` 
-                        }}
+                      <div
+                        className="grid transition-all duration-300"
+                        style={{ gridTemplateRows: stage5SuggestOpacity > 0.02 ? "1fr" : "0fr" }}
                       >
-                        <div className="flex gap-1.5 items-start">
-                          <Globe className="w-3.5 h-3.5 text-[#16A34A] mt-0.5 shrink-0" />
-                          <div>
-                            <h6 className="font-syne font-bold text-[9px] text-[#16A34A] leading-tight font-extrabold">Empadronamiento expiring</h6>
-                            <p className="text-[7.5px] text-slate-500 mt-1 leading-relaxed">
-                              Many Spanish procedures require a volante dated within 90 days.Fresh copy?
-                            </p>
-                            <div className="flex gap-1.5 mt-2">
-                              <button className="px-1.5 py-0.5 rounded bg-[#16A34A] text-white font-mono text-[7px] font-bold">
-                                Order
-                              </button>
-                              <button className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-mono text-[7px] border border-slate-200">
-                                Ignore
-                              </button>
+                        <div
+                          className="overflow-hidden transition-all duration-300"
+                          style={{
+                            opacity: stage5SuggestOpacity,
+                            transform: `translateX(${stage5SuggestTranslateX}px)`,
+                          }}
+                        >
+                          <div className="bg-white border border-[#16A34A]/30 p-2.5 rounded-lg shadow-lg">
+                            <div className="flex gap-1.5 items-start">
+                              <Globe className="w-3.5 h-3.5 text-[#16A34A] mt-0.5 shrink-0" />
+                              <div>
+                                <h6 className="font-syne font-bold text-[9px] text-[#16A34A] leading-tight font-extrabold">Empadronamiento expiring</h6>
+                                <p className="text-[7.5px] text-slate-500 mt-1 leading-relaxed">
+                                  Many Spanish procedures require a volante dated within 90 days. Fresh copy?
+                                </p>
+                                <div className="flex gap-1.5 mt-2">
+                                  <button className="px-1.5 py-0.5 rounded bg-[#16A34A] text-white font-mono text-[7px] font-bold">
+                                    Order
+                                  </button>
+                                  <button className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-mono text-[7px] border border-slate-200">
+                                    Ignore
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>

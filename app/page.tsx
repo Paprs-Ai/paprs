@@ -14,7 +14,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-[#16A34A]/25 selection:text-[#16A34A]">
       
       <header 
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-4xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-2xl shadow-[0_12px_40px_rgba(26,24,20,0.06)] select-none text-[#1A1814]"
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-4xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm shadow-[0_12px_40px_rgba(26,24,20,0.06)] select-none text-[#1A1814]"
       >
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 font-syne font-extrabold text-lg tracking-tight">
