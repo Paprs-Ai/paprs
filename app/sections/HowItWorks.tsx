@@ -1,8 +1,8 @@
 "use client";
 
-import { MicrotaskCard } from "@/app/sections/HeroAndPain";
+import { MicrotaskCard, PaprsDetailPhoneScreen } from "@/app/sections/HeroAndPain";
 import Lottie from "lottie-react";
-import { ArrowRight, Check, Cpu, FileText, Globe, Loader2, Lock } from "lucide-react";
+import { Bell, Check, ChevronLeft, ChevronRight, Clock, Cpu, FileText, Globe, Home, Layers, Loader2, Lock, MapPin, Sparkles, User } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { IPhoneMockup } from "react-device-mockup";
 import aiGeneratingAnimation from "../../assets/animations/AI Generating Response.json";
@@ -25,6 +25,68 @@ function SlideDots({ total, active }: { total: number; active: number }) {
           }`}
         />
       ))}
+    </div>
+  );
+}
+
+function AIComputingLogger() {
+  const [items, setItems] = React.useState([
+    { id: 1, text: "Parsed 14 bureaucracy decrees" },
+    { id: 2, text: "Extracted 3 official dependencies" },
+    { id: 3, text: "Generated live path" },
+  ]);
+  const [status, setStatus] = React.useState<"loading" | "done">("loading");
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      if (status === "loading") {
+        setStatus("done");
+      } else {
+        setItems(prevItems => {
+          const next = [...prevItems];
+          const first = next.shift();
+          if (first) {
+            next.push(first);
+          }
+          return next;
+        });
+        setStatus("loading");
+      }
+    }, 1200);
+
+    return () => clearInterval(timer);
+  }, [status]);
+
+  return (
+    <div className="flex flex-col gap-2 font-mono text-[7.5px] text-slate-500 bg-slate-50 border border-slate-100 rounded-2xl p-3.5 z-10 shadow-[0_4px_12px_rgba(0,0,0,0.02)] mb-4 w-full">
+      {items.map((item, idx) => {
+        const isTop = idx === 0;
+        let icon = null;
+        let textColor = "text-slate-400";
+
+        if (isTop) {
+          if (status === "loading") {
+            icon = <Loader2 className="w-3 h-3 text-[#16A34A] animate-spin shrink-0" />;
+            textColor = "text-slate-800 font-bold";
+          } else {
+            icon = <Check className="w-3 h-3 text-[#16A34A] shrink-0" />;
+            textColor = "text-[#16A34A] font-bold";
+          }
+        } else {
+          icon = <div className="w-1 h-1 rounded-full bg-slate-350 shrink-0 ml-1"></div>;
+          textColor = "text-slate-400";
+        }
+
+        return (
+          <div
+            key={item.id}
+            className={`flex items-center gap-1.5 transition-all duration-300 ${textColor}`}
+          >
+            {icon}
+            <span className="truncate">{item.text}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -179,6 +241,18 @@ export default function HowItWorks() {
 
   const sliderOpacity = 1;
 
+  const getActiveTab = () => {
+    if (activeSlide <= 2) return 0; // Home
+    if (activeSlide === 3 || activeSlide === 4) return 1; // Timeline
+    if (activeSlide === 5) {
+      if (stage4VaultOpacity > 0.5) return 2; // Vault
+      return 0; // Home
+    }
+    if (activeSlide >= 6) return 3; // Profile
+    return 0;
+  };
+  const activeTab = getActiveTab();
+
   // Phone Simulator chrome stays light across every screen, including Screen 2.
   const statusBarBg = "bg-slate-50";
   const statusBarText = "text-slate-400";
@@ -245,77 +319,7 @@ export default function HowItWorks() {
                   transparentNavBar
                   hideNavBar
                 >
-                  <div className="w-full h-full flex flex-col bg-[#F8FAFC] select-none">
-                    <div className="px-4 pt-4 pb-2.5 bg-white border-b border-slate-100 flex items-center justify-between flex-shrink-0">
-                      <span className="font-syne font-extrabold text-[12px] tracking-tight text-slate-900">
-                        <span className="text-[#16A34A]">p.</span>aprs
-                      </span>
-                      <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[9px] font-bold font-mono text-slate-400">
-                        JD
-                      </div>
-                    </div>
-                    <div className="flex-1 min-h-0 overflow-y-auto scrollbar-none px-3 py-3 flex flex-col gap-3">
-                      <div
-                        className="origin-top transition-all duration-300"
-                        style={{ opacity: c1Opacity, transform: `translateY(${c1Y}px) scale(0.84)` }}
-                      >
-                        <MicrotaskCard
-                          type="nie"
-                          overview="Foreigner identity & tax number. Essential for work contracts, bank accounts, SIM cards, and renting."
-                          badgeText="In Progress"
-                          badgeType="progress"
-                          doneCount={2}
-                          totalCount={4}
-                          shadow="shadow-sm"
-                          tasks={[
-                            { text: "Generate Tax Model 790-012 PDF with fee info", done: true },
-                            { text: "Pay €12.24 tax fee at ATM and save ticket", done: true },
-                            { text: "Present EX-15 form in person at police station", done: false, active: true },
-                            { text: "Pick up your physical paper NIE certificate", done: false },
-                          ]}
-                        />
-                      </div>
-                      <div
-                        className="origin-top transition-all duration-300 -mt-16"
-                        style={{ opacity: c2Opacity, transform: `translateY(${c2Y}px) scale(0.84)` }}
-                      >
-                        <MicrotaskCard
-                          type="seg_social"
-                          overview="Social security number. Required to sign a work contract, pay freelance taxes, or access public health."
-                          badgeText="Next Up"
-                          badgeType="pending"
-                          doneCount={1}
-                          totalCount={3}
-                          shadow="shadow-sm"
-                          tasks={[
-                            { text: "Confirm your Spanish mobile phone number is active", done: true },
-                            { text: "Request NUSS via Import@ss digital portal", done: false },
-                            { text: "Download your official NUSS certificate PDF", done: false },
-                          ]}
-                        />
-                      </div>
-                      <div
-                        className="origin-top transition-all duration-300 -mt-16 mb-2"
-                        style={{ opacity: c3Opacity, transform: `translateY(${c3Y}px) scale(0.84)` }}
-                      >
-                        <MicrotaskCard
-                          type="padron"
-                          overview="Town hall address registration. Mandatory first step needed for healthcare cards and NIE booking."
-                          badgeText="Done"
-                          badgeType="done"
-                          doneCount={4}
-                          totalCount={4}
-                          shadow="shadow-sm"
-                          tasks={[
-                            { text: "Collect lease contract signed by landlord & utility bill", done: true },
-                            { text: "Download and fill out the town hall registration form", done: true },
-                            { text: "Book an appointment slot online (Cita Previa)", done: true },
-                            { text: "Attend appointment in person and obtain your Volante", done: true },
-                          ]}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  <PaprsDetailPhoneScreen />
                 </IPhoneMockup>
                 <div
                   className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[#16A34A] font-bold whitespace-nowrap transition-opacity duration-500"
@@ -535,7 +539,7 @@ export default function HowItWorks() {
                 Your pocket legal agency
               </h3>
               <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-md">
-                Your entire relocation, registration, and tax filings resolved inside a single interface. Ready whenever you are.
+                Your daily Spanish bureaucracy, registrations, and tax filings resolved inside a single interface. Ready whenever you are.
               </p>
             </div>
             <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
@@ -630,506 +634,678 @@ export default function HowItWorks() {
                   className="z-10 bg-transparent filter drop-shadow-[0_20px_35px_rgba(15,23,42,0.12)] drop-shadow-[0_0_20px_rgba(22,163,74,0.04)]"
                   containerStlye={{ backgroundColor: "transparent", boxShadow: "none" }}
                 >
-                  <div className={`w-full h-full flex flex-col relative overflow-hidden ${screenWrapperBg} transition-colors duration-300`}>
+                  <div className="w-full h-full flex flex-col relative overflow-hidden bg-slate-50 transition-colors duration-300 justify-between select-none">
                     
                     {/* Status Bar */}
-                    <div className={`h-8 ${statusBarBg} px-5 pt-4 flex justify-between items-center text-[8px] font-mono ${statusBarText} z-30 select-none transition-colors duration-300`}>
-                      <span>9:41 BCN</span>
-                      <span className="flex items-center gap-1">
+                    <div className={`h-8 ${statusBarBg} px-5 pt-4 flex justify-between items-center text-[8.5px] font-mono ${statusBarText} z-30 select-none transition-colors duration-300 shrink-0`}>
+                      <span className="font-semibold text-slate-800">9:41</span>
+                      <span className="flex items-center gap-1.5">
                         <span>5G</span>
-                        <span className={`w-3.5 h-1.5 rounded-sm border ${batteryBorder} flex items-center p-0.5 transition-colors duration-300`}><span className={`w-full h-full ${batteryBg} rounded-sm transition-colors duration-300`}></span></span>
+                        <span className={`w-3.5 h-1.5 rounded-sm border ${batteryBorder} flex items-center p-0.5 transition-colors duration-300`}>
+                          <span className={`w-full h-full ${batteryBg} rounded-sm transition-colors duration-300`}></span>
+                        </span>
                       </span>
                     </div>
 
                     {/* App Header */}
-                    <div className={`px-4 py-2 ${headerBg} border-b ${headerBorder} flex justify-between items-center z-20 transition-colors duration-300`}>
-                      <div>
-                        <h5 className={`font-syne font-extrabold text-[10px] ${headerText} tracking-tight transition-colors duration-300`}>p.aprs</h5>
-                        <p className={`text-[6.5px] font-mono ${headerSubtext} uppercase tracking-widest transition-colors duration-300`}>Relocation</p>
-                      </div>
-                      <div className={`w-5 h-5 rounded-full ${avatarBg} border ${avatarBorder} flex items-center justify-center font-mono text-[7.5px] ${avatarText} font-bold transition-all duration-300`}>
-                        JD
-                      </div>
-                    </div>
-
-                  {/* Phone Screen Slider */}
-                  <div
-                    className="flex-1 flex min-h-0"
-                    style={{
-                      width: "600%",
-                      transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
-                    }}
-                  >
-                    
-                    {/* SCREEN 0: Onboarding Questions */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-slate-50 justify-between select-none">
-                      <div className="flex flex-col gap-3">
-                        {/* Progress Bar */}
-                        <div className="flex justify-between items-center">
-                          <span className="text-[7px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
-                            Question {s1p < 0.35 ? "1" : s1p < 0.65 ? "2" : "3"} of 3
-                          </span>
-                          <div className="w-16 h-1 bg-slate-200 rounded-full overflow-hidden">
-                            <div 
-                              className="h-full bg-[#16A34A] transition-all duration-300"
-                              style={{
-                                width: s1p < 0.35 ? "33.3%" : s1p < 0.65 ? "66.6%" : "100%"
-                              }}
-                            />
-                          </div>
-                        </div>
-
-                        {/* QUESTION 1: Nationality */}
-                        {s1p <= 0.35 && (
-                          <div className="flex flex-col gap-2.5 animate-fadeIn">
-                            <h4 className="text-[10px] font-syne font-bold text-slate-800 leading-tight">
-                              Where are you moving from?
-                            </h4>
-                            <div className="flex flex-col gap-1.5">
-                              {/* Option 1: UK (Selected) */}
-                              <div className={`p-2 border rounded-lg flex items-center justify-between transition-all duration-300 ${s1p > 0.20 ? "border-[#16A34A] bg-[#16A34A]/5" : "border-slate-200 bg-white"}`}>
-                                <span className={`text-[8.5px] flex items-center gap-1.5 font-mono ${s1p > 0.20 ? "text-slate-800 font-medium" : "text-slate-500"}`}>
-                                  🇬🇧 United Kingdom
-                                </span>
-                                {s1p > 0.20 ? (
-                                  <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center">
-                                    <Check className="w-2 h-2 text-white" />
-                                  </div>
-                                ) : (
-                                  <div className="w-3 h-3 rounded-full border border-slate-300" />
-                                )}
-                              </div>
-                              {/* Option 2: US */}
-                              <div className="p-2 border border-slate-200 bg-white rounded-lg flex items-center justify-between">
-                                <span className="text-[8.5px] text-slate-500 flex items-center gap-1.5 font-mono">
-                                  🇺🇸 United States
-                                </span>
-                                <div className="w-3 h-3 rounded-full border border-slate-300" />
-                              </div>
-                              {/* Option 3: Other */}
-                              <div className="p-2 border border-slate-200 bg-white rounded-lg flex items-center justify-between">
-                                <span className="text-[8.5px] text-slate-500 flex items-center gap-1.5 font-mono">
-                                  🌍 Other (Non-EU)
-                                </span>
-                                <div className="w-3 h-3 rounded-full border border-slate-300" />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* QUESTION 2: Destination */}
-                        {s1p > 0.35 && s1p <= 0.65 && (
-                          <div className="flex flex-col gap-2.5 animate-fadeIn">
-                            <h4 className="text-[10px] font-syne font-bold text-slate-800 leading-tight">
-                              Where in Spain are you going?
-                            </h4>
-                            <div className="flex flex-col gap-1.5">
-                              {/* Option 1: Barcelona (Selected) */}
-                              <div className={`p-2 border rounded-lg flex items-center justify-between transition-all duration-300 ${s1p > 0.45 ? "border-[#16A34A] bg-[#16A34A]/5" : "border-slate-200 bg-white"}`}>
-                                <span className={`text-[8.5px] flex items-center gap-1.5 font-mono ${s1p > 0.45 ? "text-slate-800 font-medium" : "text-slate-500"}`}>
-                                  📍 Barcelona
-                                </span>
-                                {s1p > 0.45 ? (
-                                  <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center">
-                                    <Check className="w-2 h-2 text-white" />
-                                  </div>
-                                ) : (
-                                  <div className="w-3 h-3 rounded-full border border-slate-300" />
-                                )}
-                              </div>
-                              {/* Option 2: Madrid */}
-                              <div className="p-2 border border-slate-200 bg-white rounded-lg flex items-center justify-between">
-                                <span className="text-[8.5px] text-slate-500 flex items-center gap-1.5 font-mono">
-                                  📍 Madrid
-                                </span>
-                                <div className="w-3 h-3 rounded-full border border-slate-300" />
-                              </div>
-                              {/* Option 3: Valencia */}
-                              <div className="p-2 border border-slate-200 bg-white rounded-lg flex items-center justify-between">
-                                <span className="text-[8.5px] text-slate-500 flex items-center gap-1.5 font-mono">
-                                  📍 Valencia
-                                </span>
-                                <div className="w-3 h-3 rounded-full border border-slate-300" />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* QUESTION 3: Visa Status */}
-                        {s1p > 0.65 && (
-                          <div className="flex flex-col gap-2.5 animate-fadeIn">
-                            <h4 className="text-[10px] font-syne font-bold text-slate-800 leading-tight">
-                              What is your visa / legal status?
-                            </h4>
-                            <div className="flex flex-col gap-1.5">
-                              {/* Option 1: Student (Selected) */}
-                              <div className={`p-2 border rounded-lg flex items-center justify-between transition-all duration-300 ${s1p > 0.70 ? "border-[#16A34A] bg-[#16A34A]/5" : "border-slate-200 bg-white"}`}>
-                                <span className={`text-[8.5px] flex items-center gap-1.5 font-mono ${s1p > 0.70 ? "text-slate-800 font-medium" : "text-slate-500"}`}>
-                                  🎓 Student (Non-EU)
-                                </span>
-                                {s1p > 0.70 ? (
-                                  <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center">
-                                    <Check className="w-2 h-2 text-white" />
-                                  </div>
-                                ) : (
-                                  <div className="w-3 h-3 rounded-full border border-slate-300" />
-                                )}
-                              </div>
-                              {/* Option 2: Nomad */}
-                              <div className="p-2 border border-slate-200 bg-white rounded-lg flex items-center justify-between">
-                                <span className="text-[8.5px] text-slate-500 flex items-center gap-1.5 font-mono">
-                                  💻 Digital Nomad
-                                </span>
-                                <div className="w-3 h-3 rounded-full border border-slate-300" />
-                              </div>
-                              {/* Option 3: Highly Skilled */}
-                              <div className="p-2 border border-slate-200 bg-white rounded-lg flex items-center justify-between">
-                                <span className="text-[8.5px] text-slate-500 flex items-center gap-1.5 font-mono">
-                                  💼 Highly Skilled Professional
-                                </span>
-                                <div className="w-3 h-3 rounded-full border border-slate-300" />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="w-full py-1.5 bg-slate-800 text-white rounded-lg text-[8px] font-bold font-mono flex items-center justify-center gap-1">
-                        Next Question <ArrowRight className="w-3 h-3" />
-                      </div>
-                    </div>
-
-                    {/* SCREEN 1: Onboarding Overview */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-slate-50 justify-between">
-                      <div className="flex flex-col gap-3">
-                        <div className="text-[8px] font-mono text-slate-400 uppercase tracking-widest font-semibold">
-                          Onboarding Complete
-                        </div>
-                        
-                        <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-col gap-2.5">
-                          <div className="flex items-center justify-between border-b border-slate-50 pb-1.5">
-                            <span className="text-[9px] text-slate-400">Destination</span>
-                            <span className="text-[9px] font-bold text-slate-800">Barcelona, Spain</span>
-                          </div>
-                          <div className="flex items-center justify-between border-b border-slate-50 pb-1.5">
-                            <span className="text-[9px] text-slate-400">Visa Type</span>
-                            <span className="text-[9px] font-bold text-[#16A34A]">Student (Non-EU)</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-[9px] text-slate-400">Citizenship</span>
-                            <span className="text-[9px] font-bold text-slate-800">United Kingdom</span>
-                          </div>
-                        </div>
-
-                        <div className="bg-[#16A34A]/5 border border-[#16A34A]/20 rounded-lg p-2.5 flex items-center gap-2">
-                          <Check className="w-3.5 h-3.5 text-[#16A34A] shrink-0" />
-                          <span className="text-[8.5px] text-[#16A34A] font-mono font-medium leading-tight">
-                            Profile processed successfully!
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="w-full h-8 bg-slate-100 border border-slate-200 rounded-lg text-slate-400 text-[8.5px] font-bold font-mono flex items-center justify-center gap-1.5 animate-pulse">
-                        <Cpu className="w-3.5 h-3.5" /> Analyzing situation...
-                      </div>
-                    </div>
-
-                    {/* SCREEN 2: System Figuring */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-slate-50 justify-between relative">
-                      <div className="flex flex-col items-center gap-1 mt-2 relative z-10">
-                        <div className="text-[8px] font-mono text-[#16A34A] uppercase tracking-widest font-bold">
-                          Computing Roadmap
-                        </div>
-
-                        <div className="w-28 h-28 -my-2">
-                          <Lottie animationData={aiGeneratingAnimation} loop autoplay />
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-2 font-mono text-[7.5px] text-slate-500 bg-white border border-slate-200 rounded-lg p-3 z-10">
-                        <div className={`transition-opacity duration-300 ${s2p >= 0.28 ? "opacity-100 text-[#16A34A]" : "opacity-30"}`}>
-                          {s2p >= 0.28 ? "✓" : "•"} Parsed 14 relocation decrees
-                        </div>
-                        <div className={`transition-opacity duration-300 ${s2p >= 0.36 ? "opacity-100 text-[#16A34A]" : "opacity-30"}`}>
-                          {s2p >= 0.36 ? "✓" : "•"} Fetched BCN Townhall rules
-                        </div>
-                        <div className={`transition-opacity duration-300 ${s2p >= 0.44 ? "opacity-100 text-[#16A34A]" : "opacity-30"}`}>
-                          {s2p >= 0.44 ? "✓" : "•"} Resolved step dependencies
-                        </div>
-                      </div>
-
-                      <div className="w-full text-center text-[7.5px] font-mono text-slate-500 mb-1 z-10 flex items-center justify-center gap-1">
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#16A34A]" /> Mapping timeline...
-                      </div>
-                    </div>
-
-                    {/* SCREEN 3: Action List (Roadmap) */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-slate-50 justify-between">
-                      <div className="flex flex-col gap-2.5">
-                        <div className="text-[8px] font-mono text-slate-400 uppercase tracking-widest font-semibold">
-                          Your Tasks (3)
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                          <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex items-center justify-between">
-                            <div>
-                              <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">1. Register Empadronamiento</h6>
-                              <p className="text-[7.5px] font-mono text-slate-400 mt-0.5">Required for NIE office</p>
-                            </div>
-                            <span className="text-[7px] font-mono text-[#16A34A] bg-[#16A34A]/10 border border-[#16A34A]/20 px-1.5 py-0.5 rounded uppercase font-bold shrink-0">Ready</span>
-                          </div>
-
-                          <div className="bg-white border-2 border-[#16A34A]/30 p-2.5 rounded-lg shadow-sm flex items-center justify-between">
-                            <div>
-                              <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">2. Get NIE Number</h6>
-                              <p className="text-[7.5px] font-mono text-slate-400 mt-0.5">Due in 3 weeks · URGENT</p>
-                            </div>
-                            <span className="text-[7px] font-mono text-[#D4820A] bg-[#D4820A]/10 border border-[#D4820A]/20 px-1.5 py-0.5 rounded uppercase font-bold shrink-0">Active</span>
-                          </div>
-
-                          <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex items-center justify-between opacity-60">
-                            <div>
-                              <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">3. Open Bank Account</h6>
-                              <p className="text-[7.5px] font-mono text-slate-400 mt-0.5">Blocked · Needs NIE Number</p>
-                            </div>
-                            <Lock className="w-3 h-3 text-slate-400 shrink-0" />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="text-[8px] font-mono text-center text-slate-400 flex items-center justify-center gap-1 mt-2">
-                        Scroll to view details →
-                      </div>
-                    </div>
-
-                    {/* SCREEN 4: Detail Action Checklist */}
-                    <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 bg-[#F8FAFC] justify-between">
-                      <div className="flex flex-col gap-2">
-                        <div className="flex justify-between items-start border-b border-slate-100 pb-2 mb-1">
-                          <div>
-                            <span className="font-mono text-[7px] uppercase text-[#16A34A] font-bold">Task 02</span>
-                            <h4 className="font-syne font-extrabold text-[11px] text-slate-900 leading-tight mt-0.5">Get NIE Certificate</h4>
-                          </div>
-                          <span className="text-[6.5px] px-1.5 py-0.5 rounded bg-[#16A34A]/10 text-[#16A34A] border border-[#16A34A]/20 uppercase font-semibold">Active</span>
-                        </div>
-
-                        <div className="space-y-2.5 mt-1">
-                          <div className="flex items-start gap-2 text-[9px]">
-                            <Check className="w-3 h-3 text-[#16A34A] mt-0.5 shrink-0" />
-                            <div>
-                              <p className="font-bold text-slate-800 leading-tight">Assemble documents</p>
-                              <p className="text-[7.5px] text-slate-400">Passport copy, EX-15 form</p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-start gap-2 text-[9px]">
-                            <Check className="w-3 h-3 text-[#16A34A] mt-0.5 shrink-0" />
-                            <div>
-                              <p className="font-bold text-slate-800 leading-tight">Pay Modelo 790 tax</p>
-                              <p className="text-[7.5px] text-slate-400">Code 012 (€9.84 government fee)</p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-start gap-2 text-[9px]">
-                            {s2p >= 0.95 ? (
-                              <Check className="w-3 h-3 text-[#16A34A] mt-0.5 shrink-0" />
-                            ) : (
-                              <ArrowRight className="w-3 h-3 text-[#D4820A] mt-0.5 shrink-0" />
-                            )}
-                            <div>
-                              <p className="font-bold text-slate-800 leading-tight">Present at Extranjería</p>
-                              <p className="text-[7.5px] text-slate-400">Carrer de Múrcia, Barcelona</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between items-center border-t border-slate-100 pt-3">
-                        <div className="w-[55%]">
-                          <span className="text-[7.5px] font-mono text-slate-400 block mb-0.5">Task Progress</span>
-                          <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                            <div 
-                              className="bg-[#16A34A] h-full transition-all duration-300" 
-                              style={{ width: `${interp(s2p, 0.80, 0.95, 66, 100)}%` }} 
-                            />
-                          </div>
-                        </div>
-
-                        <div 
-                          className="border-2 border-[#16A34A] rounded px-1.5 py-0.5 text-[#16A34A] font-extrabold text-[8.5px] tracking-wider uppercase rotate-[-8deg] shadow-[0_0_10px_rgba(34,197,94,0.2)] transition-all duration-300 flex items-center gap-0.5"
-                          style={{
-                            transform: `scale(${s2p >= 0.95 ? 1 : 1.3}) rotate(-8deg)`,
-                            opacity: s2p >= 0.95 ? 1 : 0
-                          }}
-                        >
-                          <Check className="w-3 h-3 text-[#16A34A]" /> DONE
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* SCREEN 5: Dashboard View */}
-                    <div
-                      ref={dashboardScrollRef}
-                      className="w-1/6 h-full min-h-0 flex-shrink-0 flex flex-col p-3.5 gap-3.5 select-none pb-6 bg-slate-50 overflow-y-auto scrollbar-none"
-                    >
-                      {/* User Info Header */}
-                      <div className="flex justify-between items-center mt-1">
+                    {activeSlide !== 1 && activeSlide !== 2 && (
+                      <div className="px-4 py-2 bg-white border-b border-slate-100 flex justify-between items-center z-20 shrink-0">
                         <div>
-                          <h5 className="font-syne font-extrabold text-[11px] text-slate-900 leading-tight">John Doe</h5>
-                          <p className="text-[7.5px] font-mono text-slate-400 uppercase tracking-wider">Non-EU · Student · BCN</p>
+                          <h5 className="font-syne font-extrabold text-[10.5px] text-slate-900 tracking-tight">p.aprs</h5>
+                          <p className="text-[6.5px] font-mono text-slate-400 uppercase tracking-widest leading-none mt-0.5">Bureaucracy Hub</p>
                         </div>
-                        <div className="w-5 h-5 rounded-full bg-[#16A34A]/10 border border-[#16A34A]/20 flex items-center justify-center font-mono text-[8px] text-[#16A34A] font-bold">
-                          JD
-                        </div>
-                      </div>
-
-                      {/* STAGE 2: Urgent Deadline Card */}
-                      <div
-                        className="grid transition-all duration-300"
-                        style={{ gridTemplateRows: stage2AlertOpacity > 0.02 ? "1fr" : "0fr" }}
-                      >
-                        <div
-                          className="overflow-hidden transition-all duration-300"
-                          style={{
-                            opacity: stage2AlertOpacity,
-                            transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 12}px)`,
-                          }}
-                        >
-                          <div
-                            className="bg-white border border-red-200 p-3 rounded-xl shadow-md"
-                            style={{ boxShadow: "0 0 10px rgba(239, 68, 68, 0.03)" }}
-                          >
-                            <div className="flex justify-between items-center mb-1">
-                              <span className="text-[7px] uppercase font-mono tracking-wider text-red-600 font-bold flex items-center gap-1">
-                                <span className="w-1 h-1 bg-red-500 rounded-full animate-ping"></span>
-                                Urgent Action
-                              </span>
-                              <span className="text-[7px] font-mono text-red-600 font-bold bg-red-50 px-1 py-0.5 rounded">
-                                52 Days Left
-                              </span>
-                            </div>
-                            <h6 className="font-syne font-bold text-[9.5px] text-slate-900 leading-tight">Student Visa Renewal</h6>
-                            <p className="text-[8px] text-slate-400 mt-1 leading-normal">
-                              Next: Pay government fee Modelo 790 before booking appointment.
-                            </p>
-                            <div className="mt-2 w-full h-6 bg-red-500 text-white rounded-md text-[8.5px] font-bold flex items-center justify-center font-mono cursor-pointer transition-colors shadow-sm">
-                              Continue Procedure →
-                            </div>
+                        <div className="flex items-center gap-2">
+                          <Bell className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600 cursor-pointer transition-colors" />
+                          <div className="w-5 h-5 rounded-full bg-slate-50 border border-slate-150 flex items-center justify-center font-mono text-[7.5px] text-slate-400 font-bold shadow-sm">
+                            JD
                           </div>
                         </div>
                       </div>
+                    )}
 
-                      {/* STAGE 3: Active Action Plans */}
-                      <div 
-                        className="flex flex-col gap-2 transition-all duration-300"
-                        style={{ 
-                          opacity: stage3CardsOpacity,
-                          transform: `translateY(${stage3CardsOpacity > 0 ? 0 : 12}px)` 
+                    {/* Phone Screen Slider Container */}
+                    <div className="flex-1 min-h-0 relative overflow-hidden">
+                      <div
+                        className="h-full flex transition-transform duration-300"
+                        style={{
+                          width: "600%",
+                          transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
                         }}
                       >
-                        <div className="text-[7px] uppercase font-mono tracking-wider text-slate-400 font-bold">
-                          Your Roadmaps
-                        </div>
-
-                        {/* NIE card */}
-                        <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex items-center justify-between">
-                          <div>
-                            <h6 className="font-syne font-bold text-[9px] text-slate-900 leading-tight">NIE Certificate</h6>
-                            <p className="text-[7.5px] text-[#16A34A] font-mono mt-0.5">3 of 7 steps complete</p>
-                          </div>
-                          <div className="w-9 bg-slate-100 h-1 rounded-full overflow-hidden shrink-0 ml-2">
-                            <div className="bg-[#16A34A] h-full w-[42%]"></div>
-                          </div>
-                        </div>
-
-                        {/* Padrón card */}
-                        <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex items-center justify-between">
-                          <div>
-                            <h6 className="font-syne font-bold text-[9px] text-slate-900 leading-tight">Empadronamiento</h6>
-                            <p className="text-[7.5px] text-[#D4820A] font-mono mt-0.5 flex items-center gap-0.5">
-                              <span className="w-1 h-1 bg-[#D4820A] rounded-full animate-pulse"></span>
-                              Waiting townhall
-                            </p>
-                          </div>
-                          <div className="w-9 bg-slate-100 h-1 rounded-full overflow-hidden shrink-0 ml-2">
-                            <div className="bg-[#D4820A] h-full w-[80%]"></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* STAGE 4: Document Vault List */}
-                      <div
-                        className="grid transition-all duration-300"
-                        style={{ gridTemplateRows: stage4VaultOpacity > 0.02 ? "1fr" : "0fr" }}
-                      >
-                        <div
-                          className="overflow-hidden flex flex-col gap-2 transition-all duration-300"
-                          style={{
-                            opacity: stage4VaultOpacity,
-                            transform: `translateY(${stage4VaultOpacity > 0 ? 0 : 12}px)`,
-                          }}
-                        >
-                          <div className="text-[7px] uppercase font-mono tracking-wider text-slate-400 font-bold">
-                            Document Vault
-                          </div>
-
-                          <div className="bg-white border border-slate-200 p-2.5 rounded-lg shadow-sm flex flex-col gap-2">
-                            <div className="flex justify-between items-center text-[8.5px]">
-                              <span className="text-slate-800 flex items-center gap-1">
-                                <FileText className="w-3 h-3 text-[#16A34A]" /> NIE Certificate
+                        {/* SCREEN 0: Onboarding Questions */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-[#F8FAFC] justify-between relative overflow-hidden">
+                          <style>{`
+                            @keyframes selectTap {
+                              0% { transform: scale(1); }
+                              40% { transform: scale(0.96); }
+                              100% { transform: scale(1); }
+                            }
+                            @keyframes checkPop {
+                              0% { transform: scale(0.5); opacity: 0; }
+                              60% { transform: scale(1.15); opacity: 0.85; }
+                              100% { transform: scale(1); opacity: 1; }
+                            }
+                            .animate-tap { animation: selectTap 0.35s ease-in-out; }
+                            .animate-pop { animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+                          `}</style>
+                          <div className="flex flex-col gap-3 min-h-0 flex-1 overflow-y-auto scrollbar-none">
+                            {/* Circular progress ring */}
+                            <div className="flex justify-between items-center bg-white p-2 rounded-xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.01)] shrink-0">
+                              <span className="text-[7.5px] font-mono text-slate-555 uppercase tracking-wider font-extrabold transition-all duration-300">
+                                {s1p < 0.35 
+                                  ? "Identity & Legal Status" 
+                                  : s1p < 0.65 
+                                    ? "Immediate Need & Urgency" 
+                                    : "Location & Housing"}
                               </span>
-                              <span className="text-[7px] font-mono text-[#16A34A] bg-[#16A34A]/10 px-1 py-0.5 rounded">Verified</span>
+                              <div className="relative w-[18px] h-[18px] flex items-center justify-center shrink-0">
+                                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 20 20">
+                                  <circle cx="10" cy="10" r="7.5" className="stroke-slate-100" strokeWidth="2.5" fill="transparent" />
+                                  <circle 
+                                    cx="10" 
+                                    cy="10" 
+                                    r="7.5" 
+                                    className="stroke-[#16A34A] transition-all duration-300" 
+                                    strokeWidth="2.5" 
+                                    fill="transparent" 
+                                    strokeDasharray="47.12" 
+                                    strokeDashoffset={
+                                      s1p < 0.35 
+                                        ? "31.4" // 33% done
+                                        : s1p < 0.65 
+                                          ? "15.7" // 66% done
+                                          : "0" // 100% done
+                                    } 
+                                    strokeLinecap="round" 
+                                  />
+                                </svg>
+                              </div>
                             </div>
-                            <div className="flex justify-between items-center text-[8.5px]">
-                              <span className="text-slate-800 flex items-center gap-1">
-                                <FileText className="w-3 h-3 text-[#D4820A]" /> Padrón Volante
-                              </span>
-                              <span className="text-[7px] font-mono text-[#D4820A] bg-[#D4820A]/10 px-1 py-0.5 rounded">Expires soon</span>
-                            </div>
+
+                            {/* STEP 1: Identity & Legal Status (Multiple Questions) */}
+                            {s1p <= 0.35 && (
+                              <div className="flex flex-col gap-4.5 animate-fadeIn">
+                                {/* Question 1 */}
+                                <div className="flex flex-col gap-1.5">
+                                  <h4 className="text-[8.5px] font-syne font-extrabold text-slate-900 leading-tight">
+                                    Where are you moving from?
+                                  </h4>
+                                  <div className="flex flex-col gap-2">
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.16 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.16 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        United Kingdom
+                                      </span>
+                                      {s1p > 0.16 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">United States</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">Other (Non-EU)</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Question 2 */}
+                                <div className="flex flex-col gap-1.5 border-t border-slate-100/80 pt-2.5">
+                                  <h4 className="text-[8.5px] font-syne font-extrabold text-slate-900 leading-tight">
+                                    Is your passport valid?
+                                  </h4>
+                                  <div className="flex flex-col gap-2">
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.26 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.26 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Yes, fully valid
+                                      </span>
+                                      {s1p > 0.26 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">No, expired</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* STEP 2: Immediate Need & Urgency (Multiple Questions) */}
+                            {s1p > 0.35 && s1p <= 0.65 && (
+                              <div className="flex flex-col gap-4.5 animate-fadeIn">
+                                {/* Question 1 */}
+                                <div className="flex flex-col gap-1.5">
+                                  <h4 className="text-[8.5px] font-syne font-extrabold text-slate-900 leading-tight">
+                                    What is your most urgent need?
+                                  </h4>
+                                  <div className="flex flex-col gap-2">
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.46 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.46 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Getting Spanish NIE / TIE
+                                      </span>
+                                      {s1p > 0.46 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.46 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.46 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Renting flat / Padrón
+                                      </span>
+                                      {s1p > 0.46 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">Social Security (NUSS)</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Question 2 */}
+                                <div className="flex flex-col gap-1.5 border-t border-slate-100/80 pt-2.5">
+                                  <h4 className="text-[8.5px] font-syne font-extrabold text-slate-900 leading-tight">
+                                    How urgent is this need?
+                                  </h4>
+                                  <div className="flex flex-col gap-2">
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.56 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.56 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Extremely urgent
+                                      </span>
+                                      {s1p > 0.56 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">Within 1 month</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* STEP 3: Location, Housing & Work (Multiple Questions) */}
+                            {s1p > 0.65 && (
+                              <div className="flex flex-col gap-4.5 animate-fadeIn">
+                                {/* Question 1 */}
+                                <div className="flex flex-col gap-1.5">
+                                  <h4 className="text-[8.5px] font-syne font-extrabold text-slate-900 leading-tight">
+                                    Where are you registering?
+                                  </h4>
+                                  <div className="flex flex-col gap-2">
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.76 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.76 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Barcelona
+                                      </span>
+                                      {s1p > 0.76 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">Madrid</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                    <div className="py-2 px-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-slate-400 font-mono font-medium">Valencia</span>
+                                      <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Question 2 */}
+                                <div className="flex flex-col gap-1.5 border-t border-slate-100/80 pt-2.5">
+                                  <h4 className="text-[8.5px] font-syne font-extrabold text-slate-900 leading-tight">
+                                    What is your work setup?
+                                  </h4>
+                                  <div className="flex flex-col gap-2">
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.86 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.86 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Local contract
+                                      </span>
+                                      {s1p > 0.86 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-[0_1.5px_4px_rgba(0,0,0,0.01)] ${s1p > 0.86 ? "border-[#16A34A] bg-emerald-50/20 animate-tap" : "border-slate-100 bg-white"}`}>
+                                      <span className={`text-[7.5px] font-mono ${s1p > 0.86 ? "text-slate-900 font-extrabold" : "text-slate-500 font-medium"}`}>
+                                        Digital nomad / Remote
+                                      </span>
+                                      {s1p > 0.86 ? (
+                                        <div className="w-3 h-3 rounded-full bg-[#16A34A] flex items-center justify-center shadow-md animate-pop">
+                                          <Check className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      ) : (
+                                        <div className="w-3 h-3 rounded-full border border-slate-200 bg-white" />
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="w-full py-2 bg-[#16A34A] text-white rounded-xl text-[8px] font-bold font-mono flex items-center justify-center gap-1.5 shadow-md cursor-pointer hover:bg-emerald-600 transition-colors">
+                            Next Question <ChevronRight className="w-3 h-3" />
                           </div>
                         </div>
-                      </div>
 
-                      {/* STAGE 5: Suggestion Recommendation Tooltip */}
-                      <div
-                        className="grid transition-all duration-300"
-                        style={{ gridTemplateRows: stage5SuggestOpacity > 0.02 ? "1fr" : "0fr" }}
-                      >
-                        <div
-                          className="overflow-hidden transition-all duration-300"
-                          style={{
-                            opacity: stage5SuggestOpacity,
-                            transform: `translateX(${stage5SuggestTranslateX}px)`,
-                          }}
-                        >
-                          <div className="bg-white border border-[#16A34A]/30 p-2.5 rounded-lg shadow-lg">
-                            <div className="flex gap-1.5 items-start">
-                              <Globe className="w-3.5 h-3.5 text-[#16A34A] mt-0.5 shrink-0" />
-                              <div>
-                                <h6 className="font-syne font-bold text-[9px] text-[#16A34A] leading-tight font-extrabold">Empadronamiento expiring</h6>
-                                <p className="text-[7.5px] text-slate-500 mt-1 leading-relaxed">
-                                  Many Spanish procedures require a volante dated within 90 days. Fresh copy?
-                                </p>
-                                <div className="flex gap-1.5 mt-2">
-                                  <button className="px-1.5 py-0.5 rounded bg-[#16A34A] text-white font-mono text-[7px] font-bold">
-                                    Order
-                                  </button>
-                                  <button className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-mono text-[7px] border border-slate-200">
-                                    Ignore
-                                  </button>
+                        {/* SCREEN 1: Onboarding Complete / Overview */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-[#F8FAFC] justify-between">
+                          <div className="flex flex-col gap-3.5">
+                            <div className="flex flex-col items-center text-center gap-1.5 mt-2">
+                              <div className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-md">
+                                <Sparkles className="w-4 h-4 text-[#16A34A] animate-pulse" />
+                              </div>
+                              <h4 className="font-syne font-extrabold text-[11px] text-slate-900 leading-tight">
+                                Profile Completed!
+                              </h4>
+                              <p className="text-[7.5px] text-slate-400 max-w-[140px] leading-relaxed">
+                                We identified 3 procedures required for your move.
+                              </p>
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <span className="text-[7.5px] font-mono text-slate-400 uppercase tracking-wider font-extrabold mb-0.5">Required Actions</span>
+                              {/* Item 1 */}
+                              <div className="bg-white border border-slate-100 p-2.5 rounded-2xl flex items-center gap-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
+                                <div className="w-6 h-6 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                                  <MapPin className="w-3 h-3" />
+                                </div>
+                                <div className="min-w-0">
+                                  <h6 className="text-[8.5px] font-bold text-slate-900 leading-none">Empadronamiento</h6>
+                                  <p className="text-[6.5px] text-slate-400 font-mono mt-0.5">Registration certificate</p>
+                                </div>
+                              </div>
+                              {/* Item 2 */}
+                              <div className="bg-white border border-slate-100 p-2.5 rounded-2xl flex items-center gap-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
+                                <div className="w-6 h-6 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                                  <FileText className="w-3 h-3" />
+                                </div>
+                                <div className="min-w-0">
+                                  <h6 className="text-[8.5px] font-bold text-slate-900 leading-none">NIE Certificate</h6>
+                                  <p className="text-[6.5px] text-slate-400 font-mono mt-0.5">Tax Identification Number</p>
                                 </div>
                               </div>
                             </div>
                           </div>
+
+                          <div className="w-full py-2 bg-[#16A34A] text-white rounded-xl text-[8px] font-bold font-mono flex items-center justify-center gap-1.5 shadow-md cursor-pointer hover:bg-emerald-600 transition-colors">
+                            Compute Roadmap <Cpu className="w-3 h-3 text-white" />
+                          </div>
+                        </div>
+
+                        {/* SCREEN 2: AI Roadmap Computing */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-6 bg-white justify-between relative">
+                          <div className="flex flex-col items-center gap-2 mt-4 relative z-10">
+                            <div className="text-[8px] font-mono text-[#16A34A] uppercase tracking-widest font-extrabold flex items-center gap-1 bg-[#16A34A]/10 px-2 py-0.5 rounded-full">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-ping"></span>
+                              Analyzing Situation
+                            </div>
+
+                            {/* Lottie Animation Visualizer */}
+                            <div className="w-28 h-28 flex items-center justify-center my-1 select-none pointer-events-none">
+                              <Lottie
+                                animationData={aiGeneratingAnimation}
+                                loop={true}
+                                className="w-full h-full scale-[1.1]"
+                              />
+                            </div>
+                          </div>
+
+                          <AIComputingLogger />
+                        </div>
+
+                        {/* SCREEN 3: Roadmap (Timeline of Tasks) */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-14 bg-[#F8FAFC] justify-between">
+                          <div className="flex flex-col gap-3">
+                            <div className="text-[8px] font-mono text-slate-400 uppercase tracking-widest font-extrabold">
+                              Your Timeline (3)
+                            </div>
+
+                            <div className="flex flex-col gap-2.5 relative">
+                              {/* Connector line */}
+                              <div className="absolute left-[13px] top-4 bottom-4 w-[1px] bg-slate-200 z-0"></div>
+
+                              {/* Task 1 */}
+                              <div className="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_2px_6px_rgba(0,0,0,0.01)] flex items-center justify-between gap-2.5 relative z-10">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <div className="w-2.5 h-2.5 rounded-full bg-[#16A34A] border-2 border-white flex-shrink-0 shadow-sm" />
+                                  <div className="min-w-0">
+                                    <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">1. Empadronamiento</h6>
+                                    <p className="text-[7px] font-mono text-slate-400 mt-0.5">Required for NIE</p>
+                                  </div>
+                                </div>
+                                <span className="text-[6.5px] font-mono text-[#16A34A] bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Ready</span>
+                              </div>
+
+                              {/* Task 2 */}
+                              <div className="bg-white border-2 border-amber-250 p-3 rounded-2xl shadow-[0_4px_12px_rgba(212,130,10,0.04)] flex items-center justify-between gap-2.5 relative z-10">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-white flex-shrink-0 shadow-sm relative">
+                                    <div className="absolute inset-0 rounded-full bg-amber-500/30 animate-ping" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">2. NIE Certificate</h6>
+                                    <p className="text-[7px] font-mono text-slate-400 mt-0.5">Due in 3 weeks</p>
+                                  </div>
+                                </div>
+                                <span className="text-[6.5px] font-mono text-[#D4820A] bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Active</span>
+                              </div>
+
+                              {/* Task 3 */}
+                              <div className="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_2px_6px_rgba(0,0,0,0.01)] flex items-center justify-between gap-2.5 relative z-10 opacity-60">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <Lock className="w-2.5 h-2.5 text-slate-400 flex-shrink-0" />
+                                  <div className="min-w-0">
+                                    <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">3. Bank Account</h6>
+                                    <p className="text-[7px] font-mono text-slate-400 mt-0.5">Needs NIE number</p>
+                                  </div>
+                                </div>
+                                <span className="text-[6.5px] font-mono text-slate-400 bg-slate-50 border border-slate-150 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Locked</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="text-[7.5px] font-mono text-center text-slate-450 flex items-center justify-center gap-1 mt-2">
+                            Scroll down to details →
+                          </div>
+                        </div>
+
+                        {/* SCREEN 4: Detail Action Checklist */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-14 bg-[#F8FAFC] justify-between">
+                          <div className="flex flex-col gap-3">
+                            <div className="flex justify-between items-start border-b border-slate-100 pb-2.5">
+                              <div>
+                                <span className="font-mono text-[7px] uppercase text-[#16A34A] font-bold">Procedure 02</span>
+                                <h4 className="font-syne font-extrabold text-[11px] text-slate-900 leading-tight mt-0.5">Seguridad Social</h4>
+                              </div>
+                              <span className="text-[6.5px] px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 border border-amber-200 uppercase font-bold shrink-0">Active</span>
+                            </div>
+
+                            <div className="flex flex-col gap-3.5 mt-1.5 relative">
+                              {/* Connected checklist line */}
+                              <div className="absolute left-[10px] top-3 bottom-3 w-[1px] bg-slate-100 z-0"></div>
+
+                              {/* Step 1 */}
+                              <div className="flex items-start gap-2.5 relative z-10 text-[9.5px]">
+                                <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-sm">
+                                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                </div>
+                                <div className="mt-0.5">
+                                  <p className="font-bold text-slate-400 line-through decoration-slate-350 leading-tight">Verify Spanish phone</p>
+                                  <p className="text-[7.5px] text-slate-400">Linked to TGSS portal record</p>
+                                </div>
+                              </div>
+
+                              {/* Step 2 */}
+                              <div className="flex items-start gap-2.5 relative z-10 text-[9.5px]">
+                                <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-sm">
+                                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                </div>
+                                <div className="mt-0.5">
+                                  <p className="font-bold text-slate-400 line-through decoration-slate-350 leading-tight">Submit via Import@ss</p>
+                                  <p className="text-[7.5px] text-slate-400">Form TA.1 or Cl@ve request</p>
+                                </div>
+                              </div>
+
+                              {/* Step 3 */}
+                              <div className="flex items-start gap-2.5 relative z-10 text-[9.5px]">
+                                {s2p >= 0.95 ? (
+                                  <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-sm">
+                                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                  </div>
+                                ) : (
+                                  <div className="w-5 h-5 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 flex-shrink-0 shadow-sm">
+                                    <ChevronRight className="w-3 h-3 text-amber-600" />
+                                  </div>
+                                )}
+                                <div className="mt-0.5">
+                                  <p className={`font-bold leading-tight ${s2p >= 0.95 ? "text-slate-400 line-through decoration-slate-350" : "text-slate-900"}`}>Receive NUSS allocation</p>
+                                  <p className="text-[7.5px] text-slate-400">Download official PDF resolution</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center border-t border-slate-100 pt-3">
+                            <div className="w-[55%]">
+                              <span className="text-[7.5px] font-mono text-slate-400 block mb-0.5">Task Progress</span>
+                              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div 
+                                  className="bg-[#16A34A] h-full transition-all duration-300 rounded-full" 
+                                  style={{ width: `${interp(s2p, 0.80, 0.95, 66, 100)}%` }} 
+                                />
+                              </div>
+                            </div>
+
+                            <div 
+                              className="border-2 border-[#16A34A] bg-emerald-50/50 rounded-lg px-2 py-0.5 text-[#16A34A] font-extrabold text-[8.5px] tracking-wider uppercase rotate-[-8deg] shadow-sm transition-all duration-300 flex items-center gap-0.5"
+                              style={{
+                                transform: `scale(${s2p >= 0.95 ? 1 : 1.3}) rotate(-8deg)`,
+                                opacity: s2p >= 0.95 ? 1 : 0
+                              }}
+                            >
+                              <Check className="w-3.5 h-3.5 text-[#16A34A]" /> DONE
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* SCREEN 5: Dashboard View */}
+                        <div
+                          ref={dashboardScrollRef}
+                          className="w-1/6 h-full min-h-0 flex-shrink-0 flex flex-col p-3.5 gap-3.5 select-none pb-14 bg-[#F8FAFC] overflow-y-auto scrollbar-none"
+                        >
+                          {/* Profile Widget */}
+                          <div className="bg-white border border-slate-100 p-3 rounded-2xl flex flex-col gap-0.5 relative overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.015)] shrink-0 mt-1">
+                            <div className="absolute right-[-10px] top-[-10px] w-16 h-16 bg-[#16A34A]/5 rounded-full blur-xl pointer-events-none"></div>
+                            <h5 className="font-syne font-extrabold text-[10.5px] text-slate-900 leading-tight">John Doe</h5>
+                            <p className="text-[7px] font-mono text-slate-450 uppercase tracking-wider">Student · Barcelona</p>
+                          </div>
+
+                          {/* STAGE 2: Urgent Deadline Card */}
+                          <div
+                            className="grid transition-all duration-300 shrink-0"
+                            style={{ gridTemplateRows: stage2AlertOpacity > 0.02 ? "1fr" : "0fr" }}
+                          >
+                            <div
+                              className="overflow-hidden transition-all duration-300"
+                              style={{
+                                opacity: stage2AlertOpacity,
+                                transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 12}px)`,
+                              }}
+                            >
+                              <div className="bg-white border border-red-100 p-3 rounded-2xl shadow-[0_4px_16px_rgba(239,68,68,0.04)]">
+                                <div className="flex justify-between items-center mb-1.5">
+                                  <span className="text-[7px] uppercase font-mono tracking-wider text-red-600 font-extrabold flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
+                                    Urgent Action
+                                  </span>
+                                  <span className="text-[7px] font-mono text-red-650 font-extrabold bg-red-50 px-1.5 py-0.5 rounded-md border border-red-100/60 scale-[0.9]">
+                                    52 Days Left
+                                  </span>
+                                </div>
+                                <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">Student Visa Renewal</h6>
+                                <p className="text-[7.5px] text-slate-400 mt-1 leading-normal">
+                                  Next: Pay government fee Modelo 790 before booking appointment.
+                                </p>
+                                <div className="mt-2.5 w-full h-6 bg-slate-900 text-white rounded-xl text-[8px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-sm gap-1 hover:bg-slate-950 transition-colors">
+                                  Continue Procedure <ChevronRight className="w-2.5 h-2.5" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/* STAGE 5: Suggestion Recommendation Tooltip */}
+                          <div
+                            className="grid transition-all duration-300 shrink-0"
+                            style={{ gridTemplateRows: stage5SuggestOpacity > 0.02 ? "1fr" : "0fr" }}
+                          >
+                            <div
+                              className="overflow-hidden transition-all duration-300"
+                              style={{
+                                opacity: stage5SuggestOpacity,
+                                transform: `translateX(${stage5SuggestTranslateX}px)`,
+                              }}
+                            >
+                              <div className="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_4px_16px_rgba(15,23,42,0.03)]">
+                                <div className="flex justify-between items-center mb-1.5">
+                                  <span className="text-[7px] uppercase font-mono tracking-wider text-amber-600 font-extrabold flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                                    Suggestion
+                                  </span>
+                                  <span className="text-[7px] font-mono text-amber-700 font-extrabold bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-100/60 scale-[0.9]">
+                                    15 Days Left
+                                  </span>
+                                </div>
+                                <h6 className="font-syne font-extrabold text-[9.5px] text-slate-900 leading-tight">Padrón Expiring</h6>
+                                <p className="text-[7.5px] text-slate-400 mt-1 leading-normal">
+                                  Spanish procedures require a volante &lt; 90 days. Fresh copy?
+                                </p>
+                                <div className="mt-2.5 w-full h-6 bg-slate-900 text-white rounded-xl text-[8px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-sm gap-1 hover:bg-slate-950 transition-colors">
+                                  Renew Padrón Volante <ChevronRight className="w-2.5 h-2.5" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* STAGE 3: Active Action Plans */}
+                          <div 
+                            className="flex flex-col gap-2 transition-all duration-300 shrink-0"
+                            style={{ 
+                              opacity: stage3CardsOpacity,
+                              transform: `translateY(${stage3CardsOpacity > 0 ? 0 : 12}px)` 
+                            }}
+                          >
+                            <div className="text-[7px] uppercase font-mono tracking-wider text-slate-400 font-bold px-0.5">
+                              Your Roadmaps
+                            </div>
+
+                            {/* NIE card */}
+                            <div className="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between gap-2.5">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className="w-7 h-7 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-100 flex-shrink-0">
+                                  <FileText className="w-3.5 h-3.5 text-emerald-600" />
+                                </div>
+                                <div className="min-w-0">
+                                  <h6 className="font-syne font-bold text-[9px] text-slate-900 leading-tight truncate">NIE Certificate</h6>
+                                  <p className="text-[7px] text-[#16A34A] font-mono mt-0.5">3 of 7 complete</p>
+                                </div>
+                              </div>
+                              <div className="w-9 bg-slate-100 h-1 rounded-full overflow-hidden shrink-0 ml-1">
+                                <div className="bg-[#16A34A] h-full w-[42%] rounded-full"></div>
+                              </div>
+                            </div>
+
+                            {/* Padrón card */}
+                            <div className="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.01)] flex items-center justify-between gap-2.5">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className="w-7 h-7 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 border border-amber-100 flex-shrink-0">
+                                  <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                                </div>
+                                <div className="min-w-0">
+                                  <h6 className="font-syne font-bold text-[9px] text-slate-900 leading-tight truncate">Empadronamiento</h6>
+                                  <p className="text-[7px] text-[#D4820A] font-mono mt-0.5 flex items-center gap-0.5">
+                                    <span className="w-1 h-1 bg-[#D4820A] rounded-full animate-pulse"></span>
+                                    Waiting townhall
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="w-9 bg-slate-100 h-1 rounded-full overflow-hidden shrink-0 ml-1">
+                                <div className="bg-[#D4820A] h-full w-[80%] rounded-full"></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* STAGE 4: Document Vault List */}
+                          <div
+                            className="grid transition-all duration-300 shrink-0"
+                            style={{ gridTemplateRows: stage4VaultOpacity > 0.02 ? "1fr" : "0fr" }}
+                          >
+                            <div
+                              className="overflow-hidden flex flex-col gap-2 transition-all duration-300"
+                              style={{
+                                opacity: stage4VaultOpacity,
+                                transform: `translateY(${stage4VaultOpacity > 0 ? 0 : 12}px)`,
+                              }}
+                            >
+                              <div className="text-[7px] uppercase font-mono tracking-wider text-slate-400 font-bold px-0.5">
+                                Document Vault
+                              </div>
+
+                              <div className="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.015)] flex flex-col gap-2 border-b border-slate-50 pb-2">
+                                <div className="flex justify-between items-center text-[8.5px] border-b border-slate-50 pb-2">
+                                  <span className="text-slate-800 flex items-center gap-1.5 font-medium">
+                                    <FileText className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> NIE Certificate
+                                  </span>
+                                  <span className="text-[6.5px] font-mono text-[#16A34A] bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded-md font-bold scale-[0.95]">Verified</span>
+                                </div>
+                                <div className="flex justify-between items-center text-[8.5px]">
+                                  <span className="text-slate-800 flex items-center gap-1.5 font-medium">
+                                    <FileText className="w-3.5 h-3.5 text-amber-600 shrink-0" /> Padrón Volante
+                                  </span>
+                                  <span className="text-[6.5px] font-mono text-amber-700 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded-md font-bold scale-[0.95]">Soon</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
                         </div>
                       </div>
-
                     </div>
 
+                    {/* Floating Bottom Nav Bars (Split Group Layout) */}
+                    {activeSlide !== 1 && activeSlide !== 2 && (
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 z-20">
+                        <div className="bg-white border border-slate-100 px-5 py-2.5 flex-1 flex justify-between items-center rounded-2xl shadow-[0_8px_20px_rgba(15,23,42,0.12)]">
+                          <div className={`cursor-pointer transition-colors ${activeTab === 0 ? "text-[#16A34A]" : "text-slate-400 hover:text-slate-600"}`}>
+                            <Home className="w-[17px] h-[17px]" />
+                          </div>
+                          <div className={`cursor-pointer transition-colors ${activeTab === 1 ? "text-[#16A34A]" : "text-slate-400 hover:text-slate-600"}`}>
+                            <Layers className="w-[17px] h-[17px]" />
+                          </div>
+                          <div className={`cursor-pointer transition-colors ${activeTab === 2 ? "text-[#16A34A]" : "text-slate-400 hover:text-slate-600"}`}>
+                            <FileText className="w-[17px] h-[17px]" />
+                          </div>
+                        </div>
+                        <div className={`bg-white border border-slate-100 p-2.5 flex items-center justify-center rounded-2xl shadow-[0_8px_20px_rgba(15,23,42,0.12)] cursor-pointer transition-colors ${activeTab === 3 ? "text-[#16A34A]" : "text-slate-400 hover:text-slate-600"}`}>
+                          <Sparkles className="w-[17px] h-[17px]" />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </IPhoneMockup>
-
+                </IPhoneMockup>
               </div>
 
             </div>

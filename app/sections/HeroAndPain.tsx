@@ -3,12 +3,16 @@
 import {
   AlertTriangle,
   Check,
-  ChevronRight,
+  ChevronLeft, ChevronRight,
   Clock,
   CreditCard,
   FileText,
   Globe,
   MapPin,
+  Home,
+  Sparkles,
+  Layers,
+  ArrowLeft,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { AndroidMockup, IPhoneMockup } from "react-device-mockup";
@@ -301,11 +305,14 @@ function PaprsPhoneScreen() {
     badgeType: "done" | "progress" | "pending";
     doneCount: number;
     totalCount: number;
+    iconType: "nie" | "seg_social" | "padron" | "hacienda";
   }> = [
-    { title: "NIE Certificate", subtitle: "EXP: NIE-2026-X83", badgeText: "Active", badgeType: "progress", doneCount: 2, totalCount: 4 },
-    { title: "Social Security", subtitle: "NUSS: 08/12345678", badgeText: "Soon", badgeType: "pending", doneCount: 1, totalCount: 3 },
-    { title: "Empadronamiento", subtitle: "REG: 08019-2026", badgeText: "Done", badgeType: "done", doneCount: 4, totalCount: 4 },
-    { title: "Tax Filing", subtitle: "HAC: 2026-VAT-901", badgeText: "Soon", badgeType: "pending", doneCount: 0, totalCount: 3 },
+    { title: "NIE Certificate", subtitle: "EXP: NIE-2026-X83", badgeText: "Active", badgeType: "progress", doneCount: 2, totalCount: 4, iconType: "nie" },
+    { title: "Social Security", subtitle: "NUSS: 08/12345678", badgeText: "Soon", badgeType: "pending", doneCount: 1, totalCount: 3, iconType: "seg_social" },
+    { title: "Empadronamiento", subtitle: "REG: 08019-2026", badgeText: "Done", badgeType: "done", doneCount: 4, totalCount: 4, iconType: "padron" },
+    { title: "Modelo 100 Tax Filing", subtitle: "HAC: 2026-TAX-100", badgeText: "Soon", badgeType: "pending", doneCount: 0, totalCount: 3, iconType: "hacienda" },
+    { title: "Modelo 600 Filing", subtitle: "M600: Property Tax", badgeText: "Soon", badgeType: "pending", doneCount: 0, totalCount: 2, iconType: "hacienda" },
+    { title: "Private Health Insurance", subtitle: "SAN: Sanitas Policy", badgeText: "Done", badgeType: "done", doneCount: 1, totalCount: 1, iconType: "nie" },
   ];
 
   const totalDone = docs.reduce((a, d) => a + d.doneCount, 0);
@@ -324,97 +331,135 @@ function PaprsPhoneScreen() {
     pending: "text-slate-500 bg-slate-50 border-slate-200/50",
   };
 
+  const iconMap = {
+    nie: <FileText className="w-3 h-3 text-emerald-600" />,
+    seg_social: <Layers className="w-3 h-3 text-amber-600" />,
+    padron: <MapPin className="w-3 h-3 text-blue-600" />,
+    hacienda: <CreditCard className="w-3 h-3 text-purple-600" />,
+  };
+
+  const bgMap = {
+    nie: "bg-emerald-50 border-emerald-100",
+    seg_social: "bg-amber-50 border-amber-100",
+    padron: "bg-blue-50 border-blue-100",
+    hacienda: "bg-purple-50 border-purple-100",
+  };
+
   return (
-    <div className="w-full h-full bg-[#F8FAFC] flex flex-col font-sans select-none overflow-hidden">
-      {/* App header */}
-      <div className="px-5 pt-4 pb-3 bg-white border-b border-slate-100 relative z-10">
-        <div className="flex items-center justify-between">
+    <div className="w-full h-full bg-[#F8FAFC] flex flex-col font-sans select-none overflow-hidden justify-between relative">
+      <div className="flex flex-col flex-1 min-h-0">
+        {/* Status Bar */}
+        <div className="px-5 pt-3 pb-1 flex justify-between items-center text-[8.5px] font-mono text-slate-400 select-none bg-white">
+          <span className="font-semibold text-slate-800">9:41</span>
+          <div className="flex items-center gap-1.5">
+            <svg className="w-2.5 h-2.5 text-slate-700" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L17.61 5.03C16.07 3.8 14.12 3 12 3zm0 18c4.97 0 9-4.03 9-9 0-2.12-.74-4.07-1.97-5.61L6.39 18.97C7.93 20.2 9.88 21 12 21z" />
+            </svg>
+            <svg className="w-2.5 h-2.5 text-slate-700" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21l-12-18h24z" />
+            </svg>
+            <div className="w-3.5 h-1.5 rounded-[2px] border border-slate-400 flex items-center p-[1px]">
+              <div className="w-full h-full bg-slate-700 rounded-[1px]"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* App header */}
+        <div className="px-5 pt-2 pb-3 bg-white border-b border-slate-100 relative z-10 flex items-center justify-between">
           <span className="font-syne font-extrabold text-base tracking-tight text-slate-900">
             <span className="text-[#16A34A]">p.</span>aprs
           </span>
-          <div className="relative w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold font-mono text-slate-400">
+          <div className="relative w-7 h-7 rounded-full bg-slate-50 border border-slate-150 flex items-center justify-center text-[10px] font-bold font-mono text-slate-400 shadow-sm">
             JD
             <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#16A34A] border-2 border-white" />
           </div>
         </div>
-        <h3 className="font-syne font-bold text-lg text-slate-900 mt-3 whitespace-nowrap">My Documents</h3>
-        <div className="flex items-center justify-between mt-2.5 mb-1">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Overall Progress</span>
-          <span className="text-[10px] font-mono font-bold text-[#16A34A] tabular-nums">
-            {mounted ? overallPercent : 0}%
-          </span>
-        </div>
-        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-gradient-to-r from-[#16A34A] to-emerald-400 transition-all ease-out"
-            style={{ width: `${mounted ? overallPercent : 0}%`, transitionDuration: "1100ms" }}
-          />
+
+        <div className="flex-1 overflow-y-auto scrollbar-none py-3 pb-24 flex flex-col gap-2">
+
+          {/* Document list */}
+          <div className="px-3 flex flex-col gap-2">
+            {docs.map((d, i) => {
+              const pct = Math.round((d.doneCount / d.totalCount) * 100);
+              const isActive = d.badgeType === "progress";
+              return (
+                <div
+                  key={i}
+                  className={`bg-white border rounded-xl px-2.5 py-2 transition-all ease-out ${
+                    isActive ? "border-amber-200 shadow-[0_4px_12px_rgba(212,130,10,0.06)] scale-[1.01]" : "border-slate-100 shadow-[0_2px_6px_rgba(0,0,0,0.01)]"
+                  }`}
+                  style={{
+                    opacity: mounted ? 1 : 0,
+                    transform: mounted ? "translateY(0)" : "translateY(10px) scale(0.98)",
+                    transitionDuration: "500ms",
+                    transitionDelay: `${i * 60}ms`,
+                  }}
+                >
+                  <div className="flex items-center justify-between gap-1.5">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <div className={`relative w-7 h-7 rounded-lg flex items-center justify-center border flex-shrink-0 ${bgMap[d.iconType]}`}>
+                        {iconMap[d.iconType]}
+                        {isActive && (
+                          <span className="absolute inset-0 rounded-lg border border-amber-300 animate-ping opacity-45" />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-extrabold font-syne leading-tight text-slate-900 whitespace-normal break-words">{d.title}</p>
+                        <p className="text-[7.5px] font-mono text-slate-400 mt-0 truncate">{d.subtitle}</p>
+                      </div>
+                    </div>
+                    <span className={`flex items-center gap-0.5 text-[6.5px] font-mono border px-1 py-0.5 rounded-[4px] font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0 ${badgeStyles[d.badgeType]}`}>
+                      {isActive && <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />}
+                      {d.badgeText}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ease-out rounded-full ${
+                          d.badgeType === "done" ? "bg-emerald-500" : d.badgeType === "progress" ? "bg-amber-500" : "bg-slate-300"
+                        }`}
+                        style={{
+                          width: `${mounted ? pct : 0}%`,
+                          transitionProperty: "width",
+                          transitionDuration: "900ms",
+                          transitionDelay: `${100 + i * 60}ms`,
+                        }}
+                      />
+                    </div>
+                    <span className="text-[7.5px] font-mono text-slate-400 flex-shrink-0 font-bold tabular-nums">{d.doneCount}/{d.totalCount}</span>
+                    <ChevronRight className="w-2.5 h-2.5 text-slate-300 flex-shrink-0" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Document list */}
-      <div className="flex-1 overflow-hidden px-3.5 py-3 flex flex-col gap-2.5">
-        {docs.map((d, i) => {
-          const pct = Math.round((d.doneCount / d.totalCount) * 100);
-          const isActive = d.badgeType === "progress";
-          return (
-            <div
-              key={i}
-              className={`bg-white border rounded-2xl px-3.5 py-3 transition-all ease-out ${
-                isActive ? "border-amber-200 shadow-[0_4px_16px_rgba(212,130,10,0.08)]" : "border-slate-200 shadow-sm"
-              }`}
-              style={{
-                opacity: mounted ? 1 : 0,
-                transform: mounted ? "translateY(0) scale(1)" : "translateY(10px) scale(0.98)",
-                transitionDuration: "500ms",
-                transitionDelay: `${i * 90}ms`,
-              }}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="relative w-7 h-7 rounded-md flex items-center justify-center border border-slate-200 bg-slate-50 flex-shrink-0">
-                    <span className="text-[9px] font-bold text-[#16A34A]">ES</span>
-                    {isActive && (
-                      <span className="absolute inset-0 rounded-md border border-amber-300 animate-ping opacity-40" />
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-bold font-syne leading-tight truncate text-slate-900">{d.title}</p>
-                    <p className="text-[9px] font-mono text-slate-400 truncate">{d.subtitle}</p>
-                  </div>
-                </div>
-                <span className={`flex items-center gap-1 text-[7px] font-mono border px-1.5 py-0.5 rounded font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0 ${badgeStyles[d.badgeType]}`}>
-                  {isActive && <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />}
-                  {d.badgeText}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 mt-2.5">
-                <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ease-out ${
-                      d.badgeType === "done" ? "bg-emerald-500" : d.badgeType === "progress" ? "bg-amber-500" : "bg-slate-300"
-                    }`}
-                    style={{
-                      width: `${mounted ? pct : 0}%`,
-                      transitionProperty: "width",
-                      transitionDuration: "900ms",
-                      transitionDelay: `${150 + i * 90}ms`,
-                    }}
-                  />
-                </div>
-                <span className="text-[8px] font-mono text-slate-400 flex-shrink-0 tabular-nums">{d.doneCount}/{d.totalCount}</span>
-                <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
-              </div>
-            </div>
-          );
-        })}
+      {/* Floating Bottom Nav Bars (Split Group Layout) */}
+      <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center gap-2.5 z-20">
+        <div className="bg-white border border-slate-100 px-6 py-3 flex-1 flex justify-between items-center rounded-2xl shadow-[0_8px_24px_rgba(15,23,42,0.12)]">
+          <div className="text-[#16A34A] cursor-pointer">
+            <Home className="w-[18px] h-[18px]" />
+          </div>
+          <div className="text-slate-400 hover:text-slate-650 cursor-pointer transition-colors">
+            <Layers className="w-[18px] h-[18px]" />
+          </div>
+          <div className="text-slate-400 hover:text-slate-650 cursor-pointer transition-colors">
+            <FileText className="w-[18px] h-[18px]" />
+          </div>
+        </div>
+        <div className="bg-white border border-slate-100 p-3 flex items-center justify-center rounded-2xl shadow-[0_8px_24px_rgba(15,23,42,0.12)] cursor-pointer text-slate-400 hover:text-slate-650 transition-colors">
+          <Sparkles className="w-[18px] h-[18px]" />
+        </div>
       </div>
     </div>
   );
 }
 
 // ─── Phone app screen (Hero Right side, iOS — single document, task list) ───────
-function PaprsDetailPhoneScreen() {
+export function PaprsDetailPhoneScreen() {
   const tasks: Array<{ title: string; sublabel: string; status: "done" | "active" | "pending" }> = [
     { title: "Generate Tax Model 790-012", sublabel: "PDF with fee info", status: "done" },
     { title: "Pay €12.24 tax fee", sublabel: "At any ATM, keep the ticket", status: "done" },
@@ -423,64 +468,110 @@ function PaprsDetailPhoneScreen() {
   ];
 
   return (
-    <div className="w-full h-full bg-[#F8FAFC] flex flex-col font-sans select-none p-4 pt-8 justify-between">
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-[8px] uppercase tracking-wider text-[#16A34A] font-bold">
-            NIE Certificate
-          </span>
-          <span className="text-[7px] px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 border border-amber-200 uppercase font-bold flex-shrink-0">
-            In Progress
-          </span>
+    <div className="w-full h-full bg-[#F8FAFC] flex flex-col font-sans select-none justify-between overflow-hidden relative">
+      <div className="flex flex-col flex-1 min-h-0">
+        {/* Status Bar */}
+        <div className="px-5 pt-3 pb-1 flex justify-between items-center text-[8.5px] font-mono text-slate-400 select-none bg-white">
+          <span className="font-semibold text-slate-800">9:41</span>
+          <div className="flex items-center gap-1.5">
+            <svg className="w-2.5 h-2.5 text-slate-700" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L17.61 5.03C16.07 3.8 14.12 3 12 3zm0 18c4.97 0 9-4.03 9-9 0-2.12-.74-4.07-1.97-5.61L6.39 18.97C7.93 20.2 9.88 21 12 21z" />
+            </svg>
+            <svg className="w-2.5 h-2.5 text-slate-700" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21l-12-18h24z" />
+            </svg>
+            <div className="w-3.5 h-1.5 rounded-[2px] border border-slate-400 flex items-center p-[1px]">
+              <div className="w-full h-full bg-slate-700 rounded-[1px]"></div>
+            </div>
+          </div>
         </div>
 
-        <h3 className="font-syne font-extrabold text-[15px] text-slate-900 leading-tight">
-          Foreigner identity &amp; tax number
-        </h3>
+        {/* Brand/Back Nav Header */}
+        <div className="px-4 py-2.5 bg-white border-b border-slate-100 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <ChevronLeft className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" />
+            <span className="font-syne font-extrabold text-[10.5px] text-slate-900 tracking-tight leading-none">NIE Certificate</span>
+          </div>
+          <div className="relative w-[22px] h-[22px] flex items-center justify-center">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 20 20">
+              <circle
+                cx="10"
+                cy="10"
+                r="7.5"
+                className="stroke-slate-100"
+                strokeWidth="2.5"
+                fill="transparent"
+              />
+              <circle
+                cx="10"
+                cy="10"
+                r="7.5"
+                className="stroke-amber-500"
+                strokeWidth="2.5"
+                fill="transparent"
+                strokeDasharray="47.12"
+                strokeDashoffset="23.56"
+                strokeLinecap="round"
+              />
+            </svg>
+            <span className="absolute text-[6px] font-mono font-extrabold text-slate-500 tabular-nums">
+              50%
+            </span>
+          </div>
+        </div>
 
-        <p className="text-[9.5px] text-slate-500 leading-relaxed">
-          Essential for work contracts, bank accounts, SIM cards, and renting.
-        </p>
+        <div className="flex-1 overflow-y-auto scrollbar-none p-4 pb-4 flex flex-col gap-3">
+          {/* Header Overview Card */}
+          <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.015)] flex flex-col gap-2">
+            <div className="flex justify-between items-start gap-2">
+              <h3 className="font-syne font-extrabold text-[12.5px] text-slate-950 leading-tight">
+                Foreigner Identity &amp; Tax Number
+              </h3>
+              <span className="text-[7.5px] px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/50 uppercase font-bold shrink-0">
+                In Progress
+              </span>
+            </div>
+            <p className="text-[9.5px] text-slate-500 leading-relaxed">
+              Essential for work contracts, bank accounts, SIM cards, and renting.
+            </p>
+          </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col gap-2.5 mt-1">
-          {tasks.map((t, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && <div className="h-px bg-slate-100" />}
-              <div className="flex items-start gap-2.5">
+          {/* Checklist timeline */}
+          <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.015)] flex flex-col gap-4 relative">
+            {/* Timeline Connector Line */}
+            <div className="absolute left-[24px] top-6 bottom-6 w-0.5 bg-slate-100 z-0"></div>
+
+            {tasks.map((t, i) => (
+              <div key={i} className="flex items-start gap-3.5 relative z-10">
                 {t.status === "done" ? (
-                  <div className="w-4 h-4 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
-                    <Check className="w-2.5 h-2.5" />
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-sm">
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
                   </div>
                 ) : t.status === "active" ? (
-                  <div className="w-4 h-4 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 flex-shrink-0 mt-0.5">
-                    <Clock className="w-2.5 h-2.5" />
+                  <div className="w-5 h-5 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 flex-shrink-0 shadow-sm relative">
+                    <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-ping" />
+                    <Clock className="w-3 h-3 text-amber-600" />
                   </div>
                 ) : (
-                  <div className="w-4 h-4 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <div className="w-1 h-1 rounded-full bg-slate-300" />
+                  <div className="w-5 h-5 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center flex-shrink-0 text-slate-300 shadow-sm">
+                    <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
                   </div>
                 )}
-                <div>
-                  <p className={`text-[9.5px] font-bold leading-tight ${t.status === "done" ? "text-slate-400 line-through decoration-slate-400" : "text-slate-800"}`}>
+                <div className="flex-1 min-w-0 mt-0.5">
+                  <p className={`text-[10px] font-bold leading-tight ${t.status === "done" ? "text-slate-400 line-through decoration-slate-300" : "text-slate-900"}`}>
                     {t.title}
                   </p>
                   <p className="text-[8.5px] text-slate-400 leading-snug mt-0.5">{t.sublabel}</p>
                 </div>
               </div>
-            </React.Fragment>
-          ))}
+            ))}
+          </div>
+
+
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between text-[8px] font-mono text-slate-400">
-          <span>Action progress</span>
-          <span>2 / 4 done (50%)</span>
-        </div>
-        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-          <div className="h-full bg-amber-500" style={{ width: "50%" }} />
-        </div>
-      </div>
+
     </div>
   );
 }
@@ -719,7 +810,7 @@ export default function HeroAndPain() {
                 className="relative w-[460px] h-[520px] transition-all duration-100 scale-90 md:scale-95 lg:scale-105"
                 style={{ transform: `translateX(${rightCardsX}%)`, opacity: 1, perspective: "1400px" }}
               >
-                <div className="absolute left-1/2 top-1/2 z-0" style={{ transform: "translate(calc(-50% - 150px), calc(-50% + 36px)) rotateY(-24deg) rotateX(2deg)" }}>
+                <div className="absolute left-1/2 top-1/2 z-0" style={{ transform: "translate(calc(-50% - 180px), calc(-50% + 36px)) rotateY(-24deg) rotateX(2deg)" }}>
                   <AndroidMockup
                     screenWidth={208}
                     noRoundedScreen
@@ -732,7 +823,7 @@ export default function HeroAndPain() {
                     <PaprsPhoneScreen />
                   </AndroidMockup>
                 </div>
-                <div className="absolute left-1/2 top-1/2 z-10" style={{ transform: "translate(calc(-50% + 50px), -50%) rotateY(18deg) rotateX(-2deg)" }}>
+                <div className="absolute left-1/2 top-1/2 z-10" style={{ transform: "translate(calc(-50% + 75px), -50%) rotateY(18deg) rotateX(-2deg)" }}>
                   <IPhoneMockup
                     screenWidth={210}
                     screenType="island"
