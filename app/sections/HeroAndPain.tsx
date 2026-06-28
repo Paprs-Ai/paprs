@@ -11,6 +11,7 @@ import {
   MapPin,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { AndroidMockup, IPhoneMockup } from "react-device-mockup";
 import DocumentCard from "../components/DocumentCard";
 import { useScrollProgress } from "../hooks/useScrollProgress";
 
@@ -291,6 +292,96 @@ export function MicrotaskCard({
   );
 }
 
+// ─── Phone app screen (Hero Right side, "With Paprs" mockup) ────────────────────
+function PaprsPhoneScreen() {
+  const docs: Array<{
+    title: string;
+    subtitle: string;
+    badgeText: string;
+    badgeType: "done" | "progress" | "pending";
+    doneCount: number;
+    totalCount: number;
+  }> = [
+    { title: "Certificado de Registro", subtitle: "NIE · EXP: NIE-2026-X83", badgeText: "In Progress", badgeType: "progress", doneCount: 2, totalCount: 4 },
+    { title: "Seguridad Social", subtitle: "NUSS · 08/12345678/90", badgeText: "Next Up", badgeType: "pending", doneCount: 1, totalCount: 3 },
+    { title: "Empadronamiento", subtitle: "REG: 08019-2026", badgeText: "Done", badgeType: "done", doneCount: 4, totalCount: 4 },
+    { title: "Agencia Tributaria", subtitle: "HAC: 2026-VAT-901", badgeText: "Next Up", badgeType: "pending", doneCount: 0, totalCount: 3 },
+  ];
+
+  const totalDone = docs.reduce((a, d) => a + d.doneCount, 0);
+  const totalTasks = docs.reduce((a, d) => a + d.totalCount, 0);
+  const overallPercent = Math.round((totalDone / totalTasks) * 100);
+
+  const badgeStyles = {
+    done: "text-emerald-700 bg-emerald-50 border-emerald-200/50",
+    progress: "text-amber-700 bg-amber-50 border-amber-200/50",
+    pending: "text-slate-500 bg-slate-50 border-slate-200/50",
+  };
+
+  return (
+    <div className="w-full h-full bg-[#F8FAFC] flex flex-col font-sans select-none">
+      {/* App header */}
+      <div className="px-5 pt-4 pb-3 bg-white border-b border-slate-100">
+        <div className="flex items-center justify-between">
+          <span className="font-syne font-extrabold text-base tracking-tight text-slate-900">
+            <span className="text-[#16A34A]">p.</span>aprs
+          </span>
+          <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold font-mono text-slate-400">
+            JD
+          </div>
+        </div>
+        <h3 className="font-syne font-bold text-lg text-slate-900 mt-3">My Documents</h3>
+        <div className="flex items-center justify-between mt-2.5 mb-1">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Overall Progress</span>
+          <span className="text-[10px] font-mono font-bold text-[#16A34A]">{overallPercent}%</span>
+        </div>
+        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-full bg-[#16A34A] transition-all duration-700" style={{ width: `${overallPercent}%` }} />
+        </div>
+      </div>
+
+      {/* Document list */}
+      <div className="flex-1 overflow-hidden px-3.5 py-3 flex flex-col gap-2.5">
+        {docs.map((d, i) => {
+          const pct = Math.round((d.doneCount / d.totalCount) * 100);
+          return (
+            <div
+              key={i}
+              className="bg-white border border-slate-200 rounded-2xl px-3.5 py-3 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-7 h-7 rounded-md flex items-center justify-center border border-slate-200 bg-slate-50 flex-shrink-0">
+                    <span className="text-[9px] font-bold text-[#16A34A]">ES</span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-bold font-syne leading-tight truncate text-slate-900">{d.title}</p>
+                    <p className="text-[9px] font-mono text-slate-400 truncate">{d.subtitle}</p>
+                  </div>
+                </div>
+                <span className={`text-[7px] font-mono border px-1.5 py-0.5 rounded font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0 ${badgeStyles[d.badgeType]}`}>
+                  {d.badgeText}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 mt-2.5">
+                <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-700 ${
+                      d.badgeType === "done" ? "bg-emerald-500" : d.badgeType === "progress" ? "bg-amber-500" : "bg-slate-300"
+                    }`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+                <span className="text-[8px] font-mono text-slate-400 flex-shrink-0">{d.doneCount}/{d.totalCount}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── Slide dot indicator ───────────────────────────────────────────────────────
 function SlideDots({ total, active }: { total: number; active: number }) {
   return (
@@ -331,6 +422,7 @@ export default function HeroAndPain() {
       const scrolledPast = -rect.top - totalScrollable;
       const progressValue = Math.max(0, Math.min(1, scrolledPast / viewHeight));
       document.documentElement.style.setProperty('--doc-transition-progress', `${progressValue}`);
+      document.documentElement.style.setProperty('--viewport-height-px', `${viewHeight}px`);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll, { passive: true });
@@ -413,9 +505,15 @@ export default function HeroAndPain() {
   return (
     <div ref={ref} id="pain" className="relative h-[500vh] w-full">
       <div
-        className="sticky top-0 w-full h-screen flex flex-col md:flex-row overflow-hidden"
+        className="sticky top-0 w-full h-screen flex flex-col md:flex-row"
         style={{
-          zIndex: `calc(15 - clamp(0, (var(--doc-transition-progress, 0) - 0.499) * 1000000, 6))`
+          // Fade the whole section out in sync with the bridge-card crossfade
+          // (0.10 → 0.90) so it dissolves into HowItWorks instead of popping
+          // away the instant the z-index flips underneath it.
+          opacity: `calc(1 - clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
+          // Only drop below HowItWorks once fully transparent (progress ≥ 0.50),
+          // so the z-index swap happens while invisible — no visible jump.
+          zIndex: `calc(35 - clamp(0, (var(--doc-transition-progress, 0) - 0.5) * 1000000, 10))`,
         } as React.CSSProperties}
       >
 
@@ -512,78 +610,37 @@ export default function HeroAndPain() {
               ))}
             </div>
 
-            {/* Clean right-side cards */}
-            <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center md:justify-end md:pr-4 lg:pr-8 xl:pr-12">
+            {/* Clean right-side device mockups — same screen, iOS & Android, fanned in 3D */}
+            <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center md:justify-end md:pr-4 lg:pr-8 xl:pr-12 overflow-hidden">
               <div
-                className="transition-all duration-100 scale-90 md:scale-95 lg:scale-105"
-                style={{ transform: `translateX(${rightCardsX}%)`, opacity: 1 }}
+                className="relative w-[460px] h-[520px] transition-all duration-100 scale-90 md:scale-95 lg:scale-105"
+                style={{ transform: `translateX(${rightCardsX}%)`, opacity: 1, perspective: "1400px" }}
               >
-                <div className="relative w-[400px] h-[430px] flex items-center justify-center">
-                  <div className="absolute translate-x-[-52px] translate-y-[-60px] rotate-[8deg] scale-100">
-                    <MicrotaskCard
-                      type="hacienda"
-                      overview="Quarterly VAT self-assessment for freelancers and small businesses operating in Spain."
-                      badgeText="Next Up"
-                      badgeType="pending"
-                      doneCount={0}
-                      totalCount={3}
-                      shadow="shadow-sm"
-                      tasks={[
-                        { text: "Gather quarterly invoices and expense receipts", done: false },
-                        { text: "Fill out Modelo 303 via Sede Electrónica", done: false },
-                        { text: "Submit and pay before the filing deadline", done: false },
-                      ]}
-                    />
-                  </div>
-                  <div className="absolute translate-x-[-28px] translate-y-[-48px] rotate-[-5deg] scale-100">
-                    <MicrotaskCard
-                      type="nie"
-                      overview="Foreigner identity & tax number. Essential for work contracts, bank accounts, SIM cards, and renting."
-                      badgeText="In Progress"
-                      badgeType="progress"
-                      doneCount={2}
-                      totalCount={4}
-                      shadow="shadow-md"
-                      tasks={[
-                        { text: "Generate Tax Model 790-012 PDF with fee info", done: true },
-                        { text: "Pay €12.24 tax fee at ATM and save ticket", done: true },
-                        { text: "Present EX-15 form in person at police station", done: false, active: true },
-                        { text: "Pick up your physical paper NIE certificate", done: false },
-                      ]}
-                    />
-                  </div>
-                  <div className="absolute translate-x-[32px] translate-y-[-16px] rotate-[4deg] scale-100">
-                    <MicrotaskCard
-                      type="seg_social"
-                      overview="Social security number. Required to sign a work contract, pay freelance taxes, or access public health."
-                      badgeText="Next Up"
-                      badgeType="pending"
-                      doneCount={1}
-                      totalCount={3}
-                      shadow="shadow-lg"
-                      tasks={[
-                        { text: "Confirm your Spanish mobile phone number is active", done: true },
-                        { text: "Request NUSS via Import@ss digital portal", done: false },
-                        { text: "Download your official NUSS certificate PDF", done: false },
-                      ]}
-                    />
-                  </div>
-                  <div className="absolute translate-x-[-4px] translate-y-[36px] rotate-[-1deg] scale-100">
-                    <MicrotaskCard
-                      type="padron"
-                      overview="Town hall address registration. Mandatory first step needed for healthcare cards and NIE booking."
-                      badgeText="Done"
-                      badgeType="done"
-                      doneCount={4}
-                      totalCount={4}
-                      tasks={[
-                        { text: "Collect lease contract signed by landlord & utility bill", done: true },
-                        { text: "Download and fill out the town hall registration form", done: true },
-                        { text: "Book an appointment slot online (Cita Previa)", done: true },
-                        { text: "Attend appointment in person and obtain your Volante", done: true },
-                      ]}
-                    />
-                  </div>
+                <div className="absolute left-1/2 top-1/2 z-0" style={{ transform: "translate(calc(-50% - 150px), calc(-50% + 36px)) rotateY(-24deg) rotateX(2deg)" }}>
+                  <AndroidMockup
+                    screenWidth={208}
+                    noRoundedScreen
+                    frameColor="#1A1814"
+                    statusbarColor="#F8FAFC"
+                    navBarColor="#F8FAFC"
+                    transparentNavBar
+                    hideStatusBar
+                  >
+                    <PaprsPhoneScreen />
+                  </AndroidMockup>
+                </div>
+                <div className="absolute left-1/2 top-1/2 z-10" style={{ transform: "translate(calc(-50% + 50px), -50%) rotateY(18deg) rotateX(-2deg)" }}>
+                  <IPhoneMockup
+                    screenWidth={210}
+                    screenType="island"
+                    frameColor="#1A1814"
+                    statusbarColor="#F8FAFC"
+                    hideStatusBar
+                    transparentNavBar
+                    hideNavBar
+                  >
+                    <PaprsPhoneScreen />
+                  </IPhoneMockup>
                 </div>
               </div>
             </div>
@@ -919,10 +976,11 @@ export default function HeroAndPain() {
              and HowItWorks fc cards pick up from the same half-gathered positions. */}
         {progress >= 0.80 && (
           <div
-            className="absolute inset-0 pointer-events-none z-[15]"
+            className="hidden md:block absolute inset-0 pointer-events-none"
             style={{
-              opacity: `calc((${interp(progress, 0.80, 0.86, 0, 1.0)}) * (1 - clamp(0, (var(--doc-transition-progress, 0) - 0.45) * 10, 1)))`,
-              transform: `translateY(calc(var(--doc-transition-progress, 0) * 100vh))`,
+              opacity: interp(progress, 0.80, 0.86, 0, 1.0),
+              transform: `translateY(calc(var(--doc-transition-progress, 0) * var(--viewport-height-px, 100vh)))`,
+              zIndex: `calc(15 + clamp(0, var(--doc-transition-progress, 0) * 1000000, 25))` as any,
             }}
           >
             <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>

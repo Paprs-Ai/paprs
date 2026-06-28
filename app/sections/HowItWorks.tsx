@@ -185,7 +185,7 @@ export default function HowItWorks() {
   return (
     <div ref={ref} id="how-it-works" className="relative h-[600vh] w-full scroll-mt-28">
       <div
-        className="sticky top-0 w-full h-screen flex items-center z-10 overflow-hidden"
+        className="sticky top-0 w-full h-screen flex items-center z-30"
       >
         {/* Green radial glow */}
         <div className="absolute right-[-15%] top-[8%] h-[520px] w-[520px] rounded-full bg-[#16A34A]/10 blur-3xl z-0 pointer-events-none" />
@@ -519,10 +519,10 @@ export default function HowItWorks() {
 
         {/* ── Chaos Card Pile Overlay (Slide 0) ── */}
         <div
-          className="hidden md:block absolute inset-0 pointer-events-none z-[12]"
+          className="hidden md:block absolute inset-0 pointer-events-none z-[40]"
           style={{
-            opacity: `clamp(0, (var(--doc-transition-progress, 0) - 0.45) * 10, 1)`,
-            transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * 100vh))`,
+            opacity: `clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1)`,
+            transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * var(--viewport-height-px, 100vh)))`,
           }}
         >
           {/* Inner wrapper that handles slider translateX transition */}
