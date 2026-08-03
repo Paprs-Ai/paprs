@@ -163,9 +163,9 @@ const DotNode = ({ opacity, scale, blur, isActive }: { opacity: number; scale: n
     <div style={{
       width: 8, height: 8, borderRadius: "50%",
       background: isActive
-        ? "radial-gradient(circle at 35% 35%, #4ade80, #15803d)"
+        ? "radial-gradient(circle at 35% 35%, #ffffff, #000000)"
         : "#d1d5db",
-      boxShadow: isActive ? "0 0 8px rgba(22,163,74,0.55)" : undefined,
+      boxShadow: isActive ? "0 0 8px rgba(0,0,0,0.5)" : undefined,
     }} />
   </div>
 );
@@ -182,10 +182,10 @@ const PillNode = ({ opacity, scale, blur, isActive, label }: { opacity: number; 
     <div
       className="flex items-center gap-1.5 px-2.5 py-1 rounded-full font-mono text-[9px] font-bold uppercase tracking-wider whitespace-nowrap"
       style={isActive ? {
-        background: "rgba(22,163,74,0.09)",
-        border:    "1px solid rgba(22,163,74,0.40)",
-        color:     "#16A34A",
-        boxShadow: "0 0 12px rgba(22,163,74,0.22)",
+        background: "rgba(0,0,0,0.06)",
+        border:    "1px solid #000000",
+        color:     "#000000",
+        boxShadow: "0 0 10px rgba(0,0,0,0.12)",
       } : {
         background: "rgba(241,245,249,0.85)",
         border:    "1px solid rgba(203,213,225,0.65)",
@@ -194,7 +194,7 @@ const PillNode = ({ opacity, scale, blur, isActive, label }: { opacity: number; 
     >
       <span
         className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isActive ? "animate-ping" : ""}`}
-        style={{ backgroundColor: isActive ? "#16A34A" : "#cbd5e1" }}
+        style={{ backgroundColor: isActive ? "#000000" : "#cbd5e1" }}
       />
       {label}
     </div>
@@ -379,7 +379,7 @@ export default function AIOrbit() {
               key={edge.id}
               x1={edge.x1} y1={edge.y1}
               x2={edge.x2} y2={edge.y2}
-              stroke="#16A34A"
+              stroke="#000000"
               strokeWidth={edge.width}
               strokeOpacity={edge.opacity}
             />

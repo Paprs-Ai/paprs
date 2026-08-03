@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* Chaos Side Colors */
-  --color-chaos-white: #F7F4EE;
-  --color-chaos-ink: #1A1814;
-  --color-chaos-amber: #D4820A;
-  --color-chaos-dust: #C4B9A8;
+  /* Chaos Side Colors (Monochrome Paper & Ink) */
+  --color-chaos-white: #F9F9F9;
+  --color-chaos-ink: #000000;
+  --color-chaos-amber: #4A4A4A;
+  --color-chaos-dust: #CCCCCC;
 
-  /* Clarity Side Colors */
-  --color-clarity-dark: #0D1117;
-  --color-clarity-green: #16A34A;
-  --color-clarity-green-hover: #16A34A;
-  --color-clarity-slate: #1E2530;
-  --color-clarity-border: #2A3441;
+  /* Clarity Side Colors (Monochrome Contrast) */
+  --color-clarity-dark: #000000;
+  --color-clarity-green: #000000;
+  --color-clarity-green-hover: #18181B;
+  --color-clarity-slate: #18181B;
+  --color-clarity-border: #27272A;
 
   /* Neutrals */
-  --color-text-primary: #F1F5F9;
-  --color-text-secondary: #94A3B8;
-  --color-text-muted: #475569;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A1A1AA;
+  --color-text-muted: #52525B;
 
   /* Font pairings */
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
@@ -31,7 +31,8 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: #F8FAFC;
+  background: #FFFFFF;
+  color: #000000;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -43,14 +44,14 @@ h1, h2, h3, h4, h5, h6 {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #F8FAFC;
+  background: #F4F4F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #A1A1AA;
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #16A34A;
+  background: #000000;
 }
 
 @keyframes drawLine {
@@ -127,8 +128,8 @@ h1, h2, h3, h4, h5, h6 {
   left: -5%;
   right: -5%;
   height: 12%;
-  background: linear-gradient(180deg, transparent 0%, rgba(22,163,74,0.20) 50%, transparent 100%);
-  box-shadow: 0 0 12px 4px rgba(22,163,74,0.12);
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.25) 50%, transparent 100%);
+  box-shadow: 0 0 12px 4px rgba(0,0,0,0.15);
   animation: pileSweep 2.4s ease-in-out infinite;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%, black 65%, transparent 100%);
@@ -142,7 +143,7 @@ h1, h2, h3, h4, h5, h6 {
   right: -40px;
   top: 18%;
   height: 28%;
-  background: linear-gradient(180deg, transparent, rgba(34, 197, 94, 0.30), transparent);
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.35), transparent);
   animation: scanSweep 3.4s ease-in-out infinite;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
@@ -161,6 +162,11 @@ h1, h2, h3, h4, h5, h6 {
   visibility: visible !important;
 }
 
+/* Enforce monochrome across any media elements */
+img, video, iframe, canvas, svg {
+  filter: grayscale(100%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -171,3 +177,4 @@ h1, h2, h3, h4, h5, h6 {
     transition-duration: 0.001ms !important;
   }
 }
+

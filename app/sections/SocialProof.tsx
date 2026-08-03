@@ -119,14 +119,14 @@ export default function SocialProof() {
       className="relative scroll-mt-28"
       style={{ height: `${N * 62}vh` }}
     >
-      <div className="sticky top-0 h-screen bg-[#F8FAFC] flex flex-col overflow-hidden justify-center">
+      <div className="sticky top-0 h-screen bg-[#FFFFFF] flex flex-col overflow-hidden justify-center">
        
 
         <div className="w-full flex flex-col items-center justify-center mb-16 select-none">
-          <span className="font-mono text-xs font-bold text-[#16A34A] uppercase tracking-widest bg-[#16A34A]/10 px-3 py-1 rounded-full">
+          <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full">
             Testimonials
           </span>
-          <h2 className="text-2xl md:text-3xl font-extrabold font-syne text-slate-950 leading-tight text-center">
+          <h2 className="text-2xl md:text-3xl font-extrabold font-syne text-black leading-tight text-center">
             Real stories. Real relief.
           </h2>
         </div>
@@ -147,10 +147,10 @@ export default function SocialProof() {
                   onMouseLeave={() => setHovered(null)}
                   className="relative flex flex-col rounded-xl overflow-hidden cursor-default"
                   style={{
-                    background: "#FAF8F5",
+                    background: "#FFFFFF",
                     border: isActive
-                      ? "1px solid rgba(22,163,74,0.45)"
-                      : "1px solid rgba(196,185,168,0.45)",
+                      ? "1.5px solid #000000"
+                      : "1px solid #E4E4E7",
                     transition:
                       "transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, opacity 0.35s ease, filter 0.35s ease, border-color 0.35s ease",
                     transform: isActive
@@ -161,70 +161,69 @@ export default function SocialProof() {
                     filter: isDimmed ? "blur(1px)" : "none",
                     opacity: isDimmed ? 0.45 : 1,
                     boxShadow: isActive
-                      ? "0 12px 32px rgba(0,0,0,0.10), 0 0 20px rgba(22,163,74,0.08)"
-                      : "0 1px 4px rgba(0,0,0,0.05)",
+                      ? "0 12px 32px rgba(0,0,0,0.12)"
+                      : "0 1px 4px rgba(0,0,0,0.03)",
                     zIndex: isActive ? 10 : 1,
                   }}
                 >
                   <div className="flex flex-col p-3.5 gap-0">
-                    {/* Header: flag + role + city */}
+                    {/* Header */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
                         <span className="text-[17px] leading-none">
                           {t.flag}
                         </span>
-                        <span className="font-mono text-[8.5px] font-bold uppercase tracking-wider text-[#1A1814]">
+                        <span className="font-mono text-[8.5px] font-bold uppercase tracking-wider text-black">
                           {t.role}
                         </span>
                       </div>
-                      <span className="font-mono text-[7.5px] uppercase tracking-wider text-[#1A1814]/55">
+                      <span className="font-mono text-[7.5px] uppercase tracking-wider text-zinc-500 font-medium">
                         {t.city}
                       </span>
                     </div>
 
-                    <hr className="border-dashed border-[#C4B9A8] my-2.5" />
+                    <hr className="border-dashed border-zinc-200 my-2.5" />
 
                     {/* Quote */}
                     <div className="flex flex-col">
-                      <p className="font-mono text-[7px] uppercase tracking-widest text-[#1A1814]/35 mb-1.5">
+                      <p className="font-mono text-[7px] uppercase tracking-widest text-zinc-400 font-bold mb-1.5">
                         Declaración
                       </p>
                       <p
-                        className="font-sans text-[#1A1814] leading-relaxed"
+                        className="font-sans text-black leading-relaxed"
                         style={{ fontSize: quoteFontSize }}
                       >
                         &ldquo;{t.quote}&rdquo;
                       </p>
                     </div>
 
-                    <hr className="border-dashed border-[#C4B9A8] my-2.5" />
+                    <hr className="border-dashed border-zinc-200 my-2.5" />
 
                     {/* Author */}
                     <div>
-                      <p className="font-mono text-[7px] uppercase tracking-widest text-[#1A1814]/40 mb-0.5">
+                      <p className="font-mono text-[7px] uppercase tracking-widest text-zinc-400 font-bold mb-0.5">
                         Titular
                       </p>
-                      <p className="font-syne font-extrabold text-[11.5px] text-[#1A1814] leading-tight">
+                      <p className="font-syne font-extrabold text-[11.5px] text-black leading-tight">
                         {t.name}
                       </p>
-                      <p className="font-mono text-[7.5px] uppercase tracking-wide text-[#1A1814]/65 mt-0.5">
+                      <p className="font-mono text-[7.5px] uppercase tracking-wide text-zinc-500 mt-0.5 font-medium">
                         {t.sub}
                       </p>
                     </div>
                   </div>
 
-                  {/* VERIFIED stamp on active */}
+                  {/* VERIFIED stamp */}
                   <div
-                    className="absolute bottom-3 right-2.5 border-2 border-[#16A34A] rounded px-1.5 py-0.5 text-[#16A34A] font-extrabold text-[7.5px] tracking-widest uppercase font-mono flex items-center gap-0.5"
+                    className="absolute bottom-3 right-2.5 border-2 border-black rounded px-1.5 py-0.5 text-white bg-black font-extrabold text-[7.5px] tracking-widest uppercase font-mono flex items-center gap-0.5 shadow-sm"
                     style={{
                       transform: `rotate(-7deg) scale(${isActive ? 1 : 0.5})`,
                       opacity: isActive ? 1 : 0,
                       transition:
                         "transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease",
-                      background: "rgba(22,163,74,0.05)",
                     }}
                   >
-                    <Check className="w-2 h-2" /> VERIFIED
+                    <Check className="w-2 h-2 text-white" /> VERIFIED
                   </div>
                 </div>
               );

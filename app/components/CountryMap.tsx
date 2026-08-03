@@ -59,11 +59,11 @@ export default function CountryMap() {
                 stroke = "#E2E8F0";
 
                 if (name === "Spain") {
-                  fill = "#16A34A"; opacity = 0.75;
+                  fill = "#000000"; opacity = 0.85;
                 } else if (name === "Switzerland" || name === "Germany" || name === "France") {
-                  fill = "#16A34A"; opacity = 0.35;
+                  fill = "#000000"; opacity = 0.45;
                 } else if (name === "Italy" || name === "Portugal" || name === "Netherlands" || name === "Austria") {
-                  fill = "#16A34A"; opacity = 0.12;
+                  fill = "#000000"; opacity = 0.18;
                 }
               }
 
@@ -73,7 +73,7 @@ export default function CountryMap() {
                   geography={geo}
                   style={{
                     default: { fill, stroke, strokeWidth: 0.6, opacity, outline: "none" },
-                    hover: { fill: isEurope ? "#16A34A" : fill, stroke: isEurope ? "#C4B9A8" : stroke, strokeWidth: 0.6, opacity: isEurope ? 0.35 : opacity, outline: "none", cursor: isEurope ? "pointer" : "default" },
+                    hover: { fill: isEurope ? "#000000" : fill, stroke: isEurope ? "#71717A" : stroke, strokeWidth: 0.6, opacity: isEurope ? 0.45 : opacity, outline: "none", cursor: isEurope ? "pointer" : "default" },
                     pressed: { fill, stroke, strokeWidth: 0.6, opacity, outline: "none" }
                   }}
                 />
@@ -85,12 +85,12 @@ export default function CountryMap() {
         {/* Connection lines from Spain */}
         {(["switzerland", "france", "germany"] as const).map(key => (
           <Line key={key} from={hubs.spain.coords} to={hubs[key].coords}
-            stroke="#16A34A" strokeWidth={1.4} strokeDasharray="4,4"
+            stroke="#000000" strokeWidth={1.4} strokeDasharray="4,4"
             className="animate-[dash_4s_linear_infinite]" opacity={0.7} />
         ))}
         {(["italy", "portugal", "netherlands", "austria"] as const).map(key => (
           <Line key={key} from={hubs.spain.coords} to={hubs[key].coords}
-            stroke="#16A34A" strokeWidth={0.8} strokeDasharray="3,5" opacity={0.25} />
+            stroke="#000000" strokeWidth={0.8} strokeDasharray="3,5" opacity={0.3} />
         ))}
 
         {/* Markers */}
@@ -102,23 +102,23 @@ export default function CountryMap() {
           return (
             <Marker key={key} coordinates={hub.coords}>
               {isActive && (
-                <circle r={12} fill="none" stroke="#16A34A" strokeWidth={1.5} className="animate-ping opacity-40" />
+                <circle r={12} fill="none" stroke="#000000" strokeWidth={1.5} className="animate-ping opacity-40" />
               )}
               <circle
                 r={isActive ? 5 : isSoon ? 3.5 : 2.5}
-                fill={isActive ? "#16A34A" : isSoon ? "#16A34A" : "#A8A09A"}
+                fill={isActive ? "#000000" : isSoon ? "#000000" : "#A1A1AA"}
                 fillOpacity={isActive ? 1 : isSoon ? 0.75 : 0.5}
-                stroke="#F8FAFC"
+                stroke="#FFFFFF"
                 strokeWidth={1.5}
               />
               {showLabel && (
                 <>
                   <text textAnchor="middle" y={-16}
-                    style={{ fontFamily: "sans-serif", fontSize: "7.5px", fontWeight: 700, fill: "#1A1814" }}>
+                    style={{ fontFamily: "sans-serif", fontSize: "7.5px", fontWeight: 700, fill: "#000000" }}>
                     {hub.name}
                   </text>
                   <text textAnchor="middle" y={-7}
-                    style={{ fontFamily: "monospace", fontSize: "5px", fontWeight: 700, letterSpacing: "0.06em", fill: isActive ? "#16A34A" : "#D4820A", textTransform: "uppercase" }}>
+                    style={{ fontFamily: "monospace", fontSize: "5px", fontWeight: 700, letterSpacing: "0.06em", fill: isActive ? "#000000" : "#52525B", textTransform: "uppercase" }}>
                     {hub.label}
                   </text>
                 </>
