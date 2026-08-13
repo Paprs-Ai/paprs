@@ -9,11 +9,12 @@ import PaprsQRAndVault from "./sections/PaprsQRAndVault";
 import SyntheticBenchmark from "./sections/SyntheticBenchmark";
 import AILearns from "./sections/AILearns";
 import Countries from "./sections/Countries";
+import Pricing from "./sections/Pricing";
 import FinalCTA from "./sections/FinalCTA";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFFFFF] text-black font-sans selection:bg-black selection:text-white">
+    <div className="flex flex-col min-h-screen w-full overflow-x-clip bg-[#FFFFFF] text-black font-sans selection:bg-black selection:text-white">
       
       {/* Sticky Top Header */}
       <header 
@@ -32,7 +33,7 @@ export default function Home() {
         </a>
 
         {/* Navigation Links */}
-        <nav className="hidden lg:flex gap-6 text-[10px] font-mono uppercase tracking-widest text-black/75">
+        <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
           <a href="#pain" className="transition-colors hover:text-black font-bold">Reality</a>
           <a href="#how-it-works" className="transition-colors hover:text-black font-bold">Product</a>
           <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold">Autónomo</a>
@@ -40,6 +41,7 @@ export default function Home() {
           <a href="#benchmark" className="transition-colors hover:text-black font-bold">AI vs Human</a>
           <a href="#ai-learns" className="transition-colors hover:text-black font-bold">Intelligence</a>
           <a href="#countries" className="transition-colors hover:text-black font-bold">Europe</a>
+          <a href="#pricing" className="transition-colors hover:text-black font-bold">Pricing</a>
         </nav>
 
         {/* Nav CTA */}
@@ -62,6 +64,7 @@ export default function Home() {
         <SyntheticBenchmark />
         <AILearns />
         <Countries />
+        <Pricing />
         {/* Testimonials disabled for now */}
         {/* <SocialProof /> */}
         <FinalCTA />
