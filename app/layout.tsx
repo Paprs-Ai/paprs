@@ -23,6 +23,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Paprs — Your step-by-step guide to life in Spain",
   description: "Navigate Spanish bureaucracy with confidence. NIE, TIE, padrón, taxes and more — Paprs tells you exactly what to do, in plain language, step by step.",
+  icons: {
+    icon: "/paprs-favicon.png",
+    shortcut: "/favicon.ico",
+    apple: "/paprs-favicon.png",
+  },
 };
 
 export default function RootLayout({

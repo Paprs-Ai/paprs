@@ -17,11 +17,18 @@ export default function Home() {
       
       {/* Sticky Top Header */}
       <header 
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/15 bg-white/80 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.08)] select-none text-black transition-all"
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/10 bg-white/80 backdrop-blur-md shadow-xs select-none text-black transition-all"
       >
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-2 font-syne font-extrabold text-lg tracking-tight text-black">
-          <span className="text-black font-black">p.</span>aprs
+        {/* Brand Logo */}
+        <a href="#" className="flex items-center gap-0.5 hover:opacity-85 transition-opacity">
+          <img 
+            src="/paprs-logo-black.png" 
+            alt="P" 
+            className="w-8 h-8 object-contain"
+          />
+          <span className="font-syne font-extrabold text-2xl tracking-tighter text-black -ml-0.5">
+            aprs
+          </span>
         </a>
 
         {/* Navigation Links */}
@@ -39,7 +46,7 @@ export default function Home() {
         <div>
           <a 
             href="#cta" 
-            className="px-4 py-1.5 rounded-full border border-black text-white bg-black hover:bg-zinc-800 transition-all duration-300 font-mono text-[9px] font-bold uppercase tracking-wider shadow-sm"
+            className="px-4 py-1.5 rounded-full border border-black/30 text-white bg-black/75 backdrop-blur-md hover:bg-black transition-all duration-300 font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs"
           >
             Get Started
           </a>

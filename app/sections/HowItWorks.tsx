@@ -244,236 +244,254 @@ export default function HowItWorks() {
           >
 
           {/* SLIDE 0 — Paprs appears */}
-          <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
-            <div className="hidden md:block md:w-5/12 h-full flex-shrink-0" />
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+              <div className="hidden md:block md:w-5/12 h-full flex-shrink-0" />
 
-            <div className="w-full md:w-7/12 h-full flex items-center gap-6 relative z-20 md:pl-6">
-              <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit inline-block">
-                  Paprs appears
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
-                  There&apos;s a better way.
-                </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-sm">
-                  The same pile becomes a roadmap: deadlines, dependencies, documents, and the next plain-language step.
-                </p>
-              </div>
+              <div className="w-full md:w-7/12 h-full flex items-center gap-6 relative z-20 md:pl-6">
+                <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
+                  <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit inline-block">
+                    Paprs appears
+                  </span>
+                  <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
+                    There&apos;s a better way.
+                  </h3>
+                  <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-sm">
+                    The same pile becomes a roadmap: deadlines, dependencies, documents, and the next plain-language step.
+                  </p>
+                </div>
 
-              <div className="relative flex-shrink-0 pointer-events-none">
-                <IPhoneMockup
-                  screenWidth={250}
-                  screenType="island"
-                  frameColor="#000000"
-                  statusbarColor="#FFFFFF"
-                  hideStatusBar
-                  transparentNavBar
-                  hideNavBar
-                >
-                  <PaprsDetailPhoneScreen />
-                </IPhoneMockup>
-                <div
-                  className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-black font-bold whitespace-nowrap transition-opacity duration-500"
-                  style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
-                >
-                  <Check className="w-3.5 h-3.5 text-black" />
-                  Everything organised
+                <div className="relative flex-shrink-0 pointer-events-none">
+                  <IPhoneMockup
+                    screenWidth={250}
+                    screenType="island"
+                    frameColor="#000000"
+                    statusbarColor="#FFFFFF"
+                    hideStatusBar
+                    transparentNavBar
+                    hideNavBar
+                  >
+                    <PaprsDetailPhoneScreen />
+                  </IPhoneMockup>
+                  <div
+                    className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-black font-bold whitespace-nowrap transition-opacity duration-500"
+                    style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
+                  >
+                    <Check className="w-3.5 h-3.5 text-black" />
+                    Everything organised
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* SLIDE 1 — Tell us who you are */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 01
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                Tell us who you are.
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                Three minutes. No forms. No legal jargon. Just plain questions that filter your exact bureaucratic situation.
-              </p>
-            </div>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 01
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Tell us who you are.
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  Three minutes. No forms. No legal jargon. Just plain questions that filter your exact bureaucratic situation.
+                </p>
+              </div>
 
-            <div className="w-full md:w-6/12 h-[65vh] md:h-full flex-shrink-0" />
+              <div className="w-full md:w-6/12 h-[65vh] md:h-full flex-shrink-0" />
+            </div>
           </div>
 
           {/* SLIDE 2 — Your Roadmap & Action Steps */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center relative min-h-[220px]">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 02
-              </span>
-              
-              <div className="relative w-full mt-6 h-48">
-                {/* Phase 1 */}
-                <div 
-                  className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
-                  style={{ 
-                    opacity: text1Opacity, 
-                    transform: `translateY(${text1Opacity > 0.5 ? 0 : 12}px)`,
-                    pointerEvents: text1Opacity > 0.5 ? "auto" : "none" 
-                  }}
-                >
-                  <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                    Your answers filtered.
-                  </h3>
-                  <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                    Based on your target city, visa type, and origin, we map your onboarding data instantly. No complex legal terms, just plain facts.
-                  </p>
-                </div>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center relative min-h-[220px]">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 02
+                </span>
+                
+                <div className="relative w-full mt-6 h-48">
+                  {/* Phase 1 */}
+                  <div 
+                    className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
+                    style={{ 
+                      opacity: text1Opacity, 
+                      transform: `translateY(${text1Opacity > 0.5 ? 0 : 12}px)`,
+                      pointerEvents: text1Opacity > 0.5 ? "auto" : "none" 
+                    }}
+                  >
+                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                      Your answers filtered.
+                    </h3>
+                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                      Based on your target city, visa type, and origin, we map your onboarding data instantly. No complex legal terms, just plain facts.
+                    </p>
+                  </div>
 
-                {/* Phase 2 */}
-                <div 
-                  className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
-                  style={{ 
-                    opacity: text2Opacity, 
-                    transform: `translateY(${text2Opacity > 0.5 ? 0 : 12}px)`,
-                    pointerEvents: text2Opacity > 0.5 ? "auto" : "none" 
-                  }}
-                >
-                  <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                    Analyzing situation.
-                  </h3>
-                  <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                    Our system parses Spanish immigration guidelines, computes task dependencies, and checks local townhall appointments in real time.
-                  </p>
-                </div>
+                  {/* Phase 2 */}
+                  <div 
+                    className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
+                    style={{ 
+                      opacity: text2Opacity, 
+                      transform: `translateY(${text2Opacity > 0.5 ? 0 : 12}px)`,
+                      pointerEvents: text2Opacity > 0.5 ? "auto" : "none" 
+                    }}
+                  >
+                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                      Analyzing situation.
+                    </h3>
+                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                      Our system parses Spanish immigration guidelines, computes task dependencies, and checks local townhall appointments in real time.
+                    </p>
+                  </div>
 
-                {/* Phase 3 */}
-                <div 
-                  className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
-                  style={{ 
-                    opacity: text3Opacity, 
-                    transform: `translateY(${text3Opacity > 0.5 ? 0 : 12}px)`,
-                    pointerEvents: text3Opacity > 0.5 ? "auto" : "none" 
-                  }}
-                >
-                  <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                    We build your roadmap.
-                  </h3>
-                  <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                    You get a chronologically prioritized task list. You know exactly what is ready to process, what is urgent, and what is currently locked.
-                  </p>
-                </div>
+                  {/* Phase 3 */}
+                  <div 
+                    className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
+                    style={{ 
+                      opacity: text3Opacity, 
+                      transform: `translateY(${text3Opacity > 0.5 ? 0 : 12}px)`,
+                      pointerEvents: text3Opacity > 0.5 ? "auto" : "none" 
+                    }}
+                  >
+                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                      We build your roadmap.
+                    </h3>
+                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                      You get a chronologically prioritized task list. You know exactly what is ready to process, what is urgent, and what is currently locked.
+                    </p>
+                  </div>
 
-                {/* Phase 4 */}
-                <div 
-                  className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
-                  style={{ 
-                    opacity: text4Opacity, 
-                    transform: `translateY(${text4Opacity > 0.5 ? 0 : 12}px)`,
-                    pointerEvents: text4Opacity > 0.5 ? "auto" : "none" 
-                  }}
-                >
-                  <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                    Follow step-by-step.
-                  </h3>
-                  <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                    No guessing. For every task, follow granular instructions with required forms, tax fee calculators, and office maps to hit 100% completion.
-                  </p>
+                  {/* Phase 4 */}
+                  <div 
+                    className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
+                    style={{ 
+                      opacity: text4Opacity, 
+                      transform: `translateY(${text4Opacity > 0.5 ? 0 : 12}px)`,
+                      pointerEvents: text4Opacity > 0.5 ? "auto" : "none" 
+                    }}
+                  >
+                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                      Follow step-by-step.
+                    </h3>
+                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                      No guessing. For every task, follow granular instructions with required forms, tax fee calculators, and office maps to hit 100% completion.
+                    </p>
+                  </div>
                 </div>
               </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           {/* SLIDE 3 — Command Centre */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 03
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                Your personal command centre
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                One screen that summarizes your entire legal identity, tailored specifically to your student or worker profile.
-              </p>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 03
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Your personal command centre
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  One screen that summarizes your entire legal identity, tailored specifically to your student or worker profile.
+                </p>
+              </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           {/* SLIDE 4 — Urgent Alerts */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 04
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                Always know what&apos;s urgent
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                Critical deadlines, visa renewals, and tax reports are flagged automatically. No more surprise expiration dates.
-              </p>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 04
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Always know what&apos;s urgent
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  Critical deadlines, visa renewals, and tax reports are flagged automatically. No more surprise expiration dates.
+                </p>
+              </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           {/* SLIDE 5 — Live Process Tracking */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 05
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                Track every process in one place
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                See real-time progress. Know exactly which step you are on, and what the administration is currently doing.
-              </p>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 05
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Track every process in one place
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  See real-time progress. Know exactly which step you are on, and what the administration is currently doing.
+                </p>
+              </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           {/* SLIDE 6 — Document Vault */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 06
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                Your documents, safe and watched
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                Paprs reads your certificates, extracts dates, and notifies you when registration or residency documents are expiring.
-              </p>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 06
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Your documents, safe and watched
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  Paprs reads your certificates, extracts dates, and notifies you when registration or residency documents are expiring.
+                </p>
+              </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           {/* SLIDE 7 — Smart Recommendations */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 07
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                We spot things you&apos;d miss
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                If an empadronamiento needs updates, or a fee changes, Paprs automatically triggers a recommendation to keep you safe.
-              </p>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 07
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  We spot things you&apos;d miss
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  If an empadronamiento needs updates, or a fee changes, Paprs automatically triggers a recommendation to keep you safe.
+                </p>
+              </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           {/* SLIDE 8 — Pocket Agency */}
-          <div className="w-screen h-full flex-shrink-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-            <div className="w-full md:w-5/12 flex flex-col justify-center">
-              <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                Step 08
-              </span>
-              <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                Your pocket legal agency
-              </h3>
-              <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                Your daily Spanish bureaucracy, registrations, and tax filings resolved inside a single interface. Ready whenever you are.
-              </p>
+          <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
+              <div className="w-full md:w-5/12 flex flex-col justify-center">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  Step 08
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Your pocket legal agency
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  Your daily Spanish bureaucracy, registrations, and tax filings resolved inside a single interface. Ready whenever you are.
+                </p>
+              </div>
+              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
-            <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
           </div>
 
           </div>
@@ -537,12 +555,13 @@ export default function HowItWorks() {
         {/* ── Sticky Phone Simulator Overlay (Slides 2-8) ── */}
         {phoneVisibilityOpacity > 0 && (
           <div 
-            className="absolute inset-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-20 lg:px-28 pointer-events-none z-30"
+            className="absolute inset-0 flex justify-center pointer-events-none z-30"
             style={{ 
               opacity: phoneVisibilityOpacity,
             }}
           >
-            <div className="w-full md:w-5/12 h-[35vh] md:h-full flex-shrink-0" />
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between">
+              <div className="w-full md:w-5/12 h-[35vh] md:h-full flex-shrink-0" />
 
             <div className="w-full md:w-6/12 h-[65vh] md:h-full flex items-center justify-center relative">
               
@@ -1216,7 +1235,8 @@ export default function HowItWorks() {
 
             </div>
           </div>
-        )}
+        </div>
+      )}
 
         {/* ── Slide dots ── */}
         <div
@@ -1238,14 +1258,16 @@ export default function HowItWorks() {
 
         {/* ── Slide label (top left) ── */}
         <div
-          className="absolute top-8 left-8 z-40 transition-opacity duration-500"
+          className="absolute top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
           style={{ opacity: interp(progress, 0, 0.08, 0, 1) * sliderOpacity }}
         >
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-black" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-500 font-bold">
-              {SLIDE_LABELS[activeSlide] ?? ""}
-            </span>
+          <div className="max-w-[1440px] w-full px-6 md:px-12 lg:px-20">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-black" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-500 font-bold">
+                {SLIDE_LABELS[activeSlide] ?? ""}
+              </span>
+            </div>
           </div>
         </div>
 

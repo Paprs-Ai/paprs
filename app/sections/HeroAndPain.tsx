@@ -583,6 +583,8 @@ export default function HeroAndPain() {
   const { ref, progress } = useScrollProgress();
   const [lettersAnimate, setLettersAnimate] = useState(false);
 
+
+
   useEffect(() => {
     const handleScroll = () => {
       const el = ref.current;
@@ -688,6 +690,22 @@ export default function HeroAndPain() {
         {/* ── HERO (progress < 0.18) ── */}
         {progress < 0.18 && (
           <>
+            {/* Vertical dividing line between Problem (left) and Solution (right) on desktop, horizontal on mobile */}
+            <div
+              className="absolute inset-0 z-30 pointer-events-none"
+              style={{ opacity: heroTextOpacity }}
+            >
+              {/* Desktop Vertical Line (Centered with top & bottom gradient fade) */}
+              <div 
+                className="hidden md:block absolute left-1/2 -translate-x-1/2 top-24 bottom-24 w-[1.5px] bg-gradient-to-b from-transparent via-black/25 to-transparent"
+              />
+
+              {/* Mobile Horizontal Line (Centered with left & right gradient fade) */}
+              <div 
+                className="md:hidden absolute inset-x-8 top-1/2 -translate-y-1/2 h-[1.5px] bg-gradient-to-r from-transparent via-black/25 to-transparent"
+              />
+            </div>
+
             <div
               className="absolute inset-0 flex flex-col md:flex-row z-30 pointer-events-none"
               style={{ opacity: heroTextOpacity }}
@@ -720,7 +738,7 @@ export default function HeroAndPain() {
               </div>
 
               <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-16">
-                <span className="font-mono text-sm font-extrabold tracking-[0.2em] text-black uppercase hidden md:inline self-end text-right">WITH PAPRS</span>
+                <span className="font-mono text-sm font-extrabold tracking-[0.2em] text-black uppercase self-end text-right">WITH PAPRS</span>
                 <div className="max-w-md pt-4">
                   <h1 className="text-3xl md:text-5xl lg:text-[3.45rem] font-extrabold tracking-tight font-syne leading-[0.92] mb-4 text-black">
                     {headlineRight.split(" ").map((word, wi) => (
@@ -813,88 +831,92 @@ export default function HeroAndPain() {
             >
 
               {/* SLIDE 0 */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none z-[1] opacity-55">
-                  <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
-                    <div style={{ transform: "translate(calc(-50% + 18vw), calc(-50% - 6vh)) rotate(-4deg)" }}>
-                      <DocumentCard type="nie" status="chaos" />
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
+                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                  <div className="absolute inset-0 pointer-events-none z-[1] opacity-55">
+                    <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
+                      <div style={{ transform: "translate(calc(-50% + 18vw), calc(-50% - 6vh)) rotate(-4deg)" }}>
+                        <DocumentCard type="nie" status="chaos" />
+                      </div>
+                    </div>
+                    <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
+                      <div style={{ transform: "translate(calc(-50% + 22vw), calc(-50% + 6vh)) rotate(8deg)" }}>
+                        <DocumentCard type="seg_social" status="chaos" />
+                      </div>
+                    </div>
+                    <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
+                      <div style={{ transform: "translate(calc(-50% + 20vw), calc(-50% + 2vh)) rotate(-8deg)" }}>
+                        <DocumentCard type="padron" status="chaos" />
+                      </div>
+                    </div>
+                    <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
+                      <div style={{ transform: "translate(calc(-50% + 24vw), calc(-50% - 2vh)) rotate(4deg)" }}>
+                        <DocumentCard type="hacienda" status="chaos" />
+                      </div>
                     </div>
                   </div>
-                  <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
-                    <div style={{ transform: "translate(calc(-50% + 22vw), calc(-50% + 6vh)) rotate(8deg)" }}>
-                      <DocumentCard type="seg_social" status="chaos" />
-                    </div>
-                  </div>
-                  <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
-                    <div style={{ transform: "translate(calc(-50% + 20vw), calc(-50% + 2vh)) rotate(-8deg)" }}>
-                      <DocumentCard type="padron" status="chaos" />
-                    </div>
-                  </div>
-                  <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
-                    <div style={{ transform: "translate(calc(-50% + 24vw), calc(-50% - 2vh)) rotate(4deg)" }}>
-                      <DocumentCard type="hacienda" status="chaos" />
-                    </div>
-                  </div>
-                </div>
 
-                <div className="w-full md:w-1/2 flex flex-col justify-center gap-5 relative z-[2]">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Day 1 in Spain</span>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.05] font-syne">
-                    You arrived.
-                    <br />
-                    <span className="text-zinc-500 font-normal text-2xl md:text-3xl">Life is waiting.</span>
-                  </h2>
-                  <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">
-                    You have a job, an apartment, plans. Then someone hands you a letter — in Spanish — and you realise: before any of this is real, Spain has paperwork that can&apos;t wait.
-                  </p>
-                  <div className="flex items-start gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3.5 py-3 max-w-sm">
-                    <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-black leading-snug font-mono font-medium">
-                      Most people spend their first 3 months just figuring out where to start.
+                  <div className="w-full md:w-1/2 flex flex-col justify-center gap-5 relative z-[2]">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Day 1 in Spain</span>
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.05] font-syne">
+                      You arrived.
+                      <br />
+                      <span className="text-zinc-500 font-normal text-2xl md:text-3xl">Life is waiting.</span>
+                    </h2>
+                    <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">
+                      You have a job, an apartment, plans. Then someone hands you a letter — in Spanish — and you realise: before any of this is real, Spain has paperwork that can&apos;t wait.
                     </p>
+                    <div className="flex items-start gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3.5 py-3 max-w-sm">
+                      <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-black leading-snug font-mono font-medium">
+                        Most people spend their first 3 months just figuring out where to start.
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="hidden md:block w-1/2 h-full" />
+                  <div className="hidden md:block w-1/2 h-full" />
+                </div>
               </div>
 
               {/* SLIDE 1 — What's waiting */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4 relative z-[2]">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">What&apos;s waiting</span>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                    5 procedures.
-                    <br />A specific order.
-                    <br />
-                    <span className="text-zinc-500 font-sans font-normal text-lg md:text-xl">None of it obvious.</span>
-                  </h2>
-                  <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                    Each one unlocks the next. Get the order wrong and you&apos;re back to square one — sometimes weeks later.
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="w-2 h-2 rounded-full bg-black" />
-                    <span className="font-mono text-xs text-zinc-600 font-medium">Most people don&apos;t know where to start</span>
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
+                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4 relative z-[2]">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">What&apos;s waiting</span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                      5 procedures.
+                      <br />A specific order.
+                      <br />
+                      <span className="text-zinc-500 font-sans font-normal text-lg md:text-xl">None of it obvious.</span>
+                    </h2>
+                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                      Each one unlocks the next. Get the order wrong and you&apos;re back to square one — sometimes weeks later.
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className="w-2 h-2 rounded-full bg-black" />
+                      <span className="font-mono text-xs text-zinc-600 font-medium">Most people don&apos;t know where to start</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="hidden md:flex w-6/12 flex-col justify-center relative z-[3]">
-                  <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                    {PROCEDURES.map((proc, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <div className="flex flex-col items-center flex-shrink-0">
-                          <div className="w-7 h-7 rounded-full border-2 border-zinc-400 bg-zinc-100 flex items-center justify-center text-black font-bold font-mono text-xs">?</div>
-                          {i < PROCEDURES.length - 1 && <div className="w-px h-6 bg-zinc-200 my-0.5" />}
+                  <div className="hidden md:flex w-6/12 flex-col justify-center relative z-[3]">
+                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
+                      {PROCEDURES.map((proc, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <div className="flex flex-col items-center flex-shrink-0">
+                            <div className="w-7 h-7 rounded-full border-2 border-zinc-400 bg-zinc-100 flex items-center justify-center text-black font-bold font-mono text-xs">?</div>
+                            {i < PROCEDURES.length - 1 && <div className="w-px h-6 bg-zinc-200 my-0.5" />}
+                          </div>
+                          <div className={`${i < PROCEDURES.length - 1 ? "pb-1" : ""}`}>
+                            <div className="text-sm font-semibold text-black leading-tight">{proc.name}</div>
+                            <div className="text-[11px] text-zinc-500 font-mono">{proc.hint}</div>
+                          </div>
                         </div>
-                        <div className={`${i < PROCEDURES.length - 1 ? "pb-1" : ""}`}>
-                          <div className="text-sm font-semibold text-black leading-tight">{proc.name}</div>
-                          <div className="text-[11px] text-zinc-500 font-mono">{proc.hint}</div>
+                      ))}
+                      <div className="pt-3 border-t border-zinc-200 mt-2">
+                        <div className="flex items-center gap-2">
+                          <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                          <span className="text-[11px] text-black font-mono font-bold">Wrong order = start over</span>
                         </div>
-                      </div>
-                    ))}
-                    <div className="pt-3 border-t border-zinc-200 mt-2">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0" />
-                        <span className="text-[11px] text-black font-mono font-bold">Wrong order = start over</span>
                       </div>
                     </div>
                   </div>
@@ -902,166 +924,173 @@ export default function HeroAndPain() {
               </div>
 
               {/* SLIDE 2 — NIE */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-black" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Procedure 1 of 5</span>
-                  </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                    NIE
-                    <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Número de Identidad de Extranjero</span>
-                  </h2>
-                  <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                    Without this, you can&apos;t work legally, sign a lease, or open a bank account. Getting it takes weeks.
-                  </p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-black" />
-                      <span className="font-mono text-xs text-black font-bold">4–6 weeks</span>
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-black" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Procedure 1 of 5</span>
                     </div>
-                    <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5">
-                      <span className="font-mono text-xs text-black font-semibold">€10.60 fee</span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                      NIE
+                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Número de Identidad de Extranjero</span>
+                    </h2>
+                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                      Without this, you can&apos;t work legally, sign a lease, or open a bank account. Getting it takes weeks.
+                    </p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-black" />
+                        <span className="font-mono text-xs text-black font-bold">4–6 weeks</span>
+                      </div>
+                      <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5">
+                        <span className="font-mono text-xs text-black font-semibold">€10.60 fee</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="hidden md:block w-6/12">
-                  <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What you actually need to do</div>
-                    <PainStep num={1} label="Book appointment on sie.extranjeros.es" sublabel="Cita previa — Comisaría de Policía" warning="Slots open Monday 8 AM. Gone by 8:02. Most people try for 2–3 weeks." />
-                    <PainStep num={2} label="Fill form EX-15 — in Spanish, 4 pages" sublabel="Download, print, and complete by hand" />
-                    <PainStep num={3} label="Pay Modelo 790 Código 012 at any bank" cost="€10.60 · Must pay before appointment" />
-                    <PainStep num={4} label="Show up at Comisaría with 6 documents" sublabel="Passport · EX-15 · Justification · 1 photo · Fee receipt · Originals + copies" warning="Missing one document = rejected. New appointment from scratch." />
-                    <PainStep num={5} label="Wait for processing" sublabel="4–6 weeks. No tracking. No email." isLast />
+                  <div className="hidden md:block w-6/12">
+                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What you actually need to do</div>
+                      <PainStep num={1} label="Book appointment on sie.extranjeros.es" sublabel="Cita previa — Comisaría de Policía" warning="Slots open Monday 8 AM. Gone by 8:02. Most people try for 2–3 weeks." />
+                      <PainStep num={2} label="Fill form EX-15 — in Spanish, 4 pages" sublabel="Download, print, and complete by hand" />
+                      <PainStep num={3} label="Pay Modelo 790 Código 012 at any bank" cost="€10.60 · Must pay before appointment" />
+                      <PainStep num={4} label="Show up at Comisaría with 6 documents" sublabel="Passport · EX-15 · Justification · 1 photo · Fee receipt · Originals + copies" warning="Missing one document = rejected. New appointment from scratch." />
+                      <PainStep num={5} label="Wait for processing" sublabel="4–6 weeks. No tracking. No email." isLast />
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* SLIDE 3 — Empadronamiento */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-black" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Procedure 2 of 5</span>
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-black" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Procedure 2 of 5</span>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                      Empadronamiento
+                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Padrón Municipal — proof of address</span>
+                    </h2>
+                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                      Needed before almost everything else. Without it: no bank, no healthcare, no NIE, no school.
+                    </p>
+                    <div className="space-y-1.5 mt-1">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">Required for:</div>
+                      {["Bank account", "Healthcare", "NIE/TIE", "School enrollment"].map((dep) => (
+                        <div key={dep} className="inline-flex items-center gap-1 bg-zinc-100 border border-zinc-200 rounded-full px-2.5 py-0.5 text-[11px] font-mono text-black mr-1.5 mb-1 font-semibold">
+                          <div className="w-1.5 h-1.5 rounded-full bg-black" />{dep}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                    Empadronamiento
-                    <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Padrón Municipal — proof of address</span>
-                  </h2>
-                  <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                    Needed before almost everything else. Without it: no bank, no healthcare, no NIE, no school.
-                  </p>
-                  <div className="space-y-1.5 mt-1">
-                    <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">Required for:</div>
-                    {["Bank account", "Healthcare", "NIE/TIE", "School enrollment"].map((dep) => (
-                      <div key={dep} className="inline-flex items-center gap-1 bg-zinc-100 border border-zinc-200 rounded-full px-2.5 py-0.5 text-[11px] font-mono text-black mr-1.5 mb-1 font-semibold">
-                        <div className="w-1.5 h-1.5 rounded-full bg-black" />{dep}
-                      </div>
-                    ))}
-                  </div>
-                </div>
 
-                <div className="hidden md:block w-6/12">
-                  <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What you actually need to do</div>
-                    <PainStep num={1} label="Find your specific ayuntamiento" sublabel="Barcelona, Madrid — each district has its own office" />
-                    <PainStep num={2} label="Book cita previa or queue in person" sublabel="Office hours: Mon–Fri 9:00–14:00 only" warning="No evenings. No weekends. If you work, plan a half-day off." />
-                    <PainStep num={3} label="Bring originals — no copies accepted" sublabel="Passport (original) · Lease contract (signed, < 3 months old)" warning="Sublet agreements often rejected. Landlord must sign." />
-                    <PainStep num={4} label="Fill and submit form at the office" sublabel="In person only — cannot be done online" />
-                    <PainStep num={5} label="Collect volante de empadronamiento" sublabel="Expires in 3 months. You will need to renew it multiple times." isLast />
+                  <div className="hidden md:block w-6/12">
+                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What you actually need to do</div>
+                      <PainStep num={1} label="Find your specific ayuntamiento" sublabel="Barcelona, Madrid — each district has its own office" />
+                      <PainStep num={2} label="Book cita previa or queue in person" sublabel="Office hours: Mon–Fri 9:00–14:00 only" warning="No evenings. No weekends. If you work, plan a half-day off." />
+                      <PainStep num={3} label="Bring originals — no copies accepted" sublabel="Passport (original) · Lease contract (signed, < 3 months old)" warning="Sublet agreements often rejected. Landlord must sign." />
+                      <PainStep num={4} label="Fill and submit form at the office" sublabel="In person only — cannot be done online" />
+                      <PainStep num={5} label="Collect volante de empadronamiento" sublabel="Expires in 3 months. You will need to renew it multiple times." isLast />
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* SLIDE 4 — Healthcare */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none">
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="w-4 h-4 text-black" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Procedure 3 of 5</span>
-                  </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                    Healthcare
-                    <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Tarjeta Sanitaria — not automatic</span>
-                  </h2>
-                  <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                    You&apos;re in Spain. You&apos;re not covered yet. This requires two offices, five documents, and weeks of waiting.
-                  </p>
-                  <div className="bg-zinc-100 border border-zinc-300 rounded-xl p-3 mt-1 flex items-start gap-2">
-                    <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-black leading-snug font-mono">
-                      Emergency before card arrives? You pay upfront — and claim it back months later.
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
+                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                    <div className="flex items-center gap-2">
+                      <CreditCard className="w-4 h-4 text-black" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Procedure 3 of 5</span>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                      Healthcare
+                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Tarjeta Sanitaria — not automatic</span>
+                    </h2>
+                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                      You&apos;re in Spain. You&apos;re not covered yet. This requires two offices, five documents, and weeks of waiting.
                     </p>
+                    <div className="bg-zinc-100 border border-zinc-300 rounded-xl p-3 mt-1 flex items-start gap-2">
+                      <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-black leading-snug font-mono">
+                        Emergency before card arrives? You pay upfront — and claim it back months later.
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="hidden md:block w-6/12">
-                  <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What you actually need to do</div>
-                    <PainStep num={1} label="NIE obtained" sublabel="Required before anything here" isPrereq />
-                    <PainStep num={2} label="Empadronamiento obtained" sublabel="Required before anything here" isPrereq />
-                    <PainStep num={3} label="Book appointment at INSS office" sublabel="Instituto Nacional de la Seguridad Social" warning="INSS and healthcare center are different offices. Two separate appointments." />
-                    <PainStep num={4} label="Register — get NUSS number" sublabel="Bring: NIE · Passport · Empadronamiento · Work contract or proof of status" />
-                    <PainStep num={5} label="Go to CAP (health center) — register with GP" sublabel="Book separately. Different office, different queue." />
-                    <PainStep num={6} label="Tarjeta Sanitaria arrives by post" sublabel="2–4 weeks. No card = no scheduled appointments." isLast />
+                  <div className="hidden md:block w-6/12">
+                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What you actually need to do</div>
+                      <PainStep num={1} label="NIE obtained" sublabel="Required before anything here" isPrereq />
+                      <PainStep num={2} label="Empadronamiento obtained" sublabel="Required before anything here" isPrereq />
+                      <PainStep num={3} label="Book appointment at INSS office" sublabel="Instituto Nacional de la Seguridad Social" warning="INSS and healthcare center are different offices. Two separate appointments." />
+                      <PainStep num={4} label="Register — get NUSS number" sublabel="Bring: NIE · Passport · Empadronamiento · Work contract or proof of status" />
+                      <PainStep num={5} label="Go to CAP (health center) — register with GP" sublabel="Book separately. Different office, different queue." />
+                      <PainStep num={6} label="Tarjeta Sanitaria arrives by post" sublabel="2–4 weeks. No card = no scheduled appointments." isLast />
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* SLIDE 5 — The real cost */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-between px-8 md:px-20 lg:px-28 select-none relative overflow-hidden">
-                <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 p-6 md:p-8 rounded-3xl border border-zinc-300 bg-white/90 backdrop-blur-md shadow-xl relative z-30 select-text">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 rounded-full bg-black" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Average experience without help</span>
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
+                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 p-6 md:p-8 rounded-3xl border border-zinc-300 bg-white/90 backdrop-blur-md shadow-xl relative z-30 select-text">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block w-2 h-2 rounded-full bg-black" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Average experience without help</span>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                      The real cost of going it alone.
+                    </h2>
+                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                      This is before taxes, work permits, TIE renewal, or driving licence exchange. Most people make at least one expensive mistake.
+                    </p>
+                    <div className="flex flex-col gap-2.5 mt-1">
+                      <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
+                        <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                        NIE: avg 3 attempts just to get an appointment
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
+                        <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                        Wrong step order = weeks of delay + repeat visits
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-black font-mono font-bold">
+                        <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                        Most end up paying a gestor €500+ to fix their mistakes
+                      </div>
+                    </div>
                   </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                    The real cost of going it alone.
-                  </h2>
-                  <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                    This is before taxes, work permits, TIE renewal, or driving licence exchange. Most people make at least one expensive mistake.
-                  </p>
-                  <div className="flex flex-col gap-2.5 mt-1">
-                    <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
-                      <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                      NIE: avg 3 attempts just to get an appointment
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
-                      <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                      Wrong step order = weeks of delay + repeat visits
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-black font-mono font-bold">
-                      <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                      Most end up paying a gestor €500+ to fix their mistakes
-                    </div>
-                  </div>
-                </div>
 
-                <div className="hidden md:flex w-6/12 flex-col gap-2.5 relative z-10">
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <StatCounter
-                      target={12} suffix="+"
-                      label="Appointments"
-                      sublabel="avg 3 tries for NIE alone"
-                      isActive={activeSlide === 5}
-                    />
-                    <StatCounter
-                      target={14}
-                      label="Documents"
-                      sublabel="originals — copies rejected"
-                      isActive={activeSlide === 5}
-                    />
-                    <StatCounter
-                      target={6}
-                      label="Offices"
-                      sublabel="different buildings, different hours"
-                      isActive={activeSlide === 5}
-                    />
-                    <StatCounter
-                      target={60} suffix="+"
-                      label="Days"
-                      sublabel="minimum until fully legal & covered"
+                  <div className="hidden md:flex w-6/12 flex-col gap-2.5 relative z-10">
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <StatCounter
+                        target={12} suffix="+"
+                        label="Appointments"
+                        sublabel="avg 3 tries for NIE alone"
+                        isActive={activeSlide === 5}
+                      />
+                      <StatCounter
+                        target={14}
+                        label="Documents"
+                        sublabel="originals — copies rejected"
+                        isActive={activeSlide === 5}
+                      />
+                      <StatCounter
+                        target={6}
+                        label="Offices"
+                        sublabel="different buildings, different hours"
+                        isActive={activeSlide === 5}
+                      />
+                      <StatCounter
+                        target={60} suffix="+"
+                        label="Days"
+                        sublabel="minimum until fully legal & covered"
                       isActive={activeSlide === 5}
                     />
                   </div>
@@ -1085,10 +1114,10 @@ export default function HeroAndPain() {
                 </div>
 
               </div>
-
             </div>
           </div>
-        )}
+        </div>
+      )}
 
         {/* ── BRIDGE CHAOS CARDS ── */}
         {progress >= 0.80 && (
@@ -1188,14 +1217,16 @@ export default function HeroAndPain() {
         {/* ── SLIDE LABEL (top left) ── */}
         {progress >= 0.18 && (
           <div
-            className="absolute top-8 left-8 z-40 transition-opacity duration-500"
+            className="absolute top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
             style={{ opacity: interp(progress, 0.18, 0.26, 0, 1) * sliderOpacity }}
           >
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-black" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
-                {["Day 1", "What's waiting", "Getting NIE", "Empadronamiento", "Healthcare", "The real cost"][activeSlide] ?? ""}
-              </span>
+            <div className="max-w-[1440px] w-full px-6 md:px-12 lg:px-20">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
+                  {["Day 1", "What's waiting", "Getting NIE", "Empadronamiento", "Healthcare", "The real cost"][activeSlide] ?? ""}
+                </span>
+              </div>
             </div>
           </div>
         )}

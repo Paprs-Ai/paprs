@@ -95,7 +95,7 @@ export default function PaprsQRAndVault() {
     <section
       ref={ref}
       id="qr-vault"
-      className="relative h-[400vh] w-full bg-[#FFFFFF] text-black scroll-mt-28 select-none border-t border-zinc-200"
+      className="relative h-[400vh] w-full bg-[#FFFFFF] text-black scroll-mt-28 select-none"
     >
       {/* Sticky Full-Viewport Container */}
       <div className="sticky top-0 w-full h-screen flex items-center justify-center px-6 md:px-12 lg:px-20 overflow-hidden z-20">

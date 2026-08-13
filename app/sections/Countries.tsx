@@ -8,11 +8,11 @@ const Q1 = [
   { flag: "🇩🇪", code: "DE", name: "Germany" },
   { flag: "🇫🇷", code: "FR", name: "France" },
 ];
-const Q3 = [
+const Q2 = [
   { flag: "🇮🇹", code: "IT", name: "Italy" },
   { flag: "🇵🇹", code: "PT", name: "Portugal" },
 ];
-const Q4 = [
+const Q3 = [
   { flag: "🇳🇱", code: "NL", name: "Netherlands" },
   { flag: "🇦🇹", code: "AT", name: "Austria" },
 ];
@@ -35,7 +35,7 @@ export default function Countries() {
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#FFFFFF] to-transparent pointer-events-none z-10" />
 
       {/* 3-column content layout */}
-      <div className="relative z-20 flex min-h-screen px-10 md:px-16">
+      <div className="relative z-20 flex min-h-screen max-w-[1440px] w-full mx-auto px-6 md:px-12 lg:px-20">
 
         {/* LEFT — Title */}
         <div className="w-[38%] flex flex-col justify-center pr-8 py-20 select-none">
@@ -44,7 +44,7 @@ export default function Countries() {
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold font-syne text-black mt-5 mb-5 leading-[1.05]">
             Starting in<br />Spain.<br />
-            <span className="text-black underline underline-offset-4">Growing</span><br />
+            Growing<br />
             across Europe.
           </h2>
           <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
@@ -75,14 +75,14 @@ export default function Countries() {
 
           {/* Q1 2026 group */}
           <div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="h-px flex-1 bg-zinc-200" />
-                <span className="font-mono text-[9px] uppercase tracking-widest text-black font-bold">Q1 2026</span>
-                <div className="h-px flex-1 bg-zinc-200" />
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {Q1.map(c => (
-                  <div key={c.code} className="bg-white/80 backdrop-blur-sm border border-zinc-300 rounded-xl p-3 flex flex-col items-center gap-1.5 hover:border-black transition-colors duration-200">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="h-px flex-1 bg-zinc-200" />
+              <span className="font-mono text-[9px] uppercase tracking-widest text-black font-bold">Q1 2026</span>
+              <div className="h-px flex-1 bg-zinc-200" />
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {Q1.map((c) => (
+                <div key={c.code} className="bg-white/80 backdrop-blur-sm border border-zinc-300 rounded-xl p-3 flex flex-col items-center gap-1.5 hover:border-black transition-colors duration-200">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-zinc-500 uppercase tracking-wider">{c.code}</span>
                   <span className="font-syne font-bold text-[11px] text-black text-center leading-tight">{c.name}</span>
@@ -91,16 +91,16 @@ export default function Countries() {
             </div>
           </div>
 
-          {/* Q3 2026 group */}
+          {/* Q2 2026 group */}
           <div>
-              <div className="flex items-center gap-2 mb-2.5">
-                <div className="h-px flex-1 bg-zinc-200" />
-                <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Q3 2026</span>
-                <div className="h-px flex-1 bg-zinc-200" />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {Q3.map(c => (
-                  <div key={c.code} className="bg-white/60 backdrop-blur-sm border border-zinc-200 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-80">
+            <div className="flex items-center gap-2 mb-2.5">
+              <div className="h-px flex-1 bg-zinc-200" />
+              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Q2 2026</span>
+              <div className="h-px flex-1 bg-zinc-200" />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {Q2.map((c) => (
+                <div key={c.code} className="bg-white/60 backdrop-blur-sm border border-zinc-200 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-80">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-wider">{c.code}</span>
                   <span className="font-syne font-bold text-[11px] text-zinc-700 text-center leading-tight">{c.name}</span>
@@ -109,16 +109,16 @@ export default function Countries() {
             </div>
           </div>
 
-          {/* Q4 2026 group */}
+          {/* Q3 2026 group */}
           <div>
-              <div className="flex items-center gap-2 mb-2.5">
-                <div className="h-px flex-1 bg-zinc-200" />
-                <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Q4 2026</span>
-                <div className="h-px flex-1 bg-zinc-200" />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {Q4.map(c => (
-                  <div key={c.code} className="bg-white/50 backdrop-blur-sm border border-zinc-200 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-60">
+            <div className="flex items-center gap-2 mb-2.5">
+              <div className="h-px flex-1 bg-zinc-200" />
+              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Q3 2026</span>
+              <div className="h-px flex-1 bg-zinc-200" />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {Q3.map((c) => (
+                <div key={c.code} className="bg-white/50 backdrop-blur-sm border border-zinc-200 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-60">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-wider">{c.code}</span>
                   <span className="font-syne font-bold text-[11px] text-zinc-600 text-center leading-tight">{c.name}</span>

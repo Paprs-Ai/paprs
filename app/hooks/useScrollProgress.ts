@@ -17,7 +17,9 @@ export function useScrollProgress() {
       return;
     }
 
-    const handleScroll = () => {
+    let ticking = false;
+
+    const calculateProgress = () => {
       const rect = el.getBoundingClientRect();
       const viewHeight = window.innerHeight;
       const elementHeight = rect.height;
@@ -43,6 +45,14 @@ export function useScrollProgress() {
         p = Math.max(0, Math.min(1, p));
         setProgress(p);
       }
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(calculateProgress);
+        ticking = true;
+      }
     };
 
     // Use passive event listener for performance
@@ -50,7 +60,7 @@ export function useScrollProgress() {
     window.addEventListener("resize", handleScroll, { passive: true });
     
     // Initial call
-    handleScroll();
+    calculateProgress();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
