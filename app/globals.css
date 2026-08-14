@@ -42,6 +42,89 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-syne);
+  letter-spacing: -0.03em;
+  font-optical-sizing: auto;
+}
+
+/* Optical type adjustments */
+p {
+  letter-spacing: -0.005em;
+}
+
+/* Apple Design Direct Response & Spring Utilities */
+.apple-spring {
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-spring-fast {
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-press {
+  transition: transform 100ms cubic-bezier(0.16, 1, 0.3, 1), opacity 100ms ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.apple-press:active {
+  transform: scale(0.965);
+}
+
+.apple-card-press {
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.apple-card-press:active {
+  transform: scale(0.985);
+}
+
+/* Translucent Frosted Glass Materials */
+.apple-glass {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.apple-glass-dark {
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Keep browser autofill and text selection inside the waitlist field monochrome. */
+.waitlist-email,
+.waitlist-email:focus {
+  color: #000000;
+  background-color: transparent;
+  caret-color: #000000;
+}
+
+.waitlist-email::selection {
+  color: #000000;
+  background: #d4d4d8;
+}
+
+.waitlist-email::-moz-selection {
+  color: #000000;
+  background: #d4d4d8;
+}
+
+.waitlist-email:-webkit-autofill,
+.waitlist-email:-webkit-autofill:hover,
+.waitlist-email:-webkit-autofill:focus,
+.waitlist-email:-webkit-autofill:active {
+  -webkit-text-fill-color: #000000 !important;
+  caret-color: #000000;
+  -webkit-box-shadow: 0 0 0 1000px #fafafa inset !important;
+  box-shadow: 0 0 0 1000px #fafafa inset !important;
+}
+
+.waitlist-email:autofill {
+  color: #000000;
+  background: #fafafa !important;
+  box-shadow: 0 0 0 1000px #fafafa inset !important;
 }
 
 /* Hide vertical and horizontal scrollbars globally while keeping scroll functionality */
@@ -55,7 +138,6 @@ h1, h2, h3, h4, h5, h6 {
   width: 0;
   height: 0;
 }
-
 
 @keyframes drawLine {
   from {
@@ -181,3 +263,10 @@ img, video, iframe, canvas, svg {
   }
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  .apple-glass, .apple-glass-dark {
+    background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}

@@ -12,16 +12,20 @@ import Countries from "./sections/Countries";
 import Pricing from "./sections/Pricing";
 import FinalCTA from "./sections/FinalCTA";
 
+// Keep the complete pricing experience ready for a later launch without
+// exposing it on the public landing page yet.
+const PRICING_ENABLED = false;
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-clip bg-[#FFFFFF] text-black font-sans selection:bg-black selection:text-white">
       
-      {/* Sticky Top Header */}
+      {/* Sticky Top Header — Apple-Grade Translucent Material & Instant Response */}
       <header 
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/10 bg-white/80 backdrop-blur-md shadow-xs select-none text-black transition-all"
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full apple-glass shadow-[0_8px_30px_rgba(0,0,0,0.04)] select-none text-black transition-all"
       >
         {/* Brand Logo */}
-        <a href="#" className="flex items-center gap-0.5 hover:opacity-85 transition-opacity">
+        <a href="#" className="flex items-center gap-0.5 hover:opacity-85 apple-press">
           <img 
             src="/paprs-logo-black.png" 
             alt="P" 
@@ -34,23 +38,23 @@ export default function Home() {
 
         {/* Navigation Links */}
         <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
-          <a href="#pain" className="transition-colors hover:text-black font-bold">Reality</a>
-          <a href="#how-it-works" className="transition-colors hover:text-black font-bold">Product</a>
-          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold">Autónomo</a>
-          <a href="#qr-vault" className="transition-colors hover:text-black font-bold">QR & Vault</a>
-          <a href="#benchmark" className="transition-colors hover:text-black font-bold">AI vs Human</a>
-          <a href="#ai-learns" className="transition-colors hover:text-black font-bold">Intelligence</a>
-          <a href="#countries" className="transition-colors hover:text-black font-bold">Europe</a>
-          <a href="#pricing" className="transition-colors hover:text-black font-bold">Pricing</a>
+          <a href="#pain" className="transition-colors hover:text-black font-bold apple-press">Reality</a>
+          <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">Product</a>
+          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">Autónomo</a>
+          <a href="#qr-vault" className="transition-colors hover:text-black font-bold apple-press">QR & Vault</a>
+          <a href="#benchmark" className="transition-colors hover:text-black font-bold apple-press">AI vs Human</a>
+          <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">Intelligence</a>
+          <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">Europe</a>
+          <a href="#waitlist" className="transition-colors hover:text-black font-bold apple-press">Waitlist</a>
         </nav>
 
         {/* Nav CTA */}
         <div>
           <a 
-            href="#cta" 
-            className="px-4 py-1.5 rounded-full border border-black/30 text-white bg-black/75 backdrop-blur-md hover:bg-black transition-all duration-300 font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs"
+            href="#waitlist"
+            className="px-4 py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press block"
           >
-            Get Started
+            Join Waitlist
           </a>
         </div>
       </header>
@@ -64,7 +68,7 @@ export default function Home() {
         <SyntheticBenchmark />
         <AILearns />
         <Countries />
-        <Pricing />
+        {PRICING_ENABLED && <Pricing />}
         {/* Testimonials disabled for now */}
         {/* <SocialProof /> */}
         <FinalCTA />
