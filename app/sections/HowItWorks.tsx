@@ -27,11 +27,27 @@ function SlideDots({ total, active }: { total: number; active: number }) {
   );
 }
 
+function OutcomePills({ items }: { items: string[] }) {
+  return (
+    <div className="mt-5 flex flex-wrap gap-2">
+      {items.map((item) => (
+        <span
+          key={item}
+          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 bg-zinc-100 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-black"
+        >
+          <Check className="h-3 w-3" aria-hidden="true" />
+          {item}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function AIComputingLogger() {
   const [items, setItems] = React.useState([
-    { id: 1, text: "Parsed 14 bureaucracy decrees" },
-    { id: 2, text: "Extracted 3 official dependencies" },
-    { id: 3, text: "Generated live path" },
+    { id: 1, text: "Matched the correct residence route" },
+    { id: 2, text: "Verified forms, evidence, and fees" },
+    { id: 3, text: "Ordered tasks by dependency and deadline" },
   ]);
   const [status, setStatus] = React.useState<"loading" | "done">("loading");
 
@@ -90,15 +106,15 @@ function AIComputingLogger() {
 }
 
 const SLIDE_LABELS = [
-  "Paprs appears", 
-  "Step 01", 
-  "Step 02", 
-  "Step 03", 
-  "Step 04", 
-  "Step 05", 
-  "Step 06", 
-  "Step 07", 
-  "Step 08"
+  "Chaos, organised",
+  "Understand your case",
+  "Build your route",
+  "Show the next action",
+  "Protect every deadline",
+  "Track every handoff",
+  "Read your documents",
+  "Adapt the plan",
+  "Act with approval",
 ];
 
 export default function HowItWorks() {
@@ -251,14 +267,15 @@ export default function HowItWorks() {
               <div className="w-full md:w-7/12 h-full flex items-center gap-6 relative z-20 md:pl-6">
                 <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
                   <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit inline-block">
-                    Paprs appears
+                    From confusion to action
                   </span>
                   <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
-                    There&apos;s a better way.
+                    Paprs turns the maze into your next move.
                   </h3>
                   <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-sm">
-                    The same pile becomes a roadmap: deadlines, dependencies, documents, and the next plain-language step.
+                    Instead of opening ten tabs and translating legal language yourself, you get one personal plan showing what matters now, what can wait, and what Paprs can prepare for you.
                   </p>
+                  <OutcomePills items={["One route", "One next action"]} />
                 </div>
 
                 <div className="relative flex-shrink-0 pointer-events-none">
@@ -278,7 +295,7 @@ export default function HowItWorks() {
                     style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
                   >
                     <Check className="w-3.5 h-3.5 text-black" />
-                    Everything organised
+                    Your route is ready
                   </div>
                 </div>
               </div>
@@ -293,11 +310,12 @@ export default function HowItWorks() {
                   Step 01
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Tell us who you are.
+                  Tell Paprs once.
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Three minutes. No forms. No legal jargon. Just plain questions that filter your exact bureaucratic situation.
+                  Paprs asks only the questions that change your route—where you are from, why you are in Spain, where you live, and what is time-sensitive. Every answer removes irrelevant procedures.
                 </p>
+                <OutcomePills items={["Plain-language questions", "No generic checklist"]} />
               </div>
 
               <div className="w-full md:w-6/12 h-[65vh] md:h-full flex-shrink-0" />
@@ -312,7 +330,7 @@ export default function HowItWorks() {
                   Step 02
                 </span>
                 
-                <div className="relative w-full mt-6 h-48">
+                <div className="relative mt-6 h-64 w-full md:h-72">
                   {/* Phase 1 */}
                   <div 
                     className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
@@ -323,10 +341,10 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      Your answers filtered.
+                      First, Paprs understands the case.
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      Based on your target city, visa type, and origin, we map your onboarding data instantly. No complex legal terms, just plain facts.
+                      Your nationality, purpose of stay, city, housing, deadlines, and existing documents become one structured profile—so nothing important is lost between searches.
                     </p>
                   </div>
 
@@ -340,10 +358,10 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      Analyzing situation.
+                      Then, Paprs finds the right route.
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      Our system parses Spanish immigration guidelines, computes task dependencies, and checks local townhall appointments in real time.
+                      It matches your situation to the relevant official procedure, forms, evidence, fees, local rules, and known dependencies—without making you decode the acronyms.
                     </p>
                   </div>
 
@@ -357,10 +375,10 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      We build your roadmap.
+                      Every dependency falls into place.
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      You get a chronologically prioritized task list. You know exactly what is ready to process, what is urgent, and what is currently locked.
+                      Paprs orders the work around deadlines and prerequisites. Ready tasks move forward. Blocked tasks explain exactly what is missing. Nothing starts in the wrong order.
                     </p>
                   </div>
 
@@ -374,13 +392,14 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      Follow step-by-step.
+                      Hours of research become one action.
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      No guessing. For every task, follow granular instructions with required forms, tax fee calculators, and office maps to hit 100% completion.
+                      For the next step, Paprs brings together the correct form, evidence checklist, fee, official link, office, and instructions—then prepares whatever can be safely prepared.
                     </p>
                   </div>
                 </div>
+                <OutcomePills items={["Verified requirements", "Dependencies ordered", "Next action prepared"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -394,11 +413,12 @@ export default function HowItWorks() {
                   Step 03
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Your personal command centre
+                  One screen answers: “What do I do now?”
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  One screen that summarizes your entire legal identity, tailored specifically to your student or worker profile.
+                  See every procedure as ready, in progress, waiting on an office, or blocked by a missing document. Paprs always surfaces the next useful action—not another dashboard to manage.
                 </p>
+                <OutcomePills items={["Ready", "Waiting", "Blocked"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -412,11 +432,12 @@ export default function HowItWorks() {
                   Step 04
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Always know what&apos;s urgent
+                  Deadlines stop living in your head.
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Critical deadlines, visa renewals, and tax reports are flagged automatically. No more surprise expiration dates.
+                  Paprs reads the dates that matter, counts backwards from the deadline, and tells you what must happen first—while there is still time to fix a missing document or unavailable appointment.
                 </p>
+                <OutcomePills items={["Deadline watch", "Early warning", "Recovery time"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -430,11 +451,12 @@ export default function HowItWorks() {
                   Step 05
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Track every process in one place
+                  Know who has the ball.
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  See real-time progress. Know exactly which step you are on, and what the administration is currently doing.
+                  Paprs separates what you have completed, what is waiting on an administration, and what needs your attention next—so you do not repeat work or wonder whether you missed something.
                 </p>
+                <OutcomePills items={["Done by you", "Waiting on office", "Next step"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -448,11 +470,12 @@ export default function HowItWorks() {
                   Step 06
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Your documents, safe and watched
+                  Your documents become working memory.
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Paprs reads your certificates, extracts dates, and notifies you when registration or residency documents are expiring.
+                  Upload a certificate once. Paprs identifies the document, extracts useful dates and details, connects it to the right procedures, and reuses the evidence when the next checklist asks for it.
                 </p>
+                <OutcomePills items={["Details extracted", "Evidence organised", "Reuse instead of retype"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -466,11 +489,12 @@ export default function HowItWorks() {
                   Step 07
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  We spot things you&apos;d miss
+                  When life changes, the plan changes with it.
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  If an empadronamiento needs updates, or a fee changes, Paprs automatically triggers a recommendation to keep you safe.
+                  A new address, job, family situation, document date, fee, or official requirement can change what comes next. Paprs detects the impact, re-orders the route, and explains the new action.
                 </p>
+                <OutcomePills items={["Change detected", "Impact explained", "Plan re-ordered"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -484,11 +508,12 @@ export default function HowItWorks() {
                   Step 08
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Your pocket legal agency
+                  Paprs prepares. You approve. Paprs acts.
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Your daily Spanish bureaucracy, registrations, and tax filings resolved inside a single interface. Ready whenever you are.
+                  Paprs can research the route, prepare forms and evidence, monitor changes, and carry out supported digital actions. Before anything consequential is submitted, you see exactly what will happen and stay in control.
                 </p>
+                <OutcomePills items={["Prepared for you", "Human approval", "Action tracked"]} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -641,7 +666,7 @@ export default function HowItWorks() {
                                 {s1p < 0.35 
                                   ? "Identity & Legal Status" 
                                   : s1p < 0.65 
-                                    ? "Immediate Need & Urgency" 
+                                    ? "Purpose & Timing"
                                     : "Location & Housing"}
                               </span>
                               <div className="relative w-[18px] h-[18px] flex items-center justify-center shrink-0">
@@ -730,24 +755,12 @@ export default function HowItWorks() {
                               <div className="flex flex-col gap-4.5 animate-fadeIn">
                                 <div className="flex flex-col gap-1.5">
                                   <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    What is your most urgent need?
+                                    What brings you to Spain?
                                   </h4>
                                   <div className="flex flex-col gap-2">
                                     <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.46 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
                                       <span className={`text-[7.5px] font-mono ${s1p > 0.46 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Getting Spanish NIE / TIE
-                                      </span>
-                                      {s1p > 0.46 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.46 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.46 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Renting flat / Padrón
+                                        Study at a Spanish university
                                       </span>
                                       {s1p > 0.46 ? (
                                         <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
@@ -758,7 +771,13 @@ export default function HowItWorks() {
                                       )}
                                     </div>
                                     <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Social Security (NUSS)</span>
+                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">
+                                        Work for a Spanish employer
+                                      </span>
+                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
+                                    </div>
+                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Join a family member</span>
                                       <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
                                     </div>
                                   </div>
@@ -766,12 +785,12 @@ export default function HowItWorks() {
 
                                 <div className="flex flex-col gap-1.5 border-t border-zinc-200 pt-2.5">
                                   <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    How urgent is this need?
+                                    When does your current permit expire?
                                   </h4>
                                   <div className="flex flex-col gap-2">
                                     <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.56 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
                                       <span className={`text-[7.5px] font-mono ${s1p > 0.56 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Extremely urgent
+                                        In 52 days
                                       </span>
                                       {s1p > 0.56 ? (
                                         <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
@@ -782,7 +801,7 @@ export default function HowItWorks() {
                                       )}
                                     </div>
                                     <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Within 1 month</span>
+                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">More than 90 days</span>
                                       <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
                                     </div>
                                   </div>
@@ -823,12 +842,12 @@ export default function HowItWorks() {
 
                                 <div className="flex flex-col gap-1.5 border-t border-zinc-200 pt-2.5">
                                   <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    What is your work setup?
+                                    What is your housing setup?
                                   </h4>
                                   <div className="flex flex-col gap-2">
                                     <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.86 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
                                       <span className={`text-[7.5px] font-mono ${s1p > 0.86 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Local contract
+                                        Room in a shared flat
                                       </span>
                                       {s1p > 0.86 ? (
                                         <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
@@ -838,17 +857,11 @@ export default function HowItWorks() {
                                         <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
                                       )}
                                     </div>
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.86 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.86 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Digital nomad / Remote
+                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
+                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">
+                                        Lease in my name
                                       </span>
-                                      {s1p > 0.86 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
+                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
                                     </div>
                                   </div>
                                 </div>
@@ -869,22 +882,22 @@ export default function HowItWorks() {
                                 <Sparkles className="w-4 h-4 text-black animate-pulse" />
                               </div>
                               <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight">
-                                Profile Completed!
+                                Your Route Is Ready
                               </h4>
                               <p className="text-[7.5px] text-zinc-500 max-w-[140px] leading-relaxed">
-                                We identified 3 procedures required for your move.
+                                Paprs found the linked actions for your student renewal.
                               </p>
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                              <span className="text-[7.5px] font-mono text-zinc-500 uppercase tracking-wider font-extrabold mb-0.5">Required Actions</span>
+                              <span className="text-[7.5px] font-mono text-zinc-500 uppercase tracking-wider font-extrabold mb-0.5">Your first actions</span>
                               <div className="bg-white border border-zinc-200 p-2.5 rounded-2xl flex items-center gap-2 shadow-sm">
                                 <div className="w-6 h-6 rounded-xl bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black shrink-0">
                                   <MapPin className="w-3 h-3" />
                                 </div>
                                 <div className="min-w-0">
-                                  <h6 className="text-[8.5px] font-bold text-black leading-none">Empadronamiento</h6>
-                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">Registration certificate</p>
+                                  <h6 className="text-[8.5px] font-bold text-black leading-none">Confirm renewal evidence</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">Passport · enrolment · insurance</p>
                                 </div>
                               </div>
                               <div className="bg-white border border-zinc-200 p-2.5 rounded-2xl flex items-center gap-2 shadow-sm">
@@ -892,15 +905,15 @@ export default function HowItWorks() {
                                   <FileText className="w-3 h-3" />
                                 </div>
                                 <div className="min-w-0">
-                                  <h6 className="text-[8.5px] font-bold text-black leading-none">NIE Certificate</h6>
-                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">Tax Identification Number</p>
+                                  <h6 className="text-[8.5px] font-bold text-black leading-none">Prepare the application</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">Form · fee · submission route</p>
                                 </div>
                               </div>
                             </div>
                           </div>
 
                           <div className="w-full py-2 bg-black text-white rounded-xl text-[8px] font-bold font-mono flex items-center justify-center gap-1.5 shadow-md cursor-pointer hover:bg-zinc-800 transition-colors">
-                            Compute Roadmap <Cpu className="w-3 h-3 text-white" />
+                            Build My Roadmap <Cpu className="w-3 h-3 text-white" />
                           </div>
                         </div>
 
@@ -909,7 +922,7 @@ export default function HowItWorks() {
                           <div className="flex flex-col items-center gap-2 mt-4 relative z-10">
                             <div className="text-[8px] font-mono text-black uppercase tracking-widest font-extrabold flex items-center gap-1 bg-zinc-100 border border-zinc-300 px-2 py-0.5 rounded-full">
                               <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span>
-                              Analyzing Situation
+                              Building Your Route
                             </div>
 
                             <div className="w-28 h-28 flex items-center justify-center my-1 select-none pointer-events-none">
@@ -928,7 +941,7 @@ export default function HowItWorks() {
                         <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-14 bg-[#FFFFFF] justify-between">
                           <div className="flex flex-col gap-3">
                             <div className="text-[8px] font-mono text-zinc-400 uppercase tracking-widest font-extrabold">
-                              Your Timeline (3)
+                              Your Next Actions (3)
                             </div>
 
                             <div className="flex flex-col gap-2.5 relative">
@@ -938,8 +951,8 @@ export default function HowItWorks() {
                                 <div className="flex items-center gap-2 min-w-0">
                                   <div className="w-2.5 h-2.5 rounded-full bg-black border-2 border-white flex-shrink-0 shadow-sm" />
                                   <div className="min-w-0">
-                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">1. Empadronamiento</h6>
-                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Required for NIE</p>
+                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">1. Check your evidence</h6>
+                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Paprs found 4 of 5 documents</p>
                                   </div>
                                 </div>
                                 <span className="text-[6.5px] font-mono text-white bg-black border border-black px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Ready</span>
@@ -951,8 +964,8 @@ export default function HowItWorks() {
                                     <div className="absolute inset-0 rounded-full bg-black/20 animate-ping" />
                                   </div>
                                   <div className="min-w-0">
-                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">2. NIE Certificate</h6>
-                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Due in 3 weeks</p>
+                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">2. Review prepared forms</h6>
+                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Deadline protected · 52 days left</p>
                                   </div>
                                 </div>
                                 <span className="text-[6.5px] font-mono text-black bg-zinc-100 border border-zinc-300 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Active</span>
@@ -962,8 +975,8 @@ export default function HowItWorks() {
                                 <div className="flex items-center gap-2 min-w-0">
                                   <Lock className="w-2.5 h-2.5 text-zinc-400 flex-shrink-0" />
                                   <div className="min-w-0">
-                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">3. Bank Account</h6>
-                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Needs NIE number</p>
+                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">3. Approve submission</h6>
+                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Unlocks when evidence is complete</p>
                                   </div>
                                 </div>
                                 <span className="text-[6.5px] font-mono text-zinc-400 bg-zinc-50 border border-zinc-200 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Locked</span>
@@ -981,8 +994,8 @@ export default function HowItWorks() {
                           <div className="flex flex-col gap-3">
                             <div className="flex justify-between items-start border-b border-zinc-200 pb-2.5">
                               <div>
-                                <span className="font-mono text-[7px] uppercase text-black font-bold">Procedure 02</span>
-                                <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight mt-0.5">Seguridad Social</h4>
+                                <span className="font-mono text-[7px] uppercase text-black font-bold">Next action</span>
+                                <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight mt-0.5">Student Stay Renewal</h4>
                               </div>
                               <span className="text-[6.5px] px-1.5 py-0.5 rounded-md bg-zinc-100 text-black border border-zinc-300 uppercase font-bold shrink-0">Active</span>
                             </div>
@@ -995,8 +1008,8 @@ export default function HowItWorks() {
                                   <Check className="w-3.5 h-3.5 text-white" />
                                 </div>
                                 <div className="mt-0.5">
-                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">Verify Spanish phone</p>
-                                  <p className="text-[7.5px] text-zinc-400">Linked to TGSS portal record</p>
+                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">Match the official route</p>
+                                  <p className="text-[7.5px] text-zinc-400">Procedure and deadline verified</p>
                                 </div>
                               </div>
 
@@ -1005,8 +1018,8 @@ export default function HowItWorks() {
                                   <Check className="w-3.5 h-3.5 text-white" />
                                 </div>
                                 <div className="mt-0.5">
-                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">Submit via Import@ss</p>
-                                  <p className="text-[7.5px] text-zinc-400">Form TA.1 or Cl@ve request</p>
+                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">Prepare form and fee</p>
+                                  <p className="text-[7.5px] text-zinc-400">Fields pre-filled from your profile</p>
                                 </div>
                               </div>
 
@@ -1021,8 +1034,8 @@ export default function HowItWorks() {
                                   </div>
                                 )}
                                 <div className="mt-0.5">
-                                  <p className={`font-bold leading-tight ${s2p >= 0.95 ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>Receive NUSS allocation</p>
-                                  <p className="text-[7.5px] text-zinc-400">Download official PDF resolution</p>
+                                  <p className={`font-bold leading-tight ${s2p >= 0.95 ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>Review and approve</p>
+                                  <p className="text-[7.5px] text-zinc-400">You see every document before submission</p>
                                 </div>
                               </div>
                             </div>
@@ -1030,7 +1043,7 @@ export default function HowItWorks() {
 
                           <div className="flex justify-between items-center border-t border-zinc-200 pt-3">
                             <div className="w-[55%]">
-                              <span className="text-[7.5px] font-mono text-zinc-400 block mb-0.5">Task Progress</span>
+                              <span className="text-[7.5px] font-mono text-zinc-400 block mb-0.5">Action readiness</span>
                               <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
                                 <div 
                                   className="bg-black h-full transition-all duration-300 rounded-full" 
@@ -1085,10 +1098,10 @@ export default function HowItWorks() {
                                 </div>
                                 <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">Student Visa Renewal</h6>
                                 <p className="text-[7.5px] text-zinc-500 mt-1 leading-normal">
-                                  Next: Pay government fee Modelo 790 before booking appointment.
+                                  Paprs prepared the form and fee. One insurance document is still missing.
                                 </p>
                                 <div className="mt-2.5 w-full h-6 bg-black text-white rounded-xl text-[8px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-sm gap-1 hover:bg-zinc-800 transition-colors">
-                                  Continue Procedure <ChevronRight className="w-2.5 h-2.5 text-white" />
+                                  Review Prepared Action <ChevronRight className="w-2.5 h-2.5 text-white" />
                                 </div>
                               </div>
                             </div>
@@ -1116,12 +1129,12 @@ export default function HowItWorks() {
                                     15 Days Left
                                   </span>
                                 </div>
-                                <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">Padrón Expiring</h6>
+                                <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">Fresh Address Proof Needed</h6>
                                 <p className="text-[7.5px] text-zinc-500 mt-1 leading-normal">
-                                  Spanish procedures require a volante &lt; 90 days. Fresh copy?
+                                  Your next procedure needs a recent certificate. Paprs found the municipal request route.
                                 </p>
                                 <div className="mt-2.5 w-full h-6 bg-black text-white rounded-xl text-[8px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-sm gap-1 hover:bg-zinc-800 transition-colors">
-                                  Renew Padrón Volante <ChevronRight className="w-2.5 h-2.5 text-white" />
+                                  Prepare Fresh Copy <ChevronRight className="w-2.5 h-2.5 text-white" />
                                 </div>
                               </div>
                             </div>
@@ -1145,12 +1158,12 @@ export default function HowItWorks() {
                                   <FileText className="w-3.5 h-3.5 text-black" />
                                 </div>
                                 <div className="min-w-0">
-                                  <h6 className="font-syne font-bold text-[9px] text-black leading-tight truncate">NIE Certificate</h6>
-                                  <p className="text-[7px] text-black font-mono mt-0.5 font-semibold">3 of 7 complete</p>
+                                  <h6 className="font-syne font-bold text-[9px] text-black leading-tight truncate">Student Stay Renewal</h6>
+                                  <p className="text-[7px] text-black font-mono mt-0.5 font-semibold">4 of 5 documents ready</p>
                                 </div>
                               </div>
                               <div className="w-9 bg-zinc-100 h-1 rounded-full overflow-hidden shrink-0 ml-1">
-                                <div className="bg-black h-full w-[42%] rounded-full"></div>
+                                <div className="bg-black h-full w-[80%] rounded-full"></div>
                               </div>
                             </div>
 
@@ -1160,10 +1173,10 @@ export default function HowItWorks() {
                                   <MapPin className="w-3.5 h-3.5 text-black" />
                                 </div>
                                 <div className="min-w-0">
-                                  <h6 className="font-syne font-bold text-[9px] text-black leading-tight truncate">Empadronamiento</h6>
+                                  <h6 className="font-syne font-bold text-[9px] text-black leading-tight truncate">Address Record</h6>
                                   <p className="text-[7px] text-black font-mono mt-0.5 flex items-center gap-0.5 font-semibold">
                                     <span className="w-1 h-1 bg-black rounded-full animate-pulse"></span>
-                                    Waiting townhall
+                                    Waiting on city office
                                   </p>
                                 </div>
                               </div>
@@ -1192,13 +1205,13 @@ export default function HowItWorks() {
                               <div className="bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm flex flex-col gap-2 border-b border-zinc-100 pb-2">
                                 <div className="flex justify-between items-center text-[8.5px] border-b border-zinc-100 pb-2">
                                   <span className="text-black flex items-center gap-1.5 font-medium">
-                                    <FileText className="w-3.5 h-3.5 text-black shrink-0" /> NIE Certificate
+                                    <FileText className="w-3.5 h-3.5 text-black shrink-0" /> University Enrolment
                                   </span>
                                   <span className="text-[6.5px] font-mono text-white bg-black border border-black px-1.5 py-0.5 rounded-md font-bold scale-[0.95]">Verified</span>
                                 </div>
                                 <div className="flex justify-between items-center text-[8.5px]">
                                   <span className="text-black flex items-center gap-1.5 font-medium">
-                                    <FileText className="w-3.5 h-3.5 text-black shrink-0" /> Padrón Volante
+                                    <FileText className="w-3.5 h-3.5 text-black shrink-0" /> Address Certificate
                                   </span>
                                   <span className="text-[6.5px] font-mono text-black bg-zinc-100 border border-zinc-300 px-1.5 py-0.5 rounded-md font-bold scale-[0.95]">Soon</span>
                                 </div>
