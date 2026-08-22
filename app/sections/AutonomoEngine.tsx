@@ -4,13 +4,9 @@ import React, { useState } from "react";
 import { 
   Building2, 
   CheckCircle2, 
-  ChevronRight, 
-  FileCheck, 
   FileSpreadsheet, 
   Receipt, 
-  ShieldCheck, 
   Sparkles, 
-  TrendingUp, 
   Wallet, 
   Zap 
 } from "lucide-react";

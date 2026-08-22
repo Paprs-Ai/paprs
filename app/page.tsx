@@ -17,11 +17,16 @@ export default function Home() {
       
       {/* Sticky Top Header — Apple-Grade Translucent Material & Instant Response */}
       <header 
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full apple-glass shadow-[0_8px_30px_rgba(0,0,0,0.04)] select-none text-black transition-all"
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.02)",
+          backdropFilter: "blur(6px) saturate(150%)",
+          WebkitBackdropFilter: "blur(6px) saturate(150%)",
+        }}
       >
         {/* Brand */}
         <a href="#" className="flex items-center hover:opacity-85 apple-press">
-          <span className="font-syne font-extrabold text-2xl tracking-tighter text-black">
+          <span className="font-extrabold text-2xl tracking-tighter text-black">
             paprs
           </span>
         </a>
@@ -29,10 +34,8 @@ export default function Home() {
         {/* Navigation Links */}
         <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
           <a href="#pain" className="transition-colors hover:text-black font-bold apple-press">Reality</a>
-          <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">Product</a>
-          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">Autónomo</a>
-          <a href="#qr-vault" className="transition-colors hover:text-black font-bold apple-press">QR & Vault</a>
-          <a href="#benchmark" className="transition-colors hover:text-black font-bold apple-press">AI vs Human</a>
+          <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">How It Works</a>
+          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">Autónomo Engine</a>
           <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">Intelligence</a>
           <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">Europe</a>
           <a href="#waitlist" className="transition-colors hover:text-black font-bold apple-press">Waitlist</a>

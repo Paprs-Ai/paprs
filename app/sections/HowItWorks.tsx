@@ -1,10 +1,9 @@
 "use client";
 
-import { MicrotaskCard, PaprsDetailPhoneScreen } from "@/app/sections/HeroAndPain";
+import { PaprsWebDashboardCard } from "@/app/sections/HeroAndPain";
 import Lottie from "lottie-react";
-import { Bell, Check, ChevronLeft, ChevronRight, Clock, Cpu, FileText, Globe, Home, Layers, Loader2, Lock, MapPin, Sparkles, User } from "lucide-react";
+import { Bell, Check, ChevronRight, Cpu, FileText, Home, Layers, Loader2, Lock, MapPin, Sparkles } from "lucide-react";
 import React, { useEffect, useRef } from "react";
-import { IPhoneMockup } from "react-device-mockup";
 import aiGeneratingAnimation from "../../assets/animations/AI Generating Response.json";
 import DocumentCard from "../components/DocumentCard";
 import { useScrollProgress } from "../hooks/useScrollProgress";
@@ -150,7 +149,6 @@ export default function HowItWorks() {
 
   const getLocalProgress = (p: number, i: number): number => {
     const startDwell = i * (D + S);
-    const endDwell = startDwell + D;
     return clamp01((p - startDwell) / D);
   };
 
@@ -159,7 +157,6 @@ export default function HowItWorks() {
   const s2p = getLocalProgress(progress, 2);
   const s3p = getLocalProgress(progress, 3);
   const s4p = getLocalProgress(progress, 4);
-  const s5p = getLocalProgress(progress, 5);
   const s6p = getLocalProgress(progress, 6);
   const s7p = getLocalProgress(progress, 7);
   const s8p = getLocalProgress(progress, 8);
@@ -177,9 +174,6 @@ export default function HowItWorks() {
   const fc4 = getPileCardStyle({ x: -22, y:  12, r:  10 });
   const fc5 = getPileCardStyle({ x: -24, y:  -8, r:  -5 });
   const fc6 = getPileCardStyle({ x: -20, y:   4, r:   4 });
-
-  const scannerActive  = s0p >= 0.45;
-  const scannerDone    = s0p >= 0.82;
 
   const text1Opacity = 1 - clamp01((s2p - 0.20) / 0.05);
   const text2Opacity = clamp01((s2p - 0.20) / 0.05) - clamp01((s2p - 0.50) / 0.05);
@@ -235,11 +229,6 @@ export default function HowItWorks() {
   };
   const activeTab = getActiveTab();
 
-  const statusBarBg = "bg-zinc-50";
-  const statusBarText = "text-zinc-500";
-  const batteryBorder = "border-zinc-400";
-  const batteryBg = "bg-black";
-
   return (
     <div ref={ref} id="how-it-works" className="relative h-[600vh] w-full scroll-mt-28">
       <div
@@ -279,17 +268,7 @@ export default function HowItWorks() {
                 </div>
 
                 <div className="relative flex-shrink-0 pointer-events-none">
-                  <IPhoneMockup
-                    screenWidth={250}
-                    screenType="island"
-                    frameColor="#000000"
-                    statusbarColor="#FFFFFF"
-                    hideStatusBar
-                    transparentNavBar
-                    hideNavBar
-                  >
-                    <PaprsDetailPhoneScreen />
-                  </IPhoneMockup>
+                  <PaprsWebDashboardCard />
                   <div
                     className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-black font-bold whitespace-nowrap transition-opacity duration-500"
                     style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
@@ -554,26 +533,6 @@ export default function HowItWorks() {
             <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
               <div style={fc6}><DocumentCard type="seg_social" status="chaos" /></div>
             </div>
-
-            {/* Laser sweep */}
-            {scannerActive && !scannerDone && (
-              <div
-                className="pile-scan absolute"
-                style={{ left: "0%", right: "54%", top: "18%", bottom: "18%" }}
-              />
-            )}
-
-            {/* Monochrome glow behind pile when scanning */}
-            {scannerActive && (
-              <div
-                className="absolute rounded-full pointer-events-none transition-opacity duration-700"
-                style={{
-                  left: "10%", right: "44%", top: "20%", bottom: "20%",
-                  background: "radial-gradient(ellipse at center, rgba(0,0,0,0.08) 0%, transparent 70%)",
-                  opacity: scannerDone ? 0 : 1,
-                }}
-              />
-            )}
           </div>
         </div>
 
@@ -591,58 +550,62 @@ export default function HowItWorks() {
             <div className="w-full md:w-6/12 h-[65vh] md:h-full flex items-center justify-center relative">
               
               <div 
-                className="relative transition-all duration-300 flex items-center justify-center"
+                className="relative transition-all duration-300 flex items-center justify-center w-full max-w-[340px] sm:max-w-[400px] md:max-w-[460px] lg:max-w-[500px]"
                 style={{ transform: `scale(${phoneScale})` }}
               >
                 
-                {/* Phone Shell */}
-                <IPhoneMockup
-                  screenWidth={220}
-                  screenType="island"
-                  frameColor="#000000"
-                  hideStatusBar={true}
-                  transparentNavBar={true}
-                  className="z-10 bg-transparent filter drop-shadow-xl"
-                  containerStlye={{ backgroundColor: "transparent", boxShadow: "none" }}
-                >
-                  <div className="w-full h-full flex flex-col relative overflow-hidden bg-white transition-colors duration-300 justify-between select-none">
-                    
-                    {/* Status Bar */}
-                    <div className={`h-8 ${statusBarBg} px-5 pt-4 flex justify-between items-center text-[8.5px] font-mono ${statusBarText} z-30 select-none transition-colors duration-300 shrink-0`}>
-                      <span className="font-semibold text-black">9:41</span>
-                      <span className="flex items-center gap-1.5">
-                        <span>5G</span>
-                        <span className={`w-3.5 h-1.5 rounded-sm border ${batteryBorder} flex items-center p-0.5 transition-colors duration-300`}>
-                          <span className={`w-full h-full ${batteryBg} rounded-sm transition-colors duration-300`}></span>
-                        </span>
-                      </span>
+                {/* Desktop Web Dashboard Window */}
+                <div className="w-full h-[520px] md:h-[540px] bg-white rounded-2xl border-2 border-zinc-200 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.14)] overflow-hidden flex flex-col relative select-none">
+                  
+                  {/* Web Browser Chrome Bar */}
+                  <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center z-30 shrink-0">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400/80 border border-red-500/20" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80 border border-amber-500/20" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80 border border-emerald-500/20" />
                     </div>
 
-                    {/* App Header */}
-                    {activeSlide !== 1 && activeSlide !== 2 && (
-                      <div className="px-4 py-2 bg-white border-b border-zinc-200 flex justify-between items-center z-20 shrink-0">
-                        <div>
-                          <h5 className="font-syne font-extrabold text-[10.5px] text-black tracking-tight">p.aprs</h5>
-                          <p className="text-[6.5px] font-mono text-zinc-400 uppercase tracking-widest leading-none mt-0.5">Bureaucracy Hub</p>
+                    <div className="flex items-center gap-1.5 font-mono text-[8.5px] text-zinc-600 bg-white border border-zinc-200 px-3 py-0.5 rounded-lg shadow-xs">
+                      <Lock className="w-2.5 h-2.5 text-zinc-400" />
+                      <span>app.paprs.app</span>
+                    </div>
+
+                    <div className="flex items-center gap-1 font-mono text-[7.5px] uppercase tracking-wider font-extrabold text-black bg-zinc-100 border border-zinc-300 px-2 py-0.5 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+                      Live
+                    </div>
+                  </div>
+
+                  {/* App Header */}
+                  {activeSlide !== 1 && activeSlide !== 2 && (
+                    <div className="px-4 py-2.5 bg-white border-b border-zinc-100 flex justify-between items-center z-20 shrink-0">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center font-syne font-black text-[10px]">
+                          p.
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Bell className="w-3.5 h-3.5 text-zinc-400 hover:text-black cursor-pointer transition-colors" />
-                          <div className="w-5 h-5 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center font-mono text-[7.5px] text-black font-bold shadow-sm">
-                            JD
-                          </div>
+                        <div>
+                          <h5 className="font-syne font-extrabold text-[11px] text-black tracking-tight leading-tight">Paprs Workspace</h5>
+                          <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest leading-none mt-0.5">Student Route · Barcelona</p>
                         </div>
                       </div>
-                    )}
+                      <div className="flex items-center gap-2">
+                        <Bell className="w-3.5 h-3.5 text-zinc-400 hover:text-black cursor-pointer transition-colors" />
+                        <div className="w-6 h-6 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center font-mono text-[8px] text-black font-bold shadow-xs">
+                          JD
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-                    {/* Phone Screen Slider Container */}
-                    <div className="flex-1 min-h-0 relative overflow-hidden">
-                      <div
-                        className="h-full flex transition-transform duration-300"
-                        style={{
-                          width: "600%",
-                          transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
-                        }}
-                      >
+                  {/* Dashboard Screen Slider Container */}
+                  <div className="flex-1 min-h-0 relative overflow-hidden">
+                    <div
+                      className="h-full flex transition-transform duration-300"
+                      style={{
+                        width: "600%",
+                        transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
+                      }}
+                    >
                         {/* SCREEN 0: Onboarding Questions */}
                         <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-[#FFFFFF] justify-between relative overflow-hidden">
                           <style>{`
@@ -1223,27 +1186,31 @@ export default function HowItWorks() {
                       </div>
                     </div>
 
-                    {/* Floating Bottom Nav Bars */}
-                    {activeSlide !== 1 && activeSlide !== 2 && (
-                      <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 z-20">
-                        <div className="bg-white border border-zinc-200 px-5 py-2.5 flex-1 flex justify-between items-center rounded-2xl shadow-lg">
-                          <div className={`cursor-pointer transition-colors ${activeTab === 0 ? "text-black" : "text-zinc-400 hover:text-black"}`}>
-                            <Home className="w-[17px] h-[17px]" />
-                          </div>
-                          <div className={`cursor-pointer transition-colors ${activeTab === 1 ? "text-black" : "text-zinc-400 hover:text-black"}`}>
-                            <Layers className="w-[17px] h-[17px]" />
-                          </div>
-                          <div className={`cursor-pointer transition-colors ${activeTab === 2 ? "text-black" : "text-zinc-400 hover:text-black"}`}>
-                            <FileText className="w-[17px] h-[17px]" />
-                          </div>
+                  {/* Web Navigation Footer */}
+                  {activeSlide !== 1 && activeSlide !== 2 && (
+                    <div className="px-3 py-2 bg-zinc-50 border-t border-zinc-200 flex items-center justify-between z-20 shrink-0">
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 0 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                          <Home className="w-2.5 h-2.5" />
+                          <span>Overview</span>
                         </div>
-                        <div className={`bg-white border border-zinc-200 p-2.5 flex items-center justify-center rounded-2xl shadow-lg cursor-pointer transition-colors ${activeTab === 3 ? "text-black" : "text-zinc-400 hover:text-black"}`}>
-                          <Sparkles className="w-[17px] h-[17px]" />
+                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 1 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                          <Layers className="w-2.5 h-2.5" />
+                          <span>Roadmap</span>
+                        </div>
+                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 2 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                          <FileText className="w-2.5 h-2.5" />
+                          <span>Vault</span>
                         </div>
                       </div>
-                    )}
-                  </div>
-                </IPhoneMockup>
+
+                      <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 3 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                        <Sparkles className="w-2.5 h-2.5" />
+                        <span>Assistant</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
             </div>

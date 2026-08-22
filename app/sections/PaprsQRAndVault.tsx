@@ -1,17 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { 
-  Archive, 
-  ArrowRight, 
   CheckCircle2, 
   FileText, 
-  FolderLock, 
-  Lock, 
   QrCode, 
-  ShieldCheck, 
-  Sparkles, 
-  Zap 
+  Sparkles 
 } from "lucide-react";
 import { useScrollProgress } from "../hooks/useScrollProgress";
 

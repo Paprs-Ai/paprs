@@ -4,18 +4,18 @@ import {
   AlertTriangle,
   CalendarX2,
   Check,
-  ChevronLeft, ChevronRight,
+  ChevronRight,
   Clock,
   CreditCard,
   FileText,
   Globe,
-  MapPin,
   Home,
-  Sparkles,
   Layers,
+  Lock,
+  MapPin,
+  Sparkles,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { AndroidMockup, IPhoneMockup } from "react-device-mockup";
 import DocumentCard from "../components/DocumentCard";
 import { useScrollProgress } from "../hooks/useScrollProgress";
 
@@ -93,7 +93,7 @@ function StatCounter({
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (!isActive) { setValue(0); return; }
+    if (!isActive) return;
     const steps = 40;
     let current = 0;
     const timer = setInterval(() => {
@@ -121,7 +121,7 @@ function StatCounter({
   return (
     <div className="flex flex-col items-center p-4 rounded-2xl border border-zinc-300 bg-zinc-100 shadow-sm">
       <span className="font-mono text-3xl font-extrabold leading-none text-black">
-        {value}{suffix}
+        {isActive ? value : 0}{suffix}
       </span>
       <span className="font-mono text-[10px] uppercase tracking-wider mt-1.5 text-center leading-snug text-zinc-800 font-bold">
         {label}
@@ -287,8 +287,8 @@ export function MicrotaskCard({
   );
 }
 
-// ─── Phone app screen (Hero Right side, "With Paprs" mockup) ────────────────────
-function PaprsPhoneScreen() {
+// ─── Desktop Web App Dashboard Mockup (Hero Right Side) ─────────────────────────
+export function PaprsWebDashboard() {
   const docs: Array<{
     title: string;
     subtitle: string;
@@ -298,12 +298,10 @@ function PaprsPhoneScreen() {
     totalCount: number;
     iconType: "nie" | "seg_social" | "padron" | "hacienda";
   }> = [
-    { title: "NIE Certificate", subtitle: "EXP: NIE-2026-X83", badgeText: "Active", badgeType: "progress", doneCount: 2, totalCount: 4, iconType: "nie" },
-    { title: "Social Security", subtitle: "NUSS: 08/12345678", badgeText: "Soon", badgeType: "pending", doneCount: 1, totalCount: 3, iconType: "seg_social" },
+    { title: "NIE Certificate", subtitle: "EXP: NIE-2026-X83", badgeText: "In Progress", badgeType: "progress", doneCount: 2, totalCount: 4, iconType: "nie" },
+    { title: "Social Security (NUSS)", subtitle: "NUSS: 08/12345678", badgeText: "Next", badgeType: "pending", doneCount: 1, totalCount: 3, iconType: "seg_social" },
     { title: "Empadronamiento", subtitle: "REG: 08019-2026", badgeText: "Done", badgeType: "done", doneCount: 4, totalCount: 4, iconType: "padron" },
-    { title: "Modelo 100 Tax Filing", subtitle: "HAC: 2026-TAX-100", badgeText: "Soon", badgeType: "pending", doneCount: 0, totalCount: 3, iconType: "hacienda" },
-    { title: "Modelo 600 Filing", subtitle: "M600: Property Tax", badgeText: "Soon", badgeType: "pending", doneCount: 0, totalCount: 2, iconType: "hacienda" },
-    { title: "Private Health Insurance", subtitle: "SAN: Sanitas Policy", badgeText: "Done", badgeType: "done", doneCount: 1, totalCount: 1, iconType: "nie" },
+    { title: "Modelo 030 / Tax ID", subtitle: "HAC: 2026-TAX-030", badgeText: "Queued", badgeType: "pending", doneCount: 0, totalCount: 3, iconType: "hacienda" },
   ];
 
   const [mounted, setMounted] = useState(false);
@@ -319,241 +317,285 @@ function PaprsPhoneScreen() {
   };
 
   const iconMap = {
-    nie: <FileText className="w-3 h-3 text-black" />,
-    seg_social: <Layers className="w-3 h-3 text-black" />,
-    padron: <MapPin className="w-3 h-3 text-black" />,
-    hacienda: <CreditCard className="w-3 h-3 text-black" />,
-  };
-
-  const bgMap = {
-    nie: "bg-zinc-100 border-zinc-200",
-    seg_social: "bg-zinc-100 border-zinc-200",
-    padron: "bg-zinc-100 border-zinc-200",
-    hacienda: "bg-zinc-100 border-zinc-200",
+    nie: <FileText className="w-3.5 h-3.5 text-black" />,
+    seg_social: <Layers className="w-3.5 h-3.5 text-black" />,
+    padron: <MapPin className="w-3.5 h-3.5 text-black" />,
+    hacienda: <CreditCard className="w-3.5 h-3.5 text-black" />,
   };
 
   return (
-    <div className="w-full h-full bg-[#FFFFFF] flex flex-col font-sans select-none overflow-hidden justify-between relative">
-      <div className="flex flex-col flex-1 min-h-0">
-        {/* Status Bar */}
-        <div className="px-5 pt-3 pb-1 flex justify-between items-center text-[8.5px] font-mono text-zinc-400 select-none bg-white">
-          <span className="font-semibold text-black">9:41</span>
-          <div className="flex items-center gap-1.5">
-            <svg className="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L17.61 5.03C16.07 3.8 14.12 3 12 3zm0 18c4.97 0 9-4.03 9-9 0-2.12-.74-4.07-1.97-5.61L6.39 18.97C7.93 20.2 9.88 21 12 21z" />
-            </svg>
-            <svg className="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 21l-12-18h24z" />
-            </svg>
-            <div className="w-3.5 h-1.5 rounded-[2px] border border-zinc-400 flex items-center p-[1px]">
-              <div className="w-full h-full bg-black rounded-[1px]"></div>
+    <div className="w-full bg-white rounded-2xl border-2 border-zinc-200 shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col font-sans select-none text-left transition-all duration-300 pointer-events-auto">
+      {/* macOS / Web Browser Chrome Bar */}
+      <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 flex items-center justify-between gap-3 shrink-0">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400/80 border border-red-500/20" />
+          <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80 border border-amber-500/20" />
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80 border border-emerald-500/20" />
+        </div>
+
+        {/* Address / URL Bar */}
+        <div className="flex-1 max-w-xs mx-auto bg-white border border-zinc-200 rounded-lg px-3 py-1 flex items-center justify-center gap-1.5 shadow-xs">
+          <Lock className="w-2.5 h-2.5 text-zinc-400" />
+          <span className="font-mono text-[9px] text-zinc-600 font-medium">app.paprs.app</span>
+        </div>
+
+        {/* Live sync pill */}
+        <div className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-wider text-black font-extrabold bg-zinc-100 border border-zinc-300 px-2 py-0.5 rounded-full">
+          <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+          Live Sync
+        </div>
+      </div>
+
+      {/* Web App Workspace Header */}
+      <div className="px-5 py-3 border-b border-zinc-100 bg-white flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-black flex items-center justify-center text-white font-syne font-black text-xs shadow-sm">
+            p.
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="font-syne font-extrabold text-sm text-black leading-tight">Relocation Hub</h3>
+              <span className="font-mono text-[8px] font-bold text-white bg-black px-1.5 py-0.5 rounded uppercase">Spain</span>
             </div>
+            <p className="font-mono text-[8.5px] text-zinc-500 mt-0.5">Barcelona · Student Stay &amp; Work Route</p>
           </div>
         </div>
 
-        {/* App header */}
-        <div className="px-5 pt-2 pb-3 bg-white border-b border-zinc-100 relative z-10 flex items-center justify-between">
-          <span className="font-syne font-extrabold text-base tracking-tight text-black">
-            <span className="text-black font-black">p.</span>aprs
-          </span>
-          <div className="relative w-7 h-7 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-[10px] font-bold font-mono text-black shadow-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="text-right hidden sm:block">
+            <span className="font-mono text-[8px] text-zinc-400 block uppercase tracking-wider">Status</span>
+            <span className="font-mono text-[9.5px] font-bold text-black">65% Prepared</span>
+          </div>
+          <div className="w-7 h-7 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-[10px] font-bold font-mono text-black shadow-sm">
             JD
-            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-black border-2 border-white" />
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto scrollbar-none py-3 pb-24 flex flex-col gap-2">
-
-          {/* Document list */}
-          <div className="px-3 flex flex-col gap-2">
-            {docs.map((d, i) => {
-              const pct = Math.round((d.doneCount / d.totalCount) * 100);
-              const isActive = d.badgeType === "progress";
-              return (
-                <div
-                  key={i}
-                  className={`bg-white border rounded-xl px-2.5 py-2 transition-all ease-out ${
-                    isActive ? "border-black shadow-md scale-[1.01]" : "border-zinc-200 shadow-sm"
-                  }`}
-                  style={{
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? "translateY(0)" : "translateY(10px) scale(0.98)",
-                    transitionDuration: "500ms",
-                    transitionDelay: `${i * 60}ms`,
-                  }}
-                >
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <div className={`relative w-7 h-7 rounded-lg flex items-center justify-center border flex-shrink-0 ${bgMap[d.iconType]}`}>
-                        {iconMap[d.iconType]}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] font-extrabold font-syne leading-tight text-black whitespace-normal break-words">{d.title}</p>
-                        <p className="text-[7.5px] font-mono text-zinc-400 mt-0 truncate">{d.subtitle}</p>
-                      </div>
-                    </div>
-                    <span className={`flex items-center gap-0.5 text-[6.5px] font-mono border px-1 py-0.5 rounded-[4px] font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0 ${badgeStyles[d.badgeType]}`}>
-                      {d.badgeText}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <div className="flex-1 h-1 bg-zinc-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ease-out rounded-full ${
-                          d.badgeType === "done" ? "bg-black" : d.badgeType === "progress" ? "bg-zinc-800" : "bg-zinc-300"
-                        }`}
-                        style={{
-                          width: `${mounted ? pct : 0}%`,
-                          transitionProperty: "width",
-                          transitionDuration: "900ms",
-                          transitionDelay: `${100 + i * 60}ms`,
-                        }}
-                      />
-                    </div>
-                    <span className="text-[7.5px] font-mono text-zinc-400 flex-shrink-0 font-bold tabular-nums">{d.doneCount}/{d.totalCount}</span>
-                    <ChevronRight className="w-2.5 h-2.5 text-zinc-400 flex-shrink-0" />
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
 
-      {/* Floating Bottom Nav Bars */}
-      <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center gap-2.5 z-20">
-        <div className="bg-white border border-zinc-200 px-6 py-3 flex-1 flex justify-between items-center rounded-2xl shadow-lg">
-          <div className="text-black cursor-pointer font-bold">
-            <Home className="w-[18px] h-[18px]" />
+      {/* Main Dashboard Canvas */}
+      <div className="p-4 sm:p-5 flex flex-col gap-3.5 bg-zinc-50/50">
+        
+        {/* Live Case Reasoning Pill (White Background) */}
+        <div className="bg-white border border-zinc-200 text-black p-3 rounded-xl flex items-start gap-2.5 shadow-xs">
+          <div className="w-5 h-5 rounded-lg bg-zinc-100 flex items-center justify-center text-black shrink-0 mt-0.5 border border-zinc-200">
+            <Sparkles className="w-3 h-3 text-black animate-pulse" />
           </div>
-          <div className="text-zinc-400 hover:text-black cursor-pointer transition-colors">
-            <Layers className="w-[18px] h-[18px]" />
-          </div>
-          <div className="text-zinc-400 hover:text-black cursor-pointer transition-colors">
-            <FileText className="w-[18px] h-[18px]" />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-mono text-[8px] uppercase tracking-wider text-zinc-700 font-bold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Case Reasoning &amp; Verification Engine
+              </span>
+              <span className="font-mono text-[7px] bg-zinc-100 text-zinc-700 border border-zinc-200 px-1.5 py-0.5 rounded font-semibold">
+                99.8% BOE Match
+              </span>
+            </div>
+            <p className="text-[8.5px] text-zinc-600 mt-1 leading-snug font-sans">
+              &ldquo;Matched NIE Student Route for Barcelona. Form EX-15 and Model 790-012 pre-filled with calculated €12.24 fee. 4 dependencies verified.&rdquo;
+            </p>
           </div>
         </div>
-        <div className="bg-white border border-zinc-200 p-3 flex items-center justify-center rounded-2xl shadow-lg cursor-pointer text-zinc-400 hover:text-black transition-colors">
-          <Sparkles className="w-[18px] h-[18px]" />
+
+        {/* 2-Column Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
+          {/* Left Column: Active Procedures Pipeline (7 cols) */}
+          <div className="sm:col-span-7 flex flex-col gap-2.5">
+            <div className="flex items-center justify-between px-1">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-zinc-500 font-bold">Active Procedures</span>
+              <span className="font-mono text-[8.5px] text-zinc-400">4 Tracked</span>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {docs.map((d, i) => {
+                const pct = Math.round((d.doneCount / d.totalCount) * 100);
+                const isActive = d.badgeType === "progress";
+                return (
+                  <div
+                    key={i}
+                    className={`bg-white border rounded-xl p-2.5 transition-all ease-out ${
+                      isActive ? "border-black shadow-sm ring-1 ring-black/5" : "border-zinc-200 shadow-xs"
+                    }`}
+                    style={{
+                      opacity: mounted ? 1 : 0,
+                      transform: mounted ? "translateY(0)" : "translateY(8px)",
+                      transitionDuration: "400ms",
+                      transitionDelay: `${i * 50}ms`,
+                    }}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <div className="relative w-6 h-6 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0">
+                          {iconMap[d.iconType]}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[10px] font-extrabold font-syne leading-tight text-black truncate">{d.title}</p>
+                          <p className="text-[7.5px] font-mono text-zinc-400 truncate">{d.subtitle}</p>
+                        </div>
+                      </div>
+                      <span className={`text-[7px] font-mono border px-1.5 py-0.5 rounded font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0 ${badgeStyles[d.badgeType]}`}>
+                        {d.badgeText}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="flex-1 h-1 bg-zinc-100 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ease-out rounded-full ${
+                            d.badgeType === "done" ? "bg-black" : d.badgeType === "progress" ? "bg-zinc-800" : "bg-zinc-300"
+                          }`}
+                          style={{
+                            width: `${mounted ? pct : 0}%`,
+                            transitionProperty: "width",
+                            transitionDuration: "800ms",
+                            transitionDelay: `${80 + i * 50}ms`,
+                          }}
+                        />
+                      </div>
+                      <span className="text-[7.5px] font-mono text-zinc-500 font-bold tabular-nums">{d.doneCount}/{d.totalCount}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Column: Next Priority Action Spotlight (5 cols) */}
+          <div className="sm:col-span-5 flex flex-col gap-2.5">
+            <div className="flex items-center justify-between px-1">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-black font-bold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-black" /> Next Action
+              </span>
+              <span className="font-mono text-[8px] bg-zinc-200 text-black px-1.5 py-0.2 rounded font-bold">52d Left</span>
+            </div>
+
+            <div className="bg-white border-2 border-black rounded-xl p-3 shadow-md flex flex-col justify-between flex-1 gap-2.5">
+              <div>
+                <div className="flex items-center gap-1 text-[7.5px] font-mono text-zinc-500 uppercase tracking-wider">
+                  <span>Pre-filled Action Packet</span>
+                </div>
+                <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight mt-0.5">
+                  NIE Registration Appointment
+                </h4>
+                <p className="text-[8px] text-zinc-600 mt-1 leading-snug">
+                  Official form prepared with fee (€12.24) pre-calculated. Ready for submission.
+                </p>
+              </div>
+
+              {/* Checklist micro steps */}
+              <div className="flex flex-col gap-1.5 border-t border-zinc-100 pt-2 font-mono text-[7.5px]">
+                <div className="flex items-center gap-1.5 text-black font-medium">
+                  <Check className="w-2.5 h-2.5 text-black shrink-0" />
+                  <span>Form EX-15 auto-filled</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-black font-medium">
+                  <Check className="w-2.5 h-2.5 text-black shrink-0" />
+                  <span>Fee Model 790-012 generated</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-zinc-500">
+                  <Clock className="w-2.5 h-2.5 text-zinc-400 shrink-0" />
+                  <span>Present at Carrer de Múrcia 36</span>
+                </div>
+              </div>
+
+              <div className="w-full py-1.5 bg-black text-white rounded-lg font-syne font-bold text-[8.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm">
+                Review Action Packet <ChevronRight className="w-3 h-3 text-white" />
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Command Bar Prompt Input */}
+        <div className="bg-white border border-zinc-200 px-3 py-2 rounded-xl flex items-center justify-between gap-2 shadow-xs">
+          <div className="flex items-center gap-2 min-w-0 flex-1 text-zinc-400">
+            <Sparkles className="w-3.5 h-3.5 text-black shrink-0" />
+            <span className="font-mono text-[8px] text-zinc-500 truncate">Ask Paprs anything or drop official PDFs to auto-index...</span>
+          </div>
+          <div className="flex items-center gap-1 shrink-0 font-mono text-[7.5px] text-zinc-500 bg-zinc-100 border border-zinc-200 px-1.5 py-0.5 rounded">
+            <span>⌘K</span>
+          </div>
+        </div>
+
       </div>
     </div>
   );
 }
 
-// ─── Phone app screen (Hero Right side, iOS — single document, task list) ───────
-export function PaprsDetailPhoneScreen() {
+// ─── Desktop Web App Detail Card (for Slide 0 & action showcases) ───────────────
+export function PaprsWebDashboardCard() {
   const tasks: Array<{ title: string; sublabel: string; status: "done" | "active" | "pending" }> = [
-    { title: "Generate Tax Model 790-012", sublabel: "PDF with fee info", status: "done" },
-    { title: "Pay €12.24 tax fee", sublabel: "At any ATM, keep the ticket", status: "done" },
+    { title: "Generate Tax Model 790-012", sublabel: "PDF with fee info (€12.24)", status: "done" },
+    { title: "Pay €12.24 tax fee", sublabel: "At any ATM, receipt auto-saved", status: "done" },
     { title: "Present EX-15 form in person", sublabel: "Carrer de Múrcia 36, Barcelona", status: "active" },
     { title: "Pick up your NIE certificate", sublabel: "After processing, in person", status: "pending" },
   ];
 
   return (
-    <div className="w-full h-full bg-[#FFFFFF] flex flex-col font-sans select-none justify-between overflow-hidden relative">
-      <div className="flex flex-col flex-1 min-h-0">
-        {/* Status Bar */}
-        <div className="px-5 pt-3 pb-1 flex justify-between items-center text-[8.5px] font-mono text-zinc-400 select-none bg-white">
-          <span className="font-semibold text-black">9:41</span>
-          <div className="flex items-center gap-1.5">
-            <svg className="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L17.61 5.03C16.07 3.8 14.12 3 12 3zm0 18c4.97 0 9-4.03 9-9 0-2.12-.74-4.07-1.97-5.61L6.39 18.97C7.93 20.2 9.88 21 12 21z" />
-            </svg>
-            <svg className="w-2.5 h-2.5 text-black" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 21l-12-18h24z" />
-            </svg>
-            <div className="w-3.5 h-1.5 rounded-[2px] border border-zinc-400 flex items-center p-[1px]">
-              <div className="w-full h-full bg-black rounded-[1px]"></div>
-            </div>
-          </div>
+    <div className="w-72 md:w-80 bg-white rounded-2xl border-2 border-zinc-200 shadow-xl overflow-hidden flex flex-col font-sans select-none text-left">
+      {/* Web Window Bar */}
+      <div className="px-3.5 py-2 bg-zinc-50 border-b border-zinc-200 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-zinc-300" />
+          <div className="w-2 h-2 rounded-full bg-zinc-300" />
+          <div className="w-2 h-2 rounded-full bg-zinc-300" />
         </div>
-
-        {/* Brand/Back Nav Header */}
-        <div className="px-4 py-2.5 bg-white border-b border-zinc-100 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <ChevronLeft className="w-4 h-4 text-zinc-700 cursor-pointer hover:text-black transition-colors" />
-            <span className="font-syne font-extrabold text-[10.5px] text-black tracking-tight leading-none">NIE Certificate</span>
-          </div>
-          <div className="relative w-[22px] h-[22px] flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 20 20">
-              <circle
-                cx="10"
-                cy="10"
-                r="7.5"
-                className="stroke-zinc-200"
-                strokeWidth="2.5"
-                fill="transparent"
-              />
-              <circle
-                cx="10"
-                cy="10"
-                r="7.5"
-                className="stroke-black"
-                strokeWidth="2.5"
-                fill="transparent"
-                strokeDasharray="47.12"
-                strokeDashoffset="23.56"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="absolute text-[6px] font-mono font-extrabold text-black tabular-nums">
-              50%
-            </span>
-          </div>
+        <div className="flex items-center gap-1 font-mono text-[8px] text-zinc-500 bg-white border border-zinc-200 px-2 py-0.5 rounded">
+          <Lock className="w-2 h-2 text-zinc-400" />
+          <span>app.paprs.app</span>
         </div>
+        <div className="w-2" />
+      </div>
 
-        <div className="flex-1 overflow-y-auto scrollbar-none p-4 pb-4 flex flex-col gap-3">
-          {/* Header Overview Card */}
-          <div className="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm flex flex-col gap-2">
-            <div className="flex justify-between items-start gap-2">
-              <h3 className="font-syne font-extrabold text-[12.5px] text-black leading-tight">
-                Foreigner Identity &amp; Tax Number
-              </h3>
-              <span className="text-[7.5px] px-1.5 py-0.5 rounded-md bg-zinc-100 text-black border border-zinc-300 uppercase font-bold shrink-0">
-                In Progress
-              </span>
-            </div>
-            <p className="text-[9.5px] text-zinc-500 leading-relaxed">
-              Essential for work contracts, bank accounts, SIM cards, and renting.
-            </p>
-          </div>
+      {/* Header */}
+      <div className="px-4 py-3 bg-white border-b border-zinc-100 flex items-center justify-between">
+        <div>
+          <span className="font-mono text-[7px] uppercase tracking-wider text-zinc-400 font-bold block">Active Procedure</span>
+          <h4 className="font-syne font-extrabold text-xs text-black leading-tight">NIE Certificate Route</h4>
+        </div>
+        <div className="relative w-5 h-5 flex items-center justify-center">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 20 20">
+            <circle cx="10" cy="10" r="7.5" className="stroke-zinc-200" strokeWidth="2.5" fill="transparent" />
+            <circle cx="10" cy="10" r="7.5" className="stroke-black" strokeWidth="2.5" fill="transparent" strokeDasharray="47.12" strokeDashoffset="23.56" strokeLinecap="round" />
+          </svg>
+          <span className="absolute text-[5.5px] font-mono font-extrabold text-black">50%</span>
+        </div>
+      </div>
 
-          {/* Checklist timeline */}
-          <div className="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm flex flex-col gap-4 relative">
-            {/* Timeline Connector Line */}
-            <div className="absolute left-[24px] top-6 bottom-6 w-0.5 bg-zinc-200 z-0"></div>
+      {/* Task List */}
+      <div className="p-3.5 flex flex-col gap-2.5 bg-zinc-50/50">
+        <div className="bg-white border border-zinc-200 rounded-xl p-3 shadow-xs flex flex-col gap-3 relative">
+          <div className="absolute left-[18px] top-4 bottom-4 w-0.5 bg-zinc-200 z-0" />
 
-            {tasks.map((t, i) => (
-              <div key={i} className="flex items-start gap-3.5 relative z-10">
-                {t.status === "done" ? (
-                  <div className="w-5 h-5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-sm">
-                    <Check className="w-3.5 h-3.5 text-white" />
-                  </div>
-                ) : t.status === "active" ? (
-                  <div className="w-5 h-5 rounded-full bg-zinc-200 border border-zinc-400 flex items-center justify-center text-black flex-shrink-0 shadow-sm relative">
-                    <Clock className="w-3 h-3 text-black" />
-                  </div>
-                ) : (
-                  <div className="w-5 h-5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center flex-shrink-0 text-zinc-400 shadow-sm">
-                    <div className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
-                  </div>
-                )}
-                <div className="flex-1 min-w-0 mt-0.5">
-                  <p className={`text-[10px] font-bold leading-tight ${t.status === "done" ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>
-                    {t.title}
-                  </p>
-                  <p className="text-[8.5px] text-zinc-500 leading-snug mt-0.5">{t.sublabel}</p>
+          {tasks.map((t, i) => (
+            <div key={i} className="flex items-start gap-2.5 relative z-10">
+              {t.status === "done" ? (
+                <div className="w-4 h-4 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-xs">
+                  <Check className="w-2.5 h-2.5 text-white" />
                 </div>
+              ) : t.status === "active" ? (
+                <div className="w-4 h-4 rounded-full bg-zinc-200 border border-zinc-400 flex items-center justify-center text-black flex-shrink-0 shadow-xs">
+                  <Clock className="w-2.5 h-2.5 text-black" />
+                </div>
+              ) : (
+                <div className="w-4 h-4 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center flex-shrink-0 text-zinc-400 shadow-xs">
+                  <div className="w-1 h-1 rounded-full bg-zinc-400" />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className={`text-[9px] font-bold leading-tight ${t.status === "done" ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>
+                  {t.title}
+                </p>
+                <p className="text-[7.5px] text-zinc-500 font-mono mt-0.5 leading-tight">{t.sublabel}</p>
               </div>
-            ))}
-          </div>
-
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
+
+// Backwards compatibility export
+export const PaprsDetailPhoneScreen = PaprsWebDashboardCard;
 
 // ─── Slide dot indicator ───────────────────────────────────────────────────────
 function SlideDots({ total, active }: { total: number; active: number }) {
@@ -711,12 +753,12 @@ export default function HeroAndPain() {
               className="absolute inset-0 flex flex-col md:flex-row z-30 pointer-events-none"
               style={{ opacity: heroTextOpacity }}
             >
-              <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-16">
-                <span className="font-mono text-sm font-extrabold tracking-[0.2em] text-black uppercase">WITHOUT PAPRS</span>
-                <div className="max-w-md pt-4">
-                  <h1 className="text-3xl md:text-5xl lg:text-[3.45rem] font-extrabold tracking-tight font-syne leading-[0.92] mb-4 text-black">
+              <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-14 lg:p-16">
+                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase">WITHOUT PAPRS</span>
+                <div className="max-w-xl pt-2">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black tracking-[-0.04em] font-syne leading-[0.98] mb-5 text-black">
                     {headlineLeft.split(" ").map((word, wi) => (
-                      <span key={wi} className="inline-block whitespace-nowrap mr-[0.18em]">
+                      <span key={wi} className="inline-block whitespace-nowrap mr-[0.16em]">
                         {word.split("").map((ch, ci) => (
                           <span
                             key={ci}
@@ -731,19 +773,19 @@ export default function HeroAndPain() {
                       </span>
                     ))}
                   </h1>
-                  <p className="font-sans text-xs md:text-sm text-zinc-600 leading-relaxed">
+                  <p className="font-sans text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed font-medium max-w-md">
                     The answer changes with your passport, job, family, address, and length of stay. Every official page solves one piece. You have to connect them.
                   </p>
                 </div>
                 <div className="h-4" />
               </div>
 
-              <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-16">
-                <span className="font-mono text-sm font-extrabold tracking-[0.2em] text-black uppercase self-end text-right">WITH PAPRS</span>
-                <div className="max-w-md pt-4">
-                  <h1 className="text-3xl md:text-5xl lg:text-[3.45rem] font-extrabold tracking-tight font-syne leading-[0.92] mb-4 text-black">
+              <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-14 lg:p-16 z-30 pointer-events-none">
+                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase self-end text-right">WITH PAPRS</span>
+                <div className="max-w-xl pt-2">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black tracking-[-0.04em] font-syne leading-[0.98] mb-5 text-black">
                     {headlineRight.split(" ").map((word, wi) => (
-                      <span key={wi} className="inline-block whitespace-nowrap mr-[0.18em]">
+                      <span key={wi} className="inline-block whitespace-nowrap mr-[0.16em]">
                         {word.split("").map((ch, ci) => (
                           <span
                             key={ci}
@@ -758,7 +800,7 @@ export default function HeroAndPain() {
                       </span>
                     ))}
                   </h1>
-                  <p className="font-sans text-xs md:text-sm text-zinc-600 leading-relaxed">
+                  <p className="font-sans text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed font-medium max-w-md">
                     Paprs identifies your route, checks the dependencies, and turns scattered official requirements into one clear sequence.
                   </p>
                 </div>
@@ -783,38 +825,13 @@ export default function HeroAndPain() {
               ))}
             </div>
 
-            {/* Clean right-side device mockups */}
+            {/* Clean right-side web dashboard mockup */}
             <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center md:justify-end md:pr-4 lg:pr-8 xl:pr-12 overflow-hidden">
               <div
-                className="relative w-[460px] h-[520px] transition-all duration-100 scale-90 md:scale-95 lg:scale-105"
-                style={{ transform: `translateX(${rightCardsX}%)`, opacity: 1, perspective: "1400px" }}
+                className="relative w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px] transition-all duration-100 scale-90 sm:scale-95 lg:scale-100"
+                style={{ transform: `translateX(${rightCardsX}%)` }}
               >
-                <div className="absolute left-1/2 top-1/2 z-0" style={{ transform: "translate(calc(-50% - 180px), calc(-50% + 36px)) rotateY(-24deg) rotateX(2deg)" }}>
-                  <AndroidMockup
-                    screenWidth={208}
-                    noRoundedScreen
-                    frameColor="#000000"
-                    statusbarColor="#FFFFFF"
-                    navBarColor="#FFFFFF"
-                    transparentNavBar
-                    hideStatusBar
-                  >
-                    <PaprsPhoneScreen />
-                  </AndroidMockup>
-                </div>
-                <div className="absolute left-1/2 top-1/2 z-10" style={{ transform: "translate(calc(-50% + 75px), -50%) rotateY(18deg) rotateX(-2deg)" }}>
-                  <IPhoneMockup
-                    screenWidth={210}
-                    screenType="island"
-                    frameColor="#000000"
-                    statusbarColor="#FFFFFF"
-                    hideStatusBar
-                    transparentNavBar
-                    hideNavBar
-                  >
-                    <PaprsDetailPhoneScreen />
-                  </IPhoneMockup>
-                </div>
+                <PaprsWebDashboard />
               </div>
             </div>
           </>
@@ -1128,7 +1145,7 @@ export default function HeroAndPain() {
             style={{
               opacity: interp(progress, 0.80, 0.86, 0, 1.0),
               transform: `translateY(calc(var(--doc-transition-progress, 0) * var(--viewport-height-px, 100vh)))`,
-              zIndex: `calc(15 + clamp(0, var(--doc-transition-progress, 0) * 1000000, 25))` as any,
+              zIndex: `calc(15 + clamp(0, var(--doc-transition-progress, 0) * 1000000, 25))` as unknown as number,
             }}
           >
             <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
