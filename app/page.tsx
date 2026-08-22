@@ -24,15 +24,10 @@ export default function Home() {
       <header 
         className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full apple-glass shadow-[0_8px_30px_rgba(0,0,0,0.04)] select-none text-black transition-all"
       >
-        {/* Brand Logo */}
-        <a href="#" className="flex items-center gap-0.5 hover:opacity-85 apple-press">
-          <img 
-            src="/paprs-logo-black.png" 
-            alt="P" 
-            className="w-8 h-8 object-contain"
-          />
-          <span className="font-syne font-extrabold text-2xl tracking-tighter text-black -ml-0.5">
-            aprs
+        {/* Brand */}
+        <a href="#" className="flex items-center hover:opacity-85 apple-press">
+          <span className="font-syne font-extrabold text-2xl tracking-tighter text-black">
+            paprs
           </span>
         </a>
 
