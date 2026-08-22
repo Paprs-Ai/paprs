@@ -1,20 +1,15 @@
 "use client";
 
-import React from "react";
 
+import AILearns from "./sections/AILearns";
+import AutonomoEngine from "./sections/AutonomoEngine";
+import Countries from "./sections/Countries";
+import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
-import AutonomoEngine from "./sections/AutonomoEngine";
-import PaprsQRAndVault from "./sections/PaprsQRAndVault";
-import SyntheticBenchmark from "./sections/SyntheticBenchmark";
-import AILearns from "./sections/AILearns";
-import Countries from "./sections/Countries";
-import Pricing from "./sections/Pricing";
-import FinalCTA from "./sections/FinalCTA";
 
 // Keep the complete pricing experience ready for a later launch without
 // exposing it on the public landing page yet.
-const PRICING_ENABLED = false;
 
 export default function Home() {
   return (
@@ -59,11 +54,11 @@ export default function Home() {
         <HeroAndPain />
         <HowItWorks />
         <AutonomoEngine />
-        <PaprsQRAndVault />
-        <SyntheticBenchmark />
+        {/* <PaprsQRAndVault /> */}
+        {/* <SyntheticBenchmark /> */}
         <AILearns />
         <Countries />
-        {PRICING_ENABLED && <Pricing />}
+         {/* <Pricing /> */}
         {/* Testimonials disabled for now */}
         {/* <SocialProof /> */}
         <FinalCTA />
