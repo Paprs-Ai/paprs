@@ -543,7 +543,12 @@ export default function HeroAndPain() {
                 className="relative w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px] transition-all duration-100 scale-90 sm:scale-95 lg:scale-100"
                 style={{ transform: `translateX(${rightCardsX}%)` }}
               >
-                <PaprsWebDashboard />
+                <PaprsWebDashboard
+                  style={{
+                    WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.65) 48%, rgba(0,0,0,1) 70%, #000 100%)",
+                    maskImage: "linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.65) 48%, rgba(0,0,0,1) 70%, #000 100%)",
+                  }}
+                />
               </div>
             </div>
           </>

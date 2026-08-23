@@ -10,9 +10,6 @@ import HowItWorks from "./sections/HowItWorks";
 import { useLanguage } from "./context/LanguageContext";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
-// Keep the complete pricing experience ready for a later launch without
-// exposing it on the public landing page yet.
-
 export default function Home() {
   const { dict } = useLanguage();
 
@@ -62,13 +59,8 @@ export default function Home() {
         <HeroAndPain />
         <HowItWorks />
         <AutonomoEngine />
-        {/* <PaprsQRAndVault /> */}
-        {/* <SyntheticBenchmark /> */}
         <AILearns />
         <Countries />
-         {/* <Pricing /> */}
-        {/* Testimonials disabled for now */}
-        {/* <SocialProof /> */}
         <FinalCTA />
       </main>
 

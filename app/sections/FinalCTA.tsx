@@ -31,13 +31,11 @@ export default function FinalCTA() {
       clearTimeout(resetTimerRef.current);
     }
 
-    // Instantly clear the email input field upon clicking join
     setEmail("");
     setIsSubmitting(true);
     setErrorMessage(null);
 
     try {
-      // Direct Server Action execution with @supabase/server on backend
       const data = await joinWaitlistAction(emailToSubmit);
 
       if (!data.success && !data.alreadyRegistered) {

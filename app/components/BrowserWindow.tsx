@@ -18,9 +18,6 @@ import {
 import { OnboardingWebView } from "./OnboardingWebView";
 import { useLanguage } from "../context/LanguageContext";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 1. REUSABLE TOP FLOATING NAVIGATION BAR (Matching Real Web App FloatingNav)
-// ─────────────────────────────────────────────────────────────────────────────
 export function WebFloatingNav({
   activeTab = "dashboard",
   className = "",
@@ -83,9 +80,6 @@ export function WebFloatingNav({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 2. REUSABLE BROWSER PLACEHOLDER FRAME (Standardized Global Window Shell)
-// ─────────────────────────────────────────────────────────────────────────────
 export interface BrowserPlaceholderProps {
   children: React.ReactNode;
   url?: string;
@@ -154,9 +148,6 @@ export function BrowserPlaceholder({
 // Alias for convenience
 export const BrowserWindow = BrowserPlaceholder;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 3. VIEW: HERO OVERVIEW / RELOCATION HUB VIEW (Matching Real DashboardScreen)
-// ─────────────────────────────────────────────────────────────────────────────
 export function HeroDashboardView() {
   const docs: Array<{
     title: string;
@@ -387,9 +378,6 @@ export function HeroDashboardView() {
 
 export const RelocationHubView = HeroDashboardView;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 4. VIEW: SEGURIDAD SOCIAL ROUTE VIEW (Slide 0 Detail View)
-// ─────────────────────────────────────────────────────────────────────────────
 export function SeguridadSocialRouteView() {
   const tasks: Array<{ title: string; sublabel: string; status: "done" | "active" | "pending" }> = [
     { title: "Verify identity & padrón record", sublabel: "Valid passport/NIE & Barcelona residency certificate matched", status: "done" },
@@ -513,9 +501,6 @@ export function SeguridadSocialRouteView() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 5. VIEW: NIE CERTIFICATE ROUTE VIEW
-// ─────────────────────────────────────────────────────────────────────────────
 export function NieCertificateRouteView() {
   const tasks: Array<{ title: string; sublabel: string; status: "done" | "active" | "pending" }> = [
     { title: "Generate Tax Model 790-012", sublabel: "Official PDF with pre-calculated fee (€12.24)", status: "done" },
@@ -644,9 +629,6 @@ export const NieRouteView = NieCertificateRouteView;
 // Re-export Onboarding WebView
 export { OnboardingWebView } from "./OnboardingWebView";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 6. COMPOSITE READY-TO-USE WRAPPERS
-// ─────────────────────────────────────────────────────────────────────────────
 export function PaprsWebDashboard({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <BrowserPlaceholder className={className} style={style}>

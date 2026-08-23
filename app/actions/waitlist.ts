@@ -3,8 +3,7 @@
 import { WaitlistService, WaitlistResult } from "@/services/waitlist.service";
 
 /**
- * Server Action to add an email to the waitlist using @supabase/server on the backend.
- * Keeps all Supabase secret credentials strictly on the server.
+ * Server Action to register an email to the waitlist.
  */
 export async function joinWaitlistAction(email: string): Promise<WaitlistResult> {
   return await WaitlistService.addToWaitlist(email);

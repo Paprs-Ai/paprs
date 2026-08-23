@@ -30,10 +30,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await WaitlistService.addToWaitlist(email);
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const clientIp = forwardedFor ? forwardedFor.split(",")[0].trim() : "anonymous";
+
+    const result = await WaitlistService.addToWaitlist(email, clientIp);
 
     if (!result.success) {
-      const status = result.error === "INVALID_EMAIL" ? 400 : 500;
+      let status = 500;
+      if (result.error === "INVALID_EMAIL") status = 400;
+      if (result.error === "RATE_LIMITED") status = 429;
       return Response.json(result, { status });
     }
 

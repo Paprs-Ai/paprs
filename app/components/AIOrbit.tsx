@@ -5,8 +5,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const SPIN_DPS = 28;
-// One full sparse → dense → sparse cycle takes this many degrees of rotation,
-// so the graph's "growth" is tied to the sphere's own spin, not to scroll.
 const CYCLE_DEGREES = 360 * 2.5;
 const SPHERE_R  = 260;
 const CANVAS_W  = 730;
@@ -25,11 +23,7 @@ interface SpherePoint {
   activationProgress: number;
 }
 
-// Nodes are deliberately ordered to INTERLEAVE across all latitude bands
-// so that at any scroll position, labels appear across the whole sphere.
-// activationProgress = 0.03 + (index / 49) * 0.93
 const PILL_SOURCE: [string, string, number, number][] = [
-  // id                label                        lat   lng
   ["nie",         "NIE Certificate",                 25,   0],
   ["tie",         "TIE Card",                        -5,   0],
   ["padron",      "Empadronamiento",                -18,  22],
@@ -230,13 +224,7 @@ export default function AIOrbit() {
       lastTime    = now;
       angle      += (delta / 1000) * SPIN_DPS;
 
-      // The graph's density is driven by the sphere's own rotation: each
-      // cycle it grows from sparse to fully connected, then resets and
-      // builds again as the sphere keeps spinning.
       const p = (angle % CYCLE_DEGREES) / CYCLE_DEGREES;
-
-      // Live neighbor count grows 2 → MAX_K as the user scrolls.
-      // This drives the sparse-to-dense edge animation.
       const liveK = Math.max(2, Math.round(2 + p * (MAX_K - 2)));
 
       type Proj = {

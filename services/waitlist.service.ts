@@ -1,4 +1,3 @@
-import { createAdminClient } from "@supabase/server/core";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 export interface WaitlistEntry {
@@ -16,41 +15,86 @@ export interface WaitlistResult {
   error?: string;
 }
 
+let cachedClient: SupabaseClient | null = null;
+
 /**
- * Helper to get an active Supabase client with admin/secret privileges.
- * Falls back to standard @supabase/supabase-js createClient if needed.
+ * Returns a cached Supabase server client.
  */
-export function getSupabaseAdminClient(): SupabaseClient {
-  try {
-    return createAdminClient();
-  } catch {
-    const url = process.env.SUPABASE_URL;
-    const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
-    if (!url || !key) {
-      throw new Error("Supabase environment variables (SUPABASE_URL and SUPABASE_SECRET_KEY) are missing.");
-    }
-    return createClient(url, key);
+export function getSupabaseServerClient(): SupabaseClient {
+  if (cachedClient) return cachedClient;
+
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+
+  if (!url || !key) {
+    throw new Error("Supabase environment configuration is missing.");
   }
+
+  cachedClient = createClient(url, key, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+
+  return cachedClient;
+}
+
+// In-memory sliding rate limiter: tracks timestamp array per IP/key
+const rateLimitMap = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const MAX_REQUESTS_PER_WINDOW = 5;
+
+/**
+ * Basic in-memory rate limiter to prevent automated flooding.
+ */
+export function checkRateLimit(identifier: string = "global"): boolean {
+  const now = Date.now();
+  const timestamps = rateLimitMap.get(identifier) || [];
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+
+  if (recent.length >= MAX_REQUESTS_PER_WINDOW) {
+    return false;
+  }
+
+  recent.push(now);
+  rateLimitMap.set(identifier, recent);
+
+  // Periodically cleanup memory
+  if (rateLimitMap.size > 10000) {
+    rateLimitMap.clear();
+  }
+
+  return true;
 }
 
 /**
- * Validates basic email structure.
+ * Validates email format according to RFC 5321 length and regex constraints.
  */
 export function validateEmail(email: string): boolean {
   if (!email || typeof email !== "string") return false;
   const trimmed = email.trim();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (trimmed.length > 254 || trimmed.length < 5) return false;
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
   return emailRegex.test(trimmed);
 }
 
 /**
- * Service to manage waitlist registrations.
+ * Service to manage waitlist registrations securely.
  */
 export class WaitlistService {
   /**
-   * Adds an email address to the Supabase waitlist table.
+   * Adds an email address to the waitlist table.
    */
-  static async addToWaitlist(rawEmail: string): Promise<WaitlistResult> {
+  static async addToWaitlist(rawEmail: string, clientIp: string = "anonymous"): Promise<WaitlistResult> {
+    if (!checkRateLimit(clientIp)) {
+      return {
+        success: false,
+        message: "Too many requests. Please try again in a few minutes.",
+        error: "RATE_LIMITED",
+      };
+    }
+
     const email = rawEmail?.trim()?.toLowerCase();
 
     if (!email || !validateEmail(email)) {
@@ -62,7 +106,7 @@ export class WaitlistService {
     }
 
     try {
-      const supabase = getSupabaseAdminClient();
+      const supabase = getSupabaseServerClient();
 
       const { data, error } = await supabase
         .from("waitlist")
@@ -71,7 +115,6 @@ export class WaitlistService {
         .single();
 
       if (error) {
-        // Handle PostgreSQL unique constraint violation (duplicate email)
         if (error.code === "23505" || error.message?.includes("duplicate key")) {
           return {
             success: true,
@@ -80,11 +123,11 @@ export class WaitlistService {
           };
         }
 
-        console.error("Supabase insert error:", error);
+        console.error("Supabase waitlist error:", error.code);
         return {
           success: false,
-          message: error.message || "Failed to join waitlist. Please try again.",
-          error: error.code || "DB_ERROR",
+          message: "Failed to join waitlist. Please try again.",
+          error: "REGISTRATION_FAILED",
         };
       }
 
@@ -94,31 +137,12 @@ export class WaitlistService {
         data: data as WaitlistEntry,
       };
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Internal server error";
-      console.error("Unexpected error in addToWaitlist:", err);
+      console.error("Unexpected waitlist error:", err instanceof Error ? err.message : "Internal error");
       return {
         success: false,
         message: "An unexpected error occurred. Please try again later.",
-        error: errorMessage,
+        error: "SERVER_ERROR",
       };
     }
-  }
-
-  /**
-   * Optional helper to fetch all waitlist entries (for administrative queries).
-   */
-  static async getAll(): Promise<WaitlistEntry[]> {
-    const supabase = getSupabaseAdminClient();
-    const { data, error } = await supabase
-      .from("waitlist")
-      .select("*")
-      .order("createAt", { ascending: false });
-
-    if (error) {
-      console.error("Failed to fetch waitlist:", error);
-      throw error;
-    }
-
-    return (data as WaitlistEntry[]) || [];
   }
 }
