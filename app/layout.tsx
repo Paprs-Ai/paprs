@@ -15,6 +15,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Paprs — Your step-by-step guide to life in Spain",
   description: "Navigate Spanish bureaucracy with confidence. NIE, TIE, padrón, taxes and more — Paprs tells you exactly what to do, in plain language, step by step.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-icon.svg",
+  },
 };
 
 import { LanguageProvider } from "./context/LanguageContext";
