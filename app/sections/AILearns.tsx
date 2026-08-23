@@ -3,8 +3,11 @@
 import React from "react";
 import AIOrbit from "../components/AIOrbit";
 import { Lock } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function AILearns() {
+  const { dict } = useLanguage();
+
   return (
     <section
       id="ai-learns" 
@@ -14,22 +17,21 @@ export default function AILearns() {
       {/* Left Column: Copy */}
       <div className="w-full md:w-5/12 mb-12 md:mb-0 select-none">
         <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full">
-          Intelligence
+          {dict.aiLearns.tag}
         </span>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-syne text-black mt-4 mb-6 leading-tight">
-          The more you use Paprs,<br />
-          the better it knows you.
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-syne text-black mt-4 mb-6 leading-tight whitespace-pre-line">
+          {dict.aiLearns.title}
         </h2>
         
         <div className="space-y-4 text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-          <p>Every document you upload. Every step you complete. Every question you ask.</p>
-          <p>Paprs learns your situation and gets better at anticipating what you need next — before you even think to ask.</p>
+          <p>{dict.aiLearns.p1}</p>
+          <p>{dict.aiLearns.p2}</p>
         </div>
 
         {/* Security disclaimer print */}
         <div className="mt-8 flex items-center gap-2 text-[10px] text-zinc-500 font-mono uppercase tracking-wider font-medium">
           <Lock className="w-3.5 h-3.5 text-black" />
-          <span>Your data is encrypted & belongs to you. We never share it. Ever.</span>
+          <span>{dict.aiLearns.securityDisclaimer}</span>
         </div>
       </div>
 

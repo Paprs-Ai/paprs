@@ -2,22 +2,25 @@
 
 import React from "react";
 import CountryMap from "../components/CountryMap";
+import { useLanguage } from "../context/LanguageContext";
 
 const Q1 = [
-  { flag: "🇨🇭", code: "CH", name: "Switzerland" },
-  { flag: "🇩🇪", code: "DE", name: "Germany" },
-  { flag: "🇫🇷", code: "FR", name: "France" },
+  { flag: "🇨🇭", code: "CH" as const },
+  { flag: "🇩🇪", code: "DE" as const },
+  { flag: "🇫🇷", code: "FR" as const },
 ];
 const Q2 = [
-  { flag: "🇮🇹", code: "IT", name: "Italy" },
-  { flag: "🇵🇹", code: "PT", name: "Portugal" },
+  { flag: "🇮🇹", code: "IT" as const },
+  { flag: "🇵🇹", code: "PT" as const },
 ];
 const Q3 = [
-  { flag: "🇳🇱", code: "NL", name: "Netherlands" },
-  { flag: "🇦🇹", code: "AT", name: "Austria" },
+  { flag: "🇳🇱", code: "NL" as const },
+  { flag: "🇦🇹", code: "AT" as const },
 ];
 
 export default function Countries() {
+  const { dict } = useLanguage();
+
   return (
     <section id="countries" className="relative min-h-screen w-full bg-[#FFFFFF] overflow-hidden scroll-mt-28">
 
@@ -40,15 +43,13 @@ export default function Countries() {
         {/* LEFT — Title */}
         <div className="w-[38%] flex flex-col justify-center pr-8 py-20 select-none">
           <span className="font-mono text-xs font-bold text-black uppercase tracking-widest bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-            Geography
+            {dict.countries.tag}
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold font-syne text-black mt-5 mb-5 leading-[1.05]">
-            Starting in<br />Spain.<br />
-            Growing<br />
-            across Europe.
+          <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold font-syne text-black mt-5 mb-5 leading-[1.05] whitespace-pre-line">
+            {dict.countries.title}
           </h2>
           <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-            Paprs resolves the local rules so you can focus on building your life — wherever that country is.
+            {dict.countries.desc}
           </p>
         </div>
 
@@ -63,13 +64,13 @@ export default function Countries() {
             <div className="flex items-center gap-3">
               <span className="text-3xl leading-none">🇪🇸</span>
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-widest text-black font-bold mb-0.5">Live Now</p>
-                <h3 className="font-syne font-extrabold text-xl text-black leading-none">Spain</h3>
+                <p className="font-mono text-[9px] uppercase tracking-widest text-black font-bold mb-0.5">{dict.countries.liveNow}</p>
+                <h3 className="font-syne font-extrabold text-xl text-black leading-none">{dict.countries.spain}</h3>
               </div>
             </div>
             <div className="flex items-center gap-1.5 bg-black text-white rounded-full px-3 py-1.5 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse block" />
-              <span className="font-mono text-[9px] font-bold uppercase tracking-wider">Available</span>
+              <span className="font-mono text-[9px] font-bold uppercase tracking-wider">{dict.countries.available}</span>
             </div>
           </div>
 
@@ -77,7 +78,7 @@ export default function Countries() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <div className="h-px flex-1 bg-zinc-200" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-black font-bold">Q1 2026</span>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-black font-bold">{dict.countries.q1Label}</span>
               <div className="h-px flex-1 bg-zinc-200" />
             </div>
             <div className="grid grid-cols-3 gap-2">
@@ -85,7 +86,7 @@ export default function Countries() {
                 <div key={c.code} className="bg-white/80 backdrop-blur-sm border border-zinc-300 rounded-xl p-3 flex flex-col items-center gap-1.5 hover:border-black transition-colors duration-200">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-zinc-500 uppercase tracking-wider">{c.code}</span>
-                  <span className="font-syne font-bold text-[11px] text-black text-center leading-tight">{c.name}</span>
+                  <span className="font-syne font-bold text-[11px] text-black text-center leading-tight">{dict.countries.countryNames[c.code]}</span>
                 </div>
               ))}
             </div>
@@ -95,7 +96,7 @@ export default function Countries() {
           <div>
             <div className="flex items-center gap-2 mb-2.5">
               <div className="h-px flex-1 bg-zinc-200" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Q2 2026</span>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.countries.q2Label}</span>
               <div className="h-px flex-1 bg-zinc-200" />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -103,7 +104,7 @@ export default function Countries() {
                 <div key={c.code} className="bg-white/60 backdrop-blur-sm border border-zinc-200 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-80">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-wider">{c.code}</span>
-                  <span className="font-syne font-bold text-[11px] text-zinc-700 text-center leading-tight">{c.name}</span>
+                  <span className="font-syne font-bold text-[11px] text-zinc-700 text-center leading-tight">{dict.countries.countryNames[c.code]}</span>
                 </div>
               ))}
             </div>
@@ -113,7 +114,7 @@ export default function Countries() {
           <div>
             <div className="flex items-center gap-2 mb-2.5">
               <div className="h-px flex-1 bg-zinc-200" />
-              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Q3 2026</span>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-400 font-bold">{dict.countries.q3Label}</span>
               <div className="h-px flex-1 bg-zinc-200" />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -121,7 +122,7 @@ export default function Countries() {
                 <div key={c.code} className="bg-white/50 backdrop-blur-sm border border-zinc-200 rounded-xl p-3 flex flex-col items-center gap-1.5 opacity-60">
                   <span className="text-2xl leading-none">{c.flag}</span>
                   <span className="font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-wider">{c.code}</span>
-                  <span className="font-syne font-bold text-[11px] text-zinc-600 text-center leading-tight">{c.name}</span>
+                  <span className="font-syne font-bold text-[11px] text-zinc-600 text-center leading-tight">{dict.countries.countryNames[c.code]}</span>
                 </div>
               ))}
             </div>
@@ -129,7 +130,7 @@ export default function Countries() {
 
           {/* More countries hint */}
           <p className="font-mono text-[9px] text-zinc-500 text-center uppercase tracking-widest pt-1 font-medium">
-            + more countries in 2027
+            {dict.countries.moreIn2027}
           </p>
 
         </div>

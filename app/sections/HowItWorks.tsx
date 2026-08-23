@@ -1,12 +1,14 @@
 "use client";
 
-import { BrowserPlaceholder, PaprsWebDashboardCard } from "@/app/components/BrowserWindow";
+import { BrowserPlaceholder, PaprsWebDashboardCard, WebFloatingNav } from "@/app/components/BrowserWindow";
+import { OnboardingWebView } from "@/app/components/OnboardingWebView";
 import Lottie from "lottie-react";
-import { Bell, Check, ChevronRight, Cpu, FileText, Home, Layers, Loader2, Lock, MapPin, Sparkles } from "lucide-react";
+import { Check, ChevronRight, Clock, Cpu, FileText, Loader2, Lock, MapPin, Shield, Sparkles } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import aiGeneratingAnimation from "../../assets/animations/AI Generating Response.json";
 import DocumentCard from "../components/DocumentCard";
 import { useScrollProgress } from "../hooks/useScrollProgress";
+import { useLanguage } from "../context/LanguageContext";
 
 // ─── Slide dot indicator (monochrome variant) ──────────────────────────────────
 function SlideDots({ total, active }: { total: number; active: number }) {
@@ -43,32 +45,38 @@ function OutcomePills({ items }: { items: string[] }) {
 }
 
 function AIComputingLogger() {
-  const [items, setItems] = React.useState([
-    { id: 1, text: "Matched the correct residence route" },
-    { id: 2, text: "Verified forms, evidence, and fees" },
-    { id: 3, text: "Ordered tasks by dependency and deadline" },
-  ]);
+  const { dict } = useLanguage();
+  const rawItems = [
+    { id: 1, text: dict.howItWorks.aiLogger.matchedRoute },
+    { id: 2, text: dict.howItWorks.aiLogger.verifiedForms },
+    { id: 3, text: dict.howItWorks.aiLogger.orderedTasks },
+  ];
+  const [order, setOrder] = React.useState([0, 1, 2]);
   const [status, setStatus] = React.useState<"loading" | "done">("loading");
 
   React.useEffect(() => {
     const timer = setInterval(() => {
-      if (status === "loading") {
-        setStatus("done");
-      } else {
-        setItems(prevItems => {
-          const next = [...prevItems];
-          const first = next.shift();
-          if (first) {
-            next.push(first);
-          }
-          return next;
-        });
-        setStatus("loading");
-      }
+      setStatus((prev) => {
+        if (prev === "loading") {
+          return "done";
+        } else {
+          setOrder((prevOrder) => {
+            const next = [...prevOrder];
+            const first = next.shift();
+            if (first !== undefined) {
+              next.push(first);
+            }
+            return next;
+          });
+          return "loading";
+        }
+      });
     }, 1200);
 
     return () => clearInterval(timer);
-  }, [status]);
+  }, []);
+
+  const items = order.map((idx) => rawItems[idx]);
 
   return (
     <div className="flex flex-col gap-2 font-mono text-[7.5px] text-zinc-500 bg-zinc-50 border border-zinc-200 rounded-2xl p-3.5 z-10 shadow-sm mb-4 w-full">
@@ -104,20 +112,9 @@ function AIComputingLogger() {
   );
 }
 
-const SLIDE_LABELS = [
-  "Chaos, organised",
-  "Understand your case",
-  "Build your route",
-  "Show the next action",
-  "Protect every deadline",
-  "Track every handoff",
-  "Read your documents",
-  "Adapt the plan",
-  "Act with approval",
-];
-
 export default function HowItWorks() {
   const { ref, progress } = useScrollProgress();
+  const { dict } = useLanguage();
 
   const interp = (val: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
     if (val <= inMin) return outMin;
@@ -145,7 +142,7 @@ export default function HowItWorks() {
   };
 
   const translatePercent = getStickyTranslate(progress);
-  const activeSlide = Math.round(translatePercent / SW);
+  const activeSlide = Math.min(N - 1, Math.max(0, Math.round(translatePercent / SW)));
 
   const getLocalProgress = (p: number, i: number): number => {
     const startDwell = i * (D + S);
@@ -161,7 +158,7 @@ export default function HowItWorks() {
   const s7p = getLocalProgress(progress, 7);
   const s8p = getLocalProgress(progress, 8);
 
-  const cardOpacity = 0.45;
+  const cardOpacity = 1;
 
   const getPileCardStyle = (pos: { x: number; y: number; r: number }) => ({
     transform: `translate(calc(-50% + ${pos.x}vw), calc(-50% + ${pos.y}vh)) rotate(${pos.r}deg)`,
@@ -181,7 +178,10 @@ export default function HowItWorks() {
   const text4Opacity = clamp01((s2p - 0.75) / 0.05);
 
   const getPhoneTranslateX = (p: number, s2pVal: number) => {
-    if (p < 0.23) return 0;
+    if (p < 0.195) return 0;
+    if (p < 0.23) {
+      return interp(p, 0.195, 0.23, 0, -16.6667);
+    }
     if (p < 0.31) {
       if (s2pVal < 0.20) return -16.6667;
       if (s2pVal < 0.25) return interp(s2pVal, 0.20, 0.25, -16.6667, -33.3333);
@@ -217,17 +217,27 @@ export default function HowItWorks() {
 
   const sliderOpacity = 1;
 
-  const getActiveTab = () => {
-    if (activeSlide <= 2) return 0;
-    if (activeSlide === 3 || activeSlide === 4) return 1;
-    if (activeSlide === 5) {
-      if (stage4VaultOpacity > 0.5) return 2;
-      return 0;
-    }
-    if (activeSlide >= 6) return 3;
-    return 0;
+  const getActiveNavTab = (): "dashboard" | "todo" | "vault" | "assistant" => {
+    if (activeSlide <= 0) return "dashboard";
+    if (activeSlide === 1) return "todo";
+    if (activeSlide === 2 || activeSlide === 3 || activeSlide === 5) return "todo";
+    if (activeSlide === 4) return "dashboard";
+    if (activeSlide === 6) return "vault";
+    if (activeSlide >= 7) return "assistant";
+    return "dashboard";
   };
-  const activeTab = getActiveTab();
+
+  const getBrowserUrl = (): string => {
+    if (activeSlide === 1) return "app.paprs.app/onboarding";
+    if (activeSlide === 2) {
+      if (s2p < 0.22) return "app.paprs.app/building-route";
+      return "app.paprs.app/todos";
+    }
+    if (activeSlide === 3 || activeSlide === 5) return "app.paprs.app/todos";
+    if (activeSlide === 6) return "app.paprs.app/vault";
+    if (activeSlide >= 7) return "app.paprs.app/assistant";
+    return "app.paprs.app/dashboard";
+  };
 
   return (
     <div ref={ref} id="how-it-works" className="relative h-[600vh] w-full scroll-mt-28">
@@ -253,17 +263,19 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-6 relative">
               
               {/* Left Column */}
-              <div className="w-full md:w-5/12 flex flex-col justify-center relative z-20">
+              <div
+                className="w-full md:w-5/12 flex flex-col justify-center p-6 sm:p-8 rounded-3xl glass-card-subtle relative z-20 transition-all"
+              >
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  From confusion to action
+                  {dict.howItWorks.fromConfusionTag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Paprs turns the maze into your next move.
+                  {dict.howItWorks.turnsMazeTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Instead of opening ten tabs and translating legal language yourself, you get one personal plan showing what matters now, what can wait, and what Paprs can prepare for you.
+                  {dict.howItWorks.turnsMazeDesc}
                 </p>
-                <OutcomePills items={["One route", "One next action", "No wasted steps"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide0} />
               </div>
 
               {/* Right Column: Web Dashboard Card (Matching Hero Size) */}
@@ -275,7 +287,7 @@ export default function HowItWorks() {
                     style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
                   >
                     <Check className="w-3.5 h-3.5 text-black" />
-                    Seguridad Social route ready
+                    {dict.howItWorks.segSocialRouteReady}
                   </div>
                 </div>
               </div>
@@ -288,15 +300,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 01
+                  {dict.howItWorks.step01Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Tell Paprs once.
+                  {dict.howItWorks.tellOnceTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Paprs asks only the questions that change your route—where you are from, why you are in Spain, where you live, and what is time-sensitive. Every answer removes irrelevant procedures.
+                  {dict.howItWorks.tellOnceDesc}
                 </p>
-                <OutcomePills items={["Plain-language questions", "No generic checklist"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide1} />
               </div>
 
               <div className="w-full md:w-6/12 h-[65vh] md:h-full flex-shrink-0" />
@@ -308,7 +320,7 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center relative min-h-[220px]">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 02
+                  {dict.howItWorks.step02Tag}
                 </span>
                 
                 <div className="relative mt-6 h-64 w-full md:h-72">
@@ -322,10 +334,10 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      First, Paprs understands the case.
+                      {dict.howItWorks.phase1Title}
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      Your nationality, purpose of stay, city, housing, deadlines, and existing documents become one structured profile—so nothing important is lost between searches.
+                      {dict.howItWorks.phase1Desc}
                     </p>
                   </div>
 
@@ -339,10 +351,10 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      Then, Paprs finds the right route.
+                      {dict.howItWorks.phase2Title}
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      It matches your situation to the relevant official procedure, forms, evidence, fees, local rules, and known dependencies—without making you decode the acronyms.
+                      {dict.howItWorks.phase2Desc}
                     </p>
                   </div>
 
@@ -356,10 +368,10 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      Every dependency falls into place.
+                      {dict.howItWorks.phase3Title}
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      Paprs orders the work around deadlines and prerequisites. Ready tasks move forward. Blocked tasks explain exactly what is missing. Nothing starts in the wrong order.
+                      {dict.howItWorks.phase3Desc}
                     </p>
                   </div>
 
@@ -373,14 +385,14 @@ export default function HowItWorks() {
                     }}
                   >
                     <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
-                      Hours of research become one action.
+                      {dict.howItWorks.phase4Title}
                     </h3>
                     <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                      For the next step, Paprs brings together the correct form, evidence checklist, fee, official link, office, and instructions—then prepares whatever can be safely prepared.
+                      {dict.howItWorks.phase4Desc}
                     </p>
                   </div>
                 </div>
-                <OutcomePills items={["Verified requirements", "Dependencies ordered", "Next action prepared"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide2} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -391,15 +403,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 03
+                  {dict.howItWorks.step03Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  One screen answers: “What do I do now?”
+                  {dict.howItWorks.whatDoIDoTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  See every procedure as ready, in progress, waiting on an office, or blocked by a missing document. Paprs always surfaces the next useful action—not another dashboard to manage.
+                  {dict.howItWorks.whatDoIDoDesc}
                 </p>
-                <OutcomePills items={["Ready", "Waiting", "Blocked"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide3} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -410,15 +422,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 04
+                  {dict.howItWorks.step04Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Deadlines stop living in your head.
+                  {dict.howItWorks.deadlinesTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Paprs reads the dates that matter, counts backwards from the deadline, and tells you what must happen first—while there is still time to fix a missing document or unavailable appointment.
+                  {dict.howItWorks.deadlinesDesc}
                 </p>
-                <OutcomePills items={["Deadline watch", "Early warning", "Recovery time"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide4} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -429,15 +441,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 05
+                  {dict.howItWorks.step05Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Know who has the ball.
+                  {dict.howItWorks.whoHasTheBallTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Paprs separates what you have completed, what is waiting on an administration, and what needs your attention next—so you do not repeat work or wonder whether you missed something.
+                  {dict.howItWorks.whoHasTheBallDesc}
                 </p>
-                <OutcomePills items={["Done by you", "Waiting on office", "Next step"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide5} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -448,15 +460,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 06
+                  {dict.howItWorks.step06Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Your documents become working memory.
+                  {dict.howItWorks.workingMemoryTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Upload a certificate once. Paprs identifies the document, extracts useful dates and details, connects it to the right procedures, and reuses the evidence when the next checklist asks for it.
+                  {dict.howItWorks.workingMemoryDesc}
                 </p>
-                <OutcomePills items={["Details extracted", "Evidence organised", "Reuse instead of retype"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide6} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -467,15 +479,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 07
+                  {dict.howItWorks.step07Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  When life changes, the plan changes with it.
+                  {dict.howItWorks.whenLifeChangesTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  A new address, job, family situation, document date, fee, or official requirement can change what comes next. Paprs detects the impact, re-orders the route, and explains the new action.
+                  {dict.howItWorks.whenLifeChangesDesc}
                 </p>
-                <OutcomePills items={["Change detected", "Impact explained", "Plan re-ordered"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide7} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -486,15 +498,15 @@ export default function HowItWorks() {
             <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
               <div className="w-full md:w-5/12 flex flex-col justify-center">
                 <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  Step 08
+                  {dict.howItWorks.step08Tag}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
-                  Paprs prepares. You approve. Paprs acts.
+                  {dict.howItWorks.pocketAgencyTitle}
                 </h3>
                 <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  Paprs can research the route, prepare forms and evidence, monitor changes, and carry out supported digital actions. Before anything consequential is submitted, you see exactly what will happen and stay in control.
+                  {dict.howItWorks.pocketAgencyDesc}
                 </p>
-                <OutcomePills items={["Prepared for you", "Human approval", "Action tracked"]} />
+                <OutcomePills items={dict.howItWorks.pillsSlide8} />
               </div>
               <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
             </div>
@@ -507,7 +519,7 @@ export default function HowItWorks() {
         <div
           className="hidden md:block absolute inset-0 pointer-events-none z-[5]"
           style={{
-            opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1) * 0.85)`,
+            opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
             transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * var(--viewport-height-px, 100vh)))`,
           }}
         >
@@ -557,58 +569,18 @@ export default function HowItWorks() {
               >
                 {/* Desktop Web Dashboard Window using Reusable BrowserPlaceholder */}
                 <BrowserPlaceholder
+                  url={getBrowserUrl()}
                   badgeText="Live"
                   shadow="shadow-[0_24px_60px_-15px_rgba(0,0,0,0.14)]"
                   className="h-[520px] md:h-[540px]"
                   headerContent={
-                    activeSlide !== 1 && activeSlide !== 2 ? (
-                      <div className="px-4 py-2.5 bg-white border-b border-zinc-100 flex justify-between items-center z-20 shrink-0">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center font-syne font-black text-[10px]">
-                            p.
-                          </div>
-                          <div>
-                            <h5 className="font-syne font-extrabold text-[11px] text-black tracking-tight leading-tight">Paprs Workspace</h5>
-                            <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest leading-none mt-0.5">Student Route · Barcelona</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Bell className="w-3.5 h-3.5 text-zinc-400 hover:text-black cursor-pointer transition-colors" />
-                          <div className="w-6 h-6 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center font-mono text-[8px] text-black font-bold shadow-xs">
-                            JD
-                          </div>
-                        </div>
-                      </div>
-                    ) : null
-                  }
-                  footerContent={
-                    activeSlide !== 1 && activeSlide !== 2 ? (
-                      <div className="px-3 py-2 bg-zinc-50 border-t border-zinc-200 flex items-center justify-between z-20 shrink-0">
-                        <div className="flex items-center gap-1 sm:gap-1.5">
-                          <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 0 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                            <Home className="w-2.5 h-2.5" />
-                            <span>Overview</span>
-                          </div>
-                          <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 1 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                            <Layers className="w-2.5 h-2.5" />
-                            <span>Roadmap</span>
-                          </div>
-                          <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 2 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                            <FileText className="w-2.5 h-2.5" />
-                            <span>Vault</span>
-                          </div>
-                        </div>
-
-                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 3 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                          <Sparkles className="w-2.5 h-2.5" />
-                          <span>Assistant</span>
-                        </div>
-                      </div>
+                    (activeSlide > 2 || (activeSlide === 2 && s2p >= 0.22)) ? (
+                      <WebFloatingNav activeTab={getActiveNavTab()} />
                     ) : null
                   }
                 >
                   {/* Dashboard Screen Slider Container */}
-                  <div className="flex-1 min-h-0 relative overflow-hidden">
+                  <div className="flex-1 min-h-0 relative overflow-hidden bg-white">
                     <div
                       className="h-full flex transition-transform duration-300"
                       style={{
@@ -616,289 +588,20 @@ export default function HowItWorks() {
                         transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
                       }}
                     >
-                        {/* SCREEN 0: Onboarding Questions */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-[#FFFFFF] justify-between relative overflow-hidden">
-                          <style>{`
-                            @keyframes selectTap {
-                              0% { transform: scale(1); }
-                              40% { transform: scale(0.96); }
-                              100% { transform: scale(1); }
-                            }
-                            @keyframes checkPop {
-                              0% { transform: scale(0.5); opacity: 0; }
-                              60% { transform: scale(1.15); opacity: 0.85; }
-                              100% { transform: scale(1); opacity: 1; }
-                            }
-                            .animate-tap { animation: selectTap 0.35s ease-in-out; }
-                            .animate-pop { animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-                          `}</style>
-                          <div className="flex flex-col gap-3 min-h-0 flex-1 overflow-y-auto scrollbar-none">
-                            {/* Circular progress ring */}
-                            <div className="flex justify-between items-center bg-white p-2 rounded-xl border border-zinc-200 shadow-sm shrink-0">
-                              <span className="text-[7.5px] font-mono text-zinc-700 uppercase tracking-wider font-extrabold transition-all duration-300">
-                                {s1p < 0.35 
-                                  ? "Identity & Legal Status" 
-                                  : s1p < 0.65 
-                                    ? "Purpose & Timing"
-                                    : "Location & Housing"}
-                              </span>
-                              <div className="relative w-[18px] h-[18px] flex items-center justify-center shrink-0">
-                                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 20 20">
-                                  <circle cx="10" cy="10" r="7.5" className="stroke-zinc-200" strokeWidth="2.5" fill="transparent" />
-                                  <circle 
-                                    cx="10" 
-                                    cy="10" 
-                                    r="7.5" 
-                                    className="stroke-black transition-all duration-300" 
-                                    strokeWidth="2.5" 
-                                    fill="transparent" 
-                                    strokeDasharray="47.12" 
-                                    strokeDashoffset={
-                                      s1p < 0.35 
-                                        ? "31.4"
-                                        : s1p < 0.65 
-                                          ? "15.7"
-                                          : "0"
-                                    } 
-                                    strokeLinecap="round" 
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-
-                            {/* STEP 1 */}
-                            {s1p <= 0.35 && (
-                              <div className="flex flex-col gap-4.5 animate-fadeIn">
-                                <div className="flex flex-col gap-1.5">
-                                  <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    Where are you moving from?
-                                  </h4>
-                                  <div className="flex flex-col gap-2">
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.16 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.16 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        United Kingdom
-                                      </span>
-                                      {s1p > 0.16 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">United States</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Other (Non-EU)</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="flex flex-col gap-1.5 border-t border-zinc-200 pt-2.5">
-                                  <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    Is your passport valid?
-                                  </h4>
-                                  <div className="flex flex-col gap-2">
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.26 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.26 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Yes, fully valid
-                                      </span>
-                                      {s1p > 0.26 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">No, expired</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {/* STEP 2 */}
-                            {s1p > 0.35 && s1p <= 0.65 && (
-                              <div className="flex flex-col gap-4.5 animate-fadeIn">
-                                <div className="flex flex-col gap-1.5">
-                                  <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    What brings you to Spain?
-                                  </h4>
-                                  <div className="flex flex-col gap-2">
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.46 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.46 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Study at a Spanish university
-                                      </span>
-                                      {s1p > 0.46 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">
-                                        Work for a Spanish employer
-                                      </span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Join a family member</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="flex flex-col gap-1.5 border-t border-zinc-200 pt-2.5">
-                                  <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    When does your current permit expire?
-                                  </h4>
-                                  <div className="flex flex-col gap-2">
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.56 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.56 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        In 52 days
-                                      </span>
-                                      {s1p > 0.56 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">More than 90 days</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {/* STEP 3 */}
-                            {s1p > 0.65 && (
-                              <div className="flex flex-col gap-4.5 animate-fadeIn">
-                                <div className="flex flex-col gap-1.5">
-                                  <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    Where are you registering?
-                                  </h4>
-                                  <div className="flex flex-col gap-2">
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.76 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.76 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Barcelona
-                                      </span>
-                                      {s1p > 0.76 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Madrid</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">Valencia</span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="flex flex-col gap-1.5 border-t border-zinc-200 pt-2.5">
-                                  <h4 className="text-[8.5px] font-syne font-extrabold text-black leading-tight">
-                                    What is your housing setup?
-                                  </h4>
-                                  <div className="flex flex-col gap-2">
-                                    <div className={`py-2 px-3 border rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm ${s1p > 0.86 ? "border-black bg-zinc-100 animate-tap" : "border-zinc-200 bg-white"}`}>
-                                      <span className={`text-[7.5px] font-mono ${s1p > 0.86 ? "text-black font-extrabold" : "text-zinc-500 font-medium"}`}>
-                                        Room in a shared flat
-                                      </span>
-                                      {s1p > 0.86 ? (
-                                        <div className="w-3 h-3 rounded-full bg-black flex items-center justify-center shadow-md animate-pop">
-                                          <Check className="w-2.5 h-2.5 text-white" />
-                                        </div>
-                                      ) : (
-                                        <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                      )}
-                                    </div>
-                                    <div className="py-2 px-3 border border-zinc-200 bg-white rounded-xl flex items-center justify-between opacity-70">
-                                      <span className="text-[7.5px] text-zinc-400 font-mono font-medium">
-                                        Lease in my name
-                                      </span>
-                                      <div className="w-3 h-3 rounded-full border border-zinc-300 bg-white" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="w-full py-2 bg-black text-white rounded-xl text-[8px] font-bold font-mono flex items-center justify-center gap-1.5 shadow-md cursor-pointer hover:bg-zinc-800 transition-colors">
-                            Next Question <ChevronRight className="w-3 h-3 text-white" />
-                          </div>
+                        {/* SCREEN 0: Onboarding Questions (Authentic Web App Experience) */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col bg-[#FFFFFF] relative overflow-hidden">
+                          <OnboardingWebView s1p={s1p} />
                         </div>
 
-                        {/* SCREEN 1: Onboarding Complete */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-[#FFFFFF] justify-between">
-                          <div className="flex flex-col gap-3.5">
-                            <div className="flex flex-col items-center text-center gap-1.5 mt-2">
-                              <div className="w-9 h-9 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black shadow-md">
-                                <Sparkles className="w-4 h-4 text-black animate-pulse" />
-                              </div>
-                              <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight">
-                                Your Route Is Ready
-                              </h4>
-                              <p className="text-[7.5px] text-zinc-500 max-w-[140px] leading-relaxed">
-                                Paprs found the linked actions for your student renewal.
-                              </p>
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                              <span className="text-[7.5px] font-mono text-zinc-500 uppercase tracking-wider font-extrabold mb-0.5">Your first actions</span>
-                              <div className="bg-white border border-zinc-200 p-2.5 rounded-2xl flex items-center gap-2 shadow-sm">
-                                <div className="w-6 h-6 rounded-xl bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black shrink-0">
-                                  <MapPin className="w-3 h-3" />
-                                </div>
-                                <div className="min-w-0">
-                                  <h6 className="text-[8.5px] font-bold text-black leading-none">Confirm renewal evidence</h6>
-                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">Passport · enrolment · insurance</p>
-                                </div>
-                              </div>
-                              <div className="bg-white border border-zinc-200 p-2.5 rounded-2xl flex items-center gap-2 shadow-sm">
-                                <div className="w-6 h-6 rounded-xl bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black shrink-0">
-                                  <FileText className="w-3 h-3" />
-                                </div>
-                                <div className="min-w-0">
-                                  <h6 className="text-[8.5px] font-bold text-black leading-none">Prepare the application</h6>
-                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">Form · fee · submission route</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="w-full py-2 bg-black text-white rounded-xl text-[8px] font-bold font-mono flex items-center justify-center gap-1.5 shadow-md cursor-pointer hover:bg-zinc-800 transition-colors">
-                            Build My Roadmap <Cpu className="w-3 h-3 text-white" />
-                          </div>
-                        </div>
-
-                        {/* SCREEN 2: AI Roadmap Computing */}
+                        {/* SCREEN 1: AI Roadmap Computing */}
                         <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-6 bg-white justify-between relative">
                           <div className="flex flex-col items-center gap-2 mt-4 relative z-10">
-                            <div className="text-[8px] font-mono text-black uppercase tracking-widest font-extrabold flex items-center gap-1 bg-zinc-100 border border-zinc-300 px-2 py-0.5 rounded-full">
-                              <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span>
-                              Building Your Route
+                            <div className="text-[7.5px] font-mono text-black uppercase tracking-widest font-extrabold flex items-center gap-1.5 bg-zinc-100 border border-zinc-300 px-2.5 py-0.5 rounded-full">
+                              <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
+                              {dict.howItWorks.buildingYourRoute}
                             </div>
 
-                            <div className="w-28 h-28 flex items-center justify-center my-1 select-none pointer-events-none">
+                            <div className="w-24 h-24 flex items-center justify-center my-1 select-none pointer-events-none">
                               <Lottie
                                 animationData={aiGeneratingAnimation}
                                 loop={true}
@@ -910,113 +613,180 @@ export default function HowItWorks() {
                           <AIComputingLogger />
                         </div>
 
-                        {/* SCREEN 3: Roadmap */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-14 bg-[#FFFFFF] justify-between">
+                        {/* SCREEN 2: Onboarding Complete / Route Assembled */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-zinc-50/40 justify-between">
                           <div className="flex flex-col gap-3">
-                            <div className="text-[8px] font-mono text-zinc-400 uppercase tracking-widest font-extrabold">
-                              Your Next Actions (3)
+                            <div className="flex flex-col items-center text-center gap-1 mt-1">
+                              <div className="w-8 h-8 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-black shadow-xs">
+                                <Sparkles className="w-4 h-4 text-black animate-pulse" />
+                              </div>
+                              <span className="font-mono text-[7px] uppercase font-bold text-zinc-400 tracking-wider">{dict.howItWorks.analysisComplete}</span>
+                              <h4 className="font-syne font-extrabold text-[11.5px] text-black leading-tight">
+                                {dict.howItWorks.yourRouteIsReady}
+                              </h4>
+                              <p className="text-[7.5px] text-zinc-500 max-w-[190px] leading-relaxed">
+                                {dict.howItWorks.matchedRouteDesc}
+                              </p>
                             </div>
 
-                            <div className="flex flex-col gap-2.5 relative">
-                              <div className="absolute left-[13px] top-4 bottom-4 w-[1px] bg-zinc-200 z-0"></div>
-
-                              <div className="bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm flex items-center justify-between gap-2.5 relative z-10">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <div className="w-2.5 h-2.5 rounded-full bg-black border-2 border-white flex-shrink-0 shadow-sm" />
-                                  <div className="min-w-0">
-                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">1. Check your evidence</h6>
-                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Paprs found 4 of 5 documents</p>
-                                  </div>
+                            <div className="flex flex-col gap-1.5 mt-1">
+                              <span className="text-[7px] font-mono text-zinc-400 uppercase tracking-wider font-bold px-0.5">{dict.howItWorks.assembledActionPlans}</span>
+                              <div className="bg-white border border-zinc-200/80 p-2 rounded-xl flex items-center gap-2 shadow-2xs">
+                                <div className="w-6 h-6 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-black shrink-0">
+                                  <MapPin className="w-3 h-3" />
                                 </div>
-                                <span className="text-[6.5px] font-mono text-white bg-black border border-black px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Ready</span>
+                                <div className="min-w-0 flex-1">
+                                  <h6 className="text-[8.5px] font-bold text-black leading-tight">1. {dict.howItWorks.studentRenewal}</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono">{dict.howItWorks.studentRenewalDocs}</p>
+                                </div>
+                                <span className="font-mono text-[6.5px] bg-zinc-100 text-black px-1.5 py-0.5 rounded font-bold uppercase">{dict.howItWorks.ready}</span>
                               </div>
-
-                              <div className="bg-white border-2 border-black p-3 rounded-2xl shadow-sm flex items-center justify-between gap-2.5 relative z-10">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <div className="w-2.5 h-2.5 rounded-full bg-black border-2 border-white flex-shrink-0 shadow-sm relative">
-                                    <div className="absolute inset-0 rounded-full bg-black/20 animate-ping" />
-                                  </div>
-                                  <div className="min-w-0">
-                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">2. Review prepared forms</h6>
-                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Deadline protected · 52 days left</p>
-                                  </div>
+                              <div className="bg-white border border-zinc-200/80 p-2 rounded-xl flex items-center gap-2 shadow-2xs">
+                                <div className="w-6 h-6 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-black shrink-0">
+                                  <FileText className="w-3 h-3" />
                                 </div>
-                                <span className="text-[6.5px] font-mono text-black bg-zinc-100 border border-zinc-300 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Active</span>
+                                <div className="min-w-0 flex-1">
+                                  <h6 className="text-[8.5px] font-bold text-black leading-tight">2. {dict.howItWorks.empadronamiento}</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono">{dict.howItWorks.empadronamientoDesc}</p>
+                                </div>
+                                <span className="font-mono text-[6.5px] bg-zinc-100 text-black px-1.5 py-0.5 rounded font-bold uppercase">{dict.howItWorks.ready}</span>
                               </div>
-
-                              <div className="bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm flex items-center justify-between gap-2.5 relative z-10 opacity-60">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <Lock className="w-2.5 h-2.5 text-zinc-400 flex-shrink-0" />
-                                  <div className="min-w-0">
-                                    <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">3. Approve submission</h6>
-                                    <p className="text-[7px] font-mono text-zinc-400 mt-0.5">Unlocks when evidence is complete</p>
-                                  </div>
+                              <div className="bg-white border border-zinc-200/80 p-2 rounded-xl flex items-center gap-2 shadow-2xs">
+                                <div className="w-6 h-6 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-black shrink-0">
+                                  <Shield className="w-3 h-3" />
                                 </div>
-                                <span className="text-[6.5px] font-mono text-zinc-400 bg-zinc-50 border border-zinc-200 px-1.5 py-0.5 rounded-md font-bold uppercase shrink-0">Locked</span>
+                                <div className="min-w-0 flex-1">
+                                  <h6 className="text-[8.5px] font-bold text-black leading-tight">3. {dict.howItWorks.socialSecurityNuss}</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono">{dict.howItWorks.socialSecurityDesc}</p>
+                                </div>
+                                <span className="font-mono text-[6.5px] bg-zinc-50 text-zinc-400 px-1.5 py-0.5 rounded font-bold uppercase">{dict.howItWorks.locked}</span>
                               </div>
                             </div>
                           </div>
 
-                          <div className="text-[7.5px] font-mono text-center text-zinc-500 flex items-center justify-center gap-1 mt-2 font-medium">
-                            Scroll down to details →
+                          <div className="w-full py-2 bg-black text-white rounded-xl text-[8px] font-bold font-mono flex items-center justify-center gap-1.5 shadow-xs cursor-pointer hover:bg-zinc-800 transition-colors">
+                            {dict.howItWorks.buildMyRoadmap} <Cpu className="w-3 h-3 text-white" />
+                          </div>
+                        </div>
+
+                        {/* SCREEN 3: Action Plans / Roadmap */}
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-3.5 bg-zinc-50/40 justify-between">
+                          <div className="flex flex-col gap-2.5">
+                            {/* Filter Bar matching TodoScreen */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 font-mono text-[7px]">
+                                <span className="bg-black text-white px-2 py-0.5 rounded-full font-bold">{dict.howItWorks.filterAll}</span>
+                                <span className="text-zinc-500 hover:text-black px-1.5 py-0.5 rounded-full font-medium">{dict.howItWorks.filterPending}</span>
+                                <span className="text-zinc-500 hover:text-black px-1.5 py-0.5 rounded-full font-medium">{dict.howItWorks.filterCompleted}</span>
+                              </div>
+                              <span className="font-mono text-[7px] text-zinc-400 font-bold">{dict.howItWorks.spainRoute}</span>
+                            </div>
+
+                            <div className="flex flex-col gap-2 relative">
+                              <div className="absolute left-[13px] top-3.5 bottom-3.5 w-[1px] bg-zinc-200 z-0" />
+
+                              {/* Card 1: Check evidence */}
+                              <div className="bg-white border border-zinc-200/80 p-2.5 rounded-xl shadow-2xs flex items-center justify-between gap-2 relative z-10">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <div className="w-2.5 h-2.5 rounded-full bg-black border-2 border-white flex-shrink-0 shadow-2xs" />
+                                  <div className="min-w-0">
+                                    <h6 className="font-syne font-extrabold text-[9px] text-black leading-tight">1. {dict.howItWorks.checkEvidenceTitle}</h6>
+                                    <p className="text-[6.5px] font-mono text-zinc-400 mt-0.5">{dict.howItWorks.checkEvidenceDesc}</p>
+                                  </div>
+                                </div>
+                                <span className="text-[6.5px] font-mono text-white bg-black border border-black px-1.5 py-0.5 rounded font-bold uppercase shrink-0">{dict.howItWorks.ready}</span>
+                              </div>
+
+                              {/* Card 2: Review prepared forms */}
+                              <div className="bg-white border-2 border-black p-2.5 rounded-xl shadow-xs flex items-center justify-between gap-2 relative z-10">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <div className="w-2.5 h-2.5 rounded-full bg-black border-2 border-white flex-shrink-0 shadow-2xs relative">
+                                    <div className="absolute inset-0 rounded-full bg-black/20 animate-ping" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h6 className="font-syne font-extrabold text-[9px] text-black leading-tight">2. {dict.howItWorks.reviewFormsTitle}</h6>
+                                    <p className="text-[6.5px] font-mono text-zinc-500 mt-0.5">{dict.howItWorks.reviewFormsDesc}</p>
+                                  </div>
+                                </div>
+                                <span className="text-[6.5px] font-mono text-black bg-zinc-100 border border-zinc-300 px-1.5 py-0.5 rounded font-bold uppercase shrink-0">{dict.howItWorks.active}</span>
+                              </div>
+
+                              {/* Card 3: Approve digital submission */}
+                              <div className="bg-white border border-zinc-200/80 p-2.5 rounded-xl shadow-2xs flex items-center justify-between gap-2 relative z-10 opacity-60">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <Lock className="w-2.5 h-2.5 text-zinc-400 flex-shrink-0" />
+                                  <div className="min-w-0">
+                                    <h6 className="font-syne font-extrabold text-[9px] text-black leading-tight">3. {dict.howItWorks.approveSubmissionTitle}</h6>
+                                    <p className="text-[6.5px] font-mono text-zinc-400 mt-0.5">{dict.howItWorks.approveSubmissionDesc}</p>
+                                  </div>
+                                </div>
+                                <span className="text-[6.5px] font-mono text-zinc-400 bg-zinc-50 border border-zinc-200 px-1.5 py-0.5 rounded font-bold uppercase shrink-0">{dict.howItWorks.locked}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="text-[7px] font-mono text-center text-zinc-400 flex items-center justify-center gap-1 font-medium">
+                            Scroll down to explore procedure details →
                           </div>
                         </div>
 
                         {/* SCREEN 4: Detail Action Checklist */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-14 bg-[#FFFFFF] justify-between">
-                          <div className="flex flex-col gap-3">
-                            <div className="flex justify-between items-start border-b border-zinc-200 pb-2.5">
+                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-3.5 bg-zinc-50/40 justify-between">
+                          <div className="flex flex-col gap-2.5">
+                            {/* Breadcrumb Header */}
+                            <div className="flex justify-between items-center border-b border-zinc-200/80 pb-2">
                               <div>
-                                <span className="font-mono text-[7px] uppercase text-black font-bold">Next action</span>
-                                <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight mt-0.5">Student Stay Renewal</h4>
+                                <span className="font-mono text-[6.5px] uppercase text-zinc-400 font-bold">{dict.howItWorks.actionPlansBreadcrumb}</span>
+                                <h4 className="font-syne font-extrabold text-[11px] text-black leading-tight mt-0.5">{dict.howItWorks.studentRenewal}</h4>
                               </div>
-                              <span className="text-[6.5px] px-1.5 py-0.5 rounded-md bg-zinc-100 text-black border border-zinc-300 uppercase font-bold shrink-0">Active</span>
+                              <span className="text-[6.5px] px-1.5 py-0.5 rounded bg-zinc-100 text-black border border-zinc-200 uppercase font-bold shrink-0">{dict.howItWorks.active}</span>
                             </div>
 
-                            <div className="flex flex-col gap-3.5 mt-1.5 relative">
-                              <div className="absolute left-[10px] top-3 bottom-3 w-[1px] bg-zinc-200 z-0"></div>
+                            {/* Sequential Steps */}
+                            <div className="flex flex-col gap-2 relative mt-0.5">
+                              <div className="absolute left-[9px] top-2.5 bottom-2.5 w-[1px] bg-zinc-200 z-0" />
 
-                              <div className="flex items-start gap-2.5 relative z-10 text-[9.5px]">
-                                <div className="w-5 h-5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-sm">
-                                  <Check className="w-3.5 h-3.5 text-white" />
+                              <div className="flex items-start gap-2 relative z-10 text-[9px]">
+                                <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs">
+                                  <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
                                 </div>
-                                <div className="mt-0.5">
-                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">Match the official route</p>
-                                  <p className="text-[7.5px] text-zinc-400">Procedure and deadline verified</p>
+                                <div className="min-w-0">
+                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">{dict.howItWorks.matchOfficialRoute}</p>
+                                  <p className="text-[6.5px] text-zinc-400 font-mono">{dict.howItWorks.matchOfficialRouteDesc}</p>
                                 </div>
                               </div>
 
-                              <div className="flex items-start gap-2.5 relative z-10 text-[9.5px]">
-                                <div className="w-5 h-5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-sm">
-                                  <Check className="w-3.5 h-3.5 text-white" />
+                              <div className="flex items-start gap-2 relative z-10 text-[9px]">
+                                <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs">
+                                  <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
                                 </div>
-                                <div className="mt-0.5">
-                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">Prepare form and fee</p>
-                                  <p className="text-[7.5px] text-zinc-400">Fields pre-filled from your profile</p>
+                                <div className="min-w-0">
+                                  <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">{dict.howItWorks.prepareFormFee}</p>
+                                  <p className="text-[6.5px] text-zinc-400 font-mono">{dict.howItWorks.prepareFormFeeDesc}</p>
                                 </div>
                               </div>
 
-                              <div className="flex items-start gap-2.5 relative z-10 text-[9.5px]">
+                              <div className="flex items-start gap-2 relative z-10 text-[9px]">
                                 {s2p >= 0.95 ? (
-                                  <div className="w-5 h-5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-sm">
-                                    <Check className="w-3.5 h-3.5 text-white" />
+                                  <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs">
+                                    <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
                                   </div>
                                 ) : (
-                                  <div className="w-5 h-5 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black flex-shrink-0 shadow-sm">
-                                    <ChevronRight className="w-3 h-3 text-black" />
+                                  <div className="w-4.5 h-4.5 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black flex-shrink-0 shadow-2xs">
+                                    <ChevronRight className="w-2.5 h-2.5 text-black" />
                                   </div>
                                 )}
-                                <div className="mt-0.5">
-                                  <p className={`font-bold leading-tight ${s2p >= 0.95 ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>Review and approve</p>
-                                  <p className="text-[7.5px] text-zinc-400">You see every document before submission</p>
+                                <div className="min-w-0">
+                                  <p className={`font-bold leading-tight ${s2p >= 0.95 ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>{dict.howItWorks.reviewAndApprove}</p>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono">{dict.howItWorks.reviewAndApproveDesc}</p>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className="flex justify-between items-center border-t border-zinc-200 pt-3">
+                          <div className="flex justify-between items-center border-t border-zinc-200/80 pt-2.5">
                             <div className="w-[55%]">
-                              <span className="text-[7.5px] font-mono text-zinc-400 block mb-0.5">Action readiness</span>
+                              <span className="text-[6.5px] font-mono text-zinc-400 block mb-0.5 font-bold uppercase">{dict.howItWorks.actionReadiness}</span>
                               <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
                                 <div 
                                   className="bg-black h-full transition-all duration-300 rounded-full" 
@@ -1026,28 +796,60 @@ export default function HowItWorks() {
                             </div>
 
                             <div 
-                              className="border-2 border-black bg-black text-white rounded-lg px-2 py-0.5 font-extrabold text-[8.5px] tracking-wider uppercase rotate-[-8deg] shadow-sm transition-all duration-300 flex items-center gap-0.5"
+                              className="border-2 border-black bg-black text-white rounded px-2 py-0.5 font-mono font-bold text-[7.5px] tracking-wider uppercase rotate-[-6deg] shadow-xs transition-all duration-300 flex items-center gap-0.5"
                               style={{
-                                transform: `scale(${s2p >= 0.95 ? 1 : 1.3}) rotate(-8deg)`,
+                                transform: `scale(${s2p >= 0.95 ? 1 : 1.25}) rotate(-6deg)`,
                                 opacity: s2p >= 0.95 ? 1 : 0
                               }}
                             >
-                              <Check className="w-3.5 h-3.5 text-white" /> DONE
+                              <Check className="w-2.5 h-2.5 text-white" /> {dict.howItWorks.doneBadge}
                             </div>
                           </div>
                         </div>
 
-                        {/* SCREEN 5: Dashboard View */}
+                        {/* SCREEN 5: Dashboard View with Metrics & Interactive Overlays */}
                         <div
                           ref={dashboardScrollRef}
-                          className="w-1/6 h-full min-h-0 flex-shrink-0 flex flex-col p-3.5 gap-3.5 select-none pb-14 bg-[#FFFFFF] overflow-y-auto scrollbar-none"
+                          className="w-1/6 h-full min-h-0 flex-shrink-0 flex flex-col p-3 gap-2.5 select-none bg-zinc-50/40 overflow-y-auto scrollbar-none"
                         >
-                          <div className="bg-white border border-zinc-200 p-3 rounded-2xl flex flex-col gap-0.5 relative overflow-hidden shadow-sm shrink-0 mt-1">
-                            <h5 className="font-syne font-extrabold text-[10.5px] text-black leading-tight">John Doe</h5>
-                            <p className="text-[7px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">Student · Barcelona</p>
+                          {/* Top 3-Metric Summary Row */}
+                          <div className="grid grid-cols-3 gap-1.5 shrink-0">
+                            <div className="bg-white border border-zinc-200/80 p-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+                              <div className="relative w-5 h-5 flex items-center justify-center shrink-0">
+                                <svg className="w-full h-full -rotate-90" viewBox="0 0 24 24">
+                                  <circle cx="12" cy="12" r="9" className="stroke-zinc-200" strokeWidth="2.5" fill="transparent" />
+                                  <circle cx="12" cy="12" r="9" className="stroke-black" strokeWidth="2.5" fill="transparent" strokeDasharray="56.54" strokeDashoffset="11.3" strokeLinecap="round" />
+                                </svg>
+                                <span className="absolute text-[5.5px] font-mono font-bold text-black">80%</span>
+                              </div>
+                              <div className="min-w-0">
+                                <span className="text-[5.5px] font-mono uppercase text-zinc-400 block font-bold leading-none">{dict.howItWorks.healthMetric}</span>
+                                <p className="text-[7.5px] font-syne font-bold text-black leading-tight mt-0.5 truncate">{dict.howItWorks.active}</p>
+                              </div>
+                            </div>
+
+                            <div className="bg-white border border-zinc-200/80 p-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+                              <div className="w-5 h-5 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0 border border-zinc-200/60">
+                                <FileText className="w-2.5 h-2.5 text-black" />
+                              </div>
+                              <div className="min-w-0">
+                                <span className="text-[5.5px] font-mono uppercase text-zinc-400 block font-bold leading-none">{dict.howItWorks.docsMetric}</span>
+                                <p className="text-[7.5px] font-syne font-bold text-black leading-tight mt-0.5 truncate">4 of 5</p>
+                              </div>
+                            </div>
+
+                            <div className="bg-white border border-zinc-200/80 p-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+                              <div className="w-5 h-5 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0 border border-zinc-200/60">
+                                <Clock className="w-2.5 h-2.5 text-black" />
+                              </div>
+                              <div className="min-w-0">
+                                <span className="text-[5.5px] font-mono uppercase text-zinc-400 block font-bold leading-none">{dict.howItWorks.targetMetric}</span>
+                                <p className="text-[7.5px] font-syne font-bold text-black leading-tight mt-0.5 truncate">in 52d</p>
+                              </div>
+                            </div>
                           </div>
 
-                          {/* STAGE 2 */}
+                          {/* STAGE 2: Urgent Action Alert (Slide 4) */}
                           <div
                             className="grid transition-all duration-300 shrink-0"
                             style={{ gridTemplateRows: stage2AlertOpacity > 0.02 ? "1fr" : "0fr" }}
@@ -1056,31 +858,31 @@ export default function HowItWorks() {
                               className="overflow-hidden transition-all duration-300"
                               style={{
                                 opacity: stage2AlertOpacity,
-                                transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 12}px)`,
+                                transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 10}px)`,
                               }}
                             >
-                              <div className="bg-white border border-zinc-300 p-3 rounded-2xl shadow-sm">
-                                <div className="flex justify-between items-center mb-1.5">
-                                  <span className="text-[7px] uppercase font-mono tracking-wider text-black font-extrabold flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 bg-black rounded-full animate-ping"></span>
-                                    Urgent Action
+                              <div className="bg-white border-2 border-black p-2.5 rounded-xl shadow-xs">
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="text-[6.5px] uppercase font-mono tracking-wider text-black font-extrabold flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-black rounded-full animate-ping" />
+                                    {dict.howItWorks.urgentActionAlert}
                                   </span>
-                                  <span className="text-[7px] font-mono text-black font-extrabold bg-zinc-100 px-1.5 py-0.5 rounded-md border border-zinc-300 scale-[0.9]">
-                                    52 Days Left
+                                  <span className="text-[6.5px] font-mono text-white bg-black px-1.5 py-0.2 rounded font-bold">
+                                    52 {dict.howItWorks.daysLeft}
                                   </span>
                                 </div>
-                                <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">Student Visa Renewal</h6>
-                                <p className="text-[7.5px] text-zinc-500 mt-1 leading-normal">
-                                  Paprs prepared the form and fee. One insurance document is still missing.
+                                <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">{dict.howItWorks.studentRenewal}</h6>
+                                <p className="text-[7px] text-zinc-500 mt-0.5 leading-snug">
+                                  {dict.howItWorks.urgentRenewalDesc}
                                 </p>
-                                <div className="mt-2.5 w-full h-6 bg-black text-white rounded-xl text-[8px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-sm gap-1 hover:bg-zinc-800 transition-colors">
-                                  Review Prepared Action <ChevronRight className="w-2.5 h-2.5 text-white" />
+                                <div className="mt-2 w-full py-1.5 bg-black text-white rounded-lg text-[7.5px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-xs gap-1 hover:bg-zinc-800 transition-colors">
+                                  {dict.howItWorks.reviewPreparedAction} <ChevronRight className="w-2.5 h-2.5 text-white" />
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          {/* STAGE 5 */}
+                          {/* STAGE 5: Smart AI Suggestion (Slide 7) */}
                           <div
                             className="grid transition-all duration-300 shrink-0"
                             style={{ gridTemplateRows: stage5SuggestOpacity > 0.02 ? "1fr" : "0fr" }}
@@ -1092,101 +894,109 @@ export default function HowItWorks() {
                                 transform: `translateX(${stage5SuggestTranslateX}px)`,
                               }}
                             >
-                              <div className="bg-white border border-zinc-300 p-3 rounded-2xl shadow-sm">
-                                <div className="flex justify-between items-center mb-1.5">
-                                  <span className="text-[7px] uppercase font-mono tracking-wider text-black font-extrabold flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></span>
-                                    Suggestion
+                              <div className="bg-white border-2 border-black p-2.5 rounded-xl shadow-xs">
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="text-[6.5px] uppercase font-mono tracking-wider text-black font-extrabold flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-black rounded-full animate-pulse" />
+                                    {dict.howItWorks.aiRecommendation}
                                   </span>
-                                  <span className="text-[7px] font-mono text-black font-extrabold bg-zinc-100 px-1.5 py-0.5 rounded-md border border-zinc-300 scale-[0.9]">
-                                    15 Days Left
+                                  <span className="text-[6.5px] font-mono text-black font-extrabold bg-zinc-100 px-1.5 py-0.2 rounded border border-zinc-300">
+                                    15 {dict.howItWorks.daysLeft}
                                   </span>
                                 </div>
-                                <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">Fresh Address Proof Needed</h6>
-                                <p className="text-[7.5px] text-zinc-500 mt-1 leading-normal">
-                                  Your next procedure needs a recent certificate. Paprs found the municipal request route.
+                                <h6 className="font-syne font-extrabold text-[9.5px] text-black leading-tight">{dict.howItWorks.freshAddressProofNeeded}</h6>
+                                <p className="text-[7px] text-zinc-500 mt-0.5 leading-snug">
+                                  {dict.howItWorks.freshAddressProofDesc}
                                 </p>
-                                <div className="mt-2.5 w-full h-6 bg-black text-white rounded-xl text-[8px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-sm gap-1 hover:bg-zinc-800 transition-colors">
-                                  Prepare Fresh Copy <ChevronRight className="w-2.5 h-2.5 text-white" />
+                                <div className="mt-2 w-full py-1.5 bg-black text-white rounded-lg text-[7.5px] font-bold flex items-center justify-center font-mono cursor-pointer shadow-xs gap-1 hover:bg-zinc-800 transition-colors">
+                                  {dict.howItWorks.prepareFreshCopy} <ChevronRight className="w-2.5 h-2.5 text-white" />
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          {/* STAGE 3 */}
+                          {/* STAGE 3: Active Procedures Pipeline (Slide 3 & 5) */}
                           <div 
-                            className="flex flex-col gap-2 transition-all duration-300 shrink-0"
+                            className="flex flex-col gap-1.5 transition-all duration-300 shrink-0"
                             style={{ 
                               opacity: stage3CardsOpacity,
-                              transform: `translateY(${stage3CardsOpacity > 0 ? 0 : 12}px)` 
+                              transform: `translateY(${stage3CardsOpacity > 0 ? 0 : 10}px)` 
                             }}
                           >
-                            <div className="text-[7px] uppercase font-mono tracking-wider text-zinc-400 font-bold px-0.5">
-                              Your Roadmaps
+                            <div className="text-[6.5px] uppercase font-mono tracking-wider text-zinc-400 font-bold px-0.5">
+                              {dict.howItWorks.activeProcedures}
                             </div>
 
-                            <div className="bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm flex items-center justify-between gap-2.5">
+                            <div className="bg-white border border-zinc-200/80 p-2 rounded-xl shadow-2xs flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 min-w-0">
-                                <div className="w-7 h-7 rounded-xl bg-zinc-100 flex items-center justify-center text-black border border-zinc-300 flex-shrink-0">
-                                  <FileText className="w-3.5 h-3.5 text-black" />
+                                <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-black border border-zinc-200 flex-shrink-0">
+                                  <FileText className="w-3 h-3 text-black" />
                                 </div>
                                 <div className="min-w-0">
-                                  <h6 className="font-syne font-bold text-[9px] text-black leading-tight truncate">Student Stay Renewal</h6>
-                                  <p className="text-[7px] text-black font-mono mt-0.5 font-semibold">4 of 5 documents ready</p>
+                                  <h6 className="font-syne font-bold text-[8.5px] text-black leading-tight truncate">{dict.howItWorks.studentRenewal}</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5">4 of 5 documents ready</p>
                                 </div>
                               </div>
-                              <div className="w-9 bg-zinc-100 h-1 rounded-full overflow-hidden shrink-0 ml-1">
-                                <div className="bg-black h-full w-[80%] rounded-full"></div>
+                              <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
+                                <svg className="w-full h-full -rotate-90" viewBox="0 0 24 24">
+                                  <circle cx="12" cy="12" r="9" className="stroke-zinc-200" strokeWidth="2.5" fill="transparent" />
+                                  <circle cx="12" cy="12" r="9" className="stroke-black" strokeWidth="2.5" fill="transparent" strokeDasharray="56.54" strokeDashoffset="11.3" strokeLinecap="round" />
+                                </svg>
+                                <span className="absolute text-[5.5px] font-mono font-bold text-black">80%</span>
                               </div>
                             </div>
 
-                            <div className="bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm flex items-center justify-between gap-2.5">
+                            <div className="bg-white border border-zinc-200/80 p-2 rounded-xl shadow-2xs flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 min-w-0">
-                                <div className="w-7 h-7 rounded-xl bg-zinc-100 flex items-center justify-center text-black border border-zinc-300 flex-shrink-0">
-                                  <MapPin className="w-3.5 h-3.5 text-black" />
+                                <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-black border border-zinc-200 flex-shrink-0">
+                                  <MapPin className="w-3 h-3 text-black" />
                                 </div>
                                 <div className="min-w-0">
-                                  <h6 className="font-syne font-bold text-[9px] text-black leading-tight truncate">Address Record</h6>
-                                  <p className="text-[7px] text-black font-mono mt-0.5 flex items-center gap-0.5 font-semibold">
-                                    <span className="w-1 h-1 bg-black rounded-full animate-pulse"></span>
-                                    Waiting on city office
+                                  <h6 className="font-syne font-bold text-[8.5px] text-black leading-tight truncate">{dict.howItWorks.empadronamiento}</h6>
+                                  <p className="text-[6.5px] text-zinc-500 font-mono mt-0.5 flex items-center gap-0.5">
+                                    <span className="w-1 h-1 bg-black rounded-full animate-pulse" />
+                                    {dict.howItWorks.waitingOnCityOffice}
                                   </p>
                                 </div>
                               </div>
-                              <div className="w-9 bg-zinc-100 h-1 rounded-full overflow-hidden shrink-0 ml-1">
-                                <div className="bg-black h-full w-[80%] rounded-full"></div>
+                              <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
+                                <svg className="w-full h-full -rotate-90" viewBox="0 0 24 24">
+                                  <circle cx="12" cy="12" r="9" className="stroke-zinc-200" strokeWidth="2.5" fill="transparent" />
+                                  <circle cx="12" cy="12" r="9" className="stroke-black" strokeWidth="2.5" fill="transparent" strokeDasharray="56.54" strokeDashoffset="28.27" strokeLinecap="round" />
+                                </svg>
+                                <span className="absolute text-[5.5px] font-mono font-bold text-black">50%</span>
                               </div>
                             </div>
                           </div>
 
-                          {/* STAGE 4 */}
+                          {/* STAGE 4: Document Vault Panel (Slide 6) */}
                           <div
                             className="grid transition-all duration-300 shrink-0"
                             style={{ gridTemplateRows: stage4VaultOpacity > 0.02 ? "1fr" : "0fr" }}
                           >
                             <div
-                              className="overflow-hidden flex flex-col gap-2 transition-all duration-300"
+                              className="overflow-hidden flex flex-col gap-1.5 transition-all duration-300"
                               style={{
                                 opacity: stage4VaultOpacity,
-                                transform: `translateY(${stage4VaultOpacity > 0 ? 0 : 12}px)`,
+                                transform: `translateY(${stage4VaultOpacity > 0 ? 0 : 10}px)`,
                               }}
                             >
-                              <div className="text-[7px] uppercase font-mono tracking-wider text-zinc-400 font-bold px-0.5">
-                                Document Vault
+                              <div className="text-[6.5px] uppercase font-mono tracking-wider text-zinc-400 font-bold px-0.5">
+                                {dict.howItWorks.documentVault}
                               </div>
 
-                              <div className="bg-white border border-zinc-200 p-3 rounded-2xl shadow-sm flex flex-col gap-2 border-b border-zinc-100 pb-2">
-                                <div className="flex justify-between items-center text-[8.5px] border-b border-zinc-100 pb-2">
+                              <div className="bg-white border border-zinc-200/80 p-2 rounded-xl shadow-2xs flex flex-col gap-1.5">
+                                <div className="flex justify-between items-center text-[7.5px] border-b border-zinc-100 pb-1.5">
                                   <span className="text-black flex items-center gap-1.5 font-medium">
-                                    <FileText className="w-3.5 h-3.5 text-black shrink-0" /> University Enrolment
+                                    <FileText className="w-3 h-3 text-black shrink-0" /> {dict.howItWorks.universityEnrolment}
                                   </span>
-                                  <span className="text-[6.5px] font-mono text-white bg-black border border-black px-1.5 py-0.5 rounded-md font-bold scale-[0.95]">Verified</span>
+                                  <span className="text-[6px] font-mono text-white bg-black px-1.5 py-0.2 rounded font-bold">{dict.howItWorks.verified}</span>
                                 </div>
-                                <div className="flex justify-between items-center text-[8.5px]">
+                                <div className="flex justify-between items-center text-[7.5px]">
                                   <span className="text-black flex items-center gap-1.5 font-medium">
-                                    <FileText className="w-3.5 h-3.5 text-black shrink-0" /> Address Certificate
+                                    <FileText className="w-3 h-3 text-black shrink-0" /> {dict.howItWorks.addressCertificate}
                                   </span>
-                                  <span className="text-[6.5px] font-mono text-black bg-zinc-100 border border-zinc-300 px-1.5 py-0.5 rounded-md font-bold scale-[0.95]">Soon</span>
+                                  <span className="text-[6px] font-mono text-black bg-zinc-100 border border-zinc-200 px-1.5 py-0.2 rounded font-bold">{dict.howItWorks.extracted}</span>
                                 </div>
                               </div>
                             </div>
@@ -1218,7 +1028,7 @@ export default function HowItWorks() {
             className="absolute bottom-8 right-8 z-40 flex items-center gap-2"
             style={{ opacity: interp(progress, 0, 0.08, 0, 0.55) }}
           >
-            <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">scroll to continue</span>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.hero.scrollToContinue}</span>
           </div>
         )}
 
@@ -1231,7 +1041,7 @@ export default function HowItWorks() {
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-black" />
               <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-500 font-bold">
-                {SLIDE_LABELS[activeSlide] ?? ""}
+                {dict.howItWorks.slideLabels[activeSlide] ?? ""}
               </span>
             </div>
           </div>

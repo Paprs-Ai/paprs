@@ -3,8 +3,10 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRight, Bell, Check, Loader2, Lock, Mail, MapPin } from "lucide-react";
 import { joinWaitlistAction } from "@/actions/waitlist";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function FinalCTA() {
+  const { dict } = useLanguage();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -39,11 +41,11 @@ export default function FinalCTA() {
       const data = await joinWaitlistAction(emailToSubmit);
 
       if (!data.success && !data.alreadyRegistered) {
-        setErrorMessage(data.message || "Failed to join waitlist. Please try again.");
+        setErrorMessage(data.message || dict.finalCTA.defaultError);
         setIsSubmitted(false);
       } else {
         setIsSubmitted(true);
-        setFeedbackMessage(data.message || "Thanks — we’ll keep you posted.");
+        setFeedbackMessage(data.message || dict.finalCTA.defaultFeedback);
 
         // After 2.5 seconds, return button and state to normal so user can type again
         resetTimerRef.current = setTimeout(() => {
@@ -52,7 +54,7 @@ export default function FinalCTA() {
       }
     } catch (err) {
       console.error("Waitlist submit error:", err);
-      setErrorMessage("An unexpected error occurred. Please try again.");
+      setErrorMessage(dict.finalCTA.unexpectedError);
       setIsSubmitted(false);
     } finally {
       setIsSubmitting(false);
@@ -67,17 +69,17 @@ export default function FinalCTA() {
  
       {/* Decorative floating badge */}
       <div className="relative border border-black/15 bg-zinc-100 px-4 py-1.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest mb-6 flex items-center gap-1.5 apple-spring">
-        <Bell className="w-3.5 h-3.5 text-black" /> Early access
+        <Bell className="w-3.5 h-3.5 text-black" /> {dict.finalCTA.badge}
       </div>
  
       {/* Content */}
       <div className="relative max-w-3xl text-center flex flex-col items-center gap-6">
-        <h2 className="text-5xl md:text-7xl font-extrabold font-syne tracking-tight leading-[0.95] text-black">
-          Be first in line.<br />Skip the paperwork.
+        <h2 className="text-5xl md:text-7xl font-extrabold font-syne tracking-tight leading-[0.95] text-black whitespace-pre-line">
+          {dict.finalCTA.title}
         </h2>
         
         <p className="font-sans text-base md:text-xl text-zinc-600 font-medium max-w-lg leading-relaxed">
-          Join the waiting list for early access to Paprs and be among the first to navigate life in Spain with less admin and more clarity.
+          {dict.finalCTA.desc}
         </p>
  
         {/* Waitlist form */}
@@ -86,7 +88,7 @@ export default function FinalCTA() {
           className="mt-6 w-full max-w-xl rounded-[1.75rem] sm:rounded-full border border-black/15 bg-zinc-50 p-2 shadow-[0_12px_40px_rgba(0,0,0,0.08)] flex flex-col sm:flex-row items-stretch gap-2 apple-spring"
         >
           <label htmlFor="waitlist-email" className="sr-only">
-            Email address
+            {dict.finalCTA.emailPlaceholder}
           </label>
           <div className="flex min-w-0 flex-1 items-center gap-3 px-4">
             <Mail className="h-4 w-4 shrink-0 text-zinc-500" aria-hidden="true" />
@@ -96,7 +98,7 @@ export default function FinalCTA() {
               type="email"
               inputMode="email"
               autoComplete="email"
-              placeholder="you@email.com"
+              placeholder={dict.finalCTA.emailPlaceholder}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -115,17 +117,17 @@ export default function FinalCTA() {
           >
             {isSubmitting ? (
               <>
-                <span>Joining...</span>
+                <span>{dict.finalCTA.joining}</span>
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
               </>
             ) : isSubmitted ? (
               <>
-                <span>You’re on the list</span>
+                <span>{dict.finalCTA.youAreOnList}</span>
                 <Check className="h-4 w-4" aria-hidden="true" />
               </>
             ) : (
               <>
-                <span>Join the waiting list</span>
+                <span>{dict.finalCTA.joinWaitlistBtn}</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
               </>
             )}
@@ -142,7 +144,7 @@ export default function FinalCTA() {
             ? errorMessage
             : feedbackMessage
             ? feedbackMessage
-            : "Enter your email to request early access."}
+            : dict.finalCTA.defaultFeedback}
         </p>
 
         <div className="flex justify-center w-full">
@@ -150,17 +152,17 @@ export default function FinalCTA() {
             href="#pain"
             className="px-6 py-3 rounded-full bg-transparent border border-black/20 text-black hover:bg-zinc-100 font-syne font-bold text-xs tracking-wider uppercase apple-press flex items-center justify-center text-center"
           >
-            See how it works ↑
+            {dict.finalCTA.seeHowItWorks}
           </a>
         </div>
  
         {/* Trust signals */}
         <div className="mt-12 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] font-mono uppercase tracking-wider font-semibold text-zinc-600 items-center">
-          <span className="flex items-center gap-1"><Lock className="w-3 h-3 text-black" /> No spam, ever</span>
+          <span className="flex items-center gap-1"><Lock className="w-3 h-3 text-black" /> {dict.finalCTA.noSpam}</span>
           <span>•</span>
-          <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-black" /> Built in Spain</span>
+          <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-black" /> {dict.finalCTA.builtInSpain}</span>
           <span>•</span>
-          <span className="flex items-center gap-1"><Check className="w-3 h-3 text-black" /> Early-access priority</span>
+          <span className="flex items-center gap-1"><Check className="w-3 h-3 text-black" /> {dict.finalCTA.earlyAccessPriority}</span>
         </div>
       </div>
  

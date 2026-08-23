@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Navigate Spanish bureaucracy with confidence. NIE, TIE, padrón, taxes and more — Paprs tells you exactly what to do, in plain language, step by step.",
 };
 
+import { LanguageProvider } from "./context/LanguageContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +30,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-[#000000] text-[#f4f4f5] font-sans selection:bg-white selection:text-black">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

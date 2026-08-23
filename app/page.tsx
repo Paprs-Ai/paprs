@@ -7,11 +7,15 @@ import Countries from "./sections/Countries";
 import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
+import { useLanguage } from "./context/LanguageContext";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 // Keep the complete pricing experience ready for a later launch without
 // exposing it on the public landing page yet.
 
 export default function Home() {
+  const { dict } = useLanguage();
+
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-clip bg-[#FFFFFF] text-black font-sans selection:bg-black selection:text-white">
       
@@ -33,21 +37,22 @@ export default function Home() {
 
         {/* Navigation Links */}
         <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
-          <a href="#pain" className="transition-colors hover:text-black font-bold apple-press">Reality</a>
-          <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">How It Works</a>
-          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">Autónomo Engine</a>
-          <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">Intelligence</a>
-          <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">Europe</a>
-          <a href="#waitlist" className="transition-colors hover:text-black font-bold apple-press">Waitlist</a>
+          <a href="#pain" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.reality}</a>
+          <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.howItWorks}</a>
+          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.autonomoEngine}</a>
+          <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.intelligence}</a>
+          <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.europe}</a>
+          <a href="#waitlist" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.waitlist}</a>
         </nav>
 
-        {/* Nav CTA */}
-        <div>
+        {/* Nav Controls: Language Switcher & CTA */}
+        <div className="flex items-center gap-2.5">
+          <LanguageSwitcher />
           <a 
             href="#waitlist"
             className="px-4 py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
           >
-            Join Waitlist
+            {dict.nav.joinWaitlist}
           </a>
         </div>
       </header>
@@ -68,13 +73,13 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#FFFFFF] border-t border-zinc-200 py-12 px-6 text-center select-none font-mono text-[10px] text-zinc-500">
+      <footer className="bg-[#FFFFFF] py-12 px-6 text-center select-none font-mono text-[10px] text-zinc-500">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>© 2026 Paprs. All rights reserved. Built in Spain.</p>
+          <p>{dict.footer.copyright}</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-black transition-colors font-medium">Privacy Policy</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">Terms of Service</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">Cookies</a>
+            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.privacyPolicy}</a>
+            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.termsOfService}</a>
+            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.cookies}</a>
           </div>
         </div>
       </footer>

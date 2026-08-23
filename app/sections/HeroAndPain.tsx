@@ -26,6 +26,7 @@ import {
   RelocationHubView,
 } from "../components/BrowserWindow";
 import { useScrollProgress } from "../hooks/useScrollProgress";
+import { useLanguage } from "../context/LanguageContext";
 
 // ─── Process Step ──────────────────────────────────────────────────────────────
 function PainStep({
@@ -333,8 +334,7 @@ const PROCEDURES = [
 export default function HeroAndPain() {
   const { ref, progress } = useScrollProgress();
   const [lettersAnimate, setLettersAnimate] = useState(false);
-
-
+  const { dict } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -411,8 +411,8 @@ export default function HeroAndPain() {
   const bc5 = { x: interp(bridgeGather, 0, 1,  34, -24), y: interp(bridgeGather, 0, 1, -20,  -8), r: interp(bridgeGather, 0, 1, -18, -5) };
   const bc6 = { x: interp(bridgeGather, 0, 1,  24, -20), y: interp(bridgeGather, 0, 1,  30,   4), r: interp(bridgeGather, 0, 1,   8,  4) };
 
-  const headlineLeft = "Drowning in paperwork?";
-  const headlineRight = "Everything sorted. Step by step.";
+  const headlineLeft = dict.hero.headlineLeft;
+  const headlineRight = dict.hero.headlineRight;
 
   return (
     <div ref={ref} id="pain" className="relative h-[500vh] w-full">
@@ -462,8 +462,10 @@ export default function HeroAndPain() {
               style={{ opacity: heroTextOpacity }}
             >
               <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-14 lg:p-16">
-                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase">WITHOUT PAPRS</span>
-                <div className="max-w-xl pt-2">
+                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase">{dict.hero.withoutPaprs}</span>
+                <div
+                  className="max-w-xl p-6 sm:p-8 rounded-3xl glass-card-subtle transition-all"
+                >
                   <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black tracking-[-0.04em] font-syne leading-[0.98] mb-5 text-black">
                     {headlineLeft.split(" ").map((word, wi) => (
                       <span key={wi} className="inline-block whitespace-nowrap mr-[0.16em]">
@@ -482,15 +484,17 @@ export default function HeroAndPain() {
                     ))}
                   </h1>
                   <p className="font-sans text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed font-medium max-w-md">
-                    The answer changes with your passport, job, family, address, and length of stay. Every official page solves one piece. You have to connect them.
+                    {dict.hero.descLeft}
                   </p>
                 </div>
                 <div className="h-4" />
               </div>
 
               <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-14 lg:p-16 z-30 pointer-events-none">
-                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase self-end text-right">WITH PAPRS</span>
-                <div className="max-w-xl pt-2">
+                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase self-end text-right">{dict.hero.withPaprs}</span>
+                <div
+                  className="max-w-xl p-6 sm:p-8 rounded-3xl glass-card-subtle transition-all"
+                >
                   <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black tracking-[-0.04em] font-syne leading-[0.98] mb-5 text-black">
                     {headlineRight.split(" ").map((word, wi) => (
                       <span key={wi} className="inline-block whitespace-nowrap mr-[0.16em]">
@@ -509,7 +513,7 @@ export default function HeroAndPain() {
                     ))}
                   </h1>
                   <p className="font-sans text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed font-medium max-w-md">
-                    Paprs identifies your route, checks the dependencies, and turns scattered official requirements into one clear sequence.
+                    {dict.hero.descRight}
                   </p>
                 </div>
                 <div className="h-4" />
@@ -583,19 +587,19 @@ export default function HeroAndPain() {
                   </div>
 
                   <div className="w-full md:w-1/2 flex flex-col justify-center gap-5 relative z-[2]">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Monday · 08:43</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.mondayTime}</span>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.05] font-syne">
-                      The move is done.
+                      {dict.pain.moveDone}
                       <br />
-                      <span className="text-zinc-500 font-normal text-2xl md:text-3xl">The admin is just starting.</span>
+                      <span className="text-zinc-500 font-normal text-2xl md:text-3xl">{dict.pain.moveDoneSub}</span>
                     </h2>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">
-                      Your employer asks for a Social Security number. The bank asks for proof of address. The city asks how you occupy the home. Each request assumes another document already exists.
+                      {dict.pain.employerAsks}
                     </p>
                     <div className="flex items-start gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3.5 py-3 max-w-sm">
                       <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-black leading-snug font-mono font-medium">
-                        One ordinary question becomes five searches: “Which document do I need first?”
+                        {dict.pain.alertOneQuestion}
                       </p>
                     </div>
                   </div>
@@ -608,31 +612,30 @@ export default function HeroAndPain() {
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
                   <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4 relative z-[2]">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Search 1 · Find your route</span>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                      Before the form,
-                      <br />decode your status.
+                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search1Tag}</span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
+                      {dict.pain.beforeTheForm}
                       <br />
-                      <span className="text-zinc-500 font-sans font-normal text-lg md:text-xl">There is no universal checklist.</span>
+                      <span className="text-zinc-500 font-sans font-normal text-lg md:text-xl">{dict.pain.beforeTheFormSub}</span>
                     </h2>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      EU or non-EU. Worker, student, self-employed, or family member. Under or over three months. Every answer changes the route and the proof required.
+                      {dict.pain.euOrNonEu}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <div className="w-2 h-2 rounded-full bg-black" />
-                      <span className="font-mono text-xs text-zinc-600 font-medium">Same move. Different form. Different evidence.</span>
+                      <span className="font-mono text-xs text-zinc-600 font-medium">{dict.pain.sameMoveBadge}</span>
                     </div>
                   </div>
 
                   <div className="hidden md:flex w-6/12 flex-col justify-center relative z-[3]">
                     <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      {PROCEDURES.map((proc, i) => (
+                      {dict.pain.procedures.map((proc, i) => (
                         <div key={i} className="flex items-start gap-3">
                           <div className="flex flex-col items-center flex-shrink-0">
                             <div className="w-7 h-7 rounded-full border-2 border-zinc-400 bg-zinc-100 flex items-center justify-center text-black font-bold font-mono text-xs">?</div>
-                            {i < PROCEDURES.length - 1 && <div className="w-px h-6 bg-zinc-200 my-0.5" />}
+                            {i < dict.pain.procedures.length - 1 && <div className="w-px h-6 bg-zinc-200 my-0.5" />}
                           </div>
-                          <div className={`${i < PROCEDURES.length - 1 ? "pb-1" : ""}`}>
+                          <div className={`${i < dict.pain.procedures.length - 1 ? "pb-1" : ""}`}>
                             <div className="text-sm font-semibold text-black leading-tight">{proc.name}</div>
                             <div className="text-[11px] text-zinc-500 font-mono">{proc.hint}</div>
                           </div>
@@ -641,7 +644,7 @@ export default function HeroAndPain() {
                       <div className="pt-3 border-t border-zinc-200 mt-2">
                         <div className="flex items-center gap-2">
                           <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0" />
-                          <span className="text-[11px] text-black font-mono font-bold">Choose the route before choosing the form</span>
+                          <span className="text-[11px] text-black font-mono font-bold">{dict.pain.chooseRouteAlert}</span>
                         </div>
                       </div>
                     </div>
@@ -655,35 +658,39 @@ export default function HeroAndPain() {
                   <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
                     <div className="flex items-center gap-2">
                       <CalendarX2 className="w-4 h-4 text-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Search 2 · Cita previa</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search2Tag}</span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                      The appointment
-                      <br />is the first gate.
-                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Before anyone checks a single document.</span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
+                      {dict.pain.appointmentGate}
+                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">{dict.pain.appointmentGateSub}</span>
                     </h2>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      The portal asks for province, office, and an exact procedure name. Pick the wrong one and the available slot may be useless. Pick the right one and there may be no slot at all.
+                      {dict.pain.portalAsks}
                     </p>
                     <div className="flex items-center gap-3 mt-1">
                       <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-black" />
-                        <span className="font-mono text-xs text-black font-bold">Status: no slots</span>
+                        <span className="font-mono text-xs text-black font-bold">{dict.pain.noSlotsStatus}</span>
                       </div>
                       <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5">
-                        <span className="font-mono text-xs text-black font-semibold">Alternative: 060</span>
+                        <span className="font-mono text-xs text-black font-semibold">{dict.pain.alt060}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="hidden md:block w-6/12">
                     <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">What the booking loop feels like</div>
-                      <PainStep num={1} label="Find the official appointment portal" sublabel="Different administrations use different booking systems" />
-                      <PainStep num={2} label="Choose province, office, and procedure" sublabel="The labels must match the document you are requesting" />
-                      <PainStep num={3} label="Submit your details" sublabel="Passport or NIE · name · contact information" />
-                      <PainStep num={4} label="“No hay citas disponibles en este momento”" warning="The official help page directs you to 060 or the responsible office for non-technical questions. It cannot create an available slot." />
-                      <PainStep num={5} label="Return, retry, and keep the confirmation" sublabel="The booking reference is needed to identify and manage the appointment" isLast />
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.bookingLoopTitle}</div>
+                      {dict.pain.painStepsSlide2.map((step, idx) => (
+                        <PainStep
+                          key={idx}
+                          num={idx + 1}
+                          label={step.label}
+                          sublabel={step.sublabel}
+                          warning={step.warning}
+                          isLast={idx === dict.pain.painStepsSlide2.length - 1}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -695,18 +702,18 @@ export default function HeroAndPain() {
                   <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Search 3 · Forms and proof</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search3Tag}</span>
                     </div>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                      NIE, CUE, TIE.
-                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">Similar language. Different legal documents.</span>
+                      {dict.pain.similarLanguage}
+                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">{dict.pain.similarLanguageSub}</span>
                     </h2>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      EX-15 requests a NIE or certificate. EU residence registration uses EX-18. A non-EU family member uses EX-19. The 790-012 fee must also match the selected procedure.
+                      {dict.pain.formExplanations}
                     </p>
                     <div className="space-y-1.5 mt-1">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">Easy to confuse:</div>
-                      {["EX-15 · NIE", "EX-18 · EU registration", "EX-19 · EU family"].map((dep) => (
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">{dict.pain.easyToConfuseTitle}</div>
+                      {dict.pain.confuseBadges.map((dep) => (
                         <div key={dep} className="inline-flex items-center gap-1 bg-zinc-100 border border-zinc-200 rounded-full px-2.5 py-0.5 text-[11px] font-mono text-black mr-1.5 mb-1 font-semibold">
                           <div className="w-1.5 h-1.5 rounded-full bg-black" />{dep}
                         </div>
@@ -716,12 +723,18 @@ export default function HeroAndPain() {
 
                   <div className="hidden md:block w-6/12">
                     <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">The checklist behind one appointment</div>
-                      <PainStep num={1} label="Confirm the procedure — not just the acronym" sublabel="A NIE number, residence certificate, and residence card are not interchangeable" />
-                      <PainStep num={2} label="Download the matching official form" sublabel="EX-15 · EX-18 · EX-19 — depending on the route" />
-                      <PainStep num={3} label="Prove why you qualify" sublabel="Employment · self-employment · study · resources and insurance · family relationship" />
-                      <PainStep num={4} label="Generate and pay the correct 790-012 fee" cost="The payment receipt is part of the evidence" />
-                      <PainStep num={5} label="Check identity, dates, signatures, and supporting records" warning="A correctly completed form for the wrong procedure is still the wrong application." isLast />
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.checklistBehindTitle}</div>
+                      {dict.pain.painStepsSlide3.map((step, idx) => (
+                        <PainStep
+                          key={idx}
+                          num={idx + 1}
+                          label={step.label}
+                          sublabel={step.sublabel}
+                          cost={step.cost}
+                          warning={step.warning}
+                          isLast={idx === dict.pain.painStepsSlide3.length - 1}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -733,32 +746,36 @@ export default function HeroAndPain() {
                   <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
                     <div className="flex items-center gap-2">
                       <Home className="w-4 h-4 text-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">Search 4 · Padrón municipal</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search4Tag}</span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                      Your address is real.
-                      <br />Now prove it their way.
-                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">The checklist changes with your housing situation.</span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
+                      {dict.pain.addressIsReal}
+                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">{dict.pain.addressIsRealSub}</span>
                     </h2>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      A lease in your name may be enough. Living with a partner, flatmate, relative, or in student housing can add authorisations, identity copies, payment receipts, or other proof.
+                      {dict.pain.leaseExplanation}
                     </p>
                     <div className="bg-zinc-100 border border-zinc-300 rounded-xl p-3 mt-1 flex items-start gap-2">
                       <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-black leading-snug font-mono">
-                        The form can be complete while the evidence is still incomplete.
+                        {dict.pain.alertIncomplete}
                       </p>
                     </div>
                   </div>
 
                   <div className="hidden md:block w-6/12">
                     <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">A realistic flat-share case</div>
-                      <PainStep num={1} label="Find the city&apos;s own padrón procedure" sublabel="National guidance cannot replace the municipal checklist" />
-                      <PainStep num={2} label="Book the municipal appointment" sublabel="A separate portal from immigration or Social Security" />
-                      <PainStep num={3} label="Show identity and right to use the home" sublabel="Passport or ID · lease, title, or accepted housing evidence" />
-                      <PainStep num={4} label="The lease is in your flatmate&apos;s name" warning="The city may require their signed authorisation and a copy of their identity document." />
-                      <PainStep num={5} label="Get the missing signature and return" sublabel="One small dependency creates another message, another document, and another attempt" isLast />
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.flatShareTitle}</div>
+                      {dict.pain.painStepsSlide4.map((step, idx) => (
+                        <PainStep
+                          key={idx}
+                          num={idx + 1}
+                          label={step.label}
+                          sublabel={step.sublabel}
+                          warning={step.warning}
+                          isLast={idx === dict.pain.painStepsSlide4.length - 1}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -767,29 +784,31 @@ export default function HeroAndPain() {
               {/* SLIDE 5 — The real cost */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 p-6 md:p-8 rounded-3xl border border-zinc-300 bg-white/90 backdrop-blur-md shadow-xl relative z-30 select-text">
+                  <div
+                    className="w-full md:w-5/12 flex flex-col justify-center gap-4 p-6 sm:p-8 rounded-3xl glass-card-subtle relative z-30 transition-all"
+                  >
                     <div className="flex items-center gap-2">
                       <span className="inline-block w-2 h-2 rounded-full bg-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">The hidden workload</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.hiddenWorkloadTag}</span>
                     </div>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                      The hard part is not one form.
+                      {dict.pain.hardPartTitle}
                     </h2>
                     <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      It is stitching together EU guidance, national immigration rules, police forms, a municipal checklist, Social Security, and appointment systems that do not share one journey.
+                      {dict.pain.hardPartDesc}
                     </p>
                     <div className="flex flex-col gap-2.5 mt-1">
                       <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                        The same identity details entered again and again
+                        {dict.pain.repeatedDetailsBullet}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                        Similar acronyms hiding different procedures
+                        {dict.pain.similarAcronymsBullet}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-black font-mono font-bold">
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                        One unavailable slot can pause the entire chain
+                        {dict.pain.unavailableSlotBullet}
                       </div>
                     </div>
                   </div>
@@ -798,45 +817,45 @@ export default function HeroAndPain() {
                     <div className="grid grid-cols-2 gap-2.5">
                       <StatCounter
                         target={6}
-                        label="Official systems"
-                        sublabel="EU · state · police · city · Social Security · health"
+                        label={dict.pain.stats.officialSystems.label}
+                        sublabel={dict.pain.stats.officialSystems.sublabel}
                         isActive={activeSlide === 5}
                       />
                       <StatCounter
                         target={3}
-                        label="Similar forms"
-                        sublabel="EX-15 · EX-18 · EX-19"
+                        label={dict.pain.stats.similarForms.label}
+                        sublabel={dict.pain.stats.similarForms.sublabel}
                         isActive={activeSlide === 5}
                       />
                       <StatCounter
                         target={2}
-                        label="Booking portals"
-                        sublabel="immigration and municipal"
+                        label={dict.pain.stats.bookingPortals.label}
+                        sublabel={dict.pain.stats.bookingPortals.sublabel}
                         isActive={activeSlide === 5}
                       />
                       <StatCounter
                         target={1}
-                        label="Missing signature"
-                        sublabel="enough to stop the visit"
+                        label={dict.pain.stats.missingSignature.label}
+                        sublabel={dict.pain.stats.missingSignature.sublabel}
                       isActive={activeSlide === 5}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-2.5">
                     <StatCounter
                       target={5}
-                      label="Repeated details"
-                      sublabel="name · ID · address · phone · email"
+                      label={dict.pain.stats.repeatedDetails.label}
+                      sublabel={dict.pain.stats.repeatedDetails.sublabel}
                       isActive={activeSlide === 5}
                     />
                     <StatCounter
                       target={0}
-                      label="Open browser tabs"
+                      label={dict.pain.stats.openTabs.label}
                       isActive={activeSlide === 5}
                       variant="infinity"
                     />
                   </div>
                   <p className="text-center font-mono text-[10px] text-zinc-500 pt-1 italic font-medium">
-                    No single step is impossible. The handoffs are the problem.
+                    {dict.pain.noSingleStep}
                   </p>
                 </div>
 
@@ -905,7 +924,7 @@ export default function HeroAndPain() {
             className="absolute bottom-8 right-8 z-40 flex items-center gap-2 transition-opacity duration-500"
             style={{ opacity: interp(progress, 0.18, 0.26, 0, 0.55) }}
           >
-            <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">scroll to continue</span>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.hero.scrollToContinue}</span>
             <Globe className="w-3 h-3 text-black animate-bounce" />
           </div>
         )}
@@ -923,7 +942,7 @@ export default function HeroAndPain() {
               href="#pain"
               className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-black text-white border border-black hover:bg-zinc-800 transition-all duration-300 font-syne font-bold text-xs tracking-wider uppercase hover:scale-105 shadow-xl"
             >
-              Get started
+              {dict.hero.getStarted}
               <ChevronRight className="w-4 h-4 text-white" />
             </a>
           </div>
@@ -933,7 +952,7 @@ export default function HeroAndPain() {
         {progress < 0.08 && (
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-bounce hidden md:block">
             <a href="#pain" className="flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity">
-              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-600 mb-1 font-bold">Scroll</span>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-600 mb-1 font-bold">{dict.hero.scroll}</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4 text-black">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
@@ -951,7 +970,7 @@ export default function HeroAndPain() {
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-black" />
                 <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
-                  {["The first request", "Find your route", "Find an appointment", "Choose the right form", "Prove your address", "The hidden workload"][activeSlide] ?? ""}
+                  {dict.pain.slideLabels[activeSlide] ?? ""}
                 </span>
               </div>
             </div>
