@@ -1,3 +1,13 @@
+# Paprs — Official Landing Page
+
+> **⚖️ Copyright & Trademark Notice**  
+> **Paprs™** and **Paprs.app** are trademarked.  
+> Copyright © 2026 **Paprs.app**. All Rights Reserved.  
+> 
+> This repository is made viewable for hosting and demonstration purposes. No license or permission is granted to copy, reproduce, redistribute, or use any code, branding, assets, or concepts from this repository without prior written consent from **Paprs.app**.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
