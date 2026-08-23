@@ -1,14 +1,62 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { ArrowRight, Bell, Check, Lock, Mail, MapPin } from "lucide-react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { ArrowRight, Bell, Check, Loader2, Lock, Mail, MapPin } from "lucide-react";
+import { joinWaitlistAction } from "@/actions/waitlist";
 
 export default function FinalCTA() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const resetTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, []);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsSubmitted(true);
+    const emailToSubmit = email.trim();
+    if (!emailToSubmit) return;
+
+    if (resetTimerRef.current) {
+      clearTimeout(resetTimerRef.current);
+    }
+
+    // Instantly clear the email input field upon clicking join
+    setEmail("");
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      // Direct Server Action execution with @supabase/server on backend
+      const data = await joinWaitlistAction(emailToSubmit);
+
+      if (!data.success && !data.alreadyRegistered) {
+        setErrorMessage(data.message || "Failed to join waitlist. Please try again.");
+        setIsSubmitted(false);
+      } else {
+        setIsSubmitted(true);
+        setFeedbackMessage(data.message || "Thanks — we’ll keep you posted.");
+
+        // After 2.5 seconds, return button and state to normal so user can type again
+        resetTimerRef.current = setTimeout(() => {
+          setIsSubmitted(false);
+        }, 2500);
+      }
+    } catch (err) {
+      console.error("Waitlist submit error:", err);
+      setErrorMessage("An unexpected error occurred. Please try again.");
+      setIsSubmitted(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -49,27 +97,52 @@ export default function FinalCTA() {
               inputMode="email"
               autoComplete="email"
               placeholder="you@email.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (isSubmitted) setIsSubmitted(false);
+                if (errorMessage) setErrorMessage(null);
+              }}
               required
-              disabled={isSubmitted}
+              disabled={isSubmitting}
               className="waitlist-email min-w-0 flex-1 appearance-none bg-transparent py-3 font-sans text-sm text-black caret-black outline-none placeholder:text-zinc-400 disabled:cursor-not-allowed select-text selection:bg-zinc-300 selection:text-black"
             />
           </div>
           <button
             type="submit"
-            disabled={isSubmitted}
-            className="group min-h-12 shrink-0 rounded-full bg-black px-6 text-white hover:bg-zinc-800 disabled:bg-zinc-800 font-syne font-bold text-xs sm:text-sm tracking-wider uppercase apple-press shadow-md flex items-center justify-center gap-2 text-center"
+            disabled={isSubmitting || isSubmitted}
+            className="group min-h-12 shrink-0 rounded-full bg-black px-6 text-white hover:bg-zinc-800 disabled:bg-zinc-800 font-syne font-bold text-xs sm:text-sm tracking-wider uppercase apple-press shadow-md flex items-center justify-center gap-2 text-center transition-all"
           >
-            {isSubmitted ? "You’re on the list" : "Join the waiting list"}
-            {isSubmitted ? (
-              <Check className="h-4 w-4" aria-hidden="true" />
+            {isSubmitting ? (
+              <>
+                <span>Joining...</span>
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              </>
+            ) : isSubmitted ? (
+              <>
+                <span>You’re on the list</span>
+                <Check className="h-4 w-4" aria-hidden="true" />
+              </>
             ) : (
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+              <>
+                <span>Join the waiting list</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+              </>
             )}
           </button>
         </form>
 
-        <p className="min-h-5 font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-500" aria-live="polite">
-          {isSubmitted ? "Thanks — we’ll keep you posted." : "Enter your email to request early access."}
+        <p
+          className={`min-h-5 font-mono text-[10px] font-semibold uppercase tracking-wider ${
+            errorMessage ? "text-red-500" : isSubmitted ? "text-zinc-800" : "text-zinc-500"
+          }`}
+          aria-live="polite"
+        >
+          {errorMessage
+            ? errorMessage
+            : feedbackMessage
+            ? feedbackMessage
+            : "Enter your email to request early access."}
         </p>
 
         <div className="flex justify-center w-full">

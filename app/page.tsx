@@ -19,9 +19,9 @@ export default function Home() {
       <header 
         className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.02)",
-          backdropFilter: "blur(6px) saturate(150%)",
-          WebkitBackdropFilter: "blur(6px) saturate(150%)",
+          backgroundColor: "transparent",
+          backdropFilter: "blur(2px) saturate(150%)",
+          WebkitBackdropFilter: "blur(2px) saturate(150%)",
         }}
       >
         {/* Brand */}
@@ -45,7 +45,7 @@ export default function Home() {
         <div>
           <a 
             href="#waitlist"
-            className="px-4 py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press block"
+            className="px-4 py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
           >
             Join Waitlist
           </a>

@@ -1,6 +1,6 @@
 "use client";
 
-import { PaprsWebDashboardCard } from "@/app/sections/HeroAndPain";
+import { BrowserPlaceholder, PaprsWebDashboardCard } from "@/app/components/BrowserWindow";
 import Lottie from "lottie-react";
 import { Bell, Check, ChevronRight, Cpu, FileText, Home, Layers, Loader2, Lock, MapPin, Sparkles } from "lucide-react";
 import React, { useEffect, useRef } from "react";
@@ -161,19 +161,19 @@ export default function HowItWorks() {
   const s7p = getLocalProgress(progress, 7);
   const s8p = getLocalProgress(progress, 8);
 
-  const cardOpacity = 1.0;
+  const cardOpacity = 0.45;
 
   const getPileCardStyle = (pos: { x: number; y: number; r: number }) => ({
     transform: `translate(calc(-50% + ${pos.x}vw), calc(-50% + ${pos.y}vh)) rotate(${pos.r}deg)`,
     opacity: cardOpacity,
   });
 
-  const fc1 = getPileCardStyle({ x: -30, y: -10, r:  -8 });
-  const fc2 = getPileCardStyle({ x: -26, y:   8, r:   6 });
-  const fc3 = getPileCardStyle({ x: -28, y:  -4, r: -12 });
-  const fc4 = getPileCardStyle({ x: -22, y:  12, r:  10 });
-  const fc5 = getPileCardStyle({ x: -24, y:  -8, r:  -5 });
-  const fc6 = getPileCardStyle({ x: -20, y:   4, r:   4 });
+  const fc1 = getPileCardStyle({ x: -28, y: -12, r:  -8 });
+  const fc2 = getPileCardStyle({ x: -22, y:  10, r:   7 });
+  const fc3 = getPileCardStyle({ x: -30, y:   4, r: -14 });
+  const fc4 = getPileCardStyle({ x: -18, y:  -8, r:  12 });
+  const fc5 = getPileCardStyle({ x: -26, y:  -4, r:  -5 });
+  const fc6 = getPileCardStyle({ x: -21, y:   6, r:   3 });
 
   const text1Opacity = 1 - clamp01((s2p - 0.20) / 0.05);
   const text2Opacity = clamp01((s2p - 0.20) / 0.05) - clamp01((s2p - 0.50) / 0.05);
@@ -250,34 +250,36 @@ export default function HowItWorks() {
 
           {/* SLIDE 0 — Paprs appears */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-              <div className="hidden md:block md:w-5/12 h-full flex-shrink-0" />
+            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+              
+              {/* Left Column */}
+              <div className="w-full md:w-5/12 flex flex-col justify-center relative z-20">
+                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
+                  From confusion to action
+                </span>
+                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                  Paprs turns the maze into your next move.
+                </h3>
+                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  Instead of opening ten tabs and translating legal language yourself, you get one personal plan showing what matters now, what can wait, and what Paprs can prepare for you.
+                </p>
+                <OutcomePills items={["One route", "One next action", "No wasted steps"]} />
+              </div>
 
-              <div className="w-full md:w-7/12 h-full flex items-center gap-6 relative z-20 md:pl-6">
-                <div className="flex-1 flex flex-col justify-center gap-4 relative z-10">
-                  <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit inline-block">
-                    From confusion to action
-                  </span>
-                  <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
-                    Paprs turns the maze into your next move.
-                  </h3>
-                  <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-sm">
-                    Instead of opening ten tabs and translating legal language yourself, you get one personal plan showing what matters now, what can wait, and what Paprs can prepare for you.
-                  </p>
-                  <OutcomePills items={["One route", "One next action"]} />
-                </div>
-
-                <div className="relative flex-shrink-0 pointer-events-none">
+              {/* Right Column: Web Dashboard Card (Matching Hero Size) */}
+              <div className="w-full md:w-6/12 flex items-center justify-center md:justify-end relative z-[45]">
+                <div className="relative w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px] pointer-events-none scale-90 sm:scale-95 lg:scale-100">
                   <PaprsWebDashboardCard />
                   <div
                     className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-black font-bold whitespace-nowrap transition-opacity duration-500"
                     style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
                   >
                     <Check className="w-3.5 h-3.5 text-black" />
-                    Your route is ready
+                    Seguridad Social route ready
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -503,9 +505,9 @@ export default function HowItWorks() {
 
         {/* ── Chaos Card Pile Overlay (Slide 0) ── */}
         <div
-          className="hidden md:block absolute inset-0 pointer-events-none z-[40]"
+          className="hidden md:block absolute inset-0 pointer-events-none z-[5]"
           style={{
-            opacity: `clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1)`,
+            opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1) * 0.85)`,
             transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * var(--viewport-height-px, 100vh)))`,
           }}
         >
@@ -518,19 +520,19 @@ export default function HowItWorks() {
             <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
               <div style={fc1}><DocumentCard type="nie" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "6deg" } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "7deg" } as React.CSSProperties}>
               <div style={fc2}><DocumentCard type="padron" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-3deg" } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-14deg" } as React.CSSProperties}>
               <div style={fc3}><DocumentCard type="seg_social" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "10deg" } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "12deg" } as React.CSSProperties}>
               <div style={fc4}><DocumentCard type="hacienda" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-9deg" } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-5deg" } as React.CSSProperties}>
               <div style={fc5}><DocumentCard type="nie" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
+            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "3deg" } as React.CSSProperties}>
               <div style={fc6}><DocumentCard type="seg_social" status="chaos" /></div>
             </div>
           </div>
@@ -550,53 +552,61 @@ export default function HowItWorks() {
             <div className="w-full md:w-6/12 h-[65vh] md:h-full flex items-center justify-center relative">
               
               <div 
-                className="relative transition-all duration-300 flex items-center justify-center w-full max-w-[340px] sm:max-w-[400px] md:max-w-[460px] lg:max-w-[500px]"
+                className="relative transition-all duration-300 flex items-center justify-center w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
                 style={{ transform: `scale(${phoneScale})` }}
               >
-                
-                {/* Desktop Web Dashboard Window */}
-                <div className="w-full h-[520px] md:h-[540px] bg-white rounded-2xl border-2 border-zinc-200 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.14)] overflow-hidden flex flex-col relative select-none">
-                  
-                  {/* Web Browser Chrome Bar */}
-                  <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center z-30 shrink-0">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-400/80 border border-red-500/20" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80 border border-amber-500/20" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80 border border-emerald-500/20" />
-                    </div>
-
-                    <div className="flex items-center gap-1.5 font-mono text-[8.5px] text-zinc-600 bg-white border border-zinc-200 px-3 py-0.5 rounded-lg shadow-xs">
-                      <Lock className="w-2.5 h-2.5 text-zinc-400" />
-                      <span>app.paprs.app</span>
-                    </div>
-
-                    <div className="flex items-center gap-1 font-mono text-[7.5px] uppercase tracking-wider font-extrabold text-black bg-zinc-100 border border-zinc-300 px-2 py-0.5 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-                      Live
-                    </div>
-                  </div>
-
-                  {/* App Header */}
-                  {activeSlide !== 1 && activeSlide !== 2 && (
-                    <div className="px-4 py-2.5 bg-white border-b border-zinc-100 flex justify-between items-center z-20 shrink-0">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center font-syne font-black text-[10px]">
-                          p.
+                {/* Desktop Web Dashboard Window using Reusable BrowserPlaceholder */}
+                <BrowserPlaceholder
+                  badgeText="Live"
+                  shadow="shadow-[0_24px_60px_-15px_rgba(0,0,0,0.14)]"
+                  className="h-[520px] md:h-[540px]"
+                  headerContent={
+                    activeSlide !== 1 && activeSlide !== 2 ? (
+                      <div className="px-4 py-2.5 bg-white border-b border-zinc-100 flex justify-between items-center z-20 shrink-0">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center font-syne font-black text-[10px]">
+                            p.
+                          </div>
+                          <div>
+                            <h5 className="font-syne font-extrabold text-[11px] text-black tracking-tight leading-tight">Paprs Workspace</h5>
+                            <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest leading-none mt-0.5">Student Route · Barcelona</p>
+                          </div>
                         </div>
-                        <div>
-                          <h5 className="font-syne font-extrabold text-[11px] text-black tracking-tight leading-tight">Paprs Workspace</h5>
-                          <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest leading-none mt-0.5">Student Route · Barcelona</p>
+                        <div className="flex items-center gap-2">
+                          <Bell className="w-3.5 h-3.5 text-zinc-400 hover:text-black cursor-pointer transition-colors" />
+                          <div className="w-6 h-6 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center font-mono text-[8px] text-black font-bold shadow-xs">
+                            JD
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Bell className="w-3.5 h-3.5 text-zinc-400 hover:text-black cursor-pointer transition-colors" />
-                        <div className="w-6 h-6 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center font-mono text-[8px] text-black font-bold shadow-xs">
-                          JD
+                    ) : null
+                  }
+                  footerContent={
+                    activeSlide !== 1 && activeSlide !== 2 ? (
+                      <div className="px-3 py-2 bg-zinc-50 border-t border-zinc-200 flex items-center justify-between z-20 shrink-0">
+                        <div className="flex items-center gap-1 sm:gap-1.5">
+                          <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 0 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                            <Home className="w-2.5 h-2.5" />
+                            <span>Overview</span>
+                          </div>
+                          <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 1 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                            <Layers className="w-2.5 h-2.5" />
+                            <span>Roadmap</span>
+                          </div>
+                          <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 2 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                            <FileText className="w-2.5 h-2.5" />
+                            <span>Vault</span>
+                          </div>
+                        </div>
+
+                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 3 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
+                          <Sparkles className="w-2.5 h-2.5" />
+                          <span>Assistant</span>
                         </div>
                       </div>
-                    </div>
-                  )}
-
+                    ) : null
+                  }
+                >
                   {/* Dashboard Screen Slider Container */}
                   <div className="flex-1 min-h-0 relative overflow-hidden">
                     <div
@@ -1186,31 +1196,7 @@ export default function HowItWorks() {
                       </div>
                     </div>
 
-                  {/* Web Navigation Footer */}
-                  {activeSlide !== 1 && activeSlide !== 2 && (
-                    <div className="px-3 py-2 bg-zinc-50 border-t border-zinc-200 flex items-center justify-between z-20 shrink-0">
-                      <div className="flex items-center gap-1 sm:gap-1.5">
-                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 0 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                          <Home className="w-2.5 h-2.5" />
-                          <span>Overview</span>
-                        </div>
-                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 1 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                          <Layers className="w-2.5 h-2.5" />
-                          <span>Roadmap</span>
-                        </div>
-                        <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 2 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                          <FileText className="w-2.5 h-2.5" />
-                          <span>Vault</span>
-                        </div>
-                      </div>
-
-                      <div className={`px-2 py-1 rounded-lg font-mono text-[7.5px] font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${activeTab === 3 ? "bg-black text-white shadow-xs" : "text-zinc-500 hover:text-black hover:bg-zinc-100"}`}>
-                        <Sparkles className="w-2.5 h-2.5" />
-                        <span>Assistant</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                </BrowserPlaceholder>
               </div>
 
             </div>
