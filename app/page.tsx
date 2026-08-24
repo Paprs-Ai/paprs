@@ -3,6 +3,7 @@
 
 import AILearns from "./sections/AILearns";
 import AutonomoEngine from "./sections/AutonomoEngine";
+import BureaucracyFAQ from "./sections/BureaucracyFAQ";
 import Countries from "./sections/Countries";
 import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
@@ -39,7 +40,7 @@ export default function Home() {
           <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.autonomoEngine}</a>
           <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.intelligence}</a>
           <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.europe}</a>
-          <a href="#waitlist" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.waitlist}</a>
+          <a href="#faq" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.faq}</a>
         </nav>
 
         {/* Nav Controls: Language Switcher & CTA */}
@@ -61,6 +62,7 @@ export default function Home() {
         <AutonomoEngine />
         <AILearns />
         <Countries />
+        <BureaucracyFAQ />
         <FinalCTA />
       </main>
 
@@ -68,7 +70,8 @@ export default function Home() {
       <footer className="bg-[#FFFFFF] py-12 px-6 text-center select-none font-mono text-[10px] text-zinc-500">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <p>{dict.footer.copyright}</p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 items-center">
+            <a href="/career" className="hover:text-black transition-colors font-bold text-black/80">Careers (3 Open)</a>
             <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.privacyPolicy}</a>
             <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.termsOfService}</a>
             <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.cookies}</a>

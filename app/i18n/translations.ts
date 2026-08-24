@@ -8,6 +8,8 @@ export const translations: Record<Language, Translations> = {
       autonomoEngine: "Autónomo Engine",
       intelligence: "Intelligence",
       europe: "Europe",
+      faq: "Knowledge & FAQ",
+      career: "Career",
       waitlist: "Waitlist",
       joinWaitlist: "Join Waitlist",
       overview: "Overview",
@@ -406,6 +408,43 @@ export const translations: Record<Language, Translations> = {
       continue: "Continue",
       buildRoadmap: "Build My Spanish Roadmap",
     },
+    faq: {
+      badge: "Everything About Paprs",
+      title: "Frequently Asked Questions\nAbout the Paprs App",
+      subtitle: "Learn how Paprs transforms Spanish bureaucracy into clear, step-by-step interactive guidance.",
+      items: [
+        {
+          tag: "Product & Concept",
+          question: "What is Paprs and how does it solve Spanish bureaucracy?",
+          answer: "Paprs is your intelligent, step-by-step digital co-pilot for navigating life and bureaucracy in Spain. Instead of getting lost in scattered government websites or conflicting forum advice, Paprs takes your passport, visa status, and destination to create a custom interactive roadmap—telling you exactly which documents you need, in what order, and how to complete them."
+        },
+        {
+          tag: "Paprs vs. Gestorías",
+          question: "How does Paprs compare to hiring a traditional Gestoría?",
+          answer: "Traditional gestorías can charge hundreds or thousands of euros and often take days to answer basic questions. Paprs gives you instant, 24/7 interactive clarity, pre-checks your paperwork for missing prerequisites, and guides you through appointments and taxes with complete transparency—at a fraction of the cost."
+        },
+        {
+          tag: "Supported Procedures",
+          question: "What Spanish procedures does Paprs guide me through?",
+          answer: "Paprs supports the entire Spanish bureaucratic journey: NIE number applications (EX-15), TIE cards (EX-17), EU Citizen Registration (EX-18), Empadronamiento (Padrón) across all autonomous communities, Autónomo setup (Modelos 036/037 & RETA), quarterly tax filings (Modelos 303 & 130), Digital Nomad Visas, and Beckham Law tax applications."
+        },
+        {
+          tag: "Security & Vault",
+          question: "How does the Paprs Document Vault protect my sensitive files?",
+          answer: "Security is paramount. The Paprs Vault uses bank-grade AES-256 encryption at rest and TLS in transit. Your documents, certificates, and tax records are stored securely in EU-compliant infrastructure, organized automatically with expiration alerts, and are never shared or sold to third parties."
+        },
+        {
+          tag: "Cita Previa Navigator",
+          question: "How does Paprs help me with Cita Previa appointments?",
+          answer: "Booking Spanish appointments is notorious for fast-expiring slots and wrong procedure codes. Paprs directs you to the exact office, province, and official procedure name, alerts you to province-specific appointment release patterns, and generates a pre-appointment checklist so your paperwork is 100% compliant on the day."
+        },
+        {
+          tag: "Early Access & Pricing",
+          question: "How do I get access to Paprs and is there a free plan?",
+          answer: "You can secure your spot by joining the early access waitlist with your email on this page. Early waitlist members receive prioritized onboarding, direct access to our interactive Spanish roadmap builder, and exclusive launch privileges."
+        }
+      ]
+    },
   },
   es: {
     nav: {
@@ -414,6 +453,8 @@ export const translations: Record<Language, Translations> = {
       autonomoEngine: "Motor Autónomo",
       intelligence: "Inteligencia",
       europe: "Europa",
+      faq: "Guía y Preguntas",
+      career: "Carreras",
       waitlist: "Lista de espera",
       joinWaitlist: "Unirse a la lista",
       overview: "Resumen",
@@ -812,6 +853,43 @@ export const translations: Record<Language, Translations> = {
       continue: "Continuar",
       buildRoadmap: "Generar mi hoja de ruta en España",
     },
+    faq: {
+      badge: "Todo sobre la app Paprs",
+      title: "Preguntas Frecuentes\nsobre la App Paprs",
+      subtitle: "Descubre cómo Paprs transforma la burocracia española en una guía interactiva paso a paso.",
+      items: [
+        {
+          tag: "Producto y Concepto",
+          question: "¿Qué es Paprs y cómo resuelve la burocracia en España?",
+          answer: "Paprs es tu copiloto digital interactivo para gestionar tu residencia, trámites y vida en España. En lugar de perderte en normativas oficiales confusas o consejos contradictorios de foros, Paprs analiza tu nacionalidad, visado y ciudad de destino para generar una hoja de ruta clara que ordena tus documentos y te dice exactamente qué hacer paso a paso."
+        },
+        {
+          tag: "Paprs vs. Gestorías",
+          question: "¿En qué se diferencia Paprs de contratar una gestoría tradicional?",
+          answer: "Las gestorías tradicionales cobran cientos o miles de euros y tardan días en responder dudas básicas. Paprs te ofrece claridad instantánea 24/7, comprueba los requisitos de tus expedientes antes de presentar y te guía en citas, tasas e impuestos con total transparencia y por una fracción de coste."
+        },
+        {
+          tag: "Trámites Disponibles",
+          question: "¿Qué trámites y documentos cubre la app de Paprs?",
+          answer: "Paprs cubre todo el recorrido administrativo: asignación de NIE (EX-15), expedición de tarjeta TIE (EX-17), Certificado de Registro UE (EX-18), Empadronamiento en cualquier ayuntamiento, alta de Autónomo (Modelos 036/037 y RETA), declaraciones trimestrales de impuestos (Modelos 303 e 130), Visado para Nómadas Digitales y solicitud de Ley Beckham."
+        },
+        {
+          tag: "Seguridad y Bóveda",
+          question: "¿Cómo protege la Bóveda de Documentos de Paprs mi información privada?",
+          answer: "La privacidad es fundamental. La Bóveda de Paprs utiliza cifrado de nivel bancario AES-256 en reposo y TLS en tránsito. Tus certificados y documentos se almacenan en servidores seguros dentro de la UE, con alertas automáticas de caducidad, y nunca se venden a terceros."
+        },
+        {
+          tag: "Gestor de Citas Previas",
+          question: "¿Cómo me ayuda Paprs con las citas previas de Extranjería y Policía?",
+          answer: "Conseguir cita previa en España suele ser caótico por los cupos limitados y errores de código. Paprs te indica la oficina, provincia y denominación exacta del trámite, te alerta de los horarios de apertura de citas y genera una lista de verificación previa para acudir con la documentación 100% correcta."
+        },
+        {
+          tag: "Acceso y Precios",
+          question: "¿Cómo puedo acceder a Paprs y existe una versión gratuita?",
+          answer: "Puedes unirte hoy mismo a la lista de espera con tu correo electrónico en esta página. Los usuarios registrados en la lista tendrán acceso prioritario al generador de hojas de ruta y condiciones exclusivas de lanzamiento."
+        }
+      ]
+    },
   },
   ca: {
     nav: {
@@ -820,6 +898,8 @@ export const translations: Record<Language, Translations> = {
       autonomoEngine: "Motor Autònom",
       intelligence: "Intel·ligència",
       europe: "Europa",
+      faq: "Guia i Preguntes",
+      career: "Carreres",
       waitlist: "Llista d'Espera",
       joinWaitlist: "Unir-se a la llista",
       overview: "Resum",
@@ -1217,6 +1297,43 @@ export const translations: Record<Language, Translations> = {
       back: "Enrere",
       continue: "Continuar",
       buildRoadmap: "Generar el meu full de ruta a Espanya",
+    },
+    faq: {
+      badge: "Tot sobre l'app Paprs",
+      title: "Preguntes Freqüents\nsobre l'App Paprs",
+      subtitle: "Descobreix com Paprs transforma la burocràcia espanyola en una guia interactiva pas a pas.",
+      items: [
+        {
+          tag: "Producte i Concepte",
+          question: "Què és Paprs i com resol la burocràcia a Espanya?",
+          answer: "Paprs és el teu copilot digital interactiu per gestionar la teva residència, tràmits i vida a Espanya. En lloc de perdre't en portals oficials confusos o consells contradictoris de fòrums, Paprs analitza la teva nacionalitat, visat i municipi de destí per crear un full de ruta clar que ordena els teus documents i et diu exactament què fer pas a pas."
+        },
+        {
+          tag: "Paprs vs. Gestories",
+          question: "En què es diferencia Paprs de contractar una gestoria tradicional?",
+          answer: "Les gestories tradicionals cobren centenars o milers d'euros i sovint triguen dies a respondre preguntes bàsiques. Paprs t'ofereix claredat instantània 24/7, comprova els requisits dels teus expedients i et guia en cites, taxes i impostos amb total transparència i per una fracció de cost."
+        },
+        {
+          tag: "Tràmits Disponibles",
+          question: "Quins tràmits i documents cobreix l'app de Paprs?",
+          answer: "Paprs cobreix tot el recorregut administratiu: assignació de NIE (EX-15), expedició de targeta TIE (EX-17), Certificat de Registre UE (EX-18), Empadronament a qualsevol ajuntament, alta d'Autònom (Models 036/037 i RETA), declaracions trimestrals d'impostos (Models 303 i 130), Visat per a Nòmades Digitals i Llei Beckham."
+        },
+        {
+          tag: "Seguretat i Caixa Forta",
+          question: "Com protegeix la Caixa Forta de Paprs la meva informació privada?",
+          answer: "La privadesa és fonamental. La Caixa Forta de Paprs utilitza xifratge de nivell bancari AES-256 en repòs i TLS en trànsit. Els teus certificats i documents s'emmagatzemen en servidors segurs dins de la UE, amb alertes automàtiques de caducitat, i mai no es venen a tercers."
+        },
+        {
+          tag: "Gestor de Cites Prèvies",
+          question: "Com m'ajuda Paprs amb les cites prèvies d'Estrangeria i Policia?",
+          answer: "Aconseguir cita prèvia a Espanya sol ser caòtic pels torns limitats i errors de codi de tràmit. Paprs t'indica l'oficina, província i denominació exacta del tràmit, t'alerta dels patrons d'alliberament de torns i genera una llista prèvia de comprovació perquè la teva documentació sigui 100% correcta."
+        },
+        {
+          tag: "Accés i Preus",
+          question: "Com puc accedir a Paprs i hi ha una versió gratuïta?",
+          answer: "Pots unir-te avui mateix a la llista d'espera amb el teu correu electrònic en aquesta pàgina. Els usuaris registrats a la llista tindran accés prioritari al generador de fulls de ruta i condicions exclusives de llançament."
+        }
+      ]
     },
   },
 };

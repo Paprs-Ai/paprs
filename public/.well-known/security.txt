@@ -1,0 +1,8 @@
+# RFC 9116 Security Policy for Paprs
+Contact: mailto:security@paprs.app
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en, es
+Canonical: https://paprs.app/.well-known/security.txt
+Policy: https://paprs.app/security
+Hiring: https://paprs.app/careers
+Acknowledgments: https://paprs.app/acknowledgments

@@ -7,6 +7,8 @@ export interface Translations {
     autonomoEngine: string;
     intelligence: string;
     europe: string;
+    faq: string;
+    career: string;
     waitlist: string;
     joinWaitlist: string;
     overview: string;
@@ -330,5 +332,15 @@ export interface Translations {
     back: string;
     continue: string;
     buildRoadmap: string;
+  };
+  faq: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    items: Array<{
+      question: string;
+      answer: string;
+      tag: string;
+    }>;
   };
 }

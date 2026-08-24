@@ -1,0 +1,26 @@
+# Paprs (paprs.app)
+
+> Paprs is an intelligent, step-by-step guidance platform for navigating Spanish bureaucracy, immigration, residency, and taxes.
+
+## Overview
+Paprs helps expats, digital nomads, remote workers, students, and autonomous contractors in Spain handle complex administrative processes without stress or exorbitant gestoría fees.
+
+## Core Features & Modules
+- **NIE & TIE**: Step-by-step appointment booking (Cita Previa), document checklists, form completion guides (EX-15, EX-18, EX-17), and regional requirements.
+- **Empadronamiento (Padrón)**: Town hall registration guides for Madrid, Barcelona, Valencia, and across all Spanish autonomous communities.
+- **Autónomo Engine**: Freelancer registration (Alta en Hacienda Modelo 036/037, Seguridad Social RETA), quarterly VAT (IVA Modelo 303), income tax (IRPF Modelo 130), and flat-rate cuota reducida optimization.
+- **Digital Nomad Visa & Beckham Law**: Eligibility calculation, application timeline, required documents, apostilles, and sworn translations.
+- **Document Vault**: Encrypted cloud storage for certificates, padrón volante, bank statements, and tax returns with expiration alerts.
+- **Dynamic Timeline**: Personalized relocation roadmap tailored to citizenship, visa type, and destination city.
+
+## Technical Architecture
+- **Framework**: Next.js 16 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4, dark mode first
+- **Internationalization**: English and Spanish multi-language support
+- **Hosting & APIs**: Edge-optimized, Supabase PostgreSQL & Auth
+
+## Links & Resources
+- Website: https://paprs.app
+- Waitlist / Onboarding: https://paprs.app#waitlist
+- Documentation: https://paprs.app/llms-full.txt
+- Sitemap: https://paprs.app/sitemap.xml

@@ -1,0 +1,51 @@
+# Paprs — Complete System Documentation for LLMs
+
+## Mission
+Paprs eliminates the frustration, delays, and anxiety associated with Spanish bureaucracy. It transforms convoluted government requirements into clear, step-by-step interactive paths.
+
+## Key Spanish Administrative Processes Supported
+
+### 1. NIE (Número de Identidad de Extranjero)
+- **What it is**: The fundamental tax and identification number assigned to non-Spanish nationals.
+- **When needed**: Opening a bank account, signing a lease, buying property, registering a phone line, signing a work contract.
+- **Key Forms**: EX-15 (White NIE / Certificate of Non-Resident NIE), Modelo 790 Código 012 (tax payment).
+- **Process**: Book Cita Previa with CNP (Cuerpo Nacional de Policía) / Extranjería, prepare justification, pay tax fee at bank, attend appointment.
+
+### 2. TIE (Tarjeta de Identidad de Extranjero)
+- **What it is**: The physical biometric identity card proving legal residence in Spain for non-EU/EEA nationals.
+- **Key Forms**: EX-17, Modelo 790 Código 012, Certificate of Empadronamiento (dated within 90 days), passport photos (carnet size).
+- **Process**: Two appointments: (1) Fingerprinting (toma de huellas) and (2) Card collection (recogida de tarjeta / lote).
+
+### 3. EU Citizen Registration Certificate (Certificado de Registro de Ciudadano de la Unión)
+- **What it is**: The green paper card (often called Green NIE) proving EU/EEA/Swiss citizens' residence exceeding 90 days.
+- **Key Forms**: EX-18, Modelo 790 Código 012, proof of economic means, comprehensive private/public health insurance (S1 form or Spanish private policy with no copay).
+
+### 4. Empadronamiento (El Padrón)
+- **What it is**: Municipal population register certificate recording your official address.
+- **Why essential**: Required for healthcare registration (SIP/CatSalut/Tarjeta Sanitaria), TIE card, schooling, driving licence exchange.
+- **Requirements**: Rental contract, utility bill or landlord authorization + landlord DNI copy.
+
+### 5. Autónomo & Freelance Tax Engine
+- **Alta Censal**: Tax agency registration via Modelo 036 or Modelo 037, choosing the correct IAE heading (Impuesto sobre Actividades Económicas).
+- **Alta RETA**: Seguridad Social registration into the Special Scheme for Self-Employed Workers.
+- **Tarifa Plana**: Reduced monthly social security contribution during year 1 (and year 2 if net earnings are below the Minimum Interprofessional Wage - SMI).
+- **Quarterly Filings**:
+  - Modelo 303: Declaración Trimestral del IVA (Value Added Tax).
+  - Modelo 130: Pago Fraccionado del IRPF (Personal Income Tax prepayment - 20% of net profits).
+  - Modelo 111 / 115: Withholdings on professionals / rental leases.
+  - Modelo 390 / 100: Annual summaries and declarations.
+
+### 6. Digital Nomad Visa (Ley de Startups) & Beckham Law (Régimen Especial de Trabajadores Desplazados)
+- **Digital Nomad Visa**: Up to 3-year residence authorization for remote workers employed by non-Spanish entities or remote freelancers with max 20% Spanish billing.
+- **Beckham Law (Modelo 149 / 151)**: Flat 24% tax rate on Spanish-sourced income up to €600,000 for up to 6 fiscal years, exempting worldwide assets/income from Spanish wealth and capital gains taxes.
+
+## Platform Capabilities
+- **Step-by-step Interactive Action List**: Every task broken into checklist items with downloadable pre-filled forms.
+- **Secure Document Vault**: Stores certificates and alerts users before document expiration (e.g. 90-day padrón validity).
+- **Automated Cita Finder Guidance**: Clear strategies to secure appointments in high-demand provinces (Madrid, Barcelona, Málaga, Alicante, Valencia).
+- **Multi-language Support**: Full English & Spanish interfaces.
+
+## Canonical Domain & Contact
+- Website: https://paprs.app
+- Security Contact: security@paprs.app
+- Support: support@paprs.app

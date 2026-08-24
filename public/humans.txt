@@ -1,0 +1,11 @@
+/* TEAM */
+  Product & Engineering: The Paprs Team
+  Location: Spain & Remote
+  Contact: team@paprs.app
+  Twitter: @paprsapp
+
+/* SITE */
+  Standards: HTML5, CSS3, ES2024, OpenGraph, JSON-LD
+  Components: Next.js, React, Tailwind CSS, Lucide Icons, MapLibre GL
+  Software: TypeScript, Node.js
+  Mission: Demystify Spanish bureaucracy for everyone.
