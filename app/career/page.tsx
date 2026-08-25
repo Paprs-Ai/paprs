@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   Check,
   Compass,
-  Mail,
   MapPin,
   Palette,
   Rocket,
@@ -56,7 +55,7 @@ const ROLES: Role[] = [
     ],
     perks: [
       "Equal 50/50 founding equity split.",
-      "A production-ready MVP already built with full AI and infrastructure in place.",
+      "A production-ready MVP already built with full AI and AWS Activate cloud infrastructure in place.",
       "True co-founding partnership with 100% location flexibility across the EU.",
     ],
     icon: Rocket,
@@ -131,7 +130,7 @@ export default function CareerPage() {
     <div className="flex flex-col min-h-screen w-full overflow-x-clip bg-[#FFFFFF] text-black font-sans selection:bg-zinc-200 selection:text-black">
       {/* Sticky Top Header — Matching Main Website Header */}
       <header
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
+        className="fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 w-[calc(100%-1.25rem)] sm:w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
         style={{
           backgroundColor: "transparent",
           backdropFilter: "blur(2px) saturate(150%)",
@@ -140,7 +139,7 @@ export default function CareerPage() {
       >
         {/* Brand */}
         <Link href="/" className="flex items-center hover:opacity-85 apple-press">
-          <span className="font-extrabold text-2xl tracking-tighter text-black">
+          <span className="font-extrabold text-xl sm:text-2xl tracking-tighter text-black">
             paprs
           </span>
         </Link>
@@ -168,11 +167,11 @@ export default function CareerPage() {
         </nav>
 
         {/* Nav Controls: Language Switcher & CTA */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           <LanguageSwitcher />
           <Link
             href="/#waitlist"
-            className="px-4 py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
+            className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
           >
             {dict.nav.joinWaitlist}
           </Link>
@@ -180,20 +179,20 @@ export default function CareerPage() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 pt-32 pb-24 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto w-full">
+      <main className="flex-1 pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-20 max-w-6xl mx-auto w-full">
         {/* Intro */}
-        <div className="flex flex-col items-center text-center gap-5 max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-black/10 bg-zinc-100 font-mono text-[10px] font-bold uppercase tracking-widest text-black">
-            <Sparkles className="w-3.5 h-3.5 text-black" />
+        <div className="flex flex-col items-center text-center gap-3.5 sm:gap-5 max-w-3xl mx-auto mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-black/10 bg-zinc-100 font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-black">
+            <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black" />
             Solo Founder Seeking Partners · Shaping Spain & Europe
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-syne tracking-tight leading-[1.05] text-black">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold font-syne tracking-tight leading-[1.05] text-black">
             Build the Future of European Bureaucracy.
           </h1>
 
-          <p className="font-sans text-sm sm:text-base md:text-lg text-zinc-600 font-medium leading-relaxed">
-            I'm a technical founder building Paprs to make bureaucracy in Spain and the EU actually navigable. MVP is built, shipping v1, and fully bootstrapped. If you are interested in partnering, advising, or designing with me, write directly to{" "}
+          <p className="font-sans text-xs sm:text-base md:text-lg text-zinc-600 font-medium leading-relaxed">
+            I&apos;m a technical founder building Paprs to make bureaucracy in Spain and the EU actually navigable. MVP is built, shipping v1, and fully bootstrapped. If you are interested in partnering, advising, or designing with me, write directly to{" "}
             <a
               href="mailto:people@paprs.app"
               className="font-bold text-black hover:text-zinc-600 transition-colors"
@@ -202,26 +201,26 @@ export default function CareerPage() {
             </a>
             .
           </p>
+        </div>
 
-          {/* Quick Stats Banner */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-6 mt-4 w-full max-w-xl p-4 rounded-2xl border border-zinc-200 bg-zinc-50/80 font-mono text-center">
-            <div>
-              <div className="text-lg sm:text-xl font-bold text-black font-syne">50 / 50</div>
-              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Co-Founder Split</div>
-            </div>
-            <div className="border-x border-zinc-200">
-              <div className="text-lg sm:text-xl font-bold text-black font-syne">Bootstrapped</div>
-              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">MVP Built · v1 Ready</div>
-            </div>
-            <div>
-              <div className="text-lg sm:text-xl font-bold text-black font-syne">EU Remote</div>
-              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">High Autonomy</div>
-            </div>
+        {/* Quick Stats Banner */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-6 mb-6 sm:mb-8 w-full p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border border-zinc-200 bg-zinc-50/80 font-mono text-center">
+          <div>
+            <div className="text-base sm:text-xl md:text-2xl font-bold text-black font-syne">50 / 50</div>
+            <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">Co-Founder Split</div>
+          </div>
+          <div className="border-x border-zinc-200">
+            <div className="text-base sm:text-xl md:text-2xl font-bold text-black font-syne">Bootstrapped</div>
+            <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">AWS Activate · v1 Ready</div>
+          </div>
+          <div>
+            <div className="text-base sm:text-xl md:text-2xl font-bold text-black font-syne">EU Remote</div>
+            <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">High Autonomy</div>
           </div>
         </div>
 
         {/* Roles Navigation Tabs */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {ROLES.map((role) => {
             const isSelected = selectedRole === role.id;
             const Icon = role.icon;
@@ -230,7 +229,7 @@ export default function CareerPage() {
               <button
                 key={role.id}
                 onClick={() => setSelectedRole(role.id)}
-                className={`p-5 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between gap-4 cursor-pointer select-none ${
+                className={`p-4 sm:p-5 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between gap-3 sm:gap-4 cursor-pointer select-none ${
                   isSelected
                     ? "border-black bg-zinc-50/60 shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
                     : "border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50/70"
@@ -238,16 +237,16 @@ export default function CareerPage() {
               >
                 <div className="flex items-start justify-between gap-3 w-full">
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
+                    className={`w-9 sm:w-10 h-9 sm:h-10 rounded-xl flex items-center justify-center border ${
                       isSelected
                         ? "bg-black text-white border-black"
                         : "bg-zinc-100 border-zinc-200 text-black"
                     }`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-4 sm:w-5 h-4 sm:h-5" />
                   </div>
                   <span
-                    className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
+                    className={`text-[8.5px] sm:text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
                       isSelected
                         ? "bg-black text-white border-black"
                         : "bg-zinc-100 border-zinc-200 text-zinc-600"
@@ -258,7 +257,7 @@ export default function CareerPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-syne font-bold text-lg sm:text-xl leading-snug mb-1 text-black">
+                  <h3 className="font-syne font-bold text-base sm:text-xl leading-snug mb-1 text-black">
                     {role.title}
                   </h3>
                   <p className="text-xs leading-relaxed line-clamp-2 text-zinc-600">
@@ -266,7 +265,7 @@ export default function CareerPage() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-zinc-200/80 text-[10px] font-mono flex items-center justify-between text-zinc-500">
+                <div className="pt-2.5 sm:pt-3 border-t border-zinc-200/80 text-[9px] sm:text-[10px] font-mono flex items-center justify-between text-zinc-500">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3 h-3" /> {role.location.split("/")[0]}
                   </span>
@@ -277,7 +276,7 @@ export default function CareerPage() {
         </div>
 
         {/* Active Role Detailed View */}
-        <div className="rounded-3xl border border-zinc-200 bg-white p-6 sm:p-10 md:p-12 shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col gap-8 selection:bg-zinc-200 selection:text-black">
+        <div className="rounded-2xl sm:rounded-3xl border border-zinc-200 bg-white p-4 sm:p-8 md:p-12 shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col gap-6 sm:gap-8 selection:bg-zinc-200 selection:text-black">
           {/* Header */}
           <div className="flex flex-col gap-2 pb-8 border-b border-zinc-200">
             <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-500">

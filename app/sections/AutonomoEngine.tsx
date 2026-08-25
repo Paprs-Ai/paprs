@@ -32,64 +32,64 @@ export default function AutonomoEngine() {
     <section
       ref={ref}
       id="autonomo-engine"
-      className="relative h-[400vh] w-full bg-[#FFFFFF] text-black scroll-mt-28 select-none"
+      className="autonomo-story relative h-[400svh] w-full bg-[#FFFFFF] text-black scroll-mt-28 select-none"
     >
       {/* Sticky Full-Viewport Container */}
-      <div className="sticky top-0 w-full h-screen flex items-center justify-center px-6 md:px-12 lg:px-20 overflow-hidden z-20">
+      <div className="autonomo-viewport sticky top-0 z-20 flex h-[100svh] w-full items-center justify-center overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20">
         
         {/* Main Full-Width 2-Column Split: Topic Text (Left) vs Interactive Card (Right) */}
-        <div className="max-w-[1440px] w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-24 items-center">
+        <div className="autonomo-grid grid w-full max-w-[1440px] grid-cols-1 items-center gap-4 sm:gap-8 lg:grid-cols-12 lg:gap-16 xl:gap-24">
           
           {/* LEFT SIDE: Topic Text & Dynamic Slide Narrative (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-center pr-2">
+          <div className="autonomo-copy flex flex-col justify-center pr-0 lg:col-span-5 lg:pr-2">
             
             {/* Main Topic Header */}
-            <div className="inline-flex items-center gap-2 bg-zinc-100 border border-zinc-300 px-4 py-1.5 rounded-full mb-4 shadow-xs w-fit">
-              <FileSpreadsheet className="w-3.5 h-3.5 text-black" />
-              <span className="font-mono text-xs font-bold text-black uppercase tracking-widest">
+            <div className="autonomo-topic-tag mb-2 inline-flex w-fit items-center gap-1.5 rounded-full border border-zinc-300 bg-zinc-100 px-3 py-1 shadow-xs sm:mb-4 sm:gap-2 sm:px-4 sm:py-1.5">
+              <FileSpreadsheet className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black" />
+              <span className="font-mono text-[10px] sm:text-xs font-bold text-black uppercase tracking-widest">
                 {dict.autonomo.tag}
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl lg:text-[3.25rem] font-extrabold font-syne text-black tracking-tight leading-[1.08] mb-5">
+            <h2 className="autonomo-heading mb-2 font-syne text-2xl leading-[1.08] font-extrabold tracking-tight text-black sm:mb-5 sm:text-3xl md:text-5xl lg:text-[3.25rem]">
               {dict.autonomo.title}
             </h2>
 
             {/* Slide Track Tag */}
-            <div className="flex items-center gap-2.5 mb-3">
-              <span className="font-mono text-xs font-bold text-black uppercase tracking-widest bg-zinc-100 border border-zinc-300 px-3.5 py-1 rounded-full w-fit">
+            <div className="flex items-center gap-2 sm:gap-2.5 mb-1.5 sm:mb-3">
+              <span className="font-mono text-[10px] sm:text-xs font-bold text-black uppercase tracking-widest bg-zinc-100 border border-zinc-300 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full w-fit">
                 {activeSlide.tag}
               </span>
-              <span className="font-mono text-xs text-zinc-500 font-bold">
+              <span className="font-mono text-[10px] sm:text-xs text-zinc-500 font-bold">
                 ({slideIndex + 1} / {N})
               </span>
             </div>
 
             {/* Dynamic Slide Title & Subtitle */}
-            <h3 className="text-xl md:text-2xl font-extrabold font-syne text-black leading-tight mt-1 mb-2.5">
+            <h3 className="autonomo-slide-title mt-0.5 mb-1 font-syne text-lg leading-tight font-extrabold text-black sm:mt-1 sm:mb-2.5 sm:text-xl md:text-2xl">
               {activeSlide.title}
             </h3>
-            <p className="text-xs md:text-sm text-zinc-600 font-sans leading-relaxed mb-5 max-w-lg">
+            <p className="autonomo-detail mb-3 hidden max-w-lg font-sans text-xs leading-relaxed text-zinc-600 sm:mb-5 sm:block md:text-sm">
               {activeSlide.subtitle}
             </p>
 
             {/* Bullet Details */}
-            <div className="space-y-2.5 mb-6">
+            <div className="autonomo-bullets mb-3 hidden space-y-1.5 sm:mb-6 sm:block sm:space-y-2.5">
               {activeSlide.details.map((detail, idx) => (
-                <div key={idx} className="flex items-center gap-2.5 text-xs md:text-sm font-sans text-zinc-800">
-                  <CheckCircle2 className="w-4 h-4 text-black shrink-0" />
+                <div key={idx} className="flex items-center gap-2 sm:gap-2.5 text-xs md:text-sm font-sans text-zinc-800">
+                  <CheckCircle2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black shrink-0" />
                   <span className="font-medium">{detail}</span>
                 </div>
               ))}
             </div>
 
             {/* Slide Navigation Progress Dots */}
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-1">
               {autonomoSlides.map((s, idx) => (
                 <div
                   key={idx}
-                  className={`h-2 rounded-full transition-all duration-500 ${
-                    slideIndex === idx ? "w-10 bg-black" : "w-2.5 bg-zinc-300"
+                  className={`h-1.5 sm:h-2 rounded-full transition-all duration-500 ${
+                    slideIndex === idx ? "w-8 sm:w-10 bg-black" : "w-2 sm:w-2.5 bg-zinc-300"
                   }`}
                 />
               ))}
@@ -98,56 +98,56 @@ export default function AutonomoEngine() {
           </div>
 
           {/* RIGHT SIDE: Interactive Feature Card Visualizer (7 Cols) */}
-          <div className="lg:col-span-7 bg-zinc-50 border border-zinc-300 rounded-3xl p-6 md:p-10 shadow-md flex flex-col justify-between min-h-[480px] relative overflow-hidden">
+          <div className="autonomo-card relative flex min-h-[300px] flex-col justify-between overflow-hidden rounded-2xl border border-zinc-300 bg-zinc-50 p-3.5 shadow-md sm:min-h-[380px] sm:rounded-3xl sm:p-6 md:p-10 lg:col-span-7 lg:min-h-[480px]">
             
             {/* Header of Card */}
-            <div className="flex justify-between items-center border-b border-zinc-200 pb-5 mb-5">
+            <div className="flex justify-between items-center border-b border-zinc-200 pb-2.5 sm:pb-5 mb-2.5 sm:mb-5">
               <div>
-                <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold block">
+                <span className="font-mono text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-bold block">
                   {dict.autonomo.featureModuleTag}
                 </span>
-                <h4 className="font-syne font-extrabold text-xl text-black mt-0.5">
+                <h4 className="font-syne font-extrabold text-base sm:text-xl text-black mt-0.5">
                   {activeSlide.title}
                 </h4>
               </div>
-              <span className="font-mono text-[9px] bg-black text-white px-3.5 py-1.5 rounded-full font-bold uppercase shadow-xs">
+              <span className="font-mono text-[8px] sm:text-[9px] bg-black text-white px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full font-bold uppercase shadow-xs">
                 {dict.autonomo.autoFiledBadge}
               </span>
             </div>
 
             {/* DYNAMIC CARD SLIDE 01: Tax Returns */}
             {slideIndex === 0 && (
-              <div className="space-y-4 my-2">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="space-y-2.5 sm:space-y-4 my-1 sm:my-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
                   {taxModels.map((m, idx) => (
                     <button
                       key={m.code}
                       onClick={() => setActiveModelTab(idx)}
-                      className={`p-3 rounded-2xl text-left transition-all duration-300 border ${
+                  className={`rounded-xl border p-2 text-left transition-all duration-300 sm:rounded-2xl sm:p-3 ${
                         activeModelTab === idx
-                          ? "bg-black text-white border-black shadow-sm"
-                          : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-400"
+                          ? "border-black bg-white text-black shadow-[0_8px_20px_-16px_rgba(0,0,0,0.65)]"
+                          : "border-zinc-200 bg-white text-zinc-800 hover:border-zinc-400"
                       }`}
                     >
-                      <span className="font-mono text-[10px] font-bold block uppercase">{m.code}</span>
-                      <span className="text-[10px] font-syne font-extrabold block truncate mt-0.5">{m.name}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] font-bold block uppercase">{m.code}</span>
+                      <span className="text-[9px] sm:text-[10px] font-syne font-extrabold block truncate mt-0.5">{m.name}</span>
                     </button>
                   ))}
                 </div>
 
-                <div className="bg-white border border-zinc-300 p-5 rounded-2xl shadow-xs">
-                  <div className="flex justify-between items-start mb-2">
+                <div className="bg-white border border-zinc-300 p-3 sm:p-5 rounded-xl sm:rounded-2xl shadow-xs">
+                  <div className="flex justify-between items-start mb-1 sm:mb-2">
                     <div>
-                      <span className="font-mono text-[9px] text-zinc-500 font-bold uppercase">{dict.autonomo.taxModelsTitle}</span>
-                      <h5 className="font-syne font-extrabold text-lg text-black mt-0.5">
+                      <span className="font-mono text-[8px] sm:text-[9px] text-zinc-500 font-bold uppercase">{dict.autonomo.taxModelsTitle}</span>
+                      <h5 className="font-syne font-extrabold text-sm sm:text-lg text-black mt-0.5">
                         {taxModels[activeModelTab]?.code} — {taxModels[activeModelTab]?.name}
                       </h5>
                     </div>
-                    <span className="font-mono text-[9px] bg-zinc-100 border border-zinc-300 text-black px-2.5 py-1 rounded-full font-bold">
+                    <span className="font-mono text-[8px] sm:text-[9px] bg-zinc-100 border border-zinc-300 text-black px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full font-bold">
                       Due: {taxModels[activeModelTab]?.due}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-600 font-sans leading-relaxed">
+                  <p className="text-[11px] sm:text-xs text-zinc-600 font-sans leading-relaxed">
                     {taxModels[activeModelTab]?.desc}
                   </p>
                 </div>
@@ -156,30 +156,30 @@ export default function AutonomoEngine() {
 
             {/* DYNAMIC CARD SLIDE 02: Expense Deductions */}
             {slideIndex === 1 && (
-              <div className="space-y-4 my-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-2.5 sm:space-y-4 my-1 sm:my-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {deductionsList.map((d, idx) => {
                     const IconComp = DEDUCTION_ICONS[idx % DEDUCTION_ICONS.length];
                     return (
-                      <div key={idx} className="bg-white border border-zinc-300 p-4 rounded-2xl flex items-center gap-3.5 shadow-xs">
-                        <div className="w-9 h-9 rounded-xl bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black shrink-0">
-                          <IconComp className="w-4.5 h-4.5 text-black" />
+                      <div key={idx} className="bg-white border border-zinc-300 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl flex items-center gap-2.5 sm:gap-3.5 shadow-xs">
+                        <div className="w-7 sm:w-9 h-7 sm:h-9 rounded-lg sm:rounded-xl bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black shrink-0">
+                          <IconComp className="w-3.5 sm:w-4.5 h-3.5 sm:h-4.5 text-black" />
                         </div>
                         <div>
-                          <h5 className="font-syne font-bold text-xs text-black leading-tight">{d.label}</h5>
-                          <p className="font-mono text-[9px] text-zinc-500 mt-0.5 font-semibold">{d.pct}</p>
+                          <h5 className="font-syne font-bold text-[11px] sm:text-xs text-black leading-tight">{d.label}</h5>
+                          <p className="font-mono text-[8.5px] sm:text-[9px] text-zinc-500 mt-0.5 font-semibold">{d.pct}</p>
                         </div>
                       </div>
                     );
                   })}
                 </div>
 
-                <div className="bg-white border border-zinc-300 p-4 rounded-2xl flex justify-between items-center text-xs font-mono shadow-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                <div className="bg-white border border-zinc-300 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl flex justify-between items-center text-[10px] sm:text-xs font-mono shadow-xs">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-black animate-pulse" />
                     <span className="font-bold text-black">{dict.autonomo.deductionIdentified}</span>
                   </div>
-                  <span className="font-extrabold text-black bg-zinc-100 border border-zinc-300 px-3 py-1 rounded">
+                  <span className="font-extrabold text-black bg-zinc-100 border border-zinc-300 px-2 sm:px-3 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs">
                     +€2,840.50 {dict.autonomo.netSavings}
                   </span>
                 </div>
@@ -188,29 +188,29 @@ export default function AutonomoEngine() {
 
             {/* DYNAMIC CARD SLIDE 03: Invoicing */}
             {slideIndex === 2 && (
-              <div className="space-y-4 my-2">
-                <div className="bg-white border border-zinc-300 p-5 rounded-2xl shadow-xs space-y-3">
-                  <div className="flex justify-between items-center border-b border-zinc-100 pb-3">
+              <div className="space-y-2.5 sm:space-y-4 my-1 sm:my-2">
+                <div className="bg-white border border-zinc-300 p-3 sm:p-5 rounded-xl sm:rounded-2xl shadow-xs space-y-2 sm:space-y-3">
+                  <div className="flex justify-between items-center border-b border-zinc-100 pb-2 sm:pb-3">
                     <div>
-                      <span className="font-mono text-[9px] text-zinc-500 uppercase font-bold">{dict.autonomo.issuedFactura} #ES-2026-089</span>
-                      <h5 className="font-syne font-extrabold text-base text-black mt-0.5">Design Agency Client S.L.</h5>
+                      <span className="font-mono text-[8px] sm:text-[9px] text-zinc-500 uppercase font-bold">{dict.autonomo.issuedFactura} #ES-2026-089</span>
+                      <h5 className="font-syne font-extrabold text-xs sm:text-base text-black mt-0.5">Design Agency Client S.L.</h5>
                     </div>
-                    <span className="font-mono text-[9px] bg-black text-white px-2.5 py-1 rounded font-bold uppercase">
+                    <span className="font-mono text-[8px] sm:text-[9px] bg-black text-white px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-bold uppercase">
                       {dict.autonomo.irpfDeducted}
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center text-xs font-mono">
+                  <div className="flex justify-between items-center text-[11px] sm:text-xs font-mono">
                     <span className="text-zinc-600">{dict.autonomo.baseSubtotal}:</span>
                     <span className="font-bold text-black">€3,500.00</span>
                   </div>
-                  <div className="flex justify-between items-center text-xs font-mono">
+                  <div className="flex justify-between items-center text-[11px] sm:text-xs font-mono">
                     <span className="text-zinc-600">{dict.autonomo.ivaAdded}:</span>
                     <span className="font-bold text-black">+€735.00</span>
                   </div>
-                  <div className="flex justify-between items-center text-xs font-mono border-t border-zinc-100 pt-2">
+                  <div className="flex justify-between items-center text-[11px] sm:text-xs font-mono border-t border-zinc-100 pt-1.5 sm:pt-2">
                     <span className="font-extrabold text-black">{dict.autonomo.totalReconciled}:</span>
-                    <span className="font-extrabold text-black bg-zinc-100 px-2.5 py-1 rounded border border-zinc-300">
+                    <span className="font-extrabold text-black bg-zinc-100 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded border border-zinc-300">
                       €3,710.00 {dict.autonomo.netBadge}
                     </span>
                   </div>
@@ -220,16 +220,16 @@ export default function AutonomoEngine() {
 
             {/* DYNAMIC CARD SLIDE 04: Intelligence */}
             {slideIndex === 3 && (
-              <div className="space-y-4 my-2">
-                <div className="bg-black text-white p-6 rounded-2xl shadow-sm space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-white animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase font-bold text-zinc-300">{dict.autonomo.agenciaVerified}</span>
+              <div className="space-y-2.5 sm:space-y-4 my-1 sm:my-2">
+            <div className="space-y-2 rounded-xl border border-black bg-white p-3.5 text-black shadow-[0_10px_26px_-20px_rgba(0,0,0,0.7)] sm:space-y-3 sm:rounded-2xl sm:p-6">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-black animate-pulse sm:h-4 sm:w-4" />
+                    <span className="font-mono text-[9px] font-bold text-zinc-600 uppercase sm:text-[10px]">{dict.autonomo.agenciaVerified}</span>
                   </div>
-                  <h5 className="font-syne font-extrabold text-lg text-white">
+                  <h5 className="font-syne text-sm font-extrabold text-black sm:text-lg">
                     {dict.autonomo.trainedRoyalDecree}
                   </h5>
-                  <p className="font-sans text-xs text-zinc-300 leading-relaxed">
+                  <p className="font-sans text-[11px] leading-relaxed text-zinc-600 sm:text-xs">
                     {dict.autonomo.gestorComparison}
                   </p>
                 </div>
@@ -237,13 +237,13 @@ export default function AutonomoEngine() {
             )}
 
             {/* Highlight Banner */}
-            <div className="bg-white border border-zinc-300 p-4 rounded-2xl flex items-center gap-2.5 text-xs md:text-sm font-mono font-bold text-black shadow-xs mt-3">
-              <Sparkles className="w-4 h-4 text-black shrink-0 animate-pulse" />
+            <div className="bg-white border border-zinc-300 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl flex items-center gap-2 sm:gap-2.5 text-[11px] sm:text-xs md:text-sm font-mono font-bold text-black shadow-xs mt-1.5 sm:mt-3">
+              <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black shrink-0 animate-pulse" />
               <span>{activeSlide.highlight}</span>
             </div>
 
             {/* Footer Bar */}
-            <div className="mt-5 pt-3.5 border-t border-zinc-200 flex items-center justify-between text-[10px] md:text-xs font-mono text-zinc-500">
+            <div className="mt-2.5 sm:mt-5 pt-2 sm:pt-3.5 border-t border-zinc-200 flex items-center justify-between text-[9px] sm:text-[10px] md:text-xs font-mono text-zinc-500">
               <span>{dict.autonomo.scrollHint}</span>
               <span className="font-bold text-black uppercase">{dict.autonomo.compliantBadge}</span>
             </div>

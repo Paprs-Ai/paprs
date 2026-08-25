@@ -47,7 +47,7 @@ function PainStep({
   isPrereq?: boolean;
 }) {
   return (
-    <div className="flex gap-3">
+    <div className="pain-step flex gap-3">
       <div className="flex flex-col items-center flex-shrink-0">
         <div
           className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold font-mono border-2 flex-shrink-0 ${
@@ -115,28 +115,28 @@ function StatCounter({
 
   if (variant === "infinity") {
     return (
-      <div className="flex flex-col items-center p-4 bg-zinc-100 rounded-2xl border border-zinc-300 shadow-sm">
-        <span className="font-mono text-3xl font-extrabold text-black leading-none">∞</span>
-        <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-700 mt-1.5 text-center leading-snug font-bold">
+      <div className="flex flex-col items-center p-2.5 sm:p-4 bg-zinc-100 rounded-xl sm:rounded-2xl border border-zinc-300 shadow-sm">
+        <span className="font-mono text-2xl sm:text-3xl font-extrabold text-black leading-none">∞</span>
+        <span className="font-mono text-[8.5px] sm:text-[10px] uppercase tracking-wider text-zinc-700 mt-1 sm:mt-1.5 text-center leading-snug font-bold">
           {label}
         </span>
         {sublabel && (
-          <span className="font-mono text-[9px] text-zinc-500 text-center leading-snug mt-0.5">{sublabel}</span>
+          <span className="font-mono text-[8px] sm:text-[9px] text-zinc-500 text-center leading-snug mt-0.5">{sublabel}</span>
         )}
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center p-4 rounded-2xl border border-zinc-300 bg-zinc-100 shadow-sm">
-      <span className="font-mono text-3xl font-extrabold leading-none text-black">
+    <div className="flex flex-col items-center p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border border-zinc-300 bg-zinc-100 shadow-sm">
+      <span className="font-mono text-2xl sm:text-3xl font-extrabold leading-none text-black">
         {isActive ? value : 0}{suffix}
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-wider mt-1.5 text-center leading-snug text-zinc-800 font-bold">
+      <span className="font-mono text-[8.5px] sm:text-[10px] uppercase tracking-wider mt-1 sm:mt-1.5 text-center leading-snug text-zinc-800 font-bold">
         {label}
       </span>
       {sublabel && (
-        <span className="font-mono text-[9px] text-center mt-0.5 leading-snug text-zinc-500">{sublabel}</span>
+        <span className="font-mono text-[8px] sm:text-[9px] text-center mt-0.5 leading-snug text-zinc-500">{sublabel}</span>
       )}
     </div>
   );
@@ -415,9 +415,9 @@ export default function HeroAndPain() {
   const headlineRight = dict.hero.headlineRight;
 
   return (
-    <div ref={ref} id="pain" className="relative h-[500vh] w-full">
+    <div ref={ref} id="pain" className="story-section story-section--hero relative h-[500svh] w-full">
       <div
-        className="sticky top-0 w-full h-screen flex flex-col md:flex-row"
+        className="story-viewport sticky top-0 flex h-[100svh] w-full flex-col lg:flex-row"
         style={{
           opacity: `calc(1 - clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
           zIndex: `calc(35 - clamp(0, (var(--doc-transition-progress, 0) - 0.5) * 1000000, 10))`,
@@ -428,45 +428,77 @@ export default function HeroAndPain() {
         {progress < 0.18 && (
           <>
             <div
-              className="absolute left-0 top-0 h-full transition-all duration-100 z-0"
+              className="absolute top-0 left-0 z-0 hidden h-full transition-all duration-100 lg:block"
               style={{ width: `${leftWidth}%`, backgroundColor: leftBgColor }}
             />
             <div
-              className="absolute right-0 top-0 h-full bg-[#FFFFFF] transition-all duration-100 z-0"
+              className="absolute top-0 right-0 z-0 hidden h-full bg-[#FFFFFF] transition-all duration-100 lg:block"
               style={{ width: `${rightWidth}%` }}
             />
+            <div className="absolute inset-0 z-0 bg-[#FFFFFF] lg:hidden" />
           </>
         )}
 
         {/* ── HERO (progress < 0.18) ── */}
         {progress < 0.18 && (
           <>
-            {/* Vertical dividing line between Problem (left) and Solution (right) on desktop, horizontal on mobile */}
+            {/* Responsive gradient divider: vertical on desktop, horizontal when stacked. */}
             <div
-              className="absolute inset-0 z-30 pointer-events-none"
+              className="pointer-events-none absolute inset-0 z-30"
               style={{ opacity: heroTextOpacity }}
             >
-              {/* Desktop Vertical Line (Centered with top & bottom gradient fade) */}
               <div 
-                className="hidden md:block absolute left-1/2 -translate-x-1/2 top-24 bottom-24 w-[1.5px] bg-gradient-to-b from-transparent via-black/25 to-transparent"
+                className="hero-divider hero-divider--vertical absolute top-24 bottom-24 left-1/2 hidden w-[1.5px] -translate-x-1/2 bg-gradient-to-b from-transparent via-black/25 to-transparent lg:block"
               />
-
-              {/* Mobile Horizontal Line (Centered with left & right gradient fade) */}
-              <div 
-                className="md:hidden absolute inset-x-8 top-1/2 -translate-y-1/2 h-[1.5px] bg-gradient-to-r from-transparent via-black/25 to-transparent"
+              <div
+                className="hero-divider hero-divider--horizontal absolute top-1/2 right-5 left-5 h-[1.5px] -translate-y-1/2 bg-gradient-to-r from-transparent via-black/25 to-transparent sm:right-12 sm:left-12 lg:hidden"
               />
             </div>
 
+            {/* Legacy combined mobile hero is replaced by the stacked split below. */}
             <div
-              className="absolute inset-0 flex flex-col md:flex-row z-30 pointer-events-none"
+              className="mobile-hero hidden"
               style={{ opacity: heroTextOpacity }}
             >
-              <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-14 lg:p-16">
-                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase">{dict.hero.withoutPaprs}</span>
-                <div
-                  className="max-w-xl p-6 sm:p-8 rounded-3xl glass-card-subtle transition-all"
+              <div className="inline-flex items-center gap-1.5 bg-zinc-100 border border-zinc-300/80 px-3 py-1 rounded-full text-[9px] font-mono font-bold uppercase tracking-widest text-black mb-4 shadow-2xs">
+                <span className="text-zinc-500">{dict.hero.withoutPaprs}</span>
+                <span className="text-zinc-400">→</span>
+                <span className="text-black">{dict.hero.withPaprs}</span>
+              </div>
+
+              <div className="max-w-md w-full p-5 sm:p-7 rounded-3xl glass-card-subtle transition-all pointer-events-auto border border-zinc-200/80 shadow-xl bg-white/90 backdrop-blur-md">
+                <h1 className="text-3xl sm:text-4xl font-black tracking-[-0.04em] font-syne leading-[1.05] mb-2.5 text-black">
+                  {headlineLeft}
+                  <span className="block text-zinc-500 font-semibold text-2xl sm:text-3xl mt-1">
+                    {headlineRight}
+                  </span>
+                </h1>
+
+                <p className="font-sans text-xs sm:text-sm text-zinc-600 leading-relaxed font-medium mb-5 max-w-xs mx-auto">
+                  {dict.hero.descRight}
+                </p>
+
+                <a
+                  href="#pain"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-black text-white border border-black hover:bg-zinc-800 transition-all font-syne font-bold text-xs tracking-wider uppercase shadow-md active:scale-95"
                 >
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black tracking-[-0.04em] font-syne leading-[0.98] mb-5 text-black">
+                  {dict.hero.getStarted}
+                  <ChevronRight className="w-3.5 h-3.5 text-white" />
+                </a>
+              </div>
+            </div>
+
+            {/* Problem / solution split: horizontal on desktop, vertical on narrow screens. */}
+            <div
+              className="hero-split pointer-events-none absolute inset-0 z-30 flex flex-col lg:flex-row"
+              style={{ opacity: heroTextOpacity }}
+            >
+              <div className="hero-split-panel hero-problem-panel flex h-1/2 w-full flex-col justify-between p-5 pt-20 sm:p-8 sm:pt-24 lg:h-full lg:w-1/2 lg:p-16">
+                <span className="hero-split-label font-mono text-[9px] font-extrabold tracking-[0.2em] text-black uppercase sm:text-xs lg:text-sm">{dict.hero.withoutPaprs}</span>
+                <div
+                  className="hero-split-card glass-card-subtle max-w-xl rounded-3xl p-4 transition-all sm:p-6 lg:p-8"
+                >
+                  <h1 className="hero-split-heading mb-2 font-syne text-2xl leading-[0.98] font-black tracking-[-0.04em] text-black sm:mb-3 sm:text-4xl lg:mb-5 lg:text-[4rem] xl:text-[4.75rem]">
                     {headlineLeft.split(" ").map((word, wi) => (
                       <span key={wi} className="inline-block whitespace-nowrap mr-[0.16em]">
                         {word.split("").map((ch, ci) => (
@@ -483,19 +515,19 @@ export default function HeroAndPain() {
                       </span>
                     ))}
                   </h1>
-                  <p className="font-sans text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed font-medium max-w-md">
+                  <p className="hero-split-description max-w-md font-sans text-[11px] leading-relaxed font-medium text-zinc-600 sm:text-sm lg:text-base">
                     {dict.hero.descLeft}
                   </p>
                 </div>
                 <div className="h-4" />
               </div>
 
-              <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-between p-8 md:p-14 lg:p-16 z-30 pointer-events-none">
-                <span className="font-mono text-xs sm:text-sm font-extrabold tracking-[0.2em] text-black uppercase self-end text-right">{dict.hero.withPaprs}</span>
+              <div className="hero-split-panel hero-solution-panel pointer-events-none z-30 flex h-1/2 w-full flex-col justify-between p-5 sm:p-8 lg:h-full lg:w-1/2 lg:p-16">
+                <span className="hero-split-label self-end text-right font-mono text-[9px] font-extrabold tracking-[0.2em] text-black uppercase sm:text-xs lg:text-sm">{dict.hero.withPaprs}</span>
                 <div
-                  className="max-w-xl p-6 sm:p-8 rounded-3xl glass-card-subtle transition-all"
+                  className="hero-split-card glass-card-subtle max-w-xl rounded-3xl p-4 transition-all sm:p-6 lg:p-8"
                 >
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black tracking-[-0.04em] font-syne leading-[0.98] mb-5 text-black">
+                  <h1 className="hero-split-heading mb-2 font-syne text-2xl leading-[0.98] font-black tracking-[-0.04em] text-black sm:mb-3 sm:text-4xl lg:mb-5 lg:text-[4rem] xl:text-[4.75rem]">
                     {headlineRight.split(" ").map((word, wi) => (
                       <span key={wi} className="inline-block whitespace-nowrap mr-[0.16em]">
                         {word.split("").map((ch, ci) => (
@@ -512,43 +544,60 @@ export default function HeroAndPain() {
                       </span>
                     ))}
                   </h1>
-                  <p className="font-sans text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed font-medium max-w-md">
+                  <p className="hero-split-description max-w-md font-sans text-[11px] leading-relaxed font-medium text-zinc-600 sm:text-sm lg:text-base">
                     {dict.hero.descRight}
                   </p>
+                  <a
+                    href="#pain"
+                    className="ink-button pointer-events-auto mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-syne text-[10px] font-bold tracking-wider text-white uppercase shadow-md lg:hidden"
+                  >
+                    {dict.hero.getStarted}
+                    <ChevronRight className="h-3 w-3 text-white" />
+                  </a>
                 </div>
                 <div className="h-4" />
               </div>
             </div>
 
-            {/* Chaos cards */}
-            <div className="absolute inset-0 pointer-events-none z-10 opacity-45 md:opacity-55">
+            {/* Scattered documents stay visible at every breakpoint. */}
+            <div className="hero-chaos-visual pointer-events-none absolute inset-0 z-10 opacity-45 lg:opacity-55">
               {[d1, d2, d3, d4].map((d, i) => (
                 <div
                   key={i}
-                  className="absolute left-1/2 top-1/2 transition-all duration-100 ease-out"
+                  className="absolute left-1/2 top-1/2 transition-all duration-100 ease-out scale-90 md:scale-100"
                   style={{ transform: `translate(calc(-50% + ${d.x}vw), calc(-50% + ${d.y}vh)) rotate(${d.r}deg)` }}
                 >
-                  <DocumentCard
-                    type={["nie","seg_social","padron","hacienda"][i] as "nie"|"seg_social"|"padron"|"hacienda"}
-                    status="chaos"
-                    shadow={i === 3 ? "shadow-2xl" : i === 2 ? "shadow-lg" : "shadow-md"}
-                  />
+                  <div
+                    className="hero-paper-drift"
+                    style={{
+                      "--paper-drift-delay": `${i * -1.15}s`,
+                      "--paper-drift-distance": `${6 + i * 1.5}px`,
+                    } as React.CSSProperties}
+                  >
+                    <DocumentCard
+                      type={["nie","seg_social","padron","hacienda"][i] as "nie"|"seg_social"|"padron"|"hacienda"}
+                      status="chaos"
+                      shadow={i === 3 ? "shadow-2xl" : i === 2 ? "shadow-lg" : "shadow-md"}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Clean right-side web dashboard mockup */}
-            <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center md:justify-end md:pr-4 lg:pr-8 xl:pr-12 overflow-hidden">
+            {/* Clean dashboard remains part of the solution story on every screen. */}
+            <div className="hero-dashboard-visual pointer-events-none absolute inset-0 z-20 flex items-center justify-end overflow-hidden lg:pr-8 xl:pr-12">
               <div
-                className="relative w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px] transition-all duration-100 scale-90 sm:scale-95 lg:scale-100"
-                style={{ transform: `translateX(${rightCardsX}%)` }}
+                className="hero-dashboard-frame relative w-full max-w-[440px] transition-all duration-100 md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
+                style={{ transform: `translateX(${rightCardsX}%) translateY(var(--hero-dashboard-y, 0px)) scale(var(--hero-dashboard-scale, 1))` } as React.CSSProperties}
               >
-                <PaprsWebDashboard
-                  style={{
-                    WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.65) 48%, rgba(0,0,0,1) 70%, #000 100%)",
-                    maskImage: "linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.65) 48%, rgba(0,0,0,1) 70%, #000 100%)",
-                  }}
-                />
+                <div className="hero-dashboard-surface">
+                  <PaprsWebDashboard
+                    style={{
+                      WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.65) 48%, rgba(0,0,0,1) 70%, #000 100%)",
+                      maskImage: "linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.65) 48%, rgba(0,0,0,1) 70%, #000 100%)",
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </>
@@ -567,89 +616,89 @@ export default function HeroAndPain() {
 
               {/* SLIDE 0 */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
-                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-                  <div className="absolute inset-0 pointer-events-none z-[1] opacity-55">
-                    <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
-                      <div style={{ transform: "translate(calc(-50% + 18vw), calc(-50% - 6vh)) rotate(-4deg)" }}>
-                        <DocumentCard type="nie" status="chaos" />
-                      </div>
-                    </div>
-                    <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
-                      <div style={{ transform: "translate(calc(-50% + 22vw), calc(-50% + 6vh)) rotate(8deg)" }}>
-                        <DocumentCard type="seg_social" status="chaos" />
-                      </div>
-                    </div>
-                    <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
-                      <div style={{ transform: "translate(calc(-50% + 20vw), calc(-50% + 2vh)) rotate(-8deg)" }}>
-                        <DocumentCard type="padron" status="chaos" />
-                      </div>
-                    </div>
-                    <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
-                      <div style={{ transform: "translate(calc(-50% + 24vw), calc(-50% - 2vh)) rotate(4deg)" }}>
-                        <DocumentCard type="hacienda" status="chaos" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="w-full md:w-1/2 flex flex-col justify-center gap-5 relative z-[2]">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.mondayTime}</span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.05] font-syne">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
+                    <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.mondayTime}</span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.08] font-syne">
                       {dict.pain.moveDone}
                       <br />
-                      <span className="text-zinc-500 font-normal text-2xl md:text-3xl">{dict.pain.moveDoneSub}</span>
+                      <span className="text-zinc-500 font-normal text-lg sm:text-2xl md:text-3xl">{dict.pain.moveDoneSub}</span>
                     </h2>
-                    <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-sm">
                       {dict.pain.employerAsks}
                     </p>
-                    <div className="flex items-start gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3.5 py-3 max-w-sm">
-                      <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-black leading-snug font-mono font-medium">
+                    <div className="flex items-start gap-2 sm:gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3 sm:px-3.5 py-2.5 sm:py-3 max-w-sm">
+                      <AlertTriangle className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0 mt-0.5" />
+                      <p className="text-[11px] sm:text-xs text-black leading-snug font-mono font-medium">
                         {dict.pain.alertOneQuestion}
                       </p>
                     </div>
                   </div>
 
-                  <div className="hidden md:block w-1/2 h-full" />
+                  <div className="pain-slide-visual pain-slide-pile-visual relative z-[1] flex w-full items-center justify-center lg:w-6/12 h-56 sm:h-64 md:h-72 lg:h-[380px]">
+                    <div className="pain-document-visual relative w-full h-full flex items-center justify-center">
+                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-1, -6px)), calc(-50% + var(--pile-y-1, -4px))) rotate(-4deg)" }}>
+                          <DocumentCard type="nie" status="chaos" shadow="shadow-md" />
+                        </div>
+                      </div>
+                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100 [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-2, 10px)), calc(-50% + var(--pile-y-2, 8px))) rotate(8deg)" }}>
+                          <DocumentCard type="seg_social" status="chaos" shadow="shadow-lg" />
+                        </div>
+                      </div>
+                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100 [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-3, -8px)), calc(-50% + var(--pile-y-3, 6px))) rotate(-8deg)" }}>
+                          <DocumentCard type="padron" status="chaos" shadow="shadow-xl" />
+                        </div>
+                      </div>
+                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100 [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-4, 8px)), calc(-50% + var(--pile-y-4, -6px))) rotate(4deg)" }}>
+                          <DocumentCard type="hacienda" status="chaos" shadow="shadow-2xl" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* SLIDE 1 — What's waiting */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
-                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4 relative z-[2]">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search1Tag}</span>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
+                    <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search1Tag}</span>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
                       {dict.pain.beforeTheForm}
                       <br />
-                      <span className="text-zinc-500 font-sans font-normal text-lg md:text-xl">{dict.pain.beforeTheFormSub}</span>
+                      <span className="text-zinc-500 font-sans font-normal text-base sm:text-lg md:text-xl">{dict.pain.beforeTheFormSub}</span>
                     </h2>
-                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
                       {dict.pain.euOrNonEu}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <div className="w-2 h-2 rounded-full bg-black" />
-                      <span className="font-mono text-xs text-zinc-600 font-medium">{dict.pain.sameMoveBadge}</span>
+                      <span className="font-mono text-[11px] sm:text-xs text-zinc-600 font-medium">{dict.pain.sameMoveBadge}</span>
                     </div>
                   </div>
 
-                  <div className="hidden md:flex w-6/12 flex-col justify-center relative z-[3]">
-                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
+                  <div className="pain-slide-visual relative z-[3] flex w-full flex-col justify-center lg:w-6/12">
+                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-3.5 sm:p-5 shadow-md">
                       {dict.pain.procedures.map((proc, i) => (
-                        <div key={i} className="flex items-start gap-3">
+                        <div key={i} className="flex items-start gap-2.5 sm:gap-3">
                           <div className="flex flex-col items-center flex-shrink-0">
-                            <div className="w-7 h-7 rounded-full border-2 border-zinc-400 bg-zinc-100 flex items-center justify-center text-black font-bold font-mono text-xs">?</div>
-                            {i < dict.pain.procedures.length - 1 && <div className="w-px h-6 bg-zinc-200 my-0.5" />}
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-zinc-400 bg-zinc-100 flex items-center justify-center text-black font-bold font-mono text-[11px] sm:text-xs">?</div>
+                            {i < dict.pain.procedures.length - 1 && <div className="w-px h-3 sm:h-5 bg-zinc-200 my-0.5" />}
                           </div>
-                          <div className={`${i < dict.pain.procedures.length - 1 ? "pb-1" : ""}`}>
-                            <div className="text-sm font-semibold text-black leading-tight">{proc.name}</div>
-                            <div className="text-[11px] text-zinc-500 font-mono">{proc.hint}</div>
+                          <div className={`${i < dict.pain.procedures.length - 1 ? "pb-0.5 sm:pb-1" : ""}`}>
+                            <div className="text-xs sm:text-sm font-semibold text-black leading-tight">{proc.name}</div>
+                            <div className="text-[10px] sm:text-[11px] text-zinc-500 font-mono">{proc.hint}</div>
                           </div>
                         </div>
                       ))}
-                      <div className="pt-3 border-t border-zinc-200 mt-2">
+                      <div className="pt-2.5 sm:pt-3 border-t border-zinc-200 mt-2">
                         <div className="flex items-center gap-2">
                           <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0" />
-                          <span className="text-[11px] text-black font-mono font-bold">{dict.pain.chooseRouteAlert}</span>
+                          <span className="text-[10px] sm:text-[11px] text-black font-mono font-bold leading-tight">{dict.pain.chooseRouteAlert}</span>
                         </div>
                       </div>
                     </div>
@@ -659,33 +708,33 @@ export default function HeroAndPain() {
 
               {/* SLIDE 2 — Appointment gate */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
                     <div className="flex items-center gap-2">
-                      <CalendarX2 className="w-4 h-4 text-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search2Tag}</span>
+                      <CalendarX2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
+                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search2Tag}</span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
                       {dict.pain.appointmentGate}
-                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">{dict.pain.appointmentGateSub}</span>
+                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.appointmentGateSub}</span>
                     </h2>
-                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
                       {dict.pain.portalAsks}
                     </p>
-                    <div className="flex items-center gap-3 mt-1">
-                      <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-black" />
-                        <span className="font-mono text-xs text-black font-bold">{dict.pain.noSlotsStatus}</span>
+                    <div className="flex items-center gap-2 sm:gap-3 mt-1">
+                      <div className="inline-flex items-center gap-1.5 h-7 sm:h-8 px-2.5 sm:px-3 rounded-lg border border-zinc-300 bg-zinc-100 font-mono text-[11px] sm:text-xs font-bold text-black leading-none select-none">
+                        <Clock className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black flex-shrink-0" />
+                        <span>{dict.pain.noSlotsStatus}</span>
                       </div>
-                      <div className="bg-zinc-100 border border-zinc-300 rounded-lg px-3 py-1.5">
-                        <span className="font-mono text-xs text-black font-semibold">{dict.pain.alt060}</span>
+                      <div className="inline-flex items-center justify-center h-7 sm:h-8 px-2.5 sm:px-3 rounded-lg border border-zinc-300 bg-zinc-100 font-mono text-[11px] sm:text-xs font-semibold text-black leading-none select-none">
+                        <span>{dict.pain.alt060}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="hidden md:block w-6/12">
-                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.bookingLoopTitle}</div>
+                  <div className="pain-slide-visual w-full lg:w-6/12">
+                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-4 shadow-md sm:p-5">
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.bookingLoopTitle}</div>
                       {dict.pain.painStepsSlide2.map((step, idx) => (
                         <PainStep
                           key={idx}
@@ -703,32 +752,32 @@ export default function HeroAndPain() {
 
               {/* SLIDE 3 — Forms and evidence */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search3Tag}</span>
+                      <FileText className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
+                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search3Tag}</span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
                       {dict.pain.similarLanguage}
-                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">{dict.pain.similarLanguageSub}</span>
+                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.similarLanguageSub}</span>
                     </h2>
-                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
                       {dict.pain.formExplanations}
                     </p>
                     <div className="space-y-1.5 mt-1">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">{dict.pain.easyToConfuseTitle}</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">{dict.pain.easyToConfuseTitle}</div>
                       {dict.pain.confuseBadges.map((dep) => (
-                        <div key={dep} className="inline-flex items-center gap-1 bg-zinc-100 border border-zinc-200 rounded-full px-2.5 py-0.5 text-[11px] font-mono text-black mr-1.5 mb-1 font-semibold">
+                        <div key={dep} className="inline-flex items-center gap-1 bg-zinc-100 border border-zinc-200 rounded-full px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-black mr-1 sm:mr-1.5 mb-1 font-semibold">
                           <div className="w-1.5 h-1.5 rounded-full bg-black" />{dep}
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="hidden md:block w-6/12">
-                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.checklistBehindTitle}</div>
+                  <div className="pain-slide-visual w-full lg:w-6/12">
+                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-4 shadow-md sm:p-5">
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.checklistBehindTitle}</div>
                       {dict.pain.painStepsSlide3.map((step, idx) => (
                         <PainStep
                           key={idx}
@@ -747,30 +796,30 @@ export default function HeroAndPain() {
 
               {/* SLIDE 4 — Local rules */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
-                  <div className="w-full md:w-5/12 flex flex-col justify-center gap-4 pr-4">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
                     <div className="flex items-center gap-2">
-                      <Home className="w-4 h-4 text-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search4Tag}</span>
+                      <Home className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
+                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search4Tag}</span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
                       {dict.pain.addressIsReal}
-                      <span className="block text-zinc-500 font-sans text-base font-normal mt-1">{dict.pain.addressIsRealSub}</span>
+                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.addressIsRealSub}</span>
                     </h2>
-                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
                       {dict.pain.leaseExplanation}
                     </p>
-                    <div className="bg-zinc-100 border border-zinc-300 rounded-xl p-3 mt-1 flex items-start gap-2">
+                    <div className="bg-zinc-100 border border-zinc-300 rounded-xl p-2.5 sm:p-3 mt-1 flex items-start gap-2">
                       <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-black leading-snug font-mono">
+                      <p className="text-[11px] sm:text-xs text-black leading-snug font-mono">
                         {dict.pain.alertIncomplete}
                       </p>
                     </div>
                   </div>
 
-                  <div className="hidden md:block w-6/12">
-                    <div className="bg-white rounded-2xl border border-zinc-200 shadow-md p-5">
-                      <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.flatShareTitle}</div>
+                  <div className="pain-slide-visual w-full lg:w-6/12">
+                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-4 shadow-md sm:p-5">
+                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.flatShareTitle}</div>
                       {dict.pain.painStepsSlide4.map((step, idx) => (
                         <PainStep
                           key={idx}
@@ -788,38 +837,38 @@ export default function HeroAndPain() {
 
               {/* SLIDE 5 — The real cost */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
-                <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between relative">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
                   <div
-                    className="w-full md:w-5/12 flex flex-col justify-center gap-4 p-6 sm:p-8 rounded-3xl glass-card-subtle relative z-30 transition-all"
+                    className="pain-slide-copy pain-cost-copy glass-card-subtle relative z-30 flex w-full flex-col justify-center gap-3 rounded-2xl p-4 transition-all sm:gap-4 sm:rounded-3xl sm:p-6 md:p-8 lg:w-5/12"
                   >
                     <div className="flex items-center gap-2">
                       <span className="inline-block w-2 h-2 rounded-full bg-black" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.hiddenWorkloadTag}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.hiddenWorkloadTag}</span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
                       {dict.pain.hardPartTitle}
                     </h2>
-                    <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
                       {dict.pain.hardPartDesc}
                     </p>
-                    <div className="flex flex-col gap-2.5 mt-1">
-                      <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
+                    <div className="flex flex-col gap-2 sm:gap-2.5 mt-1">
+                      <div className="flex items-center gap-2 text-[11px] sm:text-xs text-zinc-700 font-mono font-medium">
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
                         {dict.pain.repeatedDetailsBullet}
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-zinc-700 font-mono font-medium">
+                      <div className="flex items-center gap-2 text-[11px] sm:text-xs text-zinc-700 font-mono font-medium">
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
                         {dict.pain.similarAcronymsBullet}
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-black font-mono font-bold">
+                      <div className="flex items-center gap-2 text-[11px] sm:text-xs text-black font-mono font-bold">
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
                         {dict.pain.unavailableSlotBullet}
                       </div>
                     </div>
                   </div>
 
-                  <div className="hidden md:flex w-6/12 flex-col gap-2.5 relative z-10">
-                    <div className="grid grid-cols-2 gap-2.5">
+                  <div className="pain-slide-visual pain-cost-visual relative z-10 flex w-full flex-col gap-2.5 lg:w-6/12">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                       <StatCounter
                         target={6}
                         label={dict.pain.stats.officialSystems.label}
@@ -832,6 +881,8 @@ export default function HeroAndPain() {
                         sublabel={dict.pain.stats.similarForms.sublabel}
                         isActive={activeSlide === 5}
                       />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                       <StatCounter
                         target={2}
                         label={dict.pain.stats.bookingPortals.label}
@@ -842,38 +893,38 @@ export default function HeroAndPain() {
                         target={1}
                         label={dict.pain.stats.missingSignature.label}
                         sublabel={dict.pain.stats.missingSignature.sublabel}
-                      isActive={activeSlide === 5}
-                    />
+                        isActive={activeSlide === 5}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+                      <StatCounter
+                        target={5}
+                        label={dict.pain.stats.repeatedDetails.label}
+                        sublabel={dict.pain.stats.repeatedDetails.sublabel}
+                        isActive={activeSlide === 5}
+                      />
+                      <StatCounter
+                        target={0}
+                        label={dict.pain.stats.openTabs.label}
+                        isActive={activeSlide === 5}
+                        variant="infinity"
+                      />
+                    </div>
+                    <p className="text-center font-mono text-[9px] sm:text-[10px] text-zinc-500 pt-1 italic font-medium">
+                      {dict.pain.noSingleStep}
+                    </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <StatCounter
-                      target={5}
-                      label={dict.pain.stats.repeatedDetails.label}
-                      sublabel={dict.pain.stats.repeatedDetails.sublabel}
-                      isActive={activeSlide === 5}
-                    />
-                    <StatCounter
-                      target={0}
-                      label={dict.pain.stats.openTabs.label}
-                      isActive={activeSlide === 5}
-                      variant="infinity"
-                    />
-                  </div>
-                  <p className="text-center font-mono text-[10px] text-zinc-500 pt-1 italic font-medium">
-                    {dict.pain.noSingleStep}
-                  </p>
-                </div>
 
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
         {/* ── BRIDGE CHAOS CARDS ── */}
         {progress >= 0.80 && (
           <div
-            className="hidden md:block absolute inset-0 pointer-events-none"
+            className="pointer-events-none absolute inset-0 hidden lg:block"
             style={{
               opacity: interp(progress, 0.80, 0.86, 0, 0.65),
               transform: `translateY(calc(var(--doc-transition-progress, 0) * var(--viewport-height-px, 100vh)))`,
@@ -916,7 +967,7 @@ export default function HeroAndPain() {
         {/* ── SLIDE DOTS ── */}
         {progress >= 0.18 && (
           <div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
+            className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
             style={{ opacity: sliderOpacity }}
           >
             <SlideDots total={6} active={activeSlide} />
@@ -926,18 +977,18 @@ export default function HeroAndPain() {
         {/* ── SCROLL HINT ── */}
         {progress >= 0.18 && progress < 0.92 && (
           <div
-            className="absolute bottom-8 right-8 z-40 flex items-center gap-2 transition-opacity duration-500"
+            className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-40 flex items-center gap-2 transition-opacity duration-500"
             style={{ opacity: interp(progress, 0.18, 0.26, 0, 0.55) }}
           >
-            <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.hero.scrollToContinue}</span>
-            <Globe className="w-3 h-3 text-black animate-bounce" />
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.hero.scrollToContinue}</span>
+            <Globe className="scroll-cue-motion h-3 w-3 text-black" />
           </div>
         )}
 
-        {/* ── HERO CTA BUTTON ── */}
+        {/* ── HERO CTA BUTTON (Desktop) ── */}
         {progress < 0.13 && (
           <div
-            className="absolute left-1/2 top-[80%] z-40 pointer-events-auto transition-all duration-300"
+            className="pointer-events-auto absolute top-[80%] left-1/2 z-40 hidden transition-all duration-300 lg:block"
             style={{
               opacity: heroTextOpacity,
               transform: `translate(-50%, -50%) scale(${interp(progress, 0, 0.10, 1, 0.8)})`,
@@ -945,7 +996,7 @@ export default function HeroAndPain() {
           >
             <a
               href="#pain"
-              className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-black text-white border border-black hover:bg-zinc-800 transition-all duration-300 font-syne font-bold text-xs tracking-wider uppercase hover:scale-105 shadow-xl"
+              className="ink-button flex items-center justify-center gap-3 rounded-full border border-black bg-black px-8 py-4 font-syne text-xs font-bold tracking-wider whitespace-nowrap text-white uppercase shadow-xl"
             >
               {dict.hero.getStarted}
               <ChevronRight className="w-4 h-4 text-white" />
@@ -955,7 +1006,7 @@ export default function HeroAndPain() {
 
         {/* ── SCROLL INDICATOR ── */}
         {progress < 0.08 && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-bounce hidden md:block">
+          <div className="scroll-cue-motion absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 lg:block">
             <a href="#pain" className="flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity">
               <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-600 mb-1 font-bold">{dict.hero.scroll}</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4 text-black">
@@ -968,13 +1019,13 @@ export default function HeroAndPain() {
         {/* ── SLIDE LABEL (top left) ── */}
         {progress >= 0.18 && (
           <div
-            className="absolute top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
+            className="absolute top-14 sm:top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
             style={{ opacity: interp(progress, 0.18, 0.26, 0, 1) * sliderOpacity }}
           >
-            <div className="max-w-[1440px] w-full px-6 md:px-12 lg:px-20">
+            <div className="max-w-[1440px] w-full px-4 sm:px-6 md:px-12 lg:px-20">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
+                <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
                   {dict.pain.slideLabels[activeSlide] ?? ""}
                 </span>
               </div>

@@ -3,7 +3,7 @@
 import { BrowserPlaceholder, PaprsWebDashboardCard, WebFloatingNav } from "@/app/components/BrowserWindow";
 import { OnboardingWebView } from "@/app/components/OnboardingWebView";
 import Lottie from "lottie-react";
-import { Check, ChevronRight, Clock, Cpu, FileText, Loader2, Lock, MapPin, Shield, Sparkles } from "lucide-react";
+import { ArrowRightLeft, Bot, Calendar, Check, CheckCircle2, ChevronRight, Clock, Compass, Cpu, FileText, FolderLock, Loader2, Lock, MapPin, RefreshCw, Shield, Sparkles } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import aiGeneratingAnimation from "../../assets/animations/AI Generating Response.json";
 import DocumentCard from "../components/DocumentCard";
@@ -23,22 +23,6 @@ function SlideDots({ total, active }: { total: number; active: number }) {
               : "w-1.5 h-1.5 bg-zinc-300"
           }`}
         />
-      ))}
-    </div>
-  );
-}
-
-function OutcomePills({ items }: { items: string[] }) {
-  return (
-    <div className="mt-5 flex flex-wrap gap-2">
-      {items.map((item) => (
-        <span
-          key={item}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 bg-zinc-100 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-black"
-        >
-          <Check className="h-3 w-3" aria-hidden="true" />
-          {item}
-        </span>
       ))}
     </div>
   );
@@ -72,14 +56,13 @@ function AIComputingLogger() {
         }
       });
     }, 1200);
-
     return () => clearInterval(timer);
   }, []);
 
   const items = order.map((idx) => rawItems[idx]);
 
   return (
-    <div className="flex flex-col gap-2 font-mono text-[7.5px] text-zinc-500 bg-zinc-50 border border-zinc-200 rounded-2xl p-3.5 z-10 shadow-sm mb-4 w-full">
+    <div className="flex flex-col gap-2 font-mono text-[7.5px] text-zinc-500 bg-zinc-50 border border-zinc-200 rounded-2xl p-3.5 z-10 shadow-xs mb-4 w-full">
       {items.map((item, idx) => {
         const isTop = idx === 0;
         let icon = null;
@@ -113,69 +96,52 @@ function AIComputingLogger() {
 }
 
 export default function HowItWorks() {
-  const { ref, progress } = useScrollProgress();
   const { dict } = useLanguage();
+  const { ref, progress } = useScrollProgress();
 
-  const interp = (val: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
-    if (val <= inMin) return outMin;
-    if (val >= inMax) return outMax;
-    return outMin + ((val - inMin) / (inMax - inMin)) * (outMax - outMin);
-  };
   const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-
-  const N = 9;
-  const D = 0.08;
-  const S = 0.035;
-  const SW = 11.1111;
-
-  const getStickyTranslate = (p: number): number => {
-    for (let i = 0; i < N - 1; i++) {
-      const startDwell = i * (D + S);
-      const endDwell = startDwell + D;
-      const endSnap = (i + 1) * (D + S);
-      
-      if (p < startDwell) return i * SW;
-      if (p < endDwell) return i * SW;
-      if (p < endSnap) return interp(p, endDwell, endSnap, i * SW, (i + 1) * SW);
-    }
-    return (N - 1) * SW;
+  const interp = (p: number, inStart: number, inEnd: number, outStart: number, outEnd: number) => {
+    if (p <= inStart) return outStart;
+    if (p >= inEnd) return outEnd;
+    const ratio = (p - inStart) / (inEnd - inStart);
+    return outStart + ratio * (outEnd - outStart);
   };
 
-  const translatePercent = getStickyTranslate(progress);
-  const activeSlide = Math.min(N - 1, Math.max(0, Math.round(translatePercent / SW)));
-
-  const getLocalProgress = (p: number, i: number): number => {
-    const startDwell = i * (D + S);
-    return clamp01((p - startDwell) / D);
+  const getFloatingCardStyle = (p: number, enterStart: number, enterEnd: number, r: number) => {
+    const enterP = interp(p, enterStart, enterEnd, 0, 1);
+    const y = (1 - enterP) * 120;
+    const op = enterP;
+    return {
+      opacity: op,
+      transform: `translate(-50%, calc(-50% + ${y}px)) rotate(${r}deg)`,
+      transformOrigin: "center center",
+    };
   };
 
-  const s0p = getLocalProgress(progress, 0);
-  const s1p = getLocalProgress(progress, 1);
-  const s2p = getLocalProgress(progress, 2);
-  const s3p = getLocalProgress(progress, 3);
-  const s4p = getLocalProgress(progress, 4);
-  const s6p = getLocalProgress(progress, 6);
-  const s7p = getLocalProgress(progress, 7);
-  const s8p = getLocalProgress(progress, 8);
+  const s0p = clamp01((progress - 0.0) / 0.1111);
+  const s1p = clamp01((progress - 0.1111) / 0.1111);
+  const s2p = clamp01((progress - 0.2222) / 0.1111);
+  const s3p = clamp01((progress - 0.3333) / 0.1111);
+  const s4p = clamp01((progress - 0.4444) / 0.1111);
+  const s5p = clamp01((progress - 0.5555) / 0.1111);
+  const s6p = clamp01((progress - 0.6666) / 0.1111);
+  const s7p = clamp01((progress - 0.7777) / 0.1111);
+  const s8p = clamp01((progress - 0.8888) / 0.1111);
 
-  const cardOpacity = 1;
+  const activeSlide = Math.min(8, Math.floor(progress * 9));
+  const translatePercent = progress * (800 / 9);
 
-  const getPileCardStyle = (pos: { x: number; y: number; r: number }) => ({
-    transform: `translate(calc(-50% + ${pos.x}vw), calc(-50% + ${pos.y}vh)) rotate(${pos.r}deg)`,
-    opacity: cardOpacity,
-  });
+  const fc1 = getFloatingCardStyle(progress, 0.0, 0.02, -8);
+  const fc2 = getFloatingCardStyle(progress, 0.01, 0.03, 7);
+  const fc3 = getFloatingCardStyle(progress, 0.02, 0.04, -14);
+  const fc4 = getFloatingCardStyle(progress, 0.03, 0.05, 12);
+  const fc5 = getFloatingCardStyle(progress, 0.04, 0.06, -5);
+  const fc6 = getFloatingCardStyle(progress, 0.05, 0.07, 3);
 
-  const fc1 = getPileCardStyle({ x: -28, y: -12, r:  -8 });
-  const fc2 = getPileCardStyle({ x: -22, y:  10, r:   7 });
-  const fc3 = getPileCardStyle({ x: -30, y:   4, r: -14 });
-  const fc4 = getPileCardStyle({ x: -18, y:  -8, r:  12 });
-  const fc5 = getPileCardStyle({ x: -26, y:  -4, r:  -5 });
-  const fc6 = getPileCardStyle({ x: -21, y:   6, r:   3 });
-
-  const text1Opacity = 1 - clamp01((s2p - 0.20) / 0.05);
-  const text2Opacity = clamp01((s2p - 0.20) / 0.05) - clamp01((s2p - 0.50) / 0.05);
-  const text3Opacity = clamp01((s2p - 0.50) / 0.05) - clamp01((s2p - 0.75) / 0.05);
-  const text4Opacity = clamp01((s2p - 0.75) / 0.05);
+  const text1Opacity = interp(s2p, 0.0, 0.22, 1, 0);
+  const text2Opacity = interp(s2p, 0.22, 0.28, 0, 1) * (1 - interp(s2p, 0.48, 0.54, 0, 1));
+  const text3Opacity = interp(s2p, 0.48, 0.54, 0, 1) * (1 - interp(s2p, 0.72, 0.78, 0, 1));
+  const text4Opacity = interp(s2p, 0.72, 0.78, 0, 1);
 
   const getPhoneTranslateX = (p: number, s2pVal: number) => {
     if (p < 0.195) return 0;
@@ -198,7 +164,6 @@ export default function HowItWorks() {
   };
 
   const phoneVisibilityOpacity = interp(progress, 0.085, 0.11, 0, 1);
-
   const phoneScale = interp(s8p, 0, 0.8, 1.15, 1.0);
 
   const stage3CardsOpacity = interp(s3p, 0, 0.5, 0, 1);
@@ -240,12 +205,13 @@ export default function HowItWorks() {
   };
 
   return (
-    <div ref={ref} id="how-it-works" className="relative h-[600vh] w-full scroll-mt-28">
-      <div
-        className="sticky top-0 w-full h-screen flex items-center z-30"
-      >
-        {/* Subtle background glow */}
-        <div className="absolute right-[-15%] top-[8%] h-[520px] w-[520px] rounded-full bg-black/5 blur-3xl z-0 pointer-events-none" />
+    <div
+      id="how-it-works"
+      ref={ref}
+      className="story-section--how relative w-full h-[900vh]"
+    >
+      {/* ── Sticky Fullscreen Viewport ── */}
+      <div className="sticky top-0 w-full h-svh overflow-hidden flex flex-col justify-between font-sans select-none text-black">
 
         {/* ── Slider track wrapper ── */}
         <div className="absolute inset-0 overflow-hidden z-10">
@@ -254,41 +220,34 @@ export default function HowItWorks() {
             style={{
               transform: `translateX(-${translatePercent}%)`,
               width: "900%",
-              opacity: sliderOpacity,
             }}
           >
-
           {/* SLIDE 0 — Paprs appears */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
               
               {/* Left Column */}
               <div
-                className="w-full md:w-5/12 flex flex-col justify-center p-6 sm:p-8 rounded-3xl glass-card-subtle relative z-20 transition-all"
+                className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12 relative z-20 transition-all"
               >
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.fromConfusionTag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.fromConfusionTag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.turnsMazeTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.turnsMazeDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide0} />
               </div>
 
-              {/* Right Column: Web Dashboard Card (Matching Hero Size) */}
-              <div className="w-full md:w-6/12 flex items-center justify-center md:justify-end relative z-[45]">
-                <div className="relative w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px] pointer-events-none scale-90 sm:scale-95 lg:scale-100">
-                  <PaprsWebDashboardCard />
-                  <div
-                    className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-black font-bold whitespace-nowrap transition-opacity duration-500"
-                    style={{ opacity: interp(s0p, 0.82, 0.92, 0, 1) }}
-                  >
-                    <Check className="w-3.5 h-3.5 text-black" />
-                    {dict.howItWorks.segSocialRouteReady}
-                  </div>
+              {/* Right Column: Web Dashboard Card Placeholder */}
+              <div className="how-slide-visual w-full md:w-6/12 flex items-center justify-center md:justify-end relative z-[45]">
+                <div className="how-dashboard-preview relative w-full max-w-[580px] sm:max-w-[620px] pointer-events-none origin-center">
+                  <PaprsWebDashboardCard className="how-dashboard-canvas" />
                 </div>
               </div>
 
@@ -297,33 +256,37 @@ export default function HowItWorks() {
 
           {/* SLIDE 1 — Tell us who you are */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step01Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step01Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.tellOnceTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.tellOnceDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide1} />
               </div>
-
-              <div className="w-full md:w-6/12 h-[65vh] md:h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 2 — Your Roadmap & Action Steps */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center relative min-h-[220px]">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step02Tag}
-                </span>
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12 relative">
+                <div className="flex items-center gap-2">
+                  <Compass className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step02Tag}
+                  </span>
+                </div>
                 
-                <div className="relative mt-6 h-64 w-full md:h-72">
+                <div className="relative mt-1 sm:mt-4 h-24 sm:h-44 md:h-64 w-full">
                   {/* Phase 1 */}
                   <div 
                     className="absolute inset-0 transition-all duration-300 flex flex-col justify-start"
@@ -333,10 +296,10 @@ export default function HowItWorks() {
                       pointerEvents: text1Opacity > 0.5 ? "auto" : "none" 
                     }}
                   >
-                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase1Title}
                     </h3>
-                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                       {dict.howItWorks.phase1Desc}
                     </p>
                   </div>
@@ -350,10 +313,10 @@ export default function HowItWorks() {
                       pointerEvents: text2Opacity > 0.5 ? "auto" : "none" 
                     }}
                   >
-                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase2Title}
                     </h3>
-                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                       {dict.howItWorks.phase2Desc}
                     </p>
                   </div>
@@ -367,10 +330,10 @@ export default function HowItWorks() {
                       pointerEvents: text3Opacity > 0.5 ? "auto" : "none" 
                     }}
                   >
-                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase3Title}
                     </h3>
-                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                       {dict.howItWorks.phase3Desc}
                     </p>
                   </div>
@@ -384,140 +347,150 @@ export default function HowItWorks() {
                       pointerEvents: text4Opacity > 0.5 ? "auto" : "none" 
                     }}
                   >
-                    <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mb-4 leading-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase4Title}
                     </h3>
-                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                       {dict.howItWorks.phase4Desc}
                     </p>
                   </div>
                 </div>
-                <OutcomePills items={dict.howItWorks.pillsSlide2} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 3 — Command Centre */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step03Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step03Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.whatDoIDoTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.whatDoIDoDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide3} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 4 — Urgent Alerts */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step04Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step04Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.deadlinesTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.deadlinesDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide4} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 5 — Live Process Tracking */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step05Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <ArrowRightLeft className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step05Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.whoHasTheBallTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.whoHasTheBallDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide5} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 6 — Document Vault */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step06Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <FolderLock className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step06Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.workingMemoryTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.workingMemoryDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide6} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 7 — Smart Recommendations */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step07Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <RefreshCw className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step07Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.whenLifeChangesTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.whenLifeChangesDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide7} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
 
           {/* SLIDE 8 — Pocket Agency */}
           <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between relative">
-              <div className="w-full md:w-5/12 flex flex-col justify-center">
-                <span className="font-mono text-xs font-bold text-black uppercase bg-zinc-100 border border-zinc-300 px-3 py-1 rounded-full w-fit">
-                  {dict.howItWorks.step08Tag}
-                </span>
-                <h3 className="text-3xl md:text-5xl font-extrabold font-syne text-black mt-6 mb-4 leading-tight">
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+              <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
+                <div className="flex items-center gap-2">
+                  <Bot className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
+                    {dict.howItWorks.step08Tag}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.pocketAgencyTitle}
                 </h3>
-                <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
                   {dict.howItWorks.pocketAgencyDesc}
                 </p>
-                <OutcomePills items={dict.howItWorks.pillsSlide8} />
               </div>
-              <div className="hidden md:block md:w-6/12 h-full flex-shrink-0" />
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
             </div>
           </div>
-
           </div>
         </div>
 
         {/* ── Chaos Card Pile Overlay (Slide 0) ── */}
         <div
-          className="hidden md:block absolute inset-0 pointer-events-none z-[5]"
+          className="how-document-pile absolute inset-0 pointer-events-none z-[5]"
           style={{
             opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
             transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * var(--viewport-height-px, 100vh)))`,
@@ -529,23 +502,23 @@ export default function HowItWorks() {
               transform: `translateX(-${translatePercent * 9}%)`,
             }}
           >
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
-              <div style={fc1}><DocumentCard type="nie" status="chaos" /></div>
+            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
+              <div className="how-pile-card how-pile-card--1" style={fc1}><DocumentCard type="nie" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "7deg" } as React.CSSProperties}>
-              <div style={fc2}><DocumentCard type="padron" status="chaos" /></div>
+            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "7deg" } as React.CSSProperties}>
+              <div className="how-pile-card how-pile-card--2" style={fc2}><DocumentCard type="padron" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-14deg" } as React.CSSProperties}>
-              <div style={fc3}><DocumentCard type="seg_social" status="chaos" /></div>
+            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-14deg" } as React.CSSProperties}>
+              <div className="how-pile-card how-pile-card--3" style={fc3}><DocumentCard type="seg_social" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "12deg" } as React.CSSProperties}>
-              <div style={fc4}><DocumentCard type="hacienda" status="chaos" /></div>
+            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "12deg" } as React.CSSProperties}>
+              <div className="how-pile-card how-pile-card--4" style={fc4}><DocumentCard type="hacienda" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-5deg" } as React.CSSProperties}>
-              <div style={fc5}><DocumentCard type="nie" status="chaos" /></div>
+            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-5deg" } as React.CSSProperties}>
+              <div className="how-pile-card how-pile-card--5" style={fc5}><DocumentCard type="nie" status="chaos" /></div>
             </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": "3deg" } as React.CSSProperties}>
-              <div style={fc6}><DocumentCard type="seg_social" status="chaos" /></div>
+            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "3deg" } as React.CSSProperties}>
+              <div className="how-pile-card how-pile-card--6" style={fc6}><DocumentCard type="seg_social" status="chaos" /></div>
             </div>
           </div>
         </div>
@@ -558,21 +531,20 @@ export default function HowItWorks() {
               opacity: phoneVisibilityOpacity,
             }}
           >
-            <div className="max-w-[1440px] w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between">
-              <div className="w-full md:w-5/12 h-[35vh] md:h-full flex-shrink-0" />
+            <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20 pointer-events-none">
+              <div className="how-slide-copy-spacer pointer-events-none invisible" />
 
-            <div className="w-full md:w-6/12 h-[65vh] md:h-full flex items-center justify-center relative">
-              
-              <div 
-                className="relative transition-all duration-300 flex items-center justify-center w-full max-w-[440px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
-                style={{ transform: `scale(${phoneScale})` }}
-              >
+              <div className="how-slide-visual pointer-events-auto flex w-full md:w-6/12 items-center justify-center relative">
+                <div 
+                  className="how-browser-preview relative transition-all duration-300 flex items-center justify-center w-full max-w-[600px] sm:max-w-[640px] origin-center"
+                  style={{ "--how-browser-motion-scale": phoneScale } as React.CSSProperties}
+                >
                 {/* Desktop Web Dashboard Window using Reusable BrowserPlaceholder */}
                 <BrowserPlaceholder
                   url={getBrowserUrl()}
                   badgeText="Live"
                   shadow="shadow-[0_24px_60px_-15px_rgba(0,0,0,0.14)]"
-                  className="h-[520px] md:h-[540px]"
+                  className="h-[480px] sm:h-[520px] md:h-[540px]"
                   headerContent={
                     (activeSlide > 2 || (activeSlide === 2 && s2p >= 0.22)) ? (
                       <WebFloatingNav activeTab={getActiveNavTab()} />
@@ -698,7 +670,7 @@ export default function HowItWorks() {
                               </div>
 
                               {/* Card 2: Review prepared forms */}
-                              <div className="bg-white border-2 border-black p-2.5 rounded-xl shadow-xs flex items-center justify-between gap-2 relative z-10">
+                              <div className="bg-white border border-black p-2.5 rounded-xl shadow-xs flex items-center justify-between gap-2 relative z-10">
                                 <div className="flex items-center gap-2 min-w-0">
                                   <div className="w-2.5 h-2.5 rounded-full bg-black border-2 border-white flex-shrink-0 shadow-2xs relative">
                                     <div className="absolute inset-0 rounded-full bg-black/20 animate-ping" />
@@ -744,11 +716,12 @@ export default function HowItWorks() {
 
                             {/* Sequential Steps */}
                             <div className="flex flex-col gap-2 relative mt-0.5">
-                              <div className="absolute left-[9px] top-2.5 bottom-2.5 w-[1px] bg-zinc-200 z-0" />
-
-                              <div className="flex items-start gap-2 relative z-10 text-[9px]">
-                                <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs">
-                                  <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
+                              <div className="flex items-start gap-2 relative text-[9px]">
+                                <div className="relative flex flex-col items-center flex-shrink-0">
+                                  <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs">
+                                    <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
+                                  </div>
+                                  <div className="absolute top-4.5 bottom-[-10px] w-[1px] bg-zinc-200 z-0" />
                                 </div>
                                 <div className="min-w-0">
                                   <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">{dict.howItWorks.matchOfficialRoute}</p>
@@ -756,9 +729,12 @@ export default function HowItWorks() {
                                 </div>
                               </div>
 
-                              <div className="flex items-start gap-2 relative z-10 text-[9px]">
-                                <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs">
-                                  <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
+                              <div className="flex items-start gap-2 relative text-[9px]">
+                                <div className="relative flex flex-col items-center flex-shrink-0">
+                                  <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs">
+                                    <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
+                                  </div>
+                                  <div className="absolute top-4.5 bottom-[-10px] w-[1px] bg-zinc-200 z-0" />
                                 </div>
                                 <div className="min-w-0">
                                   <p className="font-bold text-zinc-400 line-through decoration-zinc-300 leading-tight">{dict.howItWorks.prepareFormFee}</p>
@@ -766,16 +742,18 @@ export default function HowItWorks() {
                                 </div>
                               </div>
 
-                              <div className="flex items-start gap-2 relative z-10 text-[9px]">
-                                {s2p >= 0.95 ? (
-                                  <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs">
-                                    <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
-                                  </div>
-                                ) : (
-                                  <div className="w-4.5 h-4.5 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black flex-shrink-0 shadow-2xs">
-                                    <ChevronRight className="w-2.5 h-2.5 text-black" />
-                                  </div>
-                                )}
+                              <div className="flex items-start gap-2 relative text-[9px]">
+                                <div className="relative flex flex-col items-center flex-shrink-0">
+                                  {s2p >= 0.95 ? (
+                                    <div className="w-4.5 h-4.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs">
+                                      <Check className="w-2.5 h-2.5 text-white stroke-[2.5]" />
+                                    </div>
+                                  ) : (
+                                    <div className="w-4.5 h-4.5 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center text-black z-10 shadow-2xs">
+                                      <ChevronRight className="w-2.5 h-2.5 text-black" />
+                                    </div>
+                                  )}
+                                </div>
                                 <div className="min-w-0">
                                   <p className={`font-bold leading-tight ${s2p >= 0.95 ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>{dict.howItWorks.reviewAndApprove}</p>
                                   <p className="text-[6.5px] text-zinc-500 font-mono">{dict.howItWorks.reviewAndApproveDesc}</p>
@@ -861,7 +839,7 @@ export default function HowItWorks() {
                                 transform: `translateY(${stage2AlertOpacity > 0 ? 0 : 10}px)`,
                               }}
                             >
-                              <div className="bg-white border-2 border-black p-2.5 rounded-xl shadow-xs">
+                              <div className="bg-white border border-black p-2.5 rounded-xl shadow-xs">
                                 <div className="flex justify-between items-center mb-1">
                                   <span className="text-[6.5px] uppercase font-mono tracking-wider text-black font-extrabold flex items-center gap-1">
                                     <span className="w-1.5 h-1.5 bg-black rounded-full animate-ping" />
@@ -894,7 +872,7 @@ export default function HowItWorks() {
                                 transform: `translateX(${stage5SuggestTranslateX}px)`,
                               }}
                             >
-                              <div className="bg-white border-2 border-black p-2.5 rounded-xl shadow-xs">
+                              <div className="bg-white border border-black p-2.5 rounded-xl shadow-xs">
                                 <div className="flex justify-between items-center mb-1">
                                   <span className="text-[6.5px] uppercase font-mono tracking-wider text-black font-extrabold flex items-center gap-1">
                                     <span className="w-1.5 h-1.5 bg-black rounded-full animate-pulse" />
@@ -1016,7 +994,7 @@ export default function HowItWorks() {
 
         {/* ── Slide dots ── */}
         <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
+          className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
           style={{ opacity: sliderOpacity }}
         >
           <SlideDots total={9} active={activeSlide} />
@@ -1025,22 +1003,22 @@ export default function HowItWorks() {
         {/* ── Scroll hint ── */}
         {progress < 0.94 && (
           <div
-            className="absolute bottom-8 right-8 z-40 flex items-center gap-2"
+            className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-40 flex items-center gap-2"
             style={{ opacity: interp(progress, 0, 0.08, 0, 0.55) }}
           >
-            <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.hero.scrollToContinue}</span>
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-zinc-500 font-bold">{dict.hero.scrollToContinue}</span>
           </div>
         )}
 
-        {/* ── Slide label (top left) ── */}
+        {/* ── Slide label (top left on desktop) ── */}
         <div
-          className="absolute top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
+          className="how-slide-label absolute left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 hidden md:flex justify-center"
           style={{ opacity: interp(progress, 0, 0.08, 0, 1) * sliderOpacity }}
         >
-          <div className="max-w-[1440px] w-full px-6 md:px-12 lg:px-20">
+          <div className="max-w-[1440px] w-full px-4 sm:px-6 md:px-12 lg:px-20">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-black" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-500 font-bold">
+              <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-zinc-500 font-bold">
                 {dict.howItWorks.slideLabels[activeSlide] ?? ""}
               </span>
             </div>

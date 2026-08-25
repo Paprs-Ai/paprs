@@ -47,4 +47,6 @@ yarn-error.log*
 next-env.d.ts
 
 .claude
+.agents
+.codex
 skills-lock.json

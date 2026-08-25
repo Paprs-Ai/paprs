@@ -17,7 +17,7 @@ export default function BureaucracyFAQ() {
   return (
     <section
       id="faq"
-      className="w-full bg-[#FFFFFF] py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 text-black border-t border-zinc-200 scroll-mt-20"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 text-black scroll-mt-20"
       aria-labelledby="faq-heading"
     >
       <div className="max-w-3xl mx-auto">
@@ -48,7 +48,7 @@ export default function BureaucracyFAQ() {
             return (
               <article
                 key={idx}
-                className={`rounded-xl border transition-all duration-150 overflow-hidden ${
+                className={`faq-item overflow-hidden rounded-xl border ${
                   isOpen
                     ? "border-black/30 bg-zinc-50/90 shadow-[0_4px_16px_rgba(0,0,0,0.04)]"
                     : "border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50/40"
@@ -57,9 +57,10 @@ export default function BureaucracyFAQ() {
                 <button
                   type="button"
                   onClick={() => toggleItem(idx)}
+                  id={`faq-trigger-${idx}`}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${idx}`}
-                  className="w-full px-4 py-3 sm:px-5 sm:py-3.5 flex items-center justify-between gap-3 text-left cursor-pointer select-none"
+                  className="faq-trigger flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-3 text-left select-none sm:px-5 sm:py-3.5"
                 >
                   <div className="flex flex-col gap-0.5 min-w-0 flex-1">
                     <span className="font-mono text-[9px] font-semibold uppercase tracking-wider text-zinc-600">
@@ -71,7 +72,7 @@ export default function BureaucracyFAQ() {
                   </div>
 
                   <div
-                    className={`shrink-0 w-6 h-6 rounded-full border border-zinc-200 flex items-center justify-center transition-transform duration-200 ${
+                    className={`faq-toggle flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-zinc-200 ${
                       isOpen ? "rotate-180 bg-black text-white border-black" : "bg-white text-zinc-500"
                     }`}
                     aria-hidden="true"
@@ -80,14 +81,21 @@ export default function BureaucracyFAQ() {
                   </div>
                 </button>
 
-                {isOpen && (
+                <div
+                  id={`faq-answer-${idx}`}
+                  role="region"
+                  aria-labelledby={`faq-trigger-${idx}`}
+                  aria-hidden={!isOpen}
+                  className={`faq-answer-shell ${isOpen ? "is-open" : ""}`}
+                >
                   <div
-                    id={`faq-answer-${idx}`}
-                    className="px-4 pb-3.5 pt-2 sm:px-5 sm:pb-4 text-zinc-600 font-sans text-xs sm:text-[13px] leading-relaxed border-t border-zinc-200/60"
+                    className="min-h-0 overflow-hidden"
                   >
-                    <p>{item.answer}</p>
+                    <div className="border-t border-zinc-200/60 px-4 pt-2 pb-3.5 font-sans text-xs leading-relaxed text-zinc-600 sm:px-5 sm:pb-4 sm:text-[13px]">
+                      <p>{item.answer}</p>
+                    </div>
                   </div>
-                )}
+                </div>
               </article>
             );
           })}

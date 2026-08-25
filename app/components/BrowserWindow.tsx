@@ -254,7 +254,7 @@ export function HeroDashboardView() {
         </div>
 
         {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
+        <div className="how-dashboard-grid grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
           {/* Left Column: Active Procedures Pipeline (7 cols) */}
           <div className="sm:col-span-7 flex flex-col gap-1.5">
             <div className="flex items-center justify-between px-0.5 shrink-0">
@@ -328,7 +328,7 @@ export function HeroDashboardView() {
               <span className="font-mono text-[7.5px] bg-zinc-100 border border-zinc-200 text-black px-1.5 py-0.2 rounded font-bold">52d Left</span>
             </div>
 
-            <div className="bg-white border-2 border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
+            <div className="bg-white border border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
               <div>
                 <div className="flex items-center gap-1 text-[7px] font-mono text-zinc-400 uppercase tracking-wider font-bold">
                   <span>What You Should Do This Week</span>
@@ -409,33 +409,40 @@ export function SeguridadSocialRouteView() {
         </div>
 
         {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
+        <div className="how-dashboard-grid grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
           {/* Left: Sequential Task List (7 cols) */}
-          <div className="sm:col-span-7 flex flex-col justify-between gap-1.5">
+          <div className="how-dashboard-grid-primary sm:col-span-7 flex flex-col justify-between gap-1.5">
             <div className="flex items-center justify-between px-0.5">
               <span className="font-mono text-[8px] uppercase tracking-wider text-zinc-400 font-bold">Action Pipeline</span>
               <span className="font-mono text-[7.5px] text-zinc-400">4 Steps</span>
             </div>
 
-            <div className="bg-white border border-zinc-200/80 rounded-xl p-2.5 shadow-2xs flex flex-col justify-around flex-1 gap-2 relative">
-              <div className="absolute left-[18px] top-3 bottom-3 w-0.5 bg-zinc-200 z-0" />
-
+            <div className="bg-white border border-zinc-200/80 rounded-xl p-2.5 shadow-2xs flex flex-col justify-between flex-1 gap-1">
               {tasks.map((t, i) => (
-                <div key={i} className="flex items-start gap-2 relative z-10">
-                  {t.status === "done" ? (
-                    <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs mt-0.5">
-                      <Check className="w-2 h-2 text-white stroke-[2.5]" />
-                    </div>
-                  ) : t.status === "active" ? (
-                    <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border-2 border-black flex items-center justify-center text-black flex-shrink-0 shadow-2xs mt-0.5">
-                      <Clock className="w-2 h-2 text-black" />
-                    </div>
-                  ) : (
-                    <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center flex-shrink-0 text-zinc-400 shadow-2xs mt-0.5">
-                      <div className="w-1 h-1 rounded-full bg-zinc-400" />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
+                <div key={i} className="flex items-start gap-2.5 relative flex-1 min-h-[38px]">
+                  {/* Left indicator track with continuous line */}
+                  <div className="relative flex flex-col items-center flex-shrink-0 self-stretch">
+                    {t.status === "done" ? (
+                      <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs mt-0.5">
+                        <Check className="w-2 h-2 text-white stroke-[2.5]" />
+                      </div>
+                    ) : t.status === "active" ? (
+                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border border-black flex items-center justify-center text-black z-10 shadow-2xs mt-0.5">
+                        <Clock className="w-2 h-2 text-black" />
+                      </div>
+                    ) : (
+                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center text-zinc-400 z-10 shadow-2xs mt-0.5">
+                        <div className="w-1 h-1 rounded-full bg-zinc-400" />
+                      </div>
+                    )}
+
+                    {/* Continuous connector line down to next circle */}
+                    {i < tasks.length - 1 && (
+                      <div className="w-[1.5px] bg-zinc-200 flex-1 my-0.5" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0 pb-1">
                     <p className={`text-[9px] font-bold leading-tight ${t.status === "done" ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>
                       {t.title}
                     </p>
@@ -447,7 +454,7 @@ export function SeguridadSocialRouteView() {
           </div>
 
           {/* Right: Active Priority Action (5 cols) */}
-          <div className="sm:col-span-5 flex flex-col justify-between gap-1.5">
+          <div className="how-dashboard-grid-secondary sm:col-span-5 flex flex-col justify-between gap-1.5">
             <div className="flex items-center justify-between px-0.5">
               <span className="font-mono text-[8px] uppercase tracking-wider text-black font-bold flex items-center gap-1">
                 <Sparkles className="w-2.5 h-2.5 text-black" /> Next Action
@@ -455,7 +462,7 @@ export function SeguridadSocialRouteView() {
               <span className="font-mono text-[7.5px] bg-zinc-100 border border-zinc-200 text-black px-1.5 py-0.2 rounded font-bold">Action Ready</span>
             </div>
 
-            <div className="bg-white border-2 border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
+            <div className="bg-white border border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
               <div>
                 <div className="flex items-center gap-1 text-[7px] font-mono text-zinc-400 uppercase tracking-wider font-bold">
                   <span>Step 3 Verification</span>
@@ -540,25 +547,32 @@ export function NieCertificateRouteView() {
               <span className="font-mono text-[7.5px] text-zinc-400">4 Steps</span>
             </div>
 
-            <div className="bg-white border border-zinc-200/80 rounded-xl p-2.5 shadow-2xs flex flex-col justify-around flex-1 gap-2 relative">
-              <div className="absolute left-[18px] top-3 bottom-3 w-0.5 bg-zinc-200 z-0" />
-
+            <div className="bg-white border border-zinc-200/80 rounded-xl p-2.5 shadow-2xs flex flex-col justify-between flex-1 gap-1">
               {tasks.map((t, i) => (
-                <div key={i} className="flex items-start gap-2 relative z-10">
-                  {t.status === "done" ? (
-                    <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center text-white flex-shrink-0 shadow-2xs mt-0.5">
-                      <Check className="w-2 h-2 text-white stroke-[2.5]" />
-                    </div>
-                  ) : t.status === "active" ? (
-                    <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border-2 border-black flex items-center justify-center text-black flex-shrink-0 shadow-2xs mt-0.5">
-                      <Clock className="w-2 h-2 text-black" />
-                    </div>
-                  ) : (
-                    <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center flex-shrink-0 text-zinc-400 shadow-2xs mt-0.5">
-                      <div className="w-1 h-1 rounded-full bg-zinc-400" />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
+                <div key={i} className="flex items-start gap-2.5 relative flex-1 min-h-[38px]">
+                  {/* Left indicator track with continuous line */}
+                  <div className="relative flex flex-col items-center flex-shrink-0 self-stretch">
+                    {t.status === "done" ? (
+                      <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs mt-0.5">
+                        <Check className="w-2 h-2 text-white stroke-[2.5]" />
+                      </div>
+                    ) : t.status === "active" ? (
+                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border border-black flex items-center justify-center text-black z-10 shadow-2xs mt-0.5">
+                        <Clock className="w-2 h-2 text-black" />
+                      </div>
+                    ) : (
+                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center text-zinc-400 z-10 shadow-2xs mt-0.5">
+                        <div className="w-1 h-1 rounded-full bg-zinc-400" />
+                      </div>
+                    )}
+
+                    {/* Continuous connector line down to next circle */}
+                    {i < tasks.length - 1 && (
+                      <div className="w-[1.5px] bg-zinc-200 flex-1 my-0.5" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0 pb-1">
                     <p className={`text-[9px] font-bold leading-tight ${t.status === "done" ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>
                       {t.title}
                     </p>
@@ -578,7 +592,7 @@ export function NieCertificateRouteView() {
               <span className="font-mono text-[7.5px] bg-zinc-100 border border-zinc-200 text-black px-1.5 py-0.2 rounded font-bold">Action Ready</span>
             </div>
 
-            <div className="bg-white border-2 border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
+            <div className="bg-white border border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
               <div>
                 <div className="flex items-center gap-1 text-[7px] font-mono text-zinc-400 uppercase tracking-wider font-bold">
                   <span>Step 3 Verification</span>

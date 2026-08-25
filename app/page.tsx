@@ -1,6 +1,5 @@
 "use client";
 
-
 import AILearns from "./sections/AILearns";
 import AutonomoEngine from "./sections/AutonomoEngine";
 import BureaucracyFAQ from "./sections/BureaucracyFAQ";
@@ -15,11 +14,11 @@ export default function Home() {
   const { dict } = useLanguage();
 
   return (
-    <div className="flex flex-col min-h-screen w-full overflow-x-clip bg-[#FFFFFF] text-black font-sans selection:bg-black selection:text-white">
+    <div className="flex min-h-screen w-full flex-col overflow-x-clip bg-[#FFFFFF] font-sans text-black selection:bg-black selection:text-white">
       
       {/* Sticky Top Header — Apple-Grade Translucent Material & Instant Response */}
       <header 
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-6 py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
+        className="fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 w-[calc(100%-1.25rem)] sm:w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
         style={{
           backgroundColor: "transparent",
           backdropFilter: "blur(2px) saturate(150%)",
@@ -28,7 +27,7 @@ export default function Home() {
       >
         {/* Brand */}
         <a href="#" className="flex items-center hover:opacity-85 apple-press">
-          <span className="font-extrabold text-2xl tracking-tighter text-black">
+          <span className="font-extrabold text-xl sm:text-2xl tracking-tighter text-black">
             paprs
           </span>
         </a>
@@ -44,11 +43,11 @@ export default function Home() {
         </nav>
 
         {/* Nav Controls: Language Switcher & CTA */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           <LanguageSwitcher />
           <a 
             href="#waitlist"
-            className="px-4 py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
+            className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
           >
             {dict.nav.joinWaitlist}
           </a>
@@ -67,10 +66,10 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#FFFFFF] py-12 px-6 text-center select-none font-mono text-[10px] text-zinc-500">
+      <footer className="site-footer border-t border-zinc-100 bg-[#FFFFFF] px-4 py-8 text-center font-mono text-[9px] text-zinc-500 select-none sm:px-6 sm:py-12 sm:text-[10px]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <p>{dict.footer.copyright}</p>
-          <div className="flex gap-6 items-center">
+          <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-6 items-center">
             <a href="/career" className="hover:text-black transition-colors font-bold text-black/80">Careers (3 Open)</a>
             <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.privacyPolicy}</a>
             <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.termsOfService}</a>

@@ -28,7 +28,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
             onClick={() => setLanguage(lang.code)}
             aria-pressed={isActive}
             title={lang.title}
-            className={`cursor-pointer rounded-full px-2 py-0.5 font-mono text-[9px] font-bold tracking-wider transition-all duration-200 apple-press select-none ${
+            className={`cursor-pointer rounded-full px-1.5 sm:px-2 py-0.5 font-mono text-[8px] sm:text-[9px] font-bold tracking-wider transition-all duration-200 apple-press select-none ${
               isActive
                 ? "bg-black text-white shadow-xs"
                 : "text-zinc-500 hover:text-black hover:bg-black/5"
