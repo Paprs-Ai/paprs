@@ -383,6 +383,12 @@ export default function HeroAndPain() {
   const d3 = { x: interp(progress, 0, 0.18, -32, 20), y: interp(progress, 0, 0.18,  12,  2),  r: interp(progress, 0, 0.18, -25, -8) };
   const d4 = { x: interp(progress, 0, 0.18, -16, 24), y: interp(progress, 0, 0.18, -24, -2),  r: interp(progress, 0, 0.18,  18,  4) };
 
+  // Mobile & tablet scroll interpolation (continuous full-viewport motion from top-right scattered to bottom-center Slide 0 pile)
+  const m1 = { x: interp(progress, 0, 0.18, 14, -2),  y: interp(progress, 0, 0.18, -28, 24),  r: interp(progress, 0, 0.18, -14, -4) };
+  const m2 = { x: interp(progress, 0, 0.18, 36,  3),  y: interp(progress, 0, 0.18, -24, 28),  r: interp(progress, 0, 0.18,  12,  8) };
+  const m3 = { x: interp(progress, 0, 0.18, 18, -3),  y: interp(progress, 0, 0.18, -18, 27),  r: interp(progress, 0, 0.18,  -8, -8) };
+  const m4 = { x: interp(progress, 0, 0.18, 30,  2),  y: interp(progress, 0, 0.18, -34, 22),  r: interp(progress, 0, 0.18,   5,  4) };
+
   const SW = 100 / 6;
 
   const getStickyTranslate = (p: number): number => {
@@ -523,7 +529,7 @@ export default function HeroAndPain() {
               </div>
 
               <div className="hero-split-panel hero-solution-panel pointer-events-none z-30 flex h-1/2 w-full flex-col justify-between p-5 sm:p-8 lg:h-full lg:w-1/2 lg:p-16">
-                <span className="hero-split-label self-end text-right font-mono text-[9px] font-extrabold tracking-[0.2em] text-black uppercase sm:text-xs lg:text-sm">{dict.hero.withPaprs}</span>
+                <span className="hero-split-label self-start text-left font-mono text-[9px] font-extrabold tracking-[0.2em] text-black uppercase sm:text-xs lg:self-end lg:text-right lg:text-sm">{dict.hero.withPaprs}</span>
                 <div
                   className="hero-split-card glass-card-subtle max-w-xl rounded-3xl p-4 transition-all sm:p-6 lg:p-8"
                 >
@@ -560,12 +566,25 @@ export default function HeroAndPain() {
             </div>
 
             {/* Scattered documents stay visible at every breakpoint. */}
-            <div className="hero-chaos-visual pointer-events-none absolute inset-0 z-10 opacity-45 lg:opacity-55">
-              {[d1, d2, d3, d4].map((d, i) => (
+            <div className="hero-chaos-visual pointer-events-none absolute inset-0 z-10 lg:opacity-55">
+              {[
+                { d: d1, m: m1 },
+                { d: d2, m: m2 },
+                { d: d3, m: m3 },
+                { d: d4, m: m4 },
+              ].map(({ d, m }, i) => (
                 <div
                   key={i}
-                  className="absolute left-1/2 top-1/2 transition-all duration-100 ease-out scale-90 md:scale-100"
-                  style={{ transform: `translate(calc(-50% + ${d.x}vw), calc(-50% + ${d.y}vh)) rotate(${d.r}deg)` }}
+                  className={`hero-chaos-card hero-chaos-card--${i} transition-all duration-100 ease-out`}
+                  style={{
+                    "--desktop-x": `${d.x}vw`,
+                    "--desktop-y": `${d.y}vh`,
+                    "--desktop-r": `${d.r}deg`,
+                    "--mobile-x": `${m.x}vw`,
+                    "--mobile-y": `${m.y}vh`,
+                    "--mobile-r": `${m.r}deg`,
+                    zIndex: i + 1,
+                  } as React.CSSProperties}
                 >
                   <div
                     className="hero-paper-drift"
@@ -587,7 +606,7 @@ export default function HeroAndPain() {
             {/* Clean dashboard remains part of the solution story on every screen. */}
             <div className="hero-dashboard-visual pointer-events-none absolute inset-0 z-20 flex items-center justify-end overflow-hidden lg:pr-8 xl:pr-12">
               <div
-                className="hero-dashboard-frame relative w-full max-w-[440px] transition-all duration-100 md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
+                className="hero-dashboard-frame relative w-full max-w-[560px] transition-all duration-100 md:max-w-[580px] lg:max-w-[580px] xl:max-w-[620px]"
                 style={{ transform: `translateX(${rightCardsX}%) translateY(var(--hero-dashboard-y, 0px)) scale(var(--hero-dashboard-scale, 1))` } as React.CSSProperties}
               >
                 <div className="hero-dashboard-surface">
@@ -637,22 +656,22 @@ export default function HeroAndPain() {
 
                   <div className="pain-slide-visual pain-slide-pile-visual relative z-[1] flex w-full items-center justify-center lg:w-6/12 h-56 sm:h-64 md:h-72 lg:h-[380px]">
                     <div className="pain-document-visual relative w-full h-full flex items-center justify-center">
-                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
+                      <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
                         <div style={{ transform: "translate(calc(-50% + var(--pile-x-1, -6px)), calc(-50% + var(--pile-y-1, -4px))) rotate(-4deg)" }}>
                           <DocumentCard type="nie" status="chaos" shadow="shadow-md" />
                         </div>
                       </div>
-                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100 [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
+                      <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
                         <div style={{ transform: "translate(calc(-50% + var(--pile-x-2, 10px)), calc(-50% + var(--pile-y-2, 8px))) rotate(8deg)" }}>
                           <DocumentCard type="seg_social" status="chaos" shadow="shadow-lg" />
                         </div>
                       </div>
-                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100 [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
+                      <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
                         <div style={{ transform: "translate(calc(-50% + var(--pile-x-3, -8px)), calc(-50% + var(--pile-y-3, 6px))) rotate(-8deg)" }}>
                           <DocumentCard type="padron" status="chaos" shadow="shadow-xl" />
                         </div>
                       </div>
-                      <div className="absolute left-1/2 top-1/2 paper-float scale-90 md:scale-100 [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
+                      <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
                         <div style={{ transform: "translate(calc(-50% + var(--pile-x-4, 8px)), calc(-50% + var(--pile-y-4, -6px))) rotate(4deg)" }}>
                           <DocumentCard type="hacienda" status="chaos" shadow="shadow-2xl" />
                         </div>

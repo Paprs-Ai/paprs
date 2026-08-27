@@ -262,7 +262,7 @@ export default function HowItWorks() {
                   <h3 className="text-xl sm:text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
                     {dict.howItWorks.turnsMazeTitle}
                   </h3>
-                  <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                  <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                     {dict.howItWorks.turnsMazeDesc}
                   </p>
                 </div>
@@ -287,7 +287,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.tellOnceTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.tellOnceDesc}
                 </p>
               </div>
@@ -319,7 +319,7 @@ export default function HowItWorks() {
                     <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase1Title}
                     </h3>
-                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                       {dict.howItWorks.phase1Desc}
                     </p>
                   </div>
@@ -336,7 +336,7 @@ export default function HowItWorks() {
                     <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase2Title}
                     </h3>
-                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                       {dict.howItWorks.phase2Desc}
                     </p>
                   </div>
@@ -353,7 +353,7 @@ export default function HowItWorks() {
                     <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase3Title}
                     </h3>
-                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                       {dict.howItWorks.phase3Desc}
                     </p>
                   </div>
@@ -370,7 +370,7 @@ export default function HowItWorks() {
                     <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black mb-1 sm:mb-2 leading-tight">
                       {dict.howItWorks.phase4Title}
                     </h3>
-                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                       {dict.howItWorks.phase4Desc}
                     </p>
                   </div>
@@ -393,7 +393,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.whatDoIDoTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.whatDoIDoDesc}
                 </p>
               </div>
@@ -414,7 +414,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.deadlinesTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.deadlinesDesc}
                 </p>
               </div>
@@ -435,7 +435,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.whoHasTheBallTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.whoHasTheBallDesc}
                 </p>
               </div>
@@ -456,7 +456,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.workingMemoryTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.workingMemoryDesc}
                 </p>
               </div>
@@ -477,7 +477,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.whenLifeChangesTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.whenLifeChangesDesc}
                 </p>
               </div>
@@ -498,7 +498,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold font-syne text-black leading-tight">
                   {dict.howItWorks.pocketAgencyTitle}
                 </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed w-full max-w-2xl lg:max-w-md">
                   {dict.howItWorks.pocketAgencyDesc}
                 </p>
               </div>

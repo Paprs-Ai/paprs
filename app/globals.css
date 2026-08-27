@@ -139,42 +139,134 @@ p {
     z-index: 2;
     width: fit-content;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1.5px solid black;
     padding: 0.2rem 0.5rem;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
 
+  .hero-split-card {
+    max-width: 22rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .hero-split-card.glass-card-subtle::before {
+    inset: -8px -12px;
+    border-radius: 1.5rem;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(255, 255, 255, 0.70) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    -webkit-mask-image: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
   .hero-chaos-visual {
-    opacity: 0.22;
-    transform: translate(-10%, -8%) scale(0.68);
-    transform-origin: center;
-    /* Stacked layout: stay strictly above the horizontal divider. */
-    clip-path: inset(0 0 50% 0);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.88;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .hero-chaos-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: auto;
+    height: auto;
+    transform: translate(calc(-50% + var(--mobile-x, 0vw)), calc(-50% + var(--mobile-y, 0vh))) rotate(var(--mobile-r, 0deg)) scale(var(--hero-chaos-scale, 0.65));
+    transform-origin: center center;
   }
 
   .hero-dashboard-visual {
     align-items: flex-end;
     justify-content: flex-end;
-    /* Trimmed bottom inset (was 1.75rem) reclaims room for a bigger frame. */
-    padding: 0 0.25rem 0.5rem 2.5rem;
-    opacity: 0.82;
+    /* Right/bottom insets give the frame breathing room off the viewport edges while utilizing available vertical space. */
+    padding: 0 0.75rem max(1rem, env(safe-area-inset-bottom)) 0.75rem;
+    opacity: 0.95;
     /* Stacked layout: stay strictly below the horizontal divider. */
     clip-path: inset(50% 0 0 0);
   }
 
   .hero-dashboard-frame {
-    /* As large as the bottom (solution) half can hold without crossing the
-       horizontal divider or colliding with the "WITH PAPRS" label above it. */
-    --hero-dashboard-scale: 0.67;
+    --hero-dashboard-scale: 0.70;
     --hero-dashboard-y: 0px;
     flex-shrink: 0;
     transform-origin: right bottom;
+    max-width: 560px;
+  }
+}
+
+/* On wider screens under desktop (tablets & wide mobile) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root {
+    --hero-chaos-scale: 0.74;
   }
 
-  /* How It Works uses its own scale var (--how-dashboard-scale) so its browser
-     mockup — the primary visual, not a background decoration — stays at full
-     size on ordinary phones instead of inheriting the hero's 0.66 shrink. */
+  .hero-chaos-visual {
+    opacity: 0.92;
+  }
+
+  .hero-dashboard-frame {
+    --hero-dashboard-scale: 0.72;
+    max-width: 620px;
+  }
+}
+
+/* For medium screens (height <= 780px) */
+@media (max-width: 1023px) and (max-height: 780px) {
+  :root {
+    --hero-chaos-scale: 0.60;
+  }
+
+  .hero-dashboard-frame {
+    --hero-dashboard-scale: 0.64;
+    max-width: 540px;
+  }
+}
+
+/* For shorter screens (height <= 670px, e.g. iPhone 7/8/SE 4.7", or landscape tablets) */
+@media (max-width: 1023px) and (max-height: 670px) {
+  :root {
+    --hero-chaos-scale: 0.52;
+  }
+
+  .hero-dashboard-frame {
+    --hero-dashboard-scale: 0.55;
+    max-width: 480px;
+  }
+}
+
+/* For very short screens (height <= 560px) */
+@media (max-width: 1023px) and (max-height: 560px) {
+  :root {
+    --hero-chaos-scale: 0.44;
+  }
+
+  .hero-dashboard-frame {
+    --hero-dashboard-scale: 0.46;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 1023px) {
   .how-dashboard-frame {
     flex-shrink: 0;
   }
@@ -229,8 +321,9 @@ p {
   }
 
   .pain-slide-pile-visual {
-    height: 16rem;
-    max-height: 44svh;
+    margin-top: clamp(1.5rem, 4vh, 2.75rem);
+    height: 18rem;
+    max-height: 48svh;
     overflow: visible;
   }
 
@@ -247,7 +340,7 @@ p {
     align-items: center;
     justify-content: center;
     opacity: 0.9;
-    transform: scale(0.68);
+    transform: scale(var(--hero-chaos-scale, 0.65));
     transform-origin: center center;
   }
 
@@ -314,7 +407,7 @@ p {
 
   .how-slide-copy {
     width: 100%;
-    max-width: 34rem;
+    max-width: 48rem;
     min-height: 0;
     flex-shrink: 1;
     background: transparent;
@@ -323,7 +416,7 @@ p {
 
   .how-slide-copy-spacer {
     width: 100%;
-    max-width: 34rem;
+    max-width: 48rem;
     /* Taller than the tallest real copy block on mobile so the browser
        mockup below never touches the step text above it. */
     min-height: 9rem;
@@ -396,10 +489,38 @@ p {
   }
 }
 
+@media (max-width: 375px) {
+  .hero-dashboard-frame {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 330px) {
+  .hero-dashboard-frame {
+    max-width: 340px;
+  }
+}
+
 @media (min-width: 1024px) {
-  /* Keep the chaos/solution visuals strictly on their own side of the vertical divider. */
   .hero-chaos-visual {
-    clip-path: inset(0 50% 0 0);
+    clip-path: none;
+  }
+
+  .hero-chaos-pile {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+
+  .hero-chaos-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: auto;
+    height: auto;
+    transform: translate(calc(-50% + var(--desktop-x)), calc(-50% + var(--desktop-y))) rotate(var(--desktop-r));
   }
 
   .hero-dashboard-visual {
@@ -407,6 +528,7 @@ p {
   }
 
   .pain-slide-pile-visual {
+    margin-top: 0;
     height: 24rem;
   }
 
@@ -477,17 +599,17 @@ p {
     font-size: clamp(1.35rem, 7vw, 1.875rem);
   }
 
-  .hero-chaos-visual {
-    transform: translate(-12%, -12%) scale(0.68);
+  .hero-chaos-pile {
+    --hero-chaos-scale: 0.44;
   }
 
   .hero-dashboard-visual {
-    padding-bottom: 0.5rem;
-    opacity: 0.72;
+    padding-bottom: 1.5rem;
+    opacity: 0.88;
   }
 
   .hero-dashboard-frame {
-    --hero-dashboard-scale: 0.5;
+    --hero-dashboard-scale: 0.48;
     --hero-dashboard-y: 0px;
   }
 
@@ -524,7 +646,7 @@ p {
   }
 
   .pain-document-visual {
-    transform: scale(0.68);
+    transform: scale(var(--hero-chaos-scale, 0.65));
     opacity: 0.9;
   }
 
@@ -631,17 +753,17 @@ p {
     margin-bottom: 0.75rem;
   }
 
-  .hero-chaos-visual {
-    transform: translate(-12%, -10%) scale(0.58);
+  .hero-chaos-pile {
+    --hero-chaos-scale: 0.60;
   }
 
   .hero-dashboard-visual {
-    padding-bottom: 0.5rem;
-    opacity: 0.76;
+    padding-bottom: 1.5rem;
+    opacity: 0.88;
   }
 
   .hero-dashboard-frame {
-    --hero-dashboard-scale: 0.35;
+    --hero-dashboard-scale: 0.55;
     --hero-dashboard-y: 0px;
   }
 
@@ -688,7 +810,7 @@ p {
   }
 
   .pain-document-visual {
-    transform: scale(0.58);
+    transform: scale(var(--hero-chaos-scale, 0.65));
     opacity: 0.85;
   }
 
@@ -701,7 +823,7 @@ p {
 
   .how-slide-copy {
     width: 100%;
-    max-width: 34rem;
+    max-width: 48rem;
     max-height: 44%;
     overflow: hidden;
     padding: 0.625rem 0.875rem;
@@ -709,7 +831,7 @@ p {
 
   .how-slide-copy-spacer {
     width: 100%;
-    max-width: 34rem;
+    max-width: 48rem;
     min-height: 5.5rem;
   }
 
