@@ -107,16 +107,11 @@ export default function HowItWorks() {
     return outStart + ratio * (outEnd - outStart);
   };
 
-  const getFloatingCardStyle = (p: number, enterStart: number, enterEnd: number, r: number) => {
-    const enterP = interp(p, enterStart, enterEnd, 0, 1);
-    const y = (1 - enterP) * 120;
-    const op = enterP;
-    return {
-      opacity: op,
-      transform: `translate(-50%, calc(-50% + ${y}px)) rotate(${r}deg)`,
-      transformOrigin: "center center",
-    };
-  };
+  const getPileCardStyle = (x: number, y: number, r: number) => ({
+    opacity: 1,
+    transform: `translate(calc(-50% + ${x}vw), calc(-50% + ${y}vh)) rotate(${r}deg)`,
+    transformOrigin: "center center",
+  });
 
   const s0p = clamp01((progress - 0.0) / 0.1111);
   const s1p = clamp01((progress - 0.1111) / 0.1111);
@@ -131,12 +126,12 @@ export default function HowItWorks() {
   const activeSlide = Math.min(8, Math.floor(progress * 9));
   const translatePercent = progress * (800 / 9);
 
-  const fc1 = getFloatingCardStyle(progress, 0.0, 0.02, -8);
-  const fc2 = getFloatingCardStyle(progress, 0.01, 0.03, 7);
-  const fc3 = getFloatingCardStyle(progress, 0.02, 0.04, -14);
-  const fc4 = getFloatingCardStyle(progress, 0.03, 0.05, 12);
-  const fc5 = getFloatingCardStyle(progress, 0.04, 0.06, -5);
-  const fc6 = getFloatingCardStyle(progress, 0.05, 0.07, 3);
+  const fc1 = getPileCardStyle(-28, -12, -8);
+  const fc2 = getPileCardStyle(-22, 10, 7);
+  const fc3 = getPileCardStyle(-30, 4, -14);
+  const fc4 = getPileCardStyle(-18, -8, 12);
+  const fc5 = getPileCardStyle(-26, -4, -5);
+  const fc6 = getPileCardStyle(-21, 6, 3);
 
   const text1Opacity = interp(s2p, 0.0, 0.22, 1, 0);
   const text2Opacity = interp(s2p, 0.22, 0.28, 0, 1) * (1 - interp(s2p, 0.48, 0.54, 0, 1));
@@ -236,12 +231,14 @@ export default function HowItWorks() {
                     {dict.howItWorks.fromConfusionTag}
                   </span>
                 </div>
-                <h3 className="text-xl sm:text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
-                  {dict.howItWorks.turnsMazeTitle}
-                </h3>
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
-                  {dict.howItWorks.turnsMazeDesc}
-                </p>
+                <div className="glass-card-subtle rounded-3xl p-4 transition-all sm:p-6 lg:p-8">
+                  <h3 className="text-xl sm:text-3xl md:text-5xl font-extrabold font-syne text-black leading-tight">
+                    {dict.howItWorks.turnsMazeTitle}
+                  </h3>
+                  <p className="text-xs sm:text-sm md:text-base text-zinc-600 leading-relaxed max-w-md">
+                    {dict.howItWorks.turnsMazeDesc}
+                  </p>
+                </div>
               </div>
 
               {/* Right Column: Web Dashboard Card Placeholder */}
@@ -492,7 +489,7 @@ export default function HowItWorks() {
         <div
           className="how-document-pile absolute inset-0 pointer-events-none z-[5]"
           style={{
-            opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
+            opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1) * 0.8)`,
             transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * var(--viewport-height-px, 100vh)))`,
           }}
         >
