@@ -1,6 +1,6 @@
 "use client";
 
-import { BrowserPlaceholder, PaprsWebDashboardCard, WebFloatingNav } from "@/app/components/BrowserWindow";
+import { BrowserPlaceholder, SeguridadSocialRouteView, WebFloatingNav } from "@/app/components/BrowserWindow";
 import { OnboardingWebView } from "@/app/components/OnboardingWebView";
 import Lottie from "lottie-react";
 import { ArrowRightLeft, Bot, Calendar, Check, CheckCircle2, ChevronRight, Clock, Compass, Cpu, FileText, FolderLock, Loader2, Lock, MapPin, RefreshCw, Shield, Sparkles } from "lucide-react";
@@ -9,6 +9,28 @@ import aiGeneratingAnimation from "../../assets/animations/AI Generating Respons
 import DocumentCard from "../components/DocumentCard";
 import { useScrollProgress } from "../hooks/useScrollProgress";
 import { useLanguage } from "../context/LanguageContext";
+
+// ─── Stepped slide translation ──────────────────────────────────────────────
+// Holds each slide fully in view for most of its scroll band, then snaps
+// quickly to the next one — mirroring the pain section's plateau-based
+// getStickyTranslate so both storyline sections need "extra scroll" to
+// advance instead of sliding continuously with every pixel of scroll.
+const HOW_HOLD_FRACTION = 0.78;
+function getSteppedTranslatePercent(progress: number, slideCount: number, holdFraction: number): number {
+  const band = 1 / slideCount;
+  const step = 100 / slideCount;
+  const p = Math.max(0, Math.min(1, progress));
+  const bandIndex = Math.min(slideCount - 1, Math.floor(p / band));
+  if (bandIndex >= slideCount - 1) return bandIndex * step;
+
+  const bandStart = bandIndex * band;
+  const holdEnd = bandStart + holdFraction * band;
+  const bandEnd = bandStart + band;
+
+  if (p <= holdEnd) return bandIndex * step;
+  const t = (p - holdEnd) / (bandEnd - holdEnd);
+  return (bandIndex + Math.min(1, t)) * step;
+}
 
 // ─── Slide dot indicator (monochrome variant) ──────────────────────────────────
 function SlideDots({ total, active }: { total: number; active: number }) {
@@ -124,7 +146,7 @@ export default function HowItWorks() {
   const s8p = clamp01((progress - 0.8888) / 0.1111);
 
   const activeSlide = Math.min(8, Math.floor(progress * 9));
-  const translatePercent = progress * (800 / 9);
+  const translatePercent = getSteppedTranslatePercent(progress, 9, HOW_HOLD_FRACTION);
 
   const fc1 = getPileCardStyle(-28, -12, -8);
   const fc2 = getPileCardStyle(-22, 10, 7);
@@ -138,28 +160,33 @@ export default function HowItWorks() {
   const text3Opacity = interp(s2p, 0.48, 0.54, 0, 1) * (1 - interp(s2p, 0.72, 0.78, 0, 1));
   const text4Opacity = interp(s2p, 0.72, 0.78, 0, 1);
 
+  // 7 screens now (slide 0's dashboard preview leads), each a 1/7-wide step.
+  const PHONE_STEP = 100 / 7;
   const getPhoneTranslateX = (p: number, s2pVal: number) => {
-    if (p < 0.195) return 0;
+    if (p < 0.075) return 0;
+    if (p < 0.11) {
+      return interp(p, 0.075, 0.11, 0, -PHONE_STEP);
+    }
+    if (p < 0.195) return -PHONE_STEP;
     if (p < 0.23) {
-      return interp(p, 0.195, 0.23, 0, -16.6667);
+      return interp(p, 0.195, 0.23, -PHONE_STEP, -PHONE_STEP * 2);
     }
     if (p < 0.31) {
-      if (s2pVal < 0.20) return -16.6667;
-      if (s2pVal < 0.25) return interp(s2pVal, 0.20, 0.25, -16.6667, -33.3333);
-      if (s2pVal < 0.50) return -33.3333;
-      if (s2pVal < 0.55) return interp(s2pVal, 0.50, 0.55, -33.3333, -50.0);
-      if (s2pVal < 0.75) return -50.0;
-      if (s2pVal < 0.80) return interp(s2pVal, 0.75, 0.80, -50.0, -66.6667);
-      return -66.6667;
+      if (s2pVal < 0.20) return -PHONE_STEP * 2;
+      if (s2pVal < 0.25) return interp(s2pVal, 0.20, 0.25, -PHONE_STEP * 2, -PHONE_STEP * 3);
+      if (s2pVal < 0.50) return -PHONE_STEP * 3;
+      if (s2pVal < 0.55) return interp(s2pVal, 0.50, 0.55, -PHONE_STEP * 3, -PHONE_STEP * 4);
+      if (s2pVal < 0.75) return -PHONE_STEP * 4;
+      if (s2pVal < 0.80) return interp(s2pVal, 0.75, 0.80, -PHONE_STEP * 4, -PHONE_STEP * 5);
+      return -PHONE_STEP * 5;
     }
     if (p < 0.345) {
-      return interp(p, 0.31, 0.345, -66.6667, -83.3333);
+      return interp(p, 0.31, 0.345, -PHONE_STEP * 5, -PHONE_STEP * 6);
     }
-    return -83.3333;
+    return -PHONE_STEP * 6;
   };
 
-  const phoneVisibilityOpacity = interp(progress, 0.085, 0.11, 0, 1);
-  const phoneScale = interp(s8p, 0, 0.8, 1.15, 1.0);
+  const phoneVisibilityOpacity = interp(progress, 0, 0.02, 0, 1);
 
   const stage3CardsOpacity = interp(s3p, 0, 0.5, 0, 1);
   const stage2AlertOpacity = interp(s4p, 0, 0.5, 0, 1);
@@ -241,12 +268,8 @@ export default function HowItWorks() {
                 </div>
               </div>
 
-              {/* Right Column: Web Dashboard Card Placeholder */}
-              <div className="how-slide-visual w-full md:w-6/12 flex items-center justify-center md:justify-end relative z-[45]">
-                <div className="how-dashboard-preview relative w-full max-w-[580px] sm:max-w-[620px] pointer-events-none origin-center">
-                  <PaprsWebDashboardCard className="how-dashboard-canvas" />
-                </div>
-              </div>
+              {/* Right column stays empty here — the sticky browser overlay (below) already covers this slide's visual. */}
+              <div className="how-slide-visual hidden md:flex md:w-6/12 h-full flex-shrink-0" />
 
             </div>
           </div>
@@ -532,16 +555,15 @@ export default function HowItWorks() {
               <div className="how-slide-copy-spacer pointer-events-none invisible" />
 
               <div className="how-slide-visual pointer-events-auto flex w-full md:w-6/12 items-center justify-center relative">
-                <div 
-                  className="how-browser-preview relative transition-all duration-300 flex items-center justify-center w-full max-w-[600px] sm:max-w-[640px] origin-center"
-                  style={{ "--how-browser-motion-scale": phoneScale } as React.CSSProperties}
+                <div
+                  className="hero-dashboard-frame relative flex w-full max-w-[440px] items-center justify-center transition-all duration-300 md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
+                  style={{ transform: "scale(var(--hero-dashboard-scale, 1))", transformOrigin: "center" }}
                 >
                 {/* Desktop Web Dashboard Window using Reusable BrowserPlaceholder */}
                 <BrowserPlaceholder
                   url={getBrowserUrl()}
                   badgeText="Live"
                   shadow="shadow-[0_24px_60px_-15px_rgba(0,0,0,0.14)]"
-                  className="h-[480px] sm:h-[520px] md:h-[540px]"
                   headerContent={
                     (activeSlide > 2 || (activeSlide === 2 && s2p >= 0.22)) ? (
                       <WebFloatingNav activeTab={getActiveNavTab()} />
@@ -553,17 +575,22 @@ export default function HowItWorks() {
                     <div
                       className="h-full flex transition-transform duration-300"
                       style={{
-                        width: "600%",
+                        width: "700%",
                         transform: `translateX(${getPhoneTranslateX(progress, s2p)}%)`
                       }}
                     >
-                        {/* SCREEN 0: Onboarding Questions (Authentic Web App Experience) */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col bg-[#FFFFFF] relative overflow-hidden">
+                        {/* SCREEN 0: Route detail view (mirrors slide 0's copy) */}
+                        <div className="how-dashboard-canvas w-[14.2857%] h-full flex-shrink-0 flex flex-col bg-white relative overflow-hidden">
+                          <SeguridadSocialRouteView />
+                        </div>
+
+                        {/* SCREEN 1: Onboarding Questions (Authentic Web App Experience) */}
+                        <div className="w-[14.2857%] h-full flex-shrink-0 flex flex-col bg-[#FFFFFF] relative overflow-hidden">
                           <OnboardingWebView s1p={s1p} />
                         </div>
 
-                        {/* SCREEN 1: AI Roadmap Computing */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-6 bg-white justify-between relative">
+                        {/* SCREEN 2: AI Roadmap Computing */}
+                        <div className="w-[14.2857%] h-full flex-shrink-0 flex flex-col p-4 pb-6 bg-white justify-between relative">
                           <div className="flex flex-col items-center gap-2 mt-4 relative z-10">
                             <div className="text-[7.5px] font-mono text-black uppercase tracking-widest font-extrabold flex items-center gap-1.5 bg-zinc-100 border border-zinc-300 px-2.5 py-0.5 rounded-full">
                               <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
@@ -582,8 +609,8 @@ export default function HowItWorks() {
                           <AIComputingLogger />
                         </div>
 
-                        {/* SCREEN 2: Onboarding Complete / Route Assembled */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-zinc-50/40 justify-between">
+                        {/* SCREEN 3: Onboarding Complete / Route Assembled */}
+                        <div className="w-[14.2857%] h-full flex-shrink-0 flex flex-col p-4 pb-4 bg-zinc-50/40 justify-between">
                           <div className="flex flex-col gap-3">
                             <div className="flex flex-col items-center text-center gap-1 mt-1">
                               <div className="w-8 h-8 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-black shadow-xs">
@@ -638,8 +665,8 @@ export default function HowItWorks() {
                           </div>
                         </div>
 
-                        {/* SCREEN 3: Action Plans / Roadmap */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-3.5 bg-zinc-50/40 justify-between">
+                        {/* SCREEN 4: Action Plans / Roadmap */}
+                        <div className="w-[14.2857%] h-full flex-shrink-0 flex flex-col p-3.5 bg-zinc-50/40 justify-between">
                           <div className="flex flex-col gap-2.5">
                             {/* Filter Bar matching TodoScreen */}
                             <div className="flex items-center justify-between">
@@ -699,8 +726,8 @@ export default function HowItWorks() {
                           </div>
                         </div>
 
-                        {/* SCREEN 4: Detail Action Checklist */}
-                        <div className="w-1/6 h-full flex-shrink-0 flex flex-col p-3.5 bg-zinc-50/40 justify-between">
+                        {/* SCREEN 5: Detail Action Checklist */}
+                        <div className="w-[14.2857%] h-full flex-shrink-0 flex flex-col p-3.5 bg-zinc-50/40 justify-between">
                           <div className="flex flex-col gap-2.5">
                             {/* Breadcrumb Header */}
                             <div className="flex justify-between items-center border-b border-zinc-200/80 pb-2">
@@ -782,10 +809,10 @@ export default function HowItWorks() {
                           </div>
                         </div>
 
-                        {/* SCREEN 5: Dashboard View with Metrics & Interactive Overlays */}
+                        {/* SCREEN 6: Dashboard View with Metrics & Interactive Overlays */}
                         <div
                           ref={dashboardScrollRef}
-                          className="w-1/6 h-full min-h-0 flex-shrink-0 flex flex-col p-3 gap-2.5 select-none bg-zinc-50/40 overflow-y-auto scrollbar-none"
+                          className="w-[14.2857%] h-full min-h-0 flex-shrink-0 flex flex-col p-3 gap-2.5 select-none bg-zinc-50/40 overflow-y-auto scrollbar-none"
                         >
                           {/* Top 3-Metric Summary Row */}
                           <div className="grid grid-cols-3 gap-1.5 shrink-0">

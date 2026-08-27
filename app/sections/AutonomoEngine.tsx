@@ -15,6 +15,22 @@ import { useLanguage } from "../context/LanguageContext";
 
 const DEDUCTION_ICONS = [Building2, Zap, Receipt, Wallet];
 
+// ─── Slide dot indicator (monochrome variant, matches Pain / How It Works) ─────
+function SlideDots({ total, active }: { total: number; active: number }) {
+  return (
+    <div className="flex gap-2 items-center">
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          className={`rounded-full transition-all duration-500 ${
+            i === active ? "w-5 h-1.5 bg-black" : "w-1.5 h-1.5 bg-zinc-300"
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function AutonomoEngine() {
   const { ref, progress } = useScrollProgress();
   const [activeModelTab, setActiveModelTab] = useState(0);
@@ -80,18 +96,6 @@ export default function AutonomoEngine() {
                   <CheckCircle2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black shrink-0" />
                   <span className="font-medium">{detail}</span>
                 </div>
-              ))}
-            </div>
-
-            {/* Slide Navigation Progress Dots */}
-            <div className="flex items-center gap-1.5 sm:gap-2 mt-1">
-              {autonomoSlides.map((s, idx) => (
-                <div
-                  key={idx}
-                  className={`h-1.5 sm:h-2 rounded-full transition-all duration-500 ${
-                    slideIndex === idx ? "w-8 sm:w-10 bg-black" : "w-2 sm:w-2.5 bg-zinc-300"
-                  }`}
-                />
               ))}
             </div>
 
@@ -250,6 +254,11 @@ export default function AutonomoEngine() {
 
           </div>
 
+        </div>
+
+        {/* Slide dots (bottom center, matches Pain / How It Works) */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-40">
+          <SlideDots total={N} active={slideIndex} />
         </div>
 
       </div>

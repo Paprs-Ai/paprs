@@ -115,10 +115,6 @@ p {
   }
 }
 
-.how-browser-preview {
-  transform: scale(var(--how-browser-motion-scale, 1));
-}
-
 .how-slide-label {
   top: 2rem;
 }
@@ -329,13 +325,6 @@ p {
     overflow: visible;
   }
 
-  .story-section--how .how-dashboard-preview {
-    width: 510px;
-    max-width: none;
-    zoom: 0.72;
-    transform: none;
-  }
-
   .story-section--how .how-dashboard-canvas .how-dashboard-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
@@ -386,39 +375,8 @@ p {
     transform: translate(-44%, -24%) rotate(4deg) scale(0.48) !important;
   }
 
-  .story-section--how .how-browser-preview {
-    width: 510px;
-    max-width: none;
-    zoom: 0.72;
-    transform: scale(var(--how-browser-motion-scale, 1));
-  }
-
   .story-section--how .how-slide-label {
     top: max(4.25rem, calc(env(safe-area-inset-top) + 3.75rem));
-  }
-}
-
-@media (min-width: 390px) and (max-width: 639px) {
-  .story-section--how .how-dashboard-preview,
-  .story-section--how .how-browser-preview {
-    width: 520px;
-    zoom: 0.75;
-  }
-}
-
-@media (min-width: 420px) and (max-width: 639px) {
-  .story-section--how .how-dashboard-preview,
-  .story-section--how .how-browser-preview {
-    width: 530px;
-    zoom: 0.78;
-  }
-}
-
-@media (min-width: 640px) and (max-width: 1023px) {
-  .story-section--how .how-dashboard-preview,
-  .story-section--how .how-browser-preview {
-    width: 580px;
-    zoom: 0.90;
   }
 }
 
@@ -472,20 +430,6 @@ p {
     justify-content: flex-end;
   }
 
-  .story-section--how .how-dashboard-preview,
-  .story-section--how .how-browser-preview {
-    width: 100%;
-    max-width: 620px;
-    zoom: 1;
-  }
-}
-
-@media (max-width: 359px) {
-  .story-section--how .how-dashboard-preview,
-  .story-section--how .how-browser-preview {
-    width: 540px;
-    zoom: 0.54;
-  }
 }
 
 @media (max-height: 620px) and (max-width: 699px) {
@@ -775,13 +719,6 @@ p {
     display: none;
   }
 
-  .story-section--how .how-dashboard-preview {
-    width: 620px;
-    max-width: none;
-    zoom: 0.48;
-    transform: none;
-  }
-
   .story-section--how .how-dashboard-canvas .how-dashboard-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
@@ -830,13 +767,6 @@ p {
 
   .story-section--how .how-document-pile .how-pile-card--6 {
     transform: translate(-44%, -24%) rotate(4deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-browser-preview {
-    width: 580px;
-    max-width: none;
-    zoom: 0.58;
-    transform: scale(var(--how-browser-motion-scale, 1));
   }
 
   .story-section--how .how-slide-label {
