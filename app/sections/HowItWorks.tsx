@@ -556,8 +556,8 @@ export default function HowItWorks() {
 
               <div className="how-slide-visual pointer-events-auto flex w-full md:w-6/12 items-center justify-center relative">
                 <div
-                  className="hero-dashboard-frame relative flex w-full max-w-[440px] items-center justify-center transition-all duration-300 md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
-                  style={{ transform: "scale(var(--hero-dashboard-scale, 1))", transformOrigin: "center" }}
+                  className="how-dashboard-frame relative flex w-full max-w-[440px] items-center justify-center transition-all duration-300 md:max-w-[520px] lg:max-w-[580px] xl:max-w-[620px]"
+                  style={{ transform: "scale(var(--how-dashboard-scale, 1))", transformOrigin: "center" }}
                 >
                 {/* Desktop Web Dashboard Window using Reusable BrowserPlaceholder */}
                 <BrowserPlaceholder

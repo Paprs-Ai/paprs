@@ -149,20 +149,34 @@ p {
     opacity: 0.22;
     transform: translate(-10%, -8%) scale(0.68);
     transform-origin: center;
+    /* Stacked layout: stay strictly above the horizontal divider. */
+    clip-path: inset(0 0 50% 0);
   }
 
   .hero-dashboard-visual {
     align-items: flex-end;
     justify-content: flex-end;
-    padding: 0 0.25rem 1.75rem 2.5rem;
+    /* Trimmed bottom inset (was 1.75rem) reclaims room for a bigger frame. */
+    padding: 0 0.25rem 0.5rem 2.5rem;
     opacity: 0.82;
+    /* Stacked layout: stay strictly below the horizontal divider. */
+    clip-path: inset(50% 0 0 0);
   }
 
   .hero-dashboard-frame {
-    --hero-dashboard-scale: 0.66;
+    /* As large as the bottom (solution) half can hold without crossing the
+       horizontal divider or colliding with the "WITH PAPRS" label above it. */
+    --hero-dashboard-scale: 0.67;
     --hero-dashboard-y: 0px;
     flex-shrink: 0;
     transform-origin: right bottom;
+  }
+
+  /* How It Works uses its own scale var (--how-dashboard-scale) so its browser
+     mockup — the primary visual, not a background decoration — stays at full
+     size on ordinary phones instead of inheriting the hero's 0.66 shrink. */
+  .how-dashboard-frame {
+    flex-shrink: 0;
   }
 
   .hero-dashboard-frame .hero-dashboard-surface > div {
@@ -310,7 +324,9 @@ p {
   .how-slide-copy-spacer {
     width: 100%;
     max-width: 34rem;
-    min-height: 5.5rem;
+    /* Taller than the tallest real copy block on mobile so the browser
+       mockup below never touches the step text above it. */
+    min-height: 9rem;
     flex-shrink: 1;
   }
 
@@ -381,6 +397,15 @@ p {
 }
 
 @media (min-width: 1024px) {
+  /* Keep the chaos/solution visuals strictly on their own side of the vertical divider. */
+  .hero-chaos-visual {
+    clip-path: inset(0 50% 0 0);
+  }
+
+  .hero-dashboard-visual {
+    clip-path: inset(0 0 0 50%);
+  }
+
   .pain-slide-pile-visual {
     height: 24rem;
   }
@@ -1248,6 +1273,21 @@ p {
 /* Enforce monochrome across any media elements */
 img, video, iframe, canvas, svg {
   filter: grayscale(100%);
+}
+
+/* The How It Works browser mockup has a fixed internal height (520/540px).
+   Scale it down by available viewport height alone — independent of width —
+   so it keeps a consistent, fitted size on short screens of any device class. */
+@media (max-height: 780px) {
+  .how-dashboard-frame {
+    --how-dashboard-scale: 0.85;
+  }
+}
+
+@media (max-height: 650px) {
+  .how-dashboard-frame {
+    --how-dashboard-scale: 0.7;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
