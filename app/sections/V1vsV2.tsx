@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Bot, Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 
 export default function V1vsV2() {
   const [inView, setInView] = useState(false);
@@ -27,7 +27,7 @@ export default function V1vsV2() {
 
   const v1Items = [
     "Step-by-step guides",
-    "AI situation analysis",
+    "Automated situation analysis",
     "Document reader",
     "Deadline tracking",
     "Call scripts",
@@ -36,13 +36,13 @@ export default function V1vsV2() {
   ];
 
   const v2Items = [
-    "Agents file for you",
+    "Direct filing for you",
     "Auto-fill forms",
     "Book appointments",
     "Submit applications",
     "Track responses",
-    "Negotiate on your behalf",
-    "Full legal autopilot",
+    "Official submissions",
+    "Full legal automation",
   ];
 
   return (
@@ -59,10 +59,10 @@ export default function V1vsV2() {
         </span>
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-syne text-black mt-4 mb-4">
           V1: Your guide through the maze.<br />
-          V2: The agent that walks it for you.
+          V2: Direct execution for every step.
         </h2>
         <p className="text-sm md:text-base text-zinc-600 leading-relaxed max-w-xl mx-auto">
-          Right now, Paprs knows exactly what you need to do and tells you how to do it. Next, our AI agents handle the paperwork for you directly.
+          Right now, Paprs knows exactly what you need to do and tells you how to do it. Next, Paprs handles the paperwork and filings for you directly.
         </p>
       </div>
 
@@ -101,7 +101,7 @@ export default function V1vsV2() {
         <div className="bg-white border border-zinc-300 p-8 rounded-lg shadow-sm flex flex-col gap-6 relative overflow-hidden group cursor-help opacity-75 hover:opacity-100 transition-all duration-300">
           <div>
             <h4 className="font-syne font-extrabold text-xl text-black">V2 — Coming Next</h4>
-            <p className="text-xs text-zinc-600 mt-1">Autonomous agents filing and executing on your behalf.</p>
+            <p className="text-xs text-zinc-600 mt-1">Automated filing and direct execution on your behalf.</p>
           </div>
           <hr className="border-zinc-200" />
           
@@ -118,10 +118,10 @@ export default function V1vsV2() {
 
           {/* Hover Tooltip Overlay */}
           <div className="absolute inset-0 bg-white/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-            <Bot className="w-8 h-8 text-black mb-2" />
-            <p className="font-syne font-bold text-sm text-black">AI Agent Delegation</p>
+            <Sparkles className="w-8 h-8 text-black mb-2" />
+            <p className="font-syne font-bold text-sm text-black">Automated Filing Delegation</p>
             <p className="font-sans text-xs text-zinc-600 mt-1.5 max-w-[240px] leading-relaxed">
-              These are coming in V2 — our AI agents will submit forms, book appointments, and handle negotiations for you.
+              These are coming in V2 — Paprs will submit forms, book appointments, and handle official filings for you directly.
             </p>
           </div>
         </div>

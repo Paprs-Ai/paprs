@@ -21,8 +21,8 @@ const BENCHMARK_SLIDES = [
     gestorScore: 84.2,
     gestorLabel: "84.2% Human Gestor (Outdated)",
     genericScore: 68.5,
-    genericLabel: "68.5% Generic LLM (Hallucinates local laws)",
-    highlight: "+30.9% higher precision than generic AI",
+    genericLabel: "68.5% Generic Portals (Outdated laws)",
+    highlight: "+30.9% higher precision than generic search portals",
     details: [
       "Real-time indexing of Royal Decrees (Real Decreto-ley)",
       "Zero hallucinations on local townhall (Empadronamiento) rules",
@@ -111,12 +111,12 @@ export default function SyntheticBenchmark() {
             <div className="inline-flex items-center gap-2 bg-zinc-100 border border-zinc-300 px-4 py-1.5 rounded-full mb-4 shadow-xs w-fit">
               <Brain className="w-3.5 h-3.5 text-black" />
               <span className="font-mono text-xs font-bold text-black uppercase tracking-widest">
-                Paprs AI Benchmarking
+                Paprs Performance Benchmarking
               </span>
             </div>
 
             <h2 className="text-3xl md:text-5xl lg:text-[3.25rem] font-extrabold font-syne text-black tracking-tight leading-[1.08] mb-5">
-              Why Paprs AI Outperforms Human Gestors
+              Why Paprs Outperforms Traditional Gestores
             </h2>
 
             {/* Slide Track Tag */}
@@ -181,11 +181,11 @@ export default function SyntheticBenchmark() {
             {/* Animated Comparison Chart Bars */}
             <div className="space-y-6 my-4">
               
-              {/* Bar 1: Paprs AI */}
+              {/* Bar 1: Paprs */}
               <div>
                 <div className="flex justify-between items-center text-xs md:text-sm font-mono mb-2">
                   <span className="font-extrabold text-black flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-black" /> Paprs AI Engine
+                    <Sparkles className="w-4 h-4 text-black" /> Paprs Execution Engine
                   </span>
                   <span className="font-extrabold text-white bg-black px-3 py-1 rounded-lg text-xs shadow-xs">
                     {activeSlide.paprsLabel}
@@ -217,11 +217,11 @@ export default function SyntheticBenchmark() {
                 </div>
               </div>
 
-              {/* Bar 3: Generic LLM */}
+              {/* Bar 3: Generic Search / Forms */}
               <div>
                 <div className="flex justify-between items-center text-xs md:text-sm font-mono mb-2">
                   <span className="font-medium text-zinc-600 flex items-center gap-2">
-                    <Cpu className="w-4 h-4 text-zinc-500" /> Generic AI / LLM
+                    <Cpu className="w-4 h-4 text-zinc-500" /> Generic Search / Online Forms
                   </span>
                   <span className="font-bold text-zinc-700 bg-white border border-zinc-300 px-2.5 py-0.5 rounded text-xs">
                     {activeSlide.genericLabel}

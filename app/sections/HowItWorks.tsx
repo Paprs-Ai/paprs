@@ -222,7 +222,7 @@ export default function HowItWorks() {
     }
     if (activeSlide === 3 || activeSlide === 5) return "app.paprs.app/todos";
     if (activeSlide === 6) return "app.paprs.app/vault";
-    if (activeSlide >= 7) return "app.paprs.app/assistant";
+    if (activeSlide >= 7) return "app.paprs.app/navigator";
     return "app.paprs.app/dashboard";
   };
 
@@ -490,7 +490,7 @@ export default function HowItWorks() {
             <div className="how-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
               <div className="how-slide-copy flex w-full flex-col justify-center gap-2.5 sm:gap-4 md:w-5/12">
                 <div className="flex items-center gap-2">
-                  <Bot className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
+                  <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0" />
                   <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">
                     {dict.howItWorks.step08Tag}
                   </span>

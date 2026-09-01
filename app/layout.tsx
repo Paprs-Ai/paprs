@@ -132,7 +132,7 @@ const jsonLd = {
         worstRating: "1",
       },
       description:
-        "Intelligent step-by-step guidance platform for Spanish bureaucracy, NIE/TIE residency cards, empadronamiento, and autónomo taxes.",
+        "Step-by-step guidance platform for Spanish bureaucracy, NIE/TIE residency cards, empadronamiento, and autónomo taxes.",
     },
     {
       "@type": "Organization",
@@ -159,7 +159,7 @@ const jsonLd = {
           name: "What is Paprs and how does it solve Spanish bureaucracy?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Paprs is your intelligent, step-by-step digital co-pilot for navigating life and bureaucracy in Spain. Instead of getting lost in scattered government websites or conflicting forum advice, Paprs takes your passport, visa status, and destination to create a custom interactive roadmap—telling you exactly which documents you need, in what order, and how to complete them.",
+            text: "Paprs is your step-by-step digital navigator for managing life and bureaucracy in Spain. Instead of getting lost in scattered government websites or conflicting forum advice, Paprs takes your passport, visa status, and destination to create a custom interactive roadmap—telling you exactly which documents you need, in what order, and how to complete them.",
           },
         },
         {

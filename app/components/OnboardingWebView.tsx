@@ -176,7 +176,7 @@ export function OnboardingWebView({ s1p = 0.5, className = "" }: OnboardingWebVi
         <div className="pt-2 border-t border-zinc-200/80 flex items-center justify-between text-[6.5px] font-mono text-zinc-400">
           <span className="flex items-center gap-1">
             <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-            AI Logic Engine
+            Logic Engine
           </span>
           <span>Spain Route</span>
         </div>

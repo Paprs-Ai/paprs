@@ -30,7 +30,7 @@ export default function Pricing() {
     {
       id: "free",
       name: "Free",
-      subtitle: "For document vaulting & basic AI queries",
+      subtitle: "For document vaulting & basic guidance",
       monthlyPrice: 0,
       annualMonthlyPrice: 0,
       badge: null,
@@ -38,8 +38,8 @@ export default function Pricing() {
       highlight: false,
       features: [
         { text: "Centralized Document Vault", included: true, highlightText: "FREE FOREVER" },
-        { text: "AI Research (up to 5 topics)", included: true, subtext: "Normal guidance (no auto actions)" },
-        { text: "In-App AI Chat Agent (Action Engine)", included: false, detail: "Disabled" },
+        { text: "Procedure Guidance (up to 5 topics)", included: true, subtext: "Normal guidance (no auto actions)" },
+        { text: "In-App Interactive Action Engine", included: false, detail: "Disabled" },
         { text: "Tax Module (Veri*Factu, Modelos 303/130)", included: false, detail: "Disabled" },
         { text: "Multi-user / Family sharing", included: false },
       ],
@@ -47,7 +47,7 @@ export default function Pricing() {
     {
       id: "pro",
       name: "Pro",
-      subtitle: "Full AI action agent & unlimited research",
+      subtitle: "Full action execution & unlimited research",
       monthlyPrice: 7.99,
       annualMonthlyPrice: 5.99,
       badge: "MOST POPULAR",
@@ -55,9 +55,9 @@ export default function Pricing() {
       highlight: true,
       features: [
         { text: "Centralized Document Vault & Tags", included: true },
-        { text: "Unlimited AI Research topics", included: true, subtext: "Comprehensive research & solutions" },
+        { text: "Unlimited Research & Guidance topics", included: true, subtext: "Comprehensive research & solutions" },
         { 
-          text: "In-App AI Chat Agent", 
+          text: "In-App Interactive Action Engine", 
           included: true, 
           highlightText: "FULL ACCESS",
           subtext: "Query breakdown & execution with human approval" 
@@ -69,7 +69,7 @@ export default function Pricing() {
     {
       id: "autonomo",
       name: "Autónomo",
-      subtitle: "Full AI action execution & tax engine",
+      subtitle: "Full action execution & tax engine",
       monthlyPrice: 16.99,
       annualMonthlyPrice: 12.99,
       badge: null,
@@ -77,9 +77,9 @@ export default function Pricing() {
       highlight: false,
       features: [
         { text: "Centralized Document Vault & Auto-OCR", included: true },
-        { text: "Unlimited AI Research & Analysis", included: true },
+        { text: "Unlimited Research & Analysis", included: true },
         { 
-          text: "In-App AI Chat Agent", 
+          text: "In-App Interactive Action Engine", 
           included: true, 
           subtext: "Query breakdown & execution with human approval" 
         },
@@ -95,7 +95,7 @@ export default function Pricing() {
     {
       id: "family",
       name: "Family",
-      subtitle: "Autonomous power for up to 4 members",
+      subtitle: "Full platform power for up to 4 members",
       monthlyPrice: 22.99,
       annualMonthlyPrice: 17.99,
       badge: "BEST FOR FAMILIES",
@@ -104,9 +104,9 @@ export default function Pricing() {
       features: [
         { text: "Up to 4 Family Members / Users", included: true, highlightText: "4 MEMBERS" },
         { text: "Shared Vault for all 4 members", included: true },
-        { text: "Unlimited AI Research for all", included: true },
+        { text: "Unlimited Research for all", included: true },
         { 
-          text: "In-App AI Chat Agent (All Members)", 
+          text: "In-App Interactive Action Engine (All Members)", 
           included: true, 
           subtext: "Full action execution for family" 
         },
@@ -333,10 +333,10 @@ export default function Pricing() {
 
         <div className="flex items-start gap-3 text-left">
           <div className="p-2 bg-black text-white rounded-xl shrink-0">
-            <Bot className="w-4 h-4" />
+            <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="font-syne font-bold text-xs text-black">Autonomous In-App AI Chat Agent</h4>
+            <h4 className="font-syne font-bold text-xs text-black">Interactive In-App Action Engine</h4>
             <p className="font-sans text-[11px] text-zinc-600 mt-0.5 leading-snug">
               Available on Pro, Autónomo & Family. Breaks tasks down into actions and executes with your approval.
             </p>

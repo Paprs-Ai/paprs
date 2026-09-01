@@ -40,7 +40,7 @@ const ROLES: Role[] = [
     badge: "50/50 Founding Partner",
     tagline: "An equal partner with deep, lived experience in EU legal, tax, and bureaucratic realities.",
     description:
-      "I'm a technical founder (AI/agentic systems background) building a platform that makes bureaucracy in Spain — and eventually the EU — actually navigable instead of a maze nobody explains. The MVP is built, about to ship v1, and fully bootstrapped with no outside funding.\n\nI can build the product, AI, and infrastructure. What I don't have is deep, lived experience with EU legal, tax, and bureaucratic systems — how things actually work on the ground, not just in theory.\n\nI'm looking for a co-founder from anywhere in the EU who's either worked in this space (legal, tax advisory, gestoría, govtech, relocation) or has personally felt the pain as an autónomo, freelancer, or self-employed professional somewhere in the EU. Someone who knows the real traps and steps nobody tells you about until you've already messed them up.\n\nI am open to an equal 50/50 split with the right person — this is about finding a real partner anywhere in Europe, not outsourcing a piece of the problem.",
+      "I'm a technical founder (software systems & automation background) building a platform that makes bureaucracy in Spain — and eventually the EU — actually navigable instead of a maze nobody explains. The MVP is built, about to ship v1, and fully bootstrapped with no outside funding.\n\nI can build the product, software architecture, and infrastructure. What I don't have is deep, lived experience with EU legal, tax, and bureaucratic systems — how things actually work on the ground, not just in theory.\n\nI'm looking for a co-founder from anywhere in the EU who's either worked in this space (legal, tax advisory, gestoría, govtech, relocation) or has personally felt the pain as an autónomo, freelancer, or self-employed professional somewhere in the EU. Someone who knows the real traps and steps nobody tells you about until you've already messed them up.\n\nI am open to an equal 50/50 split with the right person — this is about finding a real partner anywhere in Europe, not outsourcing a piece of the problem.",
     responsibilities: [
       "Map real-world bureaucratic traps, edge cases, and paperwork workflows into intuitive step-by-step product logic.",
       "Co-lead product direction, operations, customer community, and rollout strategy across Spain and the EU.",
@@ -55,7 +55,7 @@ const ROLES: Role[] = [
     ],
     perks: [
       "Equal 50/50 founding equity split.",
-      "A production-ready MVP already built with full AI and AWS Activate cloud infrastructure in place.",
+      "A production-ready MVP already built with complete automation pipelines and AWS Activate cloud infrastructure in place.",
       "True co-founding partnership with 100% location flexibility across the EU.",
     ],
     icon: Rocket,
@@ -97,7 +97,7 @@ const ROLES: Role[] = [
     badge: "Student Experience & Mentorship",
     tagline: "Ideal for early college students wanting to build real-world product design experience and a standout portfolio.",
     description:
-      "European bureaucracy is notoriously ugly, terrifying, and overwhelming. I build the backend, AI agent pipelines, and full-stack engine, and I am looking for an enthusiastic UI & UX / Product Designer—especially early college students who want to gain hands-on startup experience in their early college days.\n\nPlease note: As a bootstrapped startup, we are not offering financial compensation until we hit our seed funding round. What we do provide is an official certificate of completion, strong recommendation letters, direct mentorship on shipping live AI-powered consumer software, and a direct pathway to paid compensation once our seed round closes.",
+      "European bureaucracy is notoriously ugly, terrifying, and overwhelming. I build the backend, automation workflows, and full-stack engine, and I am looking for an enthusiastic UI & UX / Product Designer—especially early college students who want to gain hands-on startup experience in their early college days.\n\nPlease note: As a bootstrapped startup, we are not offering financial compensation until we hit our seed funding round. What we do provide is an official certificate of completion, strong recommendation letters, direct mentorship on shipping live consumer software, and a direct pathway to paid compensation once our seed round closes.",
     responsibilities: [
       "Design intuitive wireframes, mockups, and interactive prototypes in Figma for complex bureaucracy flows.",
       "Collaborate directly with me to translate messy official paperwork into clean, step-by-step digital interfaces.",

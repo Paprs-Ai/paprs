@@ -6,7 +6,7 @@ export const translations: Record<Language, Translations> = {
       reality: "Reality",
       howItWorks: "How It Works",
       autonomoEngine: "Autónomo Engine",
-      intelligence: "Intelligence",
+      intelligence: "Adaptive Engine",
       europe: "Europe",
       faq: "Knowledge & FAQ",
       career: "Career",
@@ -15,7 +15,7 @@ export const translations: Record<Language, Translations> = {
       overview: "Overview",
       actionPlan: "Action Plan",
       vault: "Vault",
-      assistant: "Assistant",
+      assistant: "Navigator",
     },
     hero: {
       withoutPaprs: "WITHOUT PAPRS",
@@ -213,7 +213,7 @@ export const translations: Record<Language, Translations> = {
       daysLeft: "52 Days Left",
       urgentRenewalDesc: "Paprs prepared Form EX-15 & fee. One insurance document pending in vault.",
       reviewPreparedAction: "Review Prepared Action",
-      aiRecommendation: "AI Recommendation",
+      aiRecommendation: "Route Recommendation",
       freshAddressProofNeeded: "Fresh Address Proof Needed",
       freshAddressProofDesc: "Your next procedure needs a recent certificate. Paprs found the municipal request route.",
       prepareFreshCopy: "Prepare Fresh Copy",
@@ -242,7 +242,7 @@ export const translations: Record<Language, Translations> = {
         },
         {
           tag: "Autónomo 02 · Tax Deductions",
-          title: "AI Deductible Expense Scanner",
+          title: "Automated Deductions Scanner",
           subtitle: "Scans every utility bill, receipt, and invoice to extract every legally permitted tax deduction under Spanish law.",
           highlight: "+€2,840.50 average net tax savings identified per year",
           details: [
@@ -263,9 +263,9 @@ export const translations: Record<Language, Translations> = {
           ],
         },
         {
-          tag: "Autónomo 04 · Specialized Intelligence",
-          title: "Spanish Bureaucracy AI Specialist",
-          subtitle: "Internal AI model trained on Royal Decrees, BOE publications, and local hacienda regulations.",
+          tag: "Autónomo 04 · Regulatory Engine",
+          title: "Spanish Bureaucracy Specialist",
+          subtitle: "Internal engine verified against Royal Decrees, BOE publications, and local hacienda regulations.",
           highlight: "Outperforms traditional gestor consultants in speed and precision",
           details: [
             "24/7 instant answers to complex Spanish tax & registration questions",
@@ -292,10 +292,10 @@ export const translations: Record<Language, Translations> = {
       deductionsSubtitle: "Real-time Expense Classification",
       invoicingTitle: "Compliant Spanish Invoicing",
       invoicingSubtitle: "Automated IRPF & Retenciones",
-      intelligenceTitle: "Specialized Legal AI Engine",
+      intelligenceTitle: "Specialized Legal Engine",
       intelligenceSubtitle: "BOE & Royal Decree Grounded",
-      launchAssistant: "Launch Assistant",
-      featureModuleTag: "Autónomo Intelligence",
+      launchAssistant: "Launch Navigator",
+      featureModuleTag: "Autónomo Engine",
       autoFiledBadge: "Auto-filed",
       deductionIdentified: "Deduction Identified",
       netSavings: "net savings",
@@ -312,7 +312,7 @@ export const translations: Record<Language, Translations> = {
       compliantBadge: "Hacienda Compliant",
     },
     aiLearns: {
-      tag: "Intelligence",
+      tag: "Adaptive System",
       title: "The more you use Paprs,\nthe better it knows you.",
       p1: "Every document you upload. Every step you complete. Every question you ask.",
       p2: "Paprs learns your situation and gets better at anticipating what you need next — before you even think to ask.",
@@ -416,7 +416,7 @@ export const translations: Record<Language, Translations> = {
         {
           tag: "Product & Concept",
           question: "What is Paprs and how does it solve Spanish bureaucracy?",
-          answer: "Paprs is your intelligent, step-by-step digital co-pilot for navigating life and bureaucracy in Spain. Instead of getting lost in scattered government websites or conflicting forum advice, Paprs takes your passport, visa status, and destination to create a custom interactive roadmap—telling you exactly which documents you need, in what order, and how to complete them."
+          answer: "Paprs is your step-by-step digital navigator for managing life and bureaucracy in Spain. Instead of getting lost in scattered government websites or conflicting forum advice, Paprs takes your passport, visa status, and destination to create a custom interactive roadmap—telling you exactly which documents you need, in what order, and how to complete them."
         },
         {
           tag: "Paprs vs. Gestorías",
@@ -451,7 +451,7 @@ export const translations: Record<Language, Translations> = {
       reality: "Realidad",
       howItWorks: "Cómo Funciona",
       autonomoEngine: "Motor Autónomo",
-      intelligence: "Inteligencia",
+      intelligence: "Sistema Adaptativo",
       europe: "Europa",
       faq: "Guía y Preguntas",
       career: "Carreras",
@@ -460,7 +460,7 @@ export const translations: Record<Language, Translations> = {
       overview: "Resumen",
       actionPlan: "Plan de acción",
       vault: "Bóveda",
-      assistant: "Asistente",
+      assistant: "Navegador",
     },
     hero: {
       withoutPaprs: "SIN PAPRS",
@@ -658,7 +658,7 @@ export const translations: Record<Language, Translations> = {
       daysLeft: "Quedan 52 días",
       urgentRenewalDesc: "Paprs ha preparado el Modelo EX-15 y la tasa. Falta un documento de seguro en el vault.",
       reviewPreparedAction: "Revisar acción preparada",
-      aiRecommendation: "Recomendación de la IA",
+      aiRecommendation: "Acción recomendada",
       freshAddressProofNeeded: "Se requiere volante de padrón reciente",
       freshAddressProofDesc: "Tu siguiente trámite requiere un volante actualizado. Paprs ha localizado la solicitud municipal.",
       prepareFreshCopy: "Solicitar volante actualizado",
@@ -687,7 +687,7 @@ export const translations: Record<Language, Translations> = {
         },
         {
           tag: "Autónomo 02 · Deducciones fiscales",
-          title: "Escáner inteligente de gastos deducibles",
+          title: "Escáner automático de gastos deducibles",
           subtitle: "Analiza cada factura de suministros, ticket y recibo para extraer todas las deducciones legalmente admitidas en España.",
           highlight: "+2.840,50 € de ahorro fiscal medio identificado al año",
           details: [
@@ -708,9 +708,9 @@ export const translations: Record<Language, Translations> = {
           ],
         },
         {
-          tag: "Autónomo 04 · Inteligencia especializada",
+          tag: "Autónomo 04 · Motor regulatorio",
           title: "Especialista en burocracia y fiscalidad española",
-          subtitle: "Modelo de IA entrenado en Reales Decretos, publicaciones del BOE y consultas vinculantes de Hacienda.",
+          subtitle: "Motor normativo verificado con Reales Decretos, publicaciones del BOE y consultas vinculantes de Hacienda.",
           highlight: "Supera a las consultas tradicionales en rapidez y precisión",
           details: [
             "Respuestas inmediatas 24/7 a dudas fiscales y de alta de autónomos",
@@ -737,10 +737,10 @@ export const translations: Record<Language, Translations> = {
       deductionsSubtitle: "Clasificación de gastos en tiempo real",
       invoicingTitle: "Facturación legal en España",
       invoicingSubtitle: "Cálculo automático de IVA y retenciones",
-      intelligenceTitle: "IA jurídica especializada",
+      intelligenceTitle: "Motor jurídico especializado",
       intelligenceSubtitle: "Basada en el BOE y Reales Decretos",
-      launchAssistant: "Abrir asistente",
-      featureModuleTag: "Inteligencia Autónomo",
+      launchAssistant: "Abrir navegador",
+      featureModuleTag: "Motor Autónomo",
       autoFiledBadge: "Auto-presentado",
       deductionIdentified: "Deducción Identificada",
       netSavings: "ahorro neto",
@@ -757,7 +757,7 @@ export const translations: Record<Language, Translations> = {
       compliantBadge: "Conforme con Hacienda",
     },
     aiLearns: {
-      tag: "Inteligencia",
+      tag: "Sistema Adaptativo",
       title: "Cuanto más usas Paprs,\nmejor te conoce.",
       p1: "Cada documento que subes. Cada trámite que completas. Cada duda que resuelves.",
       p2: "Paprs comprende tu situación y se anticipa a lo que vas a necesitar, antes incluso de que tengas que buscarlo.",
@@ -861,7 +861,7 @@ export const translations: Record<Language, Translations> = {
         {
           tag: "Producto y Concepto",
           question: "¿Qué es Paprs y cómo resuelve la burocracia en España?",
-          answer: "Paprs es tu copiloto digital interactivo para gestionar tu residencia, trámites y vida en España. En lugar de perderte en normativas oficiales confusas o consejos contradictorios de foros, Paprs analiza tu nacionalidad, visado y ciudad de destino para generar una hoja de ruta clara que ordena tus documentos y te dice exactamente qué hacer paso a paso."
+          answer: "Paprs es tu navegador digital interactivo para gestionar tu residencia, trámites y vida en España. En lugar de perderte en normativas oficiales confusas o consejos contradictorios de foros, Paprs analiza tu nacionalidad, visado y ciudad de destino para generar una hoja de ruta clara que ordena tus documentos y te dice exactamente qué hacer paso a paso."
         },
         {
           tag: "Paprs vs. Gestorías",
@@ -896,7 +896,7 @@ export const translations: Record<Language, Translations> = {
       reality: "Realitat",
       howItWorks: "Com Funciona",
       autonomoEngine: "Motor Autònom",
-      intelligence: "Intel·ligència",
+      intelligence: "Sistema Adaptatiu",
       europe: "Europa",
       faq: "Guia i Preguntes",
       career: "Carreres",
@@ -905,7 +905,7 @@ export const translations: Record<Language, Translations> = {
       overview: "Resum",
       actionPlan: "Pla d'acció",
       vault: "Caixa forta",
-      assistant: "Assistent",
+      assistant: "Navegador",
     },
     hero: {
       withoutPaprs: "SENSE PAPRS",
@@ -1103,7 +1103,7 @@ export const translations: Record<Language, Translations> = {
       daysLeft: "Queden 52 dies",
       urgentRenewalDesc: "Paprs ha preparat el Model EX-15 i la taxa. Manca un document d'assegurança al vault.",
       reviewPreparedAction: "Revisar acció preparada",
-      aiRecommendation: "Recomanació de la IA",
+      aiRecommendation: "Acció recomanada",
       freshAddressProofNeeded: "Cal un volant de padró recent",
       freshAddressProofDesc: "El teu proper tràmit requereix un volant actualitzat. Paprs ha trobat la via municipal.",
       prepareFreshCopy: "Demanar volant actualitzat",
@@ -1132,7 +1132,7 @@ export const translations: Record<Language, Translations> = {
         },
         {
           tag: "Autònom 02 · Deduccions fiscals",
-          title: "Escàner intel·ligent de despeses deduïbles",
+          title: "Escàner automàtic de despeses deduïbles",
           subtitle: "Analitza cada factura de subministraments, tiquet i rebut per extreure totes les deduccions permeses per llei.",
           highlight: "+2.840,50 € d'estalvi fiscal mitjà identificat a l'any",
           details: [
@@ -1153,9 +1153,9 @@ export const translations: Record<Language, Translations> = {
           ],
         },
         {
-          tag: "Autònom 04 · Intel·ligència especialitzada",
+          tag: "Autònom 04 · Motor regulatori",
           title: "Especialista en burocràcia i fiscalitat espanyola",
-          subtitle: "Model d'IA entrenat en Reials Decrets, publicacions del BOE i consultes de la hisenda pública.",
+          subtitle: "Motor normatiu verificat amb Reials Decrets, publicacions del BOE i consultes de la hisenda pública.",
           highlight: "Supera les consultes tradicionals en rapidesa i precisió",
           details: [
             "Respostes immediates 24/7 a dubtes fiscals i d'alta d'autònoms",
@@ -1182,10 +1182,10 @@ export const translations: Record<Language, Translations> = {
       deductionsSubtitle: "Classificació de despeses en temps real",
       invoicingTitle: "Facturació legal a Espanya",
       invoicingSubtitle: "Càlcul automàtic d'IVA i retencions",
-      intelligenceTitle: "IA jurídica especialitzada",
+      intelligenceTitle: "Motor jurídic especialitzat",
       intelligenceSubtitle: "Basada en el BOE i Reials Decrets",
-      launchAssistant: "Obrir assistent",
-      featureModuleTag: "Intel·ligència Autònom",
+      launchAssistant: "Obrir navegador",
+      featureModuleTag: "Motor Autònom",
       autoFiledBadge: "Auto-presentat",
       deductionIdentified: "Deducció Identificada",
       netSavings: "estalvi net",
@@ -1202,7 +1202,7 @@ export const translations: Record<Language, Translations> = {
       compliantBadge: "Conforme amb Hisenda",
     },
     aiLearns: {
-      tag: "Intel·ligència",
+      tag: "Sistema Adaptatiu",
       title: "Com més fas servir Paprs,\nmillor et coneix.",
       p1: "Cada document que penges. Cada tràmit que completes. Cada dubte que resols.",
       p2: "Paprs comprèn la teva situació i s'anticipa al que necessitaràs, abans i tot que hagis de buscar-ho.",
@@ -1306,7 +1306,7 @@ export const translations: Record<Language, Translations> = {
         {
           tag: "Producte i Concepte",
           question: "Què és Paprs i com resol la burocràcia a Espanya?",
-          answer: "Paprs és el teu copilot digital interactiu per gestionar la teva residència, tràmits i vida a Espanya. En lloc de perdre't en portals oficials confusos o consells contradictoris de fòrums, Paprs analitza la teva nacionalitat, visat i municipi de destí per crear un full de ruta clar que ordena els teus documents i et diu exactament què fer pas a pas."
+          answer: "Paprs és el teu navegador digital interactiu per gestionar la teva residència, tràmits i vida a Espanya. En lloc de perdre't en portals oficials confusos o consells contradictoris de fòrums, Paprs analitza la teva nacionalitat, visat i municipi de destí per crear un full de ruta clar que ordena els teus documents i et diu exactament què fer pas a pas."
         },
         {
           tag: "Paprs vs. Gestories",

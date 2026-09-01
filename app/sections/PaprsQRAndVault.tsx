@@ -53,7 +53,7 @@ const QR_VAULT_SLIDES = [
     id: 3,
     tag: "QR & Vault 04 · Expiration Watchdog",
     title: "Proactive Renewal & Expiration Alerts",
-    subtitle: "The AI watches your document expiration dates automatically and triggers renewal tasks before deadlines pass.",
+    subtitle: "Paprs monitors your document expiration dates automatically and triggers renewal tasks before deadlines pass.",
     highlight: "Auto-flags 90-day Padrón rule for Spanish visa submissions",
     details: [
       "Tracks empadronamiento 90-day validity window",
@@ -261,7 +261,7 @@ export default function PaprsQRAndVault() {
                 <div className="bg-black text-white p-6 rounded-2xl shadow-sm space-y-3">
                   <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
                     <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> AI Watchdog Active
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Expiration Watchdog Active
                     </span>
                     <span className="font-mono text-[9px] bg-zinc-800 text-zinc-200 border border-zinc-700 px-2.5 py-0.5 rounded font-bold">
                       42 Days Left
