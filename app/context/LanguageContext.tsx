@@ -18,41 +18,40 @@ const LanguageContext = createContext<LanguageContextValue>({
   dict: translations.en,
 });
 
-function mapToSupported(raw: string | null | undefined): Language {
-  const v = (raw || "").toLowerCase();
-  if (v === "ca" || v.startsWith("ca") || v === "es" || v.startsWith("es")) return "es";
-  if (v === "en" || v.startsWith("en")) return "en";
-  return "en";
-}
-
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>("en");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     try {
-      const savedLang = window.localStorage.getItem(STORAGE_KEY);
-      let next: Language = "en";
-      if (savedLang === "en" || savedLang === "es" || savedLang === "ca") {
-        next = savedLang === "ca" ? "es" : savedLang;
+      const savedLang = window.localStorage.getItem(STORAGE_KEY) as Language | null;
+      if (savedLang && (savedLang === "en" || savedLang === "es" || savedLang === "ca")) {
+        setLanguageState(savedLang);
+        document.documentElement.lang = savedLang;
       } else {
-        next = mapToSupported(navigator.language);
-      }
-      setLanguageState(next);
-      document.documentElement.lang = next;
-      if (savedLang === "ca") {
-        window.localStorage.setItem(STORAGE_KEY, "es");
+        const browserLang = navigator.language?.toLowerCase() || "";
+        if (browserLang.startsWith("ca")) {
+          setLanguageState("ca");
+          document.documentElement.lang = "ca";
+        } else if (browserLang.startsWith("es")) {
+          setLanguageState("es");
+          document.documentElement.lang = "es";
+        } else {
+          setLanguageState("en");
+          document.documentElement.lang = "en";
+        }
       }
     } catch {
       // Ignore localStorage errors (e.g. incognito)
     }
+    setMounted(true);
   }, []);
 
   const setLanguage = (lang: Language) => {
-    const next: Language = lang === "ca" ? "es" : lang;
-    setLanguageState(next);
+    setLanguageState(lang);
     try {
-      window.localStorage.setItem(STORAGE_KEY, next);
-      document.documentElement.lang = next;
+      window.localStorage.setItem(STORAGE_KEY, lang);
+      document.documentElement.lang = lang;
     } catch {
       // Ignore storage errors
     }
