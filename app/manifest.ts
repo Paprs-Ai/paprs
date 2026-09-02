@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Paprs — Spanish Bureaucracy Navigator",
+    name: "Paprs — Your next official step in Spain",
     short_name: "Paprs",
     description:
-      "Navigate Spanish bureaucracy with confidence. Step-by-step guidance for NIE, TIE, empadronamiento, autónomo taxes, and residency.",
+      "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.",
     start_url: "/",
     display: "standalone",
-    background_color: "#000000",
+    background_color: "#ffffff",
     theme_color: "#000000",
     icons: [
       {
