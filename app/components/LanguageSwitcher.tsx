@@ -7,6 +7,7 @@ import { Language } from "../i18n/language.types";
 const LANGUAGES: { code: Language; label: string; title: string }[] = [
   { code: "en", label: "EN", title: "English" },
   { code: "es", label: "ES", title: "Español" },
+  { code: "ca", label: "CA", title: "Català" },
 ];
 
 export function LanguageSwitcher({ className = "" }: { className?: string }) {
@@ -19,7 +20,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
       aria-label="Language selection"
     >
       {LANGUAGES.map((lang) => {
-        const isActive = language === lang.code || (lang.code === "es" && language === "ca");
+        const isActive = language === lang.code;
         return (
           <button
             key={lang.code}
