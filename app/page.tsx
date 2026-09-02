@@ -1,83 +1,43 @@
 "use client";
 
-import AILearns from "./sections/AILearns";
-import AutonomoEngine from "./sections/AutonomoEngine";
-import BureaucracyFAQ from "./sections/BureaucracyFAQ";
-import Countries from "./sections/Countries";
-import FinalCTA from "./sections/FinalCTA";
-import HeroAndPain from "./sections/HeroAndPain";
-import HowItWorks from "./sections/HowItWorks";
-import { useLanguage } from "./context/LanguageContext";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { useLanguage } from "./context/LanguageContext";
+import { tR1 } from "./r1Copy";
+import R1Slides from "./sections/R1Slides";
 
 export default function Home() {
-  const { dict } = useLanguage();
+  const { language } = useLanguage();
+  const c = tR1(language);
 
   return (
-    <div className="flex min-h-screen w-full flex-col overflow-x-clip bg-[#FFFFFF] font-sans text-black selection:bg-black selection:text-white">
-      
-      {/* Sticky Top Header — Apple-Grade Translucent Material & Instant Response */}
-      <header 
-        className="fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 w-[calc(100%-1.25rem)] sm:w-[calc(100%-2rem)] max-w-5xl z-50 flex justify-between items-center px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] select-none text-black transition-all"
+    <div className="h-svh w-full overflow-hidden bg-white font-sans text-black selection:bg-black selection:text-white">
+      <header
+        className="fixed top-3 left-1/2 z-50 flex w-[calc(100%-1.25rem)] max-w-5xl -translate-x-1/2 items-center justify-between rounded-full border border-black/10 px-3.5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.06)] sm:top-4 sm:w-[calc(100%-2rem)] sm:px-6 sm:py-3.5"
         style={{
           backgroundColor: "transparent",
           backdropFilter: "blur(2px) saturate(150%)",
           WebkitBackdropFilter: "blur(2px) saturate(150%)",
         }}
       >
-        {/* Brand */}
-        <a href="#" className="flex items-center hover:opacity-85 apple-press">
-          <span className="font-extrabold text-xl sm:text-2xl tracking-tighter text-black">
-            paprs
-          </span>
+        <a href="#maze" className="apple-press flex items-center hover:opacity-85">
+          <span className="text-xl font-extrabold tracking-tighter text-black sm:text-2xl">paprs</span>
         </a>
-
-        {/* Navigation Links */}
-        <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
-          <a href="#pain" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.reality}</a>
-          <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.howItWorks}</a>
-          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.autonomoEngine}</a>
-          <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.intelligence}</a>
-          <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.europe}</a>
-          <a href="#faq" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.faq}</a>
+        <nav className="hidden gap-5 font-mono text-[10px] font-bold tracking-widest text-black/75 uppercase lg:flex">
+          <a href="#maze" className="apple-press transition-colors hover:text-black">{c.navMaze}</a>
+          <a href="#paprs" className="apple-press transition-colors hover:text-black">{c.navPaprs}</a>
+          <a href="#waitlist" className="apple-press transition-colors hover:text-black">{c.navWaitlist}</a>
         </nav>
-
-        {/* Nav Controls: Language Switcher & CTA */}
         <div className="flex items-center gap-1.5 sm:gap-2.5">
           <LanguageSwitcher />
-          <a 
+          <a
             href="#waitlist"
-            className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-black/20 text-white bg-black/85 backdrop-blur-md hover:bg-black font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider shadow-xs apple-press flex items-center justify-center text-center leading-none"
+            className="apple-press flex items-center justify-center rounded-full border border-black/20 bg-black/85 px-3 py-1 font-mono text-[8px] font-bold tracking-wider text-white uppercase hover:bg-black sm:px-4 sm:py-1.5 sm:text-[9px]"
           >
-            {dict.nav.joinWaitlist}
+            {c.joinWaitlist}
           </a>
         </div>
       </header>
-
-      {/* Main Sections Storyline */}
-      <main className="flex-1">
-        <HeroAndPain />
-        <HowItWorks />
-        <AutonomoEngine />
-        <AILearns />
-        <Countries />
-        <BureaucracyFAQ />
-        <FinalCTA />
-      </main>
-
-      {/* Footer */}
-      <footer className="site-footer border-t border-zinc-100 bg-[#FFFFFF] px-4 py-8 text-center font-mono text-[9px] text-zinc-500 select-none sm:px-6 sm:py-12 sm:text-[10px]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>{dict.footer.copyright}</p>
-          <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-6 items-center">
-            <a href="/career" className="hover:text-black transition-colors font-bold text-black/80">Careers (3 Open)</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.privacyPolicy}</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.termsOfService}</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.cookies}</a>
-          </div>
-        </div>
-      </footer>
-
+      <R1Slides />
     </div>
   );
 }
