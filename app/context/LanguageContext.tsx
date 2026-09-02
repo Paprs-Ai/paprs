@@ -18,33 +18,33 @@ const LanguageContext = createContext<LanguageContextValue>({
   dict: translations.en,
 });
 
+function isLang(v: string | null | undefined): v is Language {
+  return v === "en" || v === "es" || v === "ca";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>("en");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     try {
-      const savedLang = window.localStorage.getItem(STORAGE_KEY) as Language | null;
-      if (savedLang && (savedLang === "en" || savedLang === "es" || savedLang === "ca")) {
-        setLanguageState(savedLang);
-        document.documentElement.lang = savedLang;
+      const q = new URLSearchParams(window.location.search).get("lang");
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+      let next: Language = "en";
+      if (isLang(q)) {
+        next = q;
+      } else if (isLang(saved)) {
+        next = saved;
       } else {
         const browserLang = navigator.language?.toLowerCase() || "";
-        if (browserLang.startsWith("ca")) {
-          setLanguageState("ca");
-          document.documentElement.lang = "ca";
-        } else if (browserLang.startsWith("es")) {
-          setLanguageState("es");
-          document.documentElement.lang = "es";
-        } else {
-          setLanguageState("en");
-          document.documentElement.lang = "en";
-        }
+        if (browserLang.startsWith("ca")) next = "ca";
+        else if (browserLang.startsWith("es")) next = "es";
       }
+      setLanguageState(next);
+      document.documentElement.lang = next;
+      window.localStorage.setItem(STORAGE_KEY, next);
     } catch {
       // Ignore localStorage errors (e.g. incognito)
     }
-    setMounted(true);
   }, []);
 
   const setLanguage = (lang: Language) => {
