@@ -17,7 +17,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://paprs.app";
 
 const TITLE = "Paprs — Your next official step in Spain";
 const DESCRIPTION =
-  "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.";
+  "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English, Spanish, and Catalan.";
 const OG_TITLE = "Paprs — next official step in Spain";
 const OG_DESCRIPTION =
   "Situation-based plans for newcomers and residents. Madrid and Barcelona. You submit.";
@@ -47,6 +47,7 @@ export const metadata: Metadata = {
     languages: {
       "en-US": `${siteUrl}`,
       "es-ES": `${siteUrl}?lang=es`,
+      "ca-ES": `${siteUrl}?lang=ca`,
       "x-default": `${siteUrl}`,
     },
   },
@@ -100,7 +101,7 @@ const jsonLd = {
       url: siteUrl,
       name: "Paprs",
       description: DESCRIPTION,
-      inLanguage: ["en", "es"],
+      inLanguage: ["en", "es", "ca"],
     },
     {
       "@type": "SoftwareApplication",
@@ -121,7 +122,7 @@ const jsonLd = {
         "@type": "ContactPoint",
         contactType: "customer support",
         email: "support@paprs.app",
-        availableLanguage: ["English", "Spanish"],
+        availableLanguage: ["English", "Spanish", "Catalan"],
       },
     },
   ],
