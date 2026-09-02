@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { tR1 } from "../r1Copy";
+import R1Waitlist from "./R1Waitlist";
 
 const STAMPS = [
   { label: "NIE", cls: "r1-s-nie" },
@@ -16,11 +18,7 @@ const STAMPS = [
 function Maze() {
   return (
     <div className="r1-maze" aria-hidden="true">
-      <svg
-        className="r1-maze-svg"
-        viewBox="0 0 1000 700"
-        preserveAspectRatio="xMidYMid slice"
-      >
+      <svg className="r1-maze-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
         <path className="r1-path" d="M90 95h210l80-40 170 70 160-50 170 90" />
         <path className="r1-path r1-path-b" d="M130 290 280 160 470 240 640 140 820 210 910 90" />
         <path className="r1-path" d="M70 430 200 310 360 390 520 280 690 360 860 300" />
@@ -46,10 +44,33 @@ function Maze() {
 export default function R1Slides() {
   const { language } = useLanguage();
   const c = tR1(language);
+  const deckRef = useRef<HTMLDivElement>(null);
+  const [on, setOn] = useState(0);
+
+  useEffect(() => {
+    const root = deckRef.current;
+    if (!root) return;
+    const slides = root.querySelectorAll(".r1-slide");
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setOn(e.target.id === "paprs" ? 1 : 0);
+        }
+      },
+      { root, threshold: 0.55 },
+    );
+    slides.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <div className="r1-deck">
-      <section id="maze" className="r1-slide r1-slide-1" aria-label={c.navMaze}>
+    <div ref={deckRef} className="r1-deck">
+      <nav className="r1-ticks" aria-label={c.navMaze}>
+        <a href="#maze" className={on === 0 ? "r1-tick is-on" : "r1-tick"} aria-label={c.navMaze} />
+        <a href="#paprs" className={on === 1 ? "r1-tick is-on" : "r1-tick"} aria-label={c.navPaprs} />
+      </nav>
+
+      <section id="maze" className="r1-slide" aria-label={c.navMaze}>
         <Maze />
         <div className="r1-copy">
           <p className="r1-kicker">{c.slide1Kicker}</p>
@@ -62,21 +83,13 @@ export default function R1Slides() {
       <section id="paprs" className="r1-slide r1-slide-2" aria-label={c.navPaprs}>
         <div className="r1-copy">
           <h1 className="r1-h1">{c.slide2H1}</h1>
-          <div className="r1-nodes">
-            <div className="r1-node">
-              <span className="r1-node-i">01</span>
-              {c.nodeYou}
-            </div>
-            <div className="r1-node">
-              <span className="r1-node-i">02</span>
-              {c.nodeNext}
-            </div>
-            <div className="r1-node r1-node-last">
-              <span className="r1-node-i">03</span>
-              {c.nodeSubmit}
-            </div>
-          </div>
           <p className="r1-line-copy">{c.slide2Line}</p>
+          <div className="r1-nodes" aria-hidden="true">
+            <div className="r1-node">{c.nodeYou}</div>
+            <div className="r1-node">{c.nodeNext}</div>
+            <div className="r1-node">{c.nodeSubmit}</div>
+          </div>
+          <R1Waitlist />
         </div>
       </section>
     </div>
