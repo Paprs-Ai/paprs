@@ -4,9 +4,11 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRight, Bell, Check, Loader2, Lock, Mail, MapPin } from "lucide-react";
 import { joinWaitlistAction } from "@/actions/waitlist";
 import { useLanguage } from "../context/LanguageContext";
+import { tR1 } from "../r1Copy";
 
 export default function FinalCTA() {
-  const { dict } = useLanguage();
+  const { dict, language } = useLanguage();
+  const c = tR1(language);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -45,7 +47,6 @@ export default function FinalCTA() {
         setIsSubmitted(true);
         setFeedbackMessage(data.message || dict.finalCTA.defaultFeedback);
 
-        // After 2.5 seconds, return button and state to normal so user can type again
         resetTimerRef.current = setTimeout(() => {
           setIsSubmitted(false);
         }, 2500);
@@ -64,23 +65,19 @@ export default function FinalCTA() {
       id="waitlist"
       className="final-cta relative flex min-h-[80svh] w-full flex-col items-center justify-center overflow-hidden bg-white px-4 py-16 text-black select-none scroll-mt-28 sm:px-6 sm:py-24 md:px-8"
     >
- 
-      {/* Decorative floating badge */}
       <div className="cta-badge relative mb-4 flex items-center gap-1.5 rounded-full border border-black/15 bg-zinc-100 px-3.5 py-1 font-mono text-[9px] font-bold tracking-widest uppercase sm:mb-6 sm:px-4 sm:py-1.5 sm:text-[10px]">
         <Bell className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black" /> {dict.finalCTA.badge}
       </div>
- 
-      {/* Content */}
+
       <div className="cta-content relative flex max-w-3xl flex-col items-center gap-4 text-center sm:gap-6">
         <h2 className="text-3xl sm:text-5xl md:text-7xl font-extrabold font-syne tracking-tight leading-[0.95] text-black whitespace-pre-line">
           {dict.finalCTA.title}
         </h2>
-        
+
         <p className="font-sans text-xs sm:text-base md:text-xl text-zinc-600 font-medium max-w-lg leading-relaxed">
           {dict.finalCTA.desc}
         </p>
- 
-        {/* Waitlist form */}
+
         <form
           onSubmit={handleSubmit}
           className="waitlist-form mt-4 flex w-full max-w-xl flex-col items-stretch gap-2 rounded-2xl border border-black/15 bg-zinc-50 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:mt-6 sm:flex-row sm:rounded-full sm:p-2"
@@ -132,6 +129,10 @@ export default function FinalCTA() {
           </button>
         </form>
 
+        <p className="max-w-xl font-mono text-[9px] font-medium tracking-wide text-zinc-500 sm:text-[10px]">
+          {c.waitlistPurpose}
+        </p>
+
         <p
           className={`min-h-5 font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider ${
             errorMessage ? "text-red-500" : isSubmitted ? "text-zinc-800" : "text-zinc-500"
@@ -153,8 +154,7 @@ export default function FinalCTA() {
             {dict.finalCTA.seeHowItWorks}
           </a>
         </div>
- 
-        {/* Trust signals */}
+
         <div className="trust-signals mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[9px] font-semibold tracking-wider text-zinc-600 uppercase sm:mt-12 sm:gap-x-6 sm:text-[10px]">
           <span className="flex items-center gap-1"><Lock className="w-3 h-3 text-black" /> {dict.finalCTA.noSpam}</span>
           <span>•</span>
@@ -163,7 +163,6 @@ export default function FinalCTA() {
           <span className="flex items-center gap-1"><Check className="w-3 h-3 text-black" /> {dict.finalCTA.earlyAccessPriority}</span>
         </div>
       </div>
- 
     </section>
   );
 }
