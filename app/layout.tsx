@@ -16,14 +16,20 @@ const geistMono = Geist_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://paprs.app";
 
+const TITLE = "Paprs — Your next official step in Spain";
+const DESCRIPTION =
+  "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.";
+const OG_TITLE = "Paprs — next official step in Spain";
+const OG_DESCRIPTION =
+  "Situation-based plans for newcomers and residents. Madrid and Barcelona. You submit.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Paprs — Your next official step in Spain",
+    default: TITLE,
     template: "%s | Paprs",
   },
-  description:
-    "Navigator for NIE, TIE and padrón in Madrid and Barcelona. Form ready, you submit. Closed beta. Not a gestoría.",
+  description: DESCRIPTION,
   applicationName: "Paprs",
   authors: [{ name: "Paprs Team", url: siteUrl }],
   creator: "Paprs",
@@ -34,8 +40,8 @@ export const metadata: Metadata = {
     "padrón Madrid",
     "padrón Barcelona",
     "EU registration",
-    "next official step in Spain",
     "first year in Spain",
+    "next official step",
   ],
   alternates: {
     canonical: siteUrl,
@@ -63,16 +69,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Paprs — next official step in Spain",
-    description:
-      "Situation-based plans for newcomers and residents. Madrid and Barcelona. You submit.",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
     siteName: "Paprs",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Paprs — next official step in Spain",
-    description:
-      "Situation-based plans for newcomers and residents. Madrid and Barcelona. You submit.",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
     creator: "@paprsapp",
   },
   robots: {
@@ -86,7 +90,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  category: "software",
 };
 
 const jsonLd = {
@@ -97,8 +100,7 @@ const jsonLd = {
       "@id": `${siteUrl}/#website`,
       url: siteUrl,
       name: "Paprs",
-      description:
-        "Navigator for NIE, TIE and padrón in Madrid and Barcelona. Form ready, you submit.",
+      description: DESCRIPTION,
       inLanguage: ["en", "es"],
     },
     {
@@ -106,9 +108,8 @@ const jsonLd = {
       "@id": `${siteUrl}/#software`,
       name: "Paprs",
       applicationCategory: "BusinessApplication",
-      operatingSystem: "Web",
       description:
-        "Situation-based plans for the next official step in Spain. Madrid and Barcelona. You submit.",
+        "Paprs prepares the next official step in Spain and the form. NIE, TIE, padrón Madrid, padrón Barcelona, EU registration. You review and submit.",
     },
     {
       "@type": "Organization",
