@@ -12,7 +12,7 @@ export const r1Copy = {
     navPaprs: "Paprs",
     navWaitlist: "Waitlist",
     joinWaitlist: "Join the waitlist",
-    slide1Kicker: "The first year in Spain",
+    slide1Kicker: "Newcomers and Spanish citizens",
     slide1H1: "Nobody tells you what to do first. Or what happens if you don't.",
     slide1Line:
       "NIE, TIE, padrón Madrid, padrón Barcelona, EU registration. The trámite is not optional. Madrid is not Barcelona.",
@@ -30,6 +30,7 @@ export const r1Copy = {
     unexpected: "Something went wrong. Try again.",
     footerNote:
       "Paprs is in closed beta. Waitlist on this page. Madrid and Barcelona. English and Spanish.",
+    waitlistPurpose: "We only use this email to add you to the waitlist.",
     privacy: "Privacy",
     terms: "Terms",
   },
@@ -38,7 +39,7 @@ export const r1Copy = {
     navPaprs: "Paprs",
     navWaitlist: "Lista de espera",
     joinWaitlist: "Apúntate a la lista de espera",
-    slide1Kicker: "El primer año en España",
+    slide1Kicker: "Quien llega y quien ya es ciudadano",
     slide1H1: "Nadie te dice qué va primero. Ni qué pasa si no lo haces.",
     slide1Line:
       "NIE, TIE, padrón Madrid, padrón Barcelona, certificado UE. El trámite no es opcional. Madrid no es Barcelona.",
@@ -56,6 +57,7 @@ export const r1Copy = {
     unexpected: "Algo falló. Inténtalo de nuevo.",
     footerNote:
       "Paprs está en beta cerrada. Lista de espera en esta página. Madrid y Barcelona. Inglés y español.",
+    waitlistPurpose: "Usamos este correo solo para añadirte a la lista de espera.",
     privacy: "Privacidad",
     terms: "Términos",
   },
