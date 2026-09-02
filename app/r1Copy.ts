@@ -19,7 +19,7 @@ export const r1Copy = {
     slide1P2:
       "The work is not optional. You still have to do it if the pages are in Spanish, if two forums disagree, and if the office sends you away for the form you did not know was next.",
     slide1P3:
-      "NIE, padrón, TIE or EU registration. The names are public. The order is not. It changes with your passport, why you are here, your city, your family, and what you already hold. Madrid is not Barcelona. A Spanish or EU citizen hitting padrón or an alta is in the same maze — this is not an expats-only problem.",
+      "NIE, TIE, padrón Madrid, padrón Barcelona, EU registration. The names are public. The order is not. It changes with your passport, why you are here, your city, your family, and what you already hold. Madrid is not Barcelona. A Spanish or EU citizen hitting padrón or an alta is in the same maze — this is not an expats-only problem.",
     slide1P4:
       "Every official page explains one trámite. None of them explain yours. Get the order wrong and you burn a cita and weeks.",
     llm:
@@ -29,7 +29,7 @@ export const r1Copy = {
     slide2P1:
       "You say where you stand. Paprs puts the work in order for Madrid or Barcelona — NIE if you need it, padrón, TIE or EU registration — and gets the form ready. You review. You submit: at the office, on the official site, or however that trámite actually works.",
     notGestor:
-      "Not a gestoría. Not a lawyer. Not a representative. We do not file, we do not hold a poder, we do not book Cita Previa. If you want a human to present for you, that person is not us.",
+      "Not a gestoría. Not a lawyer. Not a sede. Not a cita bot. We do not file, we do not hold a poder, we do not book appointments. If you want a human to present for you, that person is not us.",
     audience:
       "English and Spanish. Newcomers and residents, including Spanish and EU citizens. Closed beta on a waitlist. Not generally live.",
     micro: "Closed beta. Madrid and Barcelona. You submit.",
@@ -55,7 +55,7 @@ export const r1Copy = {
     slide1P2:
       "No es opcional. Hay que hacerlo aunque las páginas estén en un idioma que no es el tuyo, aunque dos foros se contradigan, y aunque la oficina te despache por el impreso que no sabías que iba después.",
     slide1P3:
-      "NIE, padrón, TIE o certificado de ciudadano de la UE. Los nombres son públicos. El orden no. Cambia con el pasaporte, el motivo de estancia, la ciudad, la familia y lo que ya tienes. Madrid no es Barcelona. Quien es español o ciudadano de la UE y choca con el padrón o un alta está en el mismo laberinto: esto no es un problema solo de expats.",
+      "NIE, TIE, padrón Madrid, padrón Barcelona, certificado de ciudadano de la UE. Los nombres son públicos. El orden no. Cambia con el pasaporte, el motivo de estancia, la ciudad, la familia y lo que ya tienes. Madrid no es Barcelona. Quien es español o ciudadano de la UE y choca con el padrón o un alta está en el mismo laberinto: esto no es un problema solo de expats.",
     slide1P4:
       "Cada sede explica un trámite. Ninguna explica el tuyo. Si fallas el orden, quemas una cita y semanas.",
     llm:
@@ -65,7 +65,7 @@ export const r1Copy = {
     slide2P1:
       "Cuentas dónde estás. Paprs ordena el trabajo para Madrid o Barcelona — NIE si te hace falta, padrón, TIE o certificado UE — y deja el formulario listo. Tú revisas. Tú presentas: en la oficina, en la sede, o como se presente ese trámite de verdad.",
     notGestor:
-      "No es gestoría. No es un despacho. No es representación. No presentamos, no tenemos poder, no reservamos Cita Previa. Si quieres que alguien presente en tu nombre, esa persona no somos nosotros.",
+      "No es gestoría. No es un despacho. No es una sede. No es un bot de citas. No presentamos, no tenemos poder, no reservamos citas. Si quieres que alguien presente en tu nombre, esa persona no somos nosotros.",
     audience:
       "Inglés y español. Quien acaba de llegar y quien ya vive aquí, también ciudadanos españoles y de la UE. Beta cerrada, lista de espera. No está abierto al público.",
     micro: "Beta cerrada. Madrid y Barcelona. Tú presentas.",
