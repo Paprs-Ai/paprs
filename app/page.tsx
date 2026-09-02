@@ -7,14 +7,11 @@ import Countries from "./sections/Countries";
 import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
-import R1Slides from "./sections/R1Slides";
 import { useLanguage } from "./context/LanguageContext";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
-import { tR1 } from "./r1Copy";
 
 export default function Home() {
-  const { dict, language } = useLanguage();
-  const c = tR1(language);
+  const { dict } = useLanguage();
 
   return (
     <div className="flex min-h-screen w-full flex-col overflow-x-clip bg-[#FFFFFF] font-sans text-black selection:bg-black selection:text-white">
@@ -26,11 +23,10 @@ export default function Home() {
           WebkitBackdropFilter: "blur(2px) saturate(150%)",
         }}
       >
-        <a href="#maze" className="apple-press flex items-center hover:opacity-85">
+        <a href="/" className="apple-press flex items-center hover:opacity-85">
           <span className="text-xl font-extrabold tracking-tighter text-black sm:text-2xl">paprs</span>
         </a>
         <nav className="hidden gap-5 font-mono text-[10px] font-bold tracking-widest text-black/75 uppercase lg:flex">
-          <a href="#maze" className="apple-press transition-colors hover:text-black">{c.navMaze}</a>
           <a href="#pain" className="apple-press transition-colors hover:text-black">{dict.nav.reality}</a>
           <a href="#how-it-works" className="apple-press transition-colors hover:text-black">{dict.nav.howItWorks}</a>
           <a href="#autonomo-engine" className="apple-press transition-colors hover:text-black">{dict.nav.autonomoEngine}</a>
@@ -50,7 +46,6 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        <R1Slides />
         <HeroAndPain />
         <HowItWorks />
         <AutonomoEngine />
