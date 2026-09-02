@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./slides.css";
 import { LanguageProvider } from "./context/LanguageContext";
 
 const geistSans = Geist({
@@ -18,35 +19,29 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://paprs.app";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Paprs — Spanish Bureaucracy Navigator | NIE, TIE, Padrón & Autónomo",
+    default: "Paprs — Your next official step in Spain",
     template: "%s | Paprs",
   },
   description:
-    "Navigate Spanish bureaucracy with confidence. Get your NIE, TIE residency card, empadronamiento, autónomo taxes, and digital nomad visas sorted with verified, step-by-step interactive guidance.",
+    "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.",
   applicationName: "Paprs",
   authors: [{ name: "Paprs Team", url: siteUrl }],
   creator: "Paprs",
   publisher: "Paprs",
   keywords: [
-    "Spain bureaucracy",
-    "NIE Spain application",
-    "How to get NIE in Spain",
-    "TIE card Spain requirements",
-    "Empadronamiento guide Madrid Barcelona",
-    "Autónomo taxes Spain calculator",
-    "Digital Nomad Visa Spain",
-    "Beckham Law Spain tax rate",
-    "Cita previa extranjería",
-    "Spanish residency step by step",
-    "Expat relocation to Spain",
-    "Gestoría online alternative Spain",
+    "NIE",
+    "TIE",
+    "padrón Madrid",
+    "padrón Barcelona",
+    "EU registration",
+    "next official step in Spain",
+    "first year in Spain",
   ],
   alternates: {
     canonical: siteUrl,
     languages: {
       "en-US": `${siteUrl}`,
       "es-ES": `${siteUrl}?lang=es`,
-      "ca-ES": `${siteUrl}?lang=ca`,
       "x-default": `${siteUrl}`,
     },
   },
@@ -68,16 +63,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Paprs — Spanish Bureaucracy Navigator | NIE, TIE, Padrón & Autónomo",
+    title: "Paprs — next official step in Spain",
     description:
-      "Eliminate Spanish paperwork chaos. Get your NIE, TIE, empadronamiento, digital nomad visa, and autónomo taxes sorted step by step.",
+      "Situation-based plans for newcomers and residents. Madrid and Barcelona. You submit.",
     siteName: "Paprs",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Paprs — Spanish Bureaucracy Navigator | NIE, TIE, Padrón & Autónomo",
+    title: "Paprs — next official step in Spain",
     description:
-      "Navigate Spanish bureaucracy with confidence. NIE, TIE, padrón, taxes and more — plain language, step by step.",
+      "Situation-based plans for newcomers and residents. Madrid and Barcelona. English and Spanish.",
     creator: "@paprsapp",
   },
   robots: {
@@ -91,7 +86,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  category: "relocation",
+  category: "software",
 };
 
 const jsonLd = {
@@ -103,36 +98,17 @@ const jsonLd = {
       url: siteUrl,
       name: "Paprs",
       description:
-        "Step-by-step guide to Spanish bureaucracy, residency, NIE, TIE, empadronamiento, and autónomo taxes.",
-      inLanguage: ["en", "es", "ca"],
-      potentialAction: {
-        "@type": "SearchAction",
-        target: `${siteUrl}/?q={search_term_string}`,
-        "query-input": "required name=search_term_string",
-      },
+        "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.",
+      inLanguage: ["en", "es"],
     },
     {
       "@type": "SoftwareApplication",
       "@id": `${siteUrl}/#software`,
       name: "Paprs",
       applicationCategory: "BusinessApplication",
-      operatingSystem: "Web, iOS, Android",
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "EUR",
-        availability: "https://schema.org/InStock",
-      },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        ratingCount: "184",
-        reviewCount: "142",
-        bestRating: "5",
-        worstRating: "1",
-      },
+      operatingSystem: "Web",
       description:
-        "Step-by-step guidance platform for Spanish bureaucracy, NIE/TIE residency cards, empadronamiento, and autónomo taxes.",
+        "Situation-based plans for the next official step in Spain. Madrid and Barcelona. You submit.",
     },
     {
       "@type": "Organization",
@@ -140,93 +116,13 @@ const jsonLd = {
       name: "Paprs",
       url: siteUrl,
       logo: `${siteUrl}/icon.svg`,
-      sameAs: [
-        "https://twitter.com/paprsapp",
-      ],
+      sameAs: ["https://twitter.com/paprsapp"],
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
         email: "support@paprs.app",
-        availableLanguage: ["English", "Spanish", "Catalan"],
+        availableLanguage: ["English", "Spanish"],
       },
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${siteUrl}/#faqpage`,
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "What is Paprs and how does it solve Spanish bureaucracy?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Paprs is your step-by-step digital navigator for managing life and bureaucracy in Spain. Instead of getting lost in scattered government websites or conflicting forum advice, Paprs takes your passport, visa status, and destination to create a custom interactive roadmap—telling you exactly which documents you need, in what order, and how to complete them.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How does Paprs compare to hiring a traditional Gestoría?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Traditional gestorías can charge hundreds or thousands of euros and often take days to answer basic questions. Paprs gives you instant, 24/7 interactive clarity, pre-checks your paperwork for missing prerequisites, and guides you through appointments and taxes with complete transparency—at a fraction of the cost.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What Spanish procedures does Paprs guide me through?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Paprs supports the entire Spanish bureaucratic journey: NIE number applications (EX-15), TIE cards (EX-17), EU Citizen Registration (EX-18), Empadronamiento (Padrón) across all autonomous communities, Autónomo setup (Modelos 036/037 & RETA), quarterly tax filings (Modelos 303 & 130), Digital Nomad Visas, and Beckham Law tax applications.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How does the Paprs Document Vault protect my sensitive files?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "The Paprs Vault uses bank-grade AES-256 encryption at rest and TLS in transit. Your documents, certificates, and tax records are stored securely in EU-compliant infrastructure, organized automatically with expiration alerts, and are never shared or sold to third parties.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How does Paprs help me with Cita Previa appointments?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Paprs directs you to the exact office, province, and official procedure name, alerts you to province-specific appointment release patterns, and generates a pre-appointment checklist so your paperwork is 100% compliant on the day.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How do I get access to Paprs and is there a free plan?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "You can secure your spot by joining the early access waitlist with your email on this page. Early waitlist members receive prioritized onboarding, direct access to our interactive Spanish roadmap builder, and exclusive launch privileges.",
-          },
-        },
-      ],
-    },
-    {
-      "@type": "HowTo",
-      "@id": `${siteUrl}/#howto-nie`,
-      name: "How to Obtain a Spanish NIE Number (Form EX-15)",
-      description: "Step-by-step guide to applying for and receiving your official NIE tax identification number in Spain.",
-      totalTime: "P14D",
-      step: [
-        {
-          "@type": "HowToStep",
-          name: "Identify Reason & Route",
-          text: "Establish legal justification (employment, property purchase, bank opening, or university study).",
-        },
-        {
-          "@type": "HowToStep",
-          name: "Fill Form EX-15 and Pay Modelo 790-012",
-          text: "Complete official application EX-15 and pay the ~€9.84 tax fee at any Spanish bank branch.",
-        },
-        {
-          "@type": "HowToStep",
-          name: "Book Cita Previa & Attend Appointment",
-          text: "Book an appointment at the CNP / Extranjería office in your province and submit original documents + copies.",
-        },
-      ],
     },
   ],
 };
@@ -239,7 +135,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         <script
@@ -249,7 +145,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#000000] text-[#f4f4f5] font-sans selection:bg-white selection:text-black">
+      <body className="min-h-full flex flex-col bg-white text-black font-sans selection:bg-black selection:text-white">
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
