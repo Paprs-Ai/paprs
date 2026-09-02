@@ -12,7 +12,7 @@ export const r1Copy = {
     navPaprs: "Paprs",
     navWaitlist: "Waitlist",
     joinWaitlist: "Join the waitlist",
-    slide1Kicker: "First year in Spain",
+    slide1Kicker: "The first year in Spain",
     slide1H1: "Nobody tells you what to do first. Or what happens if you don't.",
     slide1Line:
       "NIE, TIE, padrón Madrid, padrón Barcelona, EU registration. The trámite is not optional. Madrid is not Barcelona.",
@@ -28,7 +28,10 @@ export const r1Copy = {
     onList: "You are on the list",
     err: "Could not join. Try again.",
     unexpected: "Something went wrong. Try again.",
-    footerNote: "Paprs is in closed beta. Waitlist on this page. Madrid and Barcelona. English and Spanish.",
+    footerNote:
+      "Paprs is in closed beta. Waitlist on this page. Madrid and Barcelona. English and Spanish.",
+    privacy: "Privacy",
+    terms: "Terms",
   },
   es: {
     navMaze: "El laberinto",
@@ -51,7 +54,10 @@ export const r1Copy = {
     onList: "Estás en la lista",
     err: "No se pudo apuntar. Inténtalo de nuevo.",
     unexpected: "Algo falló. Inténtalo de nuevo.",
-    footerNote: "Paprs está en beta cerrada. Lista de espera en esta página. Madrid y Barcelona. Inglés y español.",
+    footerNote:
+      "Paprs está en beta cerrada. Lista de espera en esta página. Madrid y Barcelona. Inglés y español.",
+    privacy: "Privacidad",
+    terms: "Términos",
   },
 } as const;
 
