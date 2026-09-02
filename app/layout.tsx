@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Paprs",
   },
   description:
-    "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.",
+    "Navigator for NIE, TIE and padrón in Madrid and Barcelona. Form ready, you submit. Closed beta. Not a gestoría.",
   applicationName: "Paprs",
   authors: [{ name: "Paprs Team", url: siteUrl }],
   creator: "Paprs",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Paprs — next official step in Spain",
     description:
-      "Situation-based plans for newcomers and residents. Madrid and Barcelona. English and Spanish.",
+      "Situation-based plans for newcomers and residents. Madrid and Barcelona. You submit.",
     creator: "@paprsapp",
   },
   robots: {
@@ -98,7 +98,7 @@ const jsonLd = {
       url: siteUrl,
       name: "Paprs",
       description:
-        "The trámite is not optional. Paprs prepares the next official step and the form. You review and submit. Madrid and Barcelona. English and Spanish.",
+        "Navigator for NIE, TIE and padrón in Madrid and Barcelona. Form ready, you submit.",
       inLanguage: ["en", "es"],
     },
     {
