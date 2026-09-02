@@ -62,7 +62,6 @@ html, body { height: 100%; }
 .r1-s-nie { top: 12%; left: 8%; --r: -8deg; --d: 0s; }
 .r1-s-padron { top: 20%; right: 9%; --r: 6deg; --d: 0.4s; }
 .r1-s-tie { top: 46%; left: 12%; --r: -3deg; --d: 0.8s; }
-.r1-s-alta { bottom: 26%; right: 14%; --r: 9deg; --d: 1.2s; }
 .r1-s-mad { bottom: 16%; left: 9%; --r: -12deg; --d: 0.6s; }
 .r1-s-bcn { top: 36%; right: 20%; --r: 4deg; --d: 1s; }
 
