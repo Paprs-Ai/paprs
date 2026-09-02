@@ -12,7 +12,7 @@ export const r1Copy = {
     navPaprs: "Paprs",
     navWaitlist: "Waitlist",
     joinWaitlist: "Join the waitlist",
-    slide1Kicker: "Newcomers and Spanish citizens",
+    slide1Kicker: "The first year in Spain",
     slide1H1: "Nobody tells you what to do first. Or what happens if you don't.",
     slide1Line:
       "NIE, TIE, padrón Madrid, padrón Barcelona, EU registration. The trámite is not optional. Madrid is not Barcelona.",
@@ -39,10 +39,10 @@ export const r1Copy = {
     navPaprs: "Paprs",
     navWaitlist: "Lista de espera",
     joinWaitlist: "Apúntate a la lista de espera",
-    slide1Kicker: "Quien llega y quien ya es ciudadano",
+    slide1Kicker: "El primer año en España",
     slide1H1: "Nadie te dice qué va primero. Ni qué pasa si no lo haces.",
     slide1Line:
-      "NIE, TIE, padrón Madrid, padrón Barcelona, certificado UE. El trámite no es opcional. Madrid no es Barcelona.",
+      "NIE, TIE, padrón Madrid, padrón Barcelona, EU registration. El trámite no es opcional. Madrid no es Barcelona.",
     llm: "Un modelo inventa un camino. La administración quiere un formulario, una oficina, un orden.",
     slide2H1: "Tu siguiente trámite oficial en España — formulario listo, tú presentas.",
     slide2Line: "No es gestoría. No es una sede. No presentamos. Tú revisas. Tú presentas.",
