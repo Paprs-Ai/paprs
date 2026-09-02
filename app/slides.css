@@ -1,12 +1,7 @@
-/* R1 two-slide deck — maze-first, light copy, zinc */
-html, body { height: 100%; }
+/* R1 maze opener — page scroll, not a nested deck */
+html, body { min-height: 100%; }
 
 .r1-deck {
-  height: 100svh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
   background: #fff;
   color: #000;
 }
@@ -15,8 +10,6 @@ html, body { height: 100%; }
   position: relative;
   height: 100svh;
   min-height: 100svh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   overflow: hidden;
   background: #fff;
 }
@@ -92,26 +85,6 @@ html, body { height: 100%; }
   0%, 100% { transform: translate3d(0, 0, 0); }
   50% { transform: translate3d(-2.2%, 1.4%, 0); }
 }
-
-.r1-ticks {
-  position: absolute;
-  right: 1.15rem;
-  top: 50%;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 0.42rem;
-  transform: translateY(-50%);
-}
-
-.r1-tick {
-  width: 6px;
-  height: 6px;
-  border: 1px solid #000;
-  background: transparent;
-}
-
-.r1-tick.is-on { background: #000; }
 
 .r1-copy {
   position: relative;
@@ -219,19 +192,10 @@ html, body { height: 100%; }
   max-width: 36rem;
 }
 
-.r1-note {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: #71717a;
-  margin-top: 1.15rem;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .r1-stamp,
   .r1-path,
   .r1-maze { animation: none !important; }
-  .r1-deck { scroll-behavior: auto; }
 }
 
 @media (max-width: 640px) {
@@ -241,5 +205,4 @@ html, body { height: 100%; }
   .r1-node { min-height: 4.6rem; padding: 0.75rem 0.55rem 0.7rem; font-size: 9px; }
   .r1-node + .r1-node { margin-left: 0.55rem; }
   .r1-node + .r1-node::before { left: -0.55rem; width: 0.55rem; }
-  .r1-ticks { right: 0.7rem; }
 }
