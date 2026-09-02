@@ -2,7 +2,6 @@
 
 import { useLanguage } from "../context/LanguageContext";
 import { tR1 } from "../r1Copy";
-import R1Waitlist from "./R1Waitlist";
 
 const STAMPS = [
   { label: "NIE", cls: "r1-s-nie" },
@@ -44,15 +43,6 @@ function Maze() {
   );
 }
 
-function Ticks({ on }: { on: 1 | 2 }) {
-  return (
-    <div className="r1-ticks" aria-hidden="true">
-      <i className={on === 1 ? "r1-tick is-on" : "r1-tick"} />
-      <i className={on === 2 ? "r1-tick is-on" : "r1-tick"} />
-    </div>
-  );
-}
-
 export default function R1Slides() {
   const { language } = useLanguage();
   const c = tR1(language);
@@ -61,7 +51,6 @@ export default function R1Slides() {
     <div className="r1-deck">
       <section id="maze" className="r1-slide r1-slide-1" aria-label={c.navMaze}>
         <Maze />
-        <Ticks on={1} />
         <div className="r1-copy">
           <p className="r1-kicker">{c.slide1Kicker}</p>
           <h2 className="r1-h1">{c.slide1H1}</h2>
@@ -71,7 +60,6 @@ export default function R1Slides() {
       </section>
 
       <section id="paprs" className="r1-slide r1-slide-2" aria-label={c.navPaprs}>
-        <Ticks on={2} />
         <div className="r1-copy">
           <h1 className="r1-h1">{c.slide2H1}</h1>
           <div className="r1-nodes">
@@ -89,8 +77,6 @@ export default function R1Slides() {
             </div>
           </div>
           <p className="r1-line-copy">{c.slide2Line}</p>
-          <R1Waitlist />
-          <p className="r1-note">{c.footerNote}</p>
         </div>
       </section>
     </div>
