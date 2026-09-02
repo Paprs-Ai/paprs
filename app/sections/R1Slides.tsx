@@ -8,7 +8,6 @@ const STAMPS = [
   { label: "NIE", cls: "r1-s-nie" },
   { label: "padrón", cls: "r1-s-padron" },
   { label: "TIE", cls: "r1-s-tie" },
-  { label: "alta", cls: "r1-s-alta" },
   { label: "MAD", cls: "r1-s-mad" },
   { label: "BCN", cls: "r1-s-bcn" },
 ] as const;
@@ -51,7 +50,6 @@ export default function R1Slides() {
       </section>
 
       <section id="paprs" className="r1-slide r1-slide-2" aria-label={c.navPaprs}>
-        <Maze />
         <div className="r1-copy">
           <h1 className="r1-h1">{c.slide2H1}</h1>
           <p className="r1-p">{c.slide2Lead}</p>
