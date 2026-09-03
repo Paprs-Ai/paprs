@@ -201,7 +201,7 @@ export const translations: Record<Language, Translations> = {
       matchOfficialRoute: "Match the official route",
       matchOfficialRouteDesc: "Procedure and deadline verified",
       prepareFormFee: "Prepare form and fee",
-      prepareFormFeeDesc: "Form EX-15 & Model 790-012 pre-filled",
+      prepareFormFeeDesc: "Form EX-00 & Tasa 790-052 prepared",
       reviewAndApprove: "Review and approve",
       reviewAndApproveDesc: "You see every document before submission",
       actionReadiness: "Action readiness",
@@ -211,7 +211,7 @@ export const translations: Record<Language, Translations> = {
       targetMetric: "Target",
       urgentActionAlert: "Urgent Action Alert",
       daysLeft: "52 Days Left",
-      urgentRenewalDesc: "Paprs prepared Form EX-15 & fee. One insurance document pending in vault.",
+      urgentRenewalDesc: "Paprs prepared Form EX-00 & fee. One insurance document pending in vault.",
       reviewPreparedAction: "Review Prepared Action",
       aiRecommendation: "Route Recommendation",
       freshAddressProofNeeded: "Fresh Address Proof Needed",
@@ -227,13 +227,13 @@ export const translations: Record<Language, Translations> = {
     },
     autonomo: {
       tag: "Autónomo Engine",
-      title: "Freelancing in Spain,\nfully automated.",
+      title: "Freelancing in Spain,\nstreamlined & compliant.",
       slides: [
         {
           tag: "Autónomo 01 · Tax Returns",
           title: "Official Spanish Tax Model Engine",
-          subtitle: "Consolidates and prepares your quarterly filings (Modelo 130, 303, 115, 390) automatically without gestor delays.",
-          highlight: "Compliant with Spanish Agencia Tributaria guidelines",
+          subtitle: "Consolidates your records and organizes official quarterly filing drafts (Modelo 130, 303, 115, 390) with total clarity.",
+          highlight: "Aligned with official Agencia Tributaria regulations",
           details: [
             "Modelo 130: 20% advance tax calculated directly from net profit",
             "Modelo 303: 21% IVA balancing with automatic expense offset",
@@ -248,7 +248,7 @@ export const translations: Record<Language, Translations> = {
           details: [
             "30% proportional write-off on home office water, gas & electricity",
             "100% full business deduction on software tools & SaaS subscriptions",
-            "Direct VAT & IRPF recovery on client travel and business meals",
+            "Track business travel & client meals under AEAT deductible criteria",
           ],
         },
         {
@@ -266,7 +266,7 @@ export const translations: Record<Language, Translations> = {
           tag: "Autónomo 04 · Regulatory Engine",
           title: "Spanish Bureaucracy Specialist",
           subtitle: "Internal engine verified against Royal Decrees, BOE publications, and local hacienda regulations.",
-          highlight: "Outperforms traditional gestor consultants in speed and precision",
+          highlight: "Provides instant clarity and accurate calculations 24/7",
           details: [
             "24/7 instant answers to complex Spanish tax & registration questions",
             "Zero phone calls or in-person gestor appointments needed",
@@ -283,11 +283,11 @@ export const translations: Record<Language, Translations> = {
       deductions: [
         { label: "Home Office & Utilities", pct: "30% write-off" },
         { label: "Software & SaaS Gear", pct: "100% deduction" },
-        { label: "Client Meals & Travel", pct: "Direct VAT recovery" },
+        { label: "Client Meals & Travel", pct: "AEAT criteria tracking" },
         { label: "Hardware & Computers", pct: "Depreciable credit" },
       ],
       taxModelsTitle: "Official Hacienda Tax Filing Engine",
-      taxModelsSubtitle: "Agencia Tributaria Compliant",
+      taxModelsSubtitle: "Aligned with AEAT Criteria",
       deductionsTitle: "Automated Deductions Scanner",
       deductionsSubtitle: "Real-time Expense Classification",
       invoicingTitle: "Compliant Spanish Invoicing",
@@ -296,7 +296,7 @@ export const translations: Record<Language, Translations> = {
       intelligenceSubtitle: "BOE & Royal Decree Grounded",
       launchAssistant: "Launch Navigator",
       featureModuleTag: "Autónomo Engine",
-      autoFiledBadge: "Auto-filed",
+      autoFiledBadge: "Draft in 1 Click",
       deductionIdentified: "Deduction Identified",
       netSavings: "net savings",
       issuedFactura: "Issued Factura",
@@ -305,11 +305,11 @@ export const translations: Record<Language, Translations> = {
       ivaAdded: "+21% IVA",
       totalReconciled: "Total Reconciled",
       netBadge: "Net Received",
-      agenciaVerified: "Agencia Tributaria Verified",
+      agenciaVerified: "Aligned with AEAT Standards",
       trainedRoyalDecree: "Trained on latest Spanish BOE & Royal Decrees",
-      gestorComparison: "99.4% faster than traditional human gestores with zero wait time",
+      gestorComparison: "Instant preparation and 24/7 clarity with zero wait time",
       scrollHint: "Scroll down to see the live roadmap & countries",
-      compliantBadge: "Hacienda Compliant",
+      compliantBadge: "Hacienda Aligned",
     },
     aiLearns: {
       tag: "Adaptive System",
@@ -354,12 +354,16 @@ export const translations: Record<Language, Translations> = {
       noSpam: "No spam, ever",
       builtInSpain: "Built in Spain",
       earlyAccessPriority: "Early-access priority",
+      gdprConsent: "I agree to the Privacy Policy and consent to receiving launch notifications.",
+      gdprNotice: "Data Controller: Paprs AI · Purpose: Waitlist management & product notifications · Legal basis: Consent · Rights: Access, rectification, erasure at privacy@paprs.app",
     },
     footer: {
       copyright: "© 2026 Paprs. All rights reserved. Built in Spain.",
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
+      legalNotice: "Legal Notice",
       cookies: "Cookies",
+      disclaimer: "Legal Disclaimer: Paprs is a self-service administrative productivity software tool. Paprs does not provide binding legal or tax advice, nor does it act as an authorized gestoría administrativa. Official submissions are conducted directly by users or via our certified partner network.",
     },
     onboarding: {
       title: "Onboarding",
@@ -421,7 +425,7 @@ export const translations: Record<Language, Translations> = {
         {
           tag: "Paprs vs. Gestorías",
           question: "How does Paprs compare to hiring a traditional Gestoría?",
-          answer: "Traditional gestorías can charge hundreds or thousands of euros and often take days to answer basic questions. Paprs gives you instant, 24/7 interactive clarity, pre-checks your paperwork for missing prerequisites, and guides you through appointments and taxes with complete transparency—at a fraction of the cost."
+          answer: "Traditional gestorías can charge hundreds of euros and often take days to answer basic questions. Paprs gives you instant, 24/7 clarity, pre-checks paperwork for missing prerequisites, and prepares official drafts with complete transparency. Paprs is an administrative self-management tool—for regulated filings, users can submit with their digital certificate or connect with our certified partner gestores."
         },
         {
           tag: "Supported Procedures",
@@ -646,7 +650,7 @@ export const translations: Record<Language, Translations> = {
       matchOfficialRoute: "Asignar procedimiento oficial",
       matchOfficialRouteDesc: "Vía y plazos verificados",
       prepareFormFee: "Preparar formulario y tasa",
-      prepareFormFeeDesc: "Modelo EX-15 y Tasa 790-012 prerrellenados",
+      prepareFormFeeDesc: "Modelo EX-00 y Tasa 790-052 preparados",
       reviewAndApprove: "Revisar y aprobar",
       reviewAndApproveDesc: "Compruebas cada documento antes del envío",
       actionReadiness: "Estado del trámite",
@@ -656,7 +660,7 @@ export const translations: Record<Language, Translations> = {
       targetMetric: "Objetivo",
       urgentActionAlert: "Alerta de acción urgente",
       daysLeft: "Quedan 52 días",
-      urgentRenewalDesc: "Paprs ha preparado el Modelo EX-15 y la tasa. Falta un documento de seguro en el vault.",
+      urgentRenewalDesc: "Paprs ha preparado el Modelo EX-00 y la tasa. Falta un documento de seguro en el vault.",
       reviewPreparedAction: "Revisar acción preparada",
       aiRecommendation: "Acción recomendada",
       freshAddressProofNeeded: "Se requiere volante de padrón reciente",
@@ -672,13 +676,13 @@ export const translations: Record<Language, Translations> = {
     },
     autonomo: {
       tag: "Motor Autónomo",
-      title: "Trabajar por cuenta propia en España,\ntotalmente automatizado.",
+      title: "Trabajar por cuenta propia en España,\nsin caos y al día.",
       slides: [
         {
           tag: "Autónomo 01 · Declaraciones tributarias",
           title: "Motor oficial de modelos fiscales españoles",
-          subtitle: "Consolida y prepara tus declaraciones trimestrales (Modelo 130, 303, 115, 390) automáticamente sin demoras de gestoría.",
-          highlight: "Conforme con la normativa de la Agencia Tributaria",
+          subtitle: "Consolida tu facturación y prepara los borradores de tus modelos trimestrales (Modelo 130, 303, 115, 390) con total claridad.",
+          highlight: "Diseñado conforme a la normativa de la Agencia Tributaria",
           details: [
             "Modelo 130: Pago fraccionado del 20% de IRPF calculado sobre el rendimiento neto",
             "Modelo 303: Autoliquidación del 21% de IVA con compensación automática de gastos",
@@ -693,7 +697,7 @@ export const translations: Record<Language, Translations> = {
           details: [
             "Deducción proporcional del 30% en luz, agua y gas para teletrabajo en vivienda",
             "Deducción íntegra del 100% en software, herramientas de trabajo y suscripciones SaaS",
-            "Recuperación directa de IVA e IRPF en desplazamientos y dietas de clientes",
+            "Control de gastos de manutención y suministros según criterios de la AEAT",
           ],
         },
         {
@@ -711,7 +715,7 @@ export const translations: Record<Language, Translations> = {
           tag: "Autónomo 04 · Motor regulatorio",
           title: "Especialista en burocracia y fiscalidad española",
           subtitle: "Motor normativo verificado con Reales Decretos, publicaciones del BOE y consultas vinculantes de Hacienda.",
-          highlight: "Supera a las consultas tradicionales en rapidez y precisión",
+          highlight: "Claridad inmediata 24/7 sin esperas administrativas",
           details: [
             "Respuestas inmediatas 24/7 a dudas fiscales y de alta de autónomos",
             "Sin llamadas de espera ni citas presenciales innecesarias",
@@ -728,11 +732,11 @@ export const translations: Record<Language, Translations> = {
       deductions: [
         { label: "Suministros y vivienda habitual", pct: "30% deducible" },
         { label: "Software y herramientas digitales", pct: "100% deducible" },
-        { label: "Dietas y viajes profesionales", pct: "Recuperación directa IVA" },
+        { label: "Dietas y viajes profesionales", pct: "Criterios deducibles AEAT" },
         { label: "Equipos informáticos y hardware", pct: "Amortización fiscal" },
       ],
       taxModelsTitle: "Motor oficial de modelos de Hacienda",
-      taxModelsSubtitle: "Conforme con la Agencia Tributaria",
+      taxModelsSubtitle: "Alineado con Criterios de la AEAT",
       deductionsTitle: "Escáner automático de deducciones",
       deductionsSubtitle: "Clasificación de gastos en tiempo real",
       invoicingTitle: "Facturación legal en España",
@@ -741,7 +745,7 @@ export const translations: Record<Language, Translations> = {
       intelligenceSubtitle: "Basada en el BOE y Reales Decretos",
       launchAssistant: "Abrir navegador",
       featureModuleTag: "Motor Autónomo",
-      autoFiledBadge: "Auto-presentado",
+      autoFiledBadge: "Borrador en 1 Clic",
       deductionIdentified: "Deducción Identificada",
       netSavings: "ahorro neto",
       issuedFactura: "Factura Emitida",
@@ -750,11 +754,11 @@ export const translations: Record<Language, Translations> = {
       ivaAdded: "+21% IVA",
       totalReconciled: "Total Conciliado",
       netBadge: "Neto recibido",
-      agenciaVerified: "Verificado Agencia Tributaria",
+      agenciaVerified: "Conforme a Criterios AEAT",
       trainedRoyalDecree: "Entrenado con el BOE y Reales Decretos actualizados",
-      gestorComparison: "99.4% más rápido que gestores tradicionales sin esperas",
+      gestorComparison: "Preparación instantánea y claridad 24/7 sin esperas",
       scrollHint: "Desplázate hacia abajo para ver la hoja de ruta y países",
-      compliantBadge: "Conforme con Hacienda",
+      compliantBadge: "Alineado con Hacienda",
     },
     aiLearns: {
       tag: "Sistema Adaptativo",
@@ -799,12 +803,16 @@ export const translations: Record<Language, Translations> = {
       noSpam: "Cero spam garantizado",
       builtInSpain: "Creado en España",
       earlyAccessPriority: "Prioridad en acceso anticipado",
+      gdprConsent: "Acepto la Política de Privacidad y consiento recibir avisos de lanzamiento.",
+      gdprNotice: "Responsable: Paprs AI · Finalidad: Gestión de lista de espera y avisos de producto · Legitimación: Consentimiento · Derechos: Acceso, rectificación y supresión en privacy@paprs.app",
     },
     footer: {
       copyright: "© 2026 Paprs. Todos los derechos reservados. Creado en España.",
       privacyPolicy: "Política de Privacidad",
       termsOfService: "Términos del Servicio",
+      legalNotice: "Aviso Legal",
       cookies: "Cookies",
+      disclaimer: "Aviso Legal: Paprs es un software de productividad y auto-gestión administrativa. Paprs no presta asesoramiento jurídico ni fiscal vinculante, ni actúa como gestoría administrativa colegiada. Las presentaciones oficiales son realizadas por el propio interesado o mediante nuestra red de gestores colaboradores.",
     },
     onboarding: {
       title: "Onboarding",
@@ -866,7 +874,7 @@ export const translations: Record<Language, Translations> = {
         {
           tag: "Paprs vs. Gestorías",
           question: "¿En qué se diferencia Paprs de contratar una gestoría tradicional?",
-          answer: "Las gestorías tradicionales cobran cientos o miles de euros y tardan días en responder dudas básicas. Paprs te ofrece claridad instantánea 24/7, comprueba los requisitos de tus expedientes antes de presentar y te guía en citas, tasas e impuestos con total transparencia y por una fracción de coste."
+          answer: "Las gestorías tradicionales cobran cientos de euros y tardan días en responder dudas básicas. Paprs te ofrece claridad 24/7, detecta requisitos faltantes y prepara borradores oficiales con total transparencia. Paprs es un software de auto-gestión; para trámites regulados, los usuarios presentan directamente con su certificado digital o a través de nuestros gestores colaboradores."
         },
         {
           tag: "Trámites Disponibles",
@@ -1091,7 +1099,7 @@ export const translations: Record<Language, Translations> = {
       matchOfficialRoute: "Assignar procediment oficial",
       matchOfficialRouteDesc: "Via i termini verificats",
       prepareFormFee: "Preparar formulari i taxa",
-      prepareFormFeeDesc: "Model EX-15 i Taxa 790-012 preemplenats",
+      prepareFormFeeDesc: "Model EX-00 i Taxa 790-052 preparats",
       reviewAndApprove: "Revisar i aprovar",
       reviewAndApproveDesc: "Comproves cada document abans de l'enviament",
       actionReadiness: "Estat del tràmit",
@@ -1100,8 +1108,8 @@ export const translations: Record<Language, Translations> = {
       docsMetric: "Docs",
       targetMetric: "Objectiu",
       urgentActionAlert: "Alerta d'acció urgent",
-      daysLeft: "Queden 52 dies",
-      urgentRenewalDesc: "Paprs ha preparat el Model EX-15 i la taxa. Manca un document d'assegurança al vault.",
+      daysLeft: "Quedan 52 dies",
+      urgentRenewalDesc: "Paprs ha preparat el Model EX-00 i la taxa. Manca un document d'assegurança al vault.",
       reviewPreparedAction: "Revisar acció preparada",
       aiRecommendation: "Acció recomanada",
       freshAddressProofNeeded: "Cal un volant de padró recent",
@@ -1117,13 +1125,13 @@ export const translations: Record<Language, Translations> = {
     },
     autonomo: {
       tag: "Motor Autònom",
-      title: "Treballar per compte propi a Espanya,\ntotalment automatitzat.",
+      title: "Treballar per compte propi a Espanya,\nsense caos i al dia.",
       slides: [
         {
           tag: "Autònom 01 · Declaracions tributàries",
           title: "Motor oficial de models fiscals espanyols",
-          subtitle: "Consolida i prepara les teves declaracions trimestrals (Model 130, 303, 115, 390) automàticament sense demores de gestoria.",
-          highlight: "Conforme amb la normativa de l'Agència Tributària",
+          subtitle: "Consolida la teva facturació i prepara els esborranys dels teus models trimestrals (Model 130, 303, 115, 390) amb total claredat.",
+          highlight: "Dissenyat conforme a la normativa de l'Agència Tributària",
           details: [
             "Model 130: Pagament fraccionat del 20% d'IRPF calculat sobre el rendiment net",
             "Model 303: Autoliquidació del 21% d'IVA amb compensació automàtica de despeses",
@@ -1138,7 +1146,7 @@ export const translations: Record<Language, Translations> = {
           details: [
             "Deducció proporcional del 30% en aigua, gas i electricitat per teletreball a casa",
             "Deducció íntegra del 100% en programari, eines de treball i subscripcions SaaS",
-            "Recuperació directa d'IVA i IRPF en viatges i àpats amb clients",
+            "Control de despeses de dietes i subministraments segons criteris de l'AEAT",
           ],
         },
         {
@@ -1156,7 +1164,7 @@ export const translations: Record<Language, Translations> = {
           tag: "Autònom 04 · Motor regulatori",
           title: "Especialista en burocràcia i fiscalitat espanyola",
           subtitle: "Motor normatiu verificat amb Reials Decrets, publicacions del BOE i consultes de la hisenda pública.",
-          highlight: "Supera les consultes tradicionals en rapidesa i precisió",
+          highlight: "Claredat immediata 24/7 sense esperes administratives",
           details: [
             "Respostes immediates 24/7 a dubtes fiscals i d'alta d'autònoms",
             "Sense trucades d'espera ni cites presencials innecessàries",
@@ -1173,12 +1181,12 @@ export const translations: Record<Language, Translations> = {
       deductions: [
         { label: "Subministraments i habitatge", pct: "30% deduïble" },
         { label: "Programari i eines SaaS", pct: "100% deduïble" },
-        { label: "Àpats i viatges professionals", pct: "Recuperació directa IVA" },
+        { label: "Àpats i viatges professionals", pct: "Criteris deduïbles AEAT" },
         { label: "Equips informàtics i maquinari", pct: "Amortització fiscal" },
       ],
       taxModelsTitle: "Motor oficial de models d'Hisenda",
-      taxModelsSubtitle: "Conforme amb l'Agència Tributària",
-      deductionsTitle: "Escàner automàtic de deduccions",
+      taxModelsSubtitle: "Alineat amb Criteris de l'AEAT",
+      deductionsTitle: "Escáner automàtic de deduccions",
       deductionsSubtitle: "Classificació de despeses en temps real",
       invoicingTitle: "Facturació legal a Espanya",
       invoicingSubtitle: "Càlcul automàtic d'IVA i retencions",
@@ -1186,7 +1194,7 @@ export const translations: Record<Language, Translations> = {
       intelligenceSubtitle: "Basada en el BOE i Reials Decrets",
       launchAssistant: "Obrir navegador",
       featureModuleTag: "Motor Autònom",
-      autoFiledBadge: "Auto-presentat",
+      autoFiledBadge: "Esborrany en 1 Clic",
       deductionIdentified: "Deducció Identificada",
       netSavings: "estalvi net",
       issuedFactura: "Factura Emesa",
@@ -1195,11 +1203,11 @@ export const translations: Record<Language, Translations> = {
       ivaAdded: "+21% IVA",
       totalReconciled: "Total Conciliat",
       netBadge: "Net rebut",
-      agenciaVerified: "Verificat Agència Tributària",
+      agenciaVerified: "Conforme a Criteris AEAT",
       trainedRoyalDecree: "Entrenat amb el BOE i Reials Decrets actualitzats",
-      gestorComparison: "99.4% més ràpid que gestors tradicionals sense esperes",
+      gestorComparison: "Preparació instantània i claredat 24/7 sense esperes",
       scrollHint: "Desplaça't avall per veure el full de ruta i països",
-      compliantBadge: "Conforme amb Hisenda",
+      compliantBadge: "Alineat amb Hisenda",
     },
     aiLearns: {
       tag: "Sistema Adaptatiu",
@@ -1244,12 +1252,16 @@ export const translations: Record<Language, Translations> = {
       noSpam: "Sense correu brossa",
       builtInSpain: "Creat a Espanya",
       earlyAccessPriority: "Prioritat d'accés anticipat",
+      gdprConsent: "Accepto la Política de Privadesa i consento rebre avisos de llançament.",
+      gdprNotice: "Responsable: Paprs AI · Finalitat: Gestió de llista d'espera i avisos de producte · Legitimació: Consentiment · Drets: Accés, rectificació i supressió a privacy@paprs.app",
     },
     footer: {
       copyright: "© 2026 Paprs. Tots els drets reservats. Creat a Espanya.",
       privacyPolicy: "Política de Privadesa",
       termsOfService: "Termes del Servei",
+      legalNotice: "Avís Legal",
       cookies: "Cookies",
+      disclaimer: "Avís Legal: Paprs és un programari de productivitat i autogestió administrativa. Paprs no presta assessorament jurídic ni fiscal vinculant, ni actua com a gestoria administrativa col·legiada. Les presentacions oficials són realitzades pel propi interessat o mitjançant la nostra xarxa de gestors col·laboradors.",
     },
     onboarding: {
       title: "Onboarding",
@@ -1311,7 +1323,7 @@ export const translations: Record<Language, Translations> = {
         {
           tag: "Paprs vs. Gestories",
           question: "En què es diferencia Paprs de contractar una gestoria tradicional?",
-          answer: "Les gestories tradicionals cobren centenars o milers d'euros i sovint triguen dies a respondre preguntes bàsiques. Paprs t'ofereix claredat instantània 24/7, comprova els requisits dels teus expedients i et guia en cites, taxes i impostos amb total transparència i per una fracció de cost."
+          answer: "Les gestories tradicionals cobren centenars d'euros i sovint triguen dies a respondre preguntes bàsiques. Paprs t'ofereix claredat instantània 24/7, detecta requisits que falten i prepara esborranys oficials amb total transparència. Paprs és un programari d'autogestió; per a tràmits regulats, els usuaris presenten directament amb el seu certificat digital o a través dels nostres gestors col·laboradors."
         },
         {
           tag: "Tràmits Disponibles",

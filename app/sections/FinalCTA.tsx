@@ -8,6 +8,7 @@ import { useLanguage } from "../context/LanguageContext";
 export default function FinalCTA() {
   const { dict } = useLanguage();
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -26,6 +27,10 @@ export default function FinalCTA() {
     event.preventDefault();
     const emailToSubmit = email.trim();
     if (!emailToSubmit) return;
+    if (!consent) {
+      setErrorMessage("Please accept the privacy policy to continue.");
+      return;
+    }
 
     if (resetTimerRef.current) {
       clearTimeout(resetTimerRef.current);
@@ -110,7 +115,7 @@ export default function FinalCTA() {
           </div>
           <button
             type="submit"
-            disabled={isSubmitting || isSubmitted}
+            disabled={isSubmitting || isSubmitted || !consent}
             className="ink-button group flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-black px-5 text-center font-syne text-[11px] font-bold tracking-wider text-white uppercase shadow-md disabled:cursor-not-allowed disabled:bg-zinc-800 sm:min-h-12 sm:rounded-full sm:px-6 sm:text-xs"
           >
             {isSubmitting ? (
@@ -131,6 +136,31 @@ export default function FinalCTA() {
             )}
           </button>
         </form>
+
+        {/* GDPR Layer 1 Consent & Notice */}
+        <div className="flex max-w-xl flex-col items-center gap-1.5 px-2">
+          <label className="flex cursor-pointer items-center gap-2 font-sans text-[11px] text-zinc-600 sm:text-xs">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => {
+                setConsent(e.target.checked);
+                if (errorMessage) setErrorMessage(null);
+              }}
+              required
+              className="h-3.5 w-3.5 rounded border-zinc-300 text-black accent-black focus:ring-black cursor-pointer"
+            />
+            <span>
+              {dict.finalCTA.gdprConsent}{" "}
+              <a href="/privacy" className="font-semibold text-black underline underline-offset-2 hover:text-zinc-700">
+                {dict.footer.privacyPolicy}
+              </a>
+            </span>
+          </label>
+          <p className="font-mono text-[8px] leading-tight text-zinc-400 sm:text-[9px]">
+            {dict.finalCTA.gdprNotice}
+          </p>
+        </div>
 
         <p
           className={`min-h-5 font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider ${

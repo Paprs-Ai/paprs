@@ -67,14 +67,20 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="site-footer border-t border-zinc-100 bg-[#FFFFFF] px-4 py-8 text-center font-mono text-[9px] text-zinc-500 select-none sm:px-6 sm:py-12 sm:text-[10px]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>{dict.footer.copyright}</p>
-          <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-6 items-center">
-            <a href="/career" className="hover:text-black transition-colors font-bold text-black/80">Careers (3 Open)</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.privacyPolicy}</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.termsOfService}</a>
-            <a href="#" className="hover:text-black transition-colors font-medium">{dict.footer.cookies}</a>
+        <div className="max-w-6xl mx-auto flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>{dict.footer.copyright}</p>
+            <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-6 items-center">
+              <a href="/career" className="hover:text-black transition-colors font-bold text-black/80">Careers (3 Open)</a>
+              <a href="/aviso-legal" className="hover:text-black transition-colors font-medium">{dict.footer.legalNotice}</a>
+              <a href="/privacy" className="hover:text-black transition-colors font-medium">{dict.footer.privacyPolicy}</a>
+              <a href="/terms" className="hover:text-black transition-colors font-medium">{dict.footer.termsOfService}</a>
+              <a href="/cookies" className="hover:text-black transition-colors font-medium">{dict.footer.cookies}</a>
+            </div>
           </div>
+          <p className="text-[8px] sm:text-[9px] leading-relaxed text-zinc-400 max-w-4xl mx-auto">
+            {dict.footer.disclaimer}
+          </p>
         </div>
       </footer>
 

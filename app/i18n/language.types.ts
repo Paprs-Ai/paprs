@@ -287,12 +287,16 @@ export interface Translations {
     noSpam: string;
     builtInSpain: string;
     earlyAccessPriority: string;
+    gdprConsent: string;
+    gdprNotice: string;
   };
   footer: {
     copyright: string;
     privacyPolicy: string;
     termsOfService: string;
+    legalNotice: string;
     cookies: string;
+    disclaimer: string;
   };
   onboarding: {
     title: string;
