@@ -446,43 +446,6 @@ p {
     grid-column: span 5 / span 5;
   }
 
-  .story-section--how .how-document-pile {
-    display: block;
-    z-index: 15;
-  }
-
-  .story-section--how .how-document-pile .how-pile-anchor {
-    left: 62%;
-    top: 67%;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card {
-    transform-origin: center;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--1 {
-    transform: translate(-95%, -92%) rotate(-10deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--2 {
-    transform: translate(-32%, -44%) rotate(8deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--3 {
-    transform: translate(-106%, -42%) rotate(-15deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--4 {
-    transform: translate(-6%, -86%) rotate(12deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--5 {
-    transform: translate(-70%, -65%) rotate(-5deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--6 {
-    transform: translate(-44%, -24%) rotate(4deg) scale(0.48) !important;
-  }
 
   .story-section--how .how-slide-label {
     top: max(4.25rem, calc(env(safe-area-inset-top) + 3.75rem));
@@ -878,43 +841,6 @@ p {
     grid-column: span 5 / span 5;
   }
 
-  .story-section--how .how-document-pile {
-    display: block;
-    z-index: 15;
-  }
-
-  .story-section--how .how-document-pile .how-pile-anchor {
-    left: 62%;
-    top: 67%;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card {
-    transform-origin: center;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--1 {
-    transform: translate(-95%, -92%) rotate(-10deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--2 {
-    transform: translate(-32%, -44%) rotate(8deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--3 {
-    transform: translate(-106%, -42%) rotate(-15deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--4 {
-    transform: translate(-6%, -86%) rotate(12deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--5 {
-    transform: translate(-70%, -65%) rotate(-5deg) scale(0.48) !important;
-  }
-
-  .story-section--how .how-document-pile .how-pile-card--6 {
-    transform: translate(-44%, -24%) rotate(4deg) scale(0.48) !important;
-  }
 
   .story-section--how .how-slide-label {
     top: max(4.25rem, calc(env(safe-area-inset-top) + 3.75rem));

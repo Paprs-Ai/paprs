@@ -129,12 +129,6 @@ export default function HowItWorks() {
     return outStart + ratio * (outEnd - outStart);
   };
 
-  const getPileCardStyle = (x: number, y: number, r: number) => ({
-    opacity: 1,
-    transform: `translate(calc(-50% + ${x}vw), calc(-50% + ${y}vh)) rotate(${r}deg)`,
-    transformOrigin: "center center",
-  });
-
   const s0p = clamp01((progress - 0.0) / 0.1111);
   const s1p = clamp01((progress - 0.1111) / 0.1111);
   const s2p = clamp01((progress - 0.2222) / 0.1111);
@@ -147,13 +141,6 @@ export default function HowItWorks() {
 
   const activeSlide = Math.min(8, Math.floor(progress * 9));
   const translatePercent = getSteppedTranslatePercent(progress, 9, HOW_HOLD_FRACTION);
-
-  const fc1 = getPileCardStyle(-28, -12, -8);
-  const fc2 = getPileCardStyle(-22, 10, 7);
-  const fc3 = getPileCardStyle(-30, 4, -14);
-  const fc4 = getPileCardStyle(-18, -8, 12);
-  const fc5 = getPileCardStyle(-26, -4, -5);
-  const fc6 = getPileCardStyle(-21, 6, 3);
 
   const text1Opacity = interp(s2p, 0.0, 0.22, 1, 0);
   const text2Opacity = interp(s2p, 0.22, 0.28, 0, 1) * (1 - interp(s2p, 0.48, 0.54, 0, 1));
@@ -230,13 +217,13 @@ export default function HowItWorks() {
     <div
       id="how-it-works"
       ref={ref}
-      className="story-section--how relative w-full h-[900vh]"
+      className="story-section--how relative w-full h-[900vh] z-30"
     >
       {/* ── Sticky Fullscreen Viewport ── */}
-      <div className="sticky top-0 w-full h-svh overflow-hidden flex flex-col justify-between font-sans select-none text-black">
+      <div className="sticky top-0 w-full h-svh overflow-hidden flex flex-col justify-between font-sans select-none text-black z-30">
 
         {/* ── Slider track wrapper ── */}
-        <div className="absolute inset-0 overflow-hidden z-10">
+        <div className="absolute inset-0 overflow-hidden z-30">
           <div
             className="flex h-full"
             style={{
@@ -508,40 +495,7 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* ── Chaos Card Pile Overlay (Slide 0) ── */}
-        <div
-          className="how-document-pile absolute inset-0 pointer-events-none z-[5]"
-          style={{
-            opacity: `calc(clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1) * 0.8)`,
-            transform: `translateY(calc((var(--doc-transition-progress, 0) - 1) * var(--viewport-height-px, 100vh)))`,
-          }}
-        >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              transform: `translateX(-${translatePercent * 9}%)`,
-            }}
-          >
-            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
-              <div className="how-pile-card how-pile-card--1" style={fc1}><DocumentCard type="nie" status="chaos" /></div>
-            </div>
-            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "7deg" } as React.CSSProperties}>
-              <div className="how-pile-card how-pile-card--2" style={fc2}><DocumentCard type="padron" status="chaos" /></div>
-            </div>
-            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-14deg" } as React.CSSProperties}>
-              <div className="how-pile-card how-pile-card--3" style={fc3}><DocumentCard type="seg_social" status="chaos" /></div>
-            </div>
-            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "12deg" } as React.CSSProperties}>
-              <div className="how-pile-card how-pile-card--4" style={fc4}><DocumentCard type="hacienda" status="chaos" /></div>
-            </div>
-            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "-5deg" } as React.CSSProperties}>
-              <div className="how-pile-card how-pile-card--5" style={fc5}><DocumentCard type="nie" status="chaos" /></div>
-            </div>
-            <div className="how-pile-anchor absolute left-1/2 top-1/2" style={{ "--paper-rotate": "3deg" } as React.CSSProperties}>
-              <div className="how-pile-card how-pile-card--6" style={fc6}><DocumentCard type="seg_social" status="chaos" /></div>
-            </div>
-          </div>
-        </div>
+
 
         {/* ── Sticky Phone Simulator Overlay (Slides 2-8) ── */}
         {phoneVisibilityOpacity > 0 && (

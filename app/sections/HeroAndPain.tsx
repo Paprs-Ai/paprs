@@ -1293,26 +1293,7 @@ export default function HeroAndPain() {
   const [lettersAnimate, setLettersAnimate] = useState(false);
   const { dict } = useLanguage();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const viewHeight = window.innerHeight;
-      const totalScrollable = rect.height - viewHeight;
-      const scrolledPast = -rect.top - totalScrollable;
-      const progressValue = Math.max(0, Math.min(1, scrolledPast / viewHeight));
-      document.documentElement.style.setProperty('--doc-transition-progress', `${progressValue}`);
-      document.documentElement.style.setProperty('--viewport-height-px', `${viewHeight}px`);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, [ref]);
+
 
   useEffect(() => {
     const t = setTimeout(() => setLettersAnimate(true), 500);
@@ -1362,26 +1343,12 @@ export default function HeroAndPain() {
   const activeSlide = Math.min(3, Math.round(translatePercent / SW));
   const sliderOpacity = interp(progress, 0.97, 1.0, 1, 0);
 
-  const bridgeGather = interp(progress, 0.78, 0.97, 0, 1);
-  const bc1 = { x: interp(bridgeGather, 0, 1, -32, -30), y: interp(bridgeGather, 0, 1, -22, -10), r: interp(bridgeGather, 0, 1, -15, -8) };
-  const bc2 = { x: interp(bridgeGather, 0, 1, -24, -26), y: interp(bridgeGather, 0, 1,  18,   8), r: interp(bridgeGather, 0, 1,  12,  6) };
-  const bc3 = { x: interp(bridgeGather, 0, 1,   2, -28), y: interp(bridgeGather, 0, 1, -32,  -4), r: interp(bridgeGather, 0, 1,  -5, -12) };
-  const bc4 = { x: interp(bridgeGather, 0, 1,   8, -22), y: interp(bridgeGather, 0, 1,  24,  12), r: interp(bridgeGather, 0, 1,  20, 10) };
-  const bc5 = { x: interp(bridgeGather, 0, 1,  34, -24), y: interp(bridgeGather, 0, 1, -20,  -8), r: interp(bridgeGather, 0, 1, -18, -5) };
-  const bc6 = { x: interp(bridgeGather, 0, 1,  24, -20), y: interp(bridgeGather, 0, 1,  30,   4), r: interp(bridgeGather, 0, 1,   8,  4) };
-
   const headlineLeft = dict.hero.headlineLeft;
   const headlineRight = dict.hero.headlineRight;
 
   return (
-    <div ref={ref} id="pain" className="story-section story-section--hero relative h-[500svh] w-full">
-      <div
-        className="story-viewport sticky top-0 flex h-[100svh] w-full flex-col lg:flex-row"
-        style={{
-          opacity: `calc(1 - clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
-          zIndex: `calc(35 - clamp(0, (var(--doc-transition-progress, 0) - 0.5) * 1000000, 10))`,
-        } as React.CSSProperties}
-      >
+    <div ref={ref} id="pain" className="story-section story-section--hero relative h-[500svh] w-full z-30">
+      <div className="story-viewport sticky top-0 flex h-[100svh] w-full flex-col lg:flex-row z-30">
 
         {/* ── BACKGROUNDS ── */}
         {progress < 0.18 && (
@@ -1577,7 +1544,7 @@ export default function HeroAndPain() {
 
         {/* ── PAIN SLIDES (progress >= 0.18) ── */}
         {progress >= 0.18 && (
-          <div className="absolute inset-0 w-full h-full overflow-hidden z-20 flex items-center" style={{ opacity: sliderOpacity }}>
+          <div className="absolute inset-0 w-full h-full overflow-hidden z-30 flex items-center">
             <div
               className="flex h-full"
               style={{
@@ -1783,48 +1750,7 @@ export default function HeroAndPain() {
           </div>
         )}
 
-        {/* ── BRIDGE CHAOS CARDS ── */}
-        {progress >= 0.80 && (
-          <div
-            className="pointer-events-none absolute inset-0 hidden lg:block"
-            style={{
-              opacity: interp(progress, 0.80, 0.86, 0, 0.65),
-              transform: `translateY(calc(var(--doc-transition-progress, 0) * var(--viewport-height-px, 100vh)))`,
-              zIndex: `calc(15 + clamp(0, var(--doc-transition-progress, 0) * 1000000, 25))` as unknown as number,
-            }}
-          >
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc1.x}vw), calc(-50% + ${bc1.y}vh)) rotate(${bc1.r}deg)` }}>
-                <DocumentCard type="nie" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc2.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc2.x}vw), calc(-50% + ${bc2.y}vh)) rotate(${bc2.r}deg)` }}>
-                <DocumentCard type="padron" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc3.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc3.x}vw), calc(-50% + ${bc3.y}vh)) rotate(${bc3.r}deg)` }}>
-                <DocumentCard type="seg_social" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc4.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc4.x}vw), calc(-50% + ${bc4.y}vh)) rotate(${bc4.r}deg)` }}>
-                <DocumentCard type="hacienda" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc5.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc5.x}vw), calc(-50% + ${bc5.y}vh)) rotate(${bc5.r}deg)` }}>
-                <DocumentCard type="nie" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc6.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc6.x}vw), calc(-50% + ${bc6.y}vh)) rotate(${bc6.r}deg)` }}>
-                <DocumentCard type="seg_social" status="chaos" />
-              </div>
-            </div>
-          </div>
-        )}
+
 
         {/* ── SLIDE DOTS ── */}
         {progress >= 0.18 && (

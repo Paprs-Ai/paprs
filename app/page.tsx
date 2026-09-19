@@ -8,6 +8,7 @@ import Countries from "./sections/Countries";
 import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
+import DocumentPileBridge from "./components/DocumentPileBridge";
 
 export default function Home() {
   const { dict } = useLanguage();
@@ -57,6 +58,7 @@ export default function Home() {
       <main className="flex-1">
         <HeroAndPain />
         <HowItWorks />
+        <DocumentPileBridge />
         {/* <AutonomoEngine /> */}
         <AILearns />
         <Countries />
