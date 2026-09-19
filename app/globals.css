@@ -1277,6 +1277,14 @@ p {
   }
 }
 
+.animate-line-dash {
+  animation: lineDash 1.2s linear infinite;
+}
+
+.animate-line-dash-reverse {
+  animation: lineDash 1.2s linear infinite reverse;
+}
+
 @keyframes softPulse {
   0%, 100% {
     opacity: 0.55;

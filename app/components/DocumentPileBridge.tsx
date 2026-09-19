@@ -88,10 +88,10 @@ export default function DocumentPileBridge() {
       const painScrollable = painHeight - winH;
       const painEnd = painTop + painScrollable;
 
-      // Slide 3 is active during the last 28% of pain (progress >= 0.72)
-      const slide3Start = painTop + painScrollable * 0.72;
-      const gatherStart = painTop + painScrollable * 0.76;
-      const gatherEnd   = painTop + painScrollable * 0.94;
+      // Final slide (Slide 4) is active during the last 20% of pain (progress >= 0.78)
+      const finalSlideStart = painTop + painScrollable * 0.78;
+      const gatherStart = painTop + painScrollable * 0.80;
+      const gatherEnd   = painTop + painScrollable * 0.95;
 
       // ─── 2. Transition zone between pain and how-it-works ───
       const transStart = painEnd;
@@ -101,8 +101,8 @@ export default function DocumentPileBridge() {
       const howScrollable = howHeight - winH;
       const howSlide0End = howTop + (howScrollable / 9);
 
-      // Active window: from when Slide 3 starts gathering until How Slide 0 exits
-      const isVisible = scrollY >= slide3Start && scrollY <= (howSlide0End + winH * 0.5);
+      // Active window: from when final slide starts gathering until How Slide 0 exits
+      const isVisible = scrollY >= finalSlideStart && scrollY <= (howSlide0End + winH * 0.5);
 
       if (!isVisible) {
         setScrollState(prev => prev.visible ? { ...prev, visible: false } : prev);

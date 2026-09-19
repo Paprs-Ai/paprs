@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronRight,
   Clock,
+  Compass,
   CreditCard,
   FileText,
   FileWarning,
@@ -18,11 +19,14 @@ import {
   Layers,
   Lock,
   MapPin,
+  PhoneCall,
   Play,
   RefreshCw,
   Search,
+  ServerCrash,
   ShieldAlert,
   Sparkles,
+  WifiOff,
   X,
   XCircle,
 } from "lucide-react";
@@ -39,7 +43,7 @@ import {
 import { useScrollProgress } from "../hooks/useScrollProgress";
 import { useLanguage } from "../context/LanguageContext";
 
-// ─── Visual 1: The Circular Trap (Proper Geometric Circle & Monochrome) ──────
+// ─── Visual 1: The Circular Trap (Proper Geometric Circle & Continuous Motion) ──────
 function CircularTrapVisual({
   nodes,
   deadlock,
@@ -58,7 +62,7 @@ function CircularTrapVisual({
 }) {
   return (
     <div className="relative w-full max-w-[740px] mx-auto select-none">
-      {/* ── DESKTOP & TABLET: Open Spatial Fragmented Canvas (sm:block) ── */}
+      {/* ── DESKTOP & TABLET: Open Spatial Continuous Canvas (sm:block) ── */}
       <div className="hidden sm:block relative w-full h-[470px] lg:h-[490px]">
         {/* Faint spatial blueprint grid background without bounding box */}
         <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none" />
@@ -69,40 +73,49 @@ function CircularTrapVisual({
         <div className="absolute bottom-0 left-0 text-zinc-300 font-mono text-xs pointer-events-none">+</div>
         <div className="absolute bottom-0 right-0 text-zinc-300 font-mono text-xs pointer-events-none">+</div>
 
+
         {/* ── SVG DEPENDENCY LOOP (BEHIND CARDS: z-0) ── */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 700 480" fill="none">
-          <defs>
-            <marker id="arrow-zinc-card" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-              <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#18181b" />
-            </marker>
-          </defs>
-
           {/* Inner subtle guide circle framing center hub */}
           <circle cx="350" cy="240" r="130" stroke="#e4e4e7" strokeWidth="1" strokeDasharray="3 3" />
           
           {/* Outer faint boundary orbit */}
           <circle cx="350" cy="240" r="226" stroke="#f4f4f5" strokeWidth="1" strokeDasharray="4 4" />
 
-          {/* THE EXPANDED GEOMETRIC DOTTED CIRCLE (Radius 210px from center 350, 240) */}
-          <circle cx="350" cy="240" r="210" stroke="#71717a" strokeWidth="1.75" strokeDasharray="6 6" />
+          {/* THE EXPANDED CONTINUOUS DOTTED CIRCLE (Active animated motion) */}
+          <circle
+            cx="350"
+            cy="240"
+            r="210"
+            stroke="#18181b"
+            strokeWidth="2"
+            strokeDasharray="6 6"
+            className="animate-line-dash"
+          />
 
-          {/* 4 Clockwise Directional Arrowheads — Placed PRECISELY where the circular dots touch each card */}
-          {/* 1. Touching Rental Card (left edge at x=432, y=48) - tangent angle: +24° */}
+          {/* Traveling Pulse Indicators on the Orbit */}
+          <circle cx="350" cy="30" r="4" fill="#000000" className="animate-ping opacity-60" />
+          <circle cx="560" cy="240" r="4" fill="#000000" className="animate-ping opacity-60" />
+          <circle cx="350" cy="450" r="4" fill="#000000" className="animate-ping opacity-60" />
+          <circle cx="140" cy="240" r="4" fill="#000000" className="animate-ping opacity-60" />
+
+          {/* 4 Clockwise Directional Arrowheads */}
+          {/* 1. Touching Rental Card (x=432, y=48) */}
           <g transform="translate(432, 48) rotate(24)">
             <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
           </g>
 
-          {/* 2. Touching Padrón Card (top edge at x=539, y=332) - tangent angle: +116° */}
+          {/* 2. Touching Padrón Card (x=539, y=332) */}
           <g transform="translate(539, 332) rotate(116)">
             <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
           </g>
 
-          {/* 3. Touching NIE Card (right edge at x=266, y=432) - tangent angle: +204° */}
+          {/* 3. Touching NIE Card (x=266, y=432) */}
           <g transform="translate(266, 432) rotate(204)">
             <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
           </g>
 
-          {/* 4. Touching Bank Card (bottom edge at x=161, y=148) - tangent angle: +296° */}
+          {/* 4. Touching Bank Card (x=161, y=148) */}
           <g transform="translate(161, 148) rotate(296)">
             <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
           </g>
@@ -159,7 +172,7 @@ function CircularTrapVisual({
           </div>
         </div>
 
-        {/* ── 4 FRAGMENTED CARDS (z-10: On top of the dotted circle) ── */}
+        {/* ── 4 FRAGMENTED CARDS WITH LIVE PAIN COMMENT ANNOTATIONS (z-10) ── */}
         {/* Card 1: Bank (Top Left) */}
         <div className="absolute top-2 left-2 w-[255px] lg:w-[270px] -rotate-1 transition-transform hover:rotate-0 z-10 hover:z-30">
           <div className="absolute -top-3 left-4 z-30 bg-zinc-950 text-white font-mono text-[8.5px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md border border-zinc-800">
@@ -192,6 +205,11 @@ function CircularTrapVisual({
                 <span className="w-3 h-2 rounded bg-zinc-400 inline-block" />
                 <span>ES91 •••• •••• •••• 4821</span>
               </div>
+            </div>
+
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Banco: 'Ley 10/2010 impide abrir cuenta a extranjeros sin NIE asignado.'"
             </div>
 
             <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
@@ -234,6 +252,11 @@ function CircularTrapVisual({
               </div>
             </div>
 
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Propietario: 'El seguro de impagos rechaza IBAN extranjero sin NIE.'"
+            </div>
+
             <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
               <Lock className="w-2.5 h-2.5 text-black flex-shrink-0" />
               <span className="truncate">{nodes.rental.blockReason}</span>
@@ -272,6 +295,11 @@ function CircularTrapVisual({
               <div className="text-[9px] text-zinc-800 font-semibold leading-tight truncate">
                 Volante de Empadronamiento
               </div>
+            </div>
+
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Ayuntamiento: 'Sin contrato firmado de 6 meses y DNI del casero no hay padrón.'"
             </div>
 
             <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
@@ -314,6 +342,11 @@ function CircularTrapVisual({
               </div>
             </div>
 
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Policía: 'Sin padrón histórico municipal menor a 90 días no se tramita el NIE.'"
+            </div>
+
             <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
               <Lock className="w-2.5 h-2.5 text-black flex-shrink-0" />
               <span className="truncate">{nodes.nie.blockReason}</span>
@@ -332,15 +365,15 @@ function CircularTrapVisual({
         </div>
 
         {[
-          { key: "bank", data: nodes.bank, icon: Landmark, next: "Locks Long-Term Rental" },
-          { key: "rental", data: nodes.rental, icon: Home, next: "Locks Padrón Municipal" },
-          { key: "padron", data: nodes.padron, icon: Building2, next: "Locks NIE / TIE Card" },
-          { key: "nie", data: nodes.nie, icon: FileText, next: "Locks Spanish Bank Account" },
+          { key: "bank", data: nodes.bank, icon: Landmark, next: "Locks Long-Term Rental", quote: "Banco: Exige NIE para abrir cuenta española." },
+          { key: "rental", data: nodes.rental, icon: Home, next: "Locks Padrón Municipal", quote: "Inmobiliaria: Rechaza cuenta extranjera para la fianza." },
+          { key: "padron", data: nodes.padron, icon: Building2, next: "Locks NIE / TIE Card", quote: "Ayuntamiento: Exige contrato de alquiler registrado." },
+          { key: "nie", data: nodes.nie, icon: FileText, next: "Locks Spanish Bank Account", quote: "Policía: Exige padrón reciente para expedir el NIE." },
         ].map((item) => {
           const Icon = item.icon;
           return (
-            <div key={item.key} className="p-3 rounded-2xl bg-white border border-zinc-200 shadow-sm relative">
-              <div className="flex items-start justify-between gap-1 mb-1.5">
+            <div key={item.key} className="p-3 rounded-2xl bg-white border border-zinc-200 shadow-sm relative space-y-1.5">
+              <div className="flex items-start justify-between gap-1">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-900 flex-shrink-0">
                     <Icon className="w-3 h-3" />
@@ -353,6 +386,9 @@ function CircularTrapVisual({
                 <span className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-300 text-zinc-800 text-[7.5px] font-mono font-bold uppercase">
                   Locked
                 </span>
+              </div>
+              <div className="bg-zinc-100/90 border border-zinc-200 rounded p-1.5 text-[7.5px] font-mono text-zinc-700 italic">
+                {item.quote}
               </div>
               <div className="flex items-center justify-between text-[8.5px] font-mono text-zinc-600 bg-zinc-50 border border-zinc-200/80 rounded-md px-2 py-1">
                 <span className="text-zinc-900 font-semibold flex items-center gap-1">
@@ -369,444 +405,224 @@ function CircularTrapVisual({
   );
 }
 
-// ─── Visual 2: The DIY Bureaucratic Route (Clean Dotted Path & Direct Failure) ──
+// ─── Visual 2: The Sede Labyrinth & Appointment Blackout (Getting Lost in the Maze) ──
 function SedeBlackoutVisual({
   path,
+  sim,
+  alertTitle,
+  alertMessage,
 }: {
-  path?: {
-    pathTitle: string;
-    pathSub: string;
-    step1: { num: string; tag: string; title: string; action: string; trap: string };
-    step2: { num: string; tag: string; title: string; action: string; trap: string };
-    step3: { num: string; tag: string; title: string; action: string; trap: string };
-    failDesk: {
-      stepNum: string;
-      badge: string;
-      title: string;
-      officerLabel: string;
-      quote: string;
-      auditRow1Label: string;
-      auditRow1Val: string;
-      auditRow2Label: string;
-      auditRow2Val: string;
-      impact1: string;
-      impact2: string;
-      impact3: string;
-      footnote: string;
-    };
-  };
+  path?: any;
   sim?: any;
   alertTitle?: string;
   alertMessage?: string;
 }) {
-  const p = path || {
-    pathTitle: "THE DIY BUREAUCRATIC ROUTE",
-    pathSub: "3 Fragile Steps ➔ 1 Desk Rejection",
-    step1: {
-      num: "01",
-      tag: "GUIDES",
-      title: "Outdated YouTube & Blogs",
-      action: "Followed 2019 expat advice with 200k views",
-      trap: "Walk-in visits abolished · Office closed in 2022",
-    },
-    step2: {
-      num: "02",
-      tag: "SEDE PORTAL",
-      title: "Sede Dropdown Maze",
-      action: "Navigated 50+ ambiguous procedure codes",
-      trap: "Booked Huellas instead of Asignación de NIE",
-    },
-    step3: {
-      num: "03",
-      tag: "DOCUMENTS",
-      title: "Forms & ATM Tasas",
-      action: "Paid Model 790 tax at bank terminal",
-      trap: "Wrong form model (EX-15 instead of EX-18)",
-    },
-    failDesk: {
-      stepNum: "04",
-      badge: "IN-PERSON REJECTION",
-      title: "Turned Away at the Government Window",
-      officerLabel: "POLICÍA / EXTRANJERÍA OFFICIAL · DESK 04",
-      quote: "“You booked an appointment for Huellas (fingerprints), but your case requires Asignación de NIE. Form EX-15 cannot be processed here. We cannot change your code at the desk. Please leave and book a new appointment online.”",
-      auditRow1Label: "CITA CODE BOOKED",
-      auditRow1Val: "Huellas (Code 01) ➔ Mismatch: Requires Initial Asignación (Code 12)",
-      auditRow2Label: "FORM PRESENTED",
-      auditRow2Val: "Model EX-15 ➔ Rejected: Incompatible with this procedure code",
-      impact1: "4–6 WEEKS LOST WAITING",
-      impact2: "0% DESK TOLERANCE",
-      impact3: "↺ RESET TO DAY 1 · START OVER",
-      footnote: "Spanish bureaucracy has zero fault tolerance. 1 mismatched code voids the appointment.",
-    },
-  };
-
   return (
     <div className="relative w-full max-w-[740px] mx-auto select-none">
-      {/* ── DESKTOP & TABLET: Clear 3-Step Flow ➔ Desk Failure (sm:block) ── */}
-      <div className="hidden sm:block relative w-full flex flex-col justify-between py-2">
+      {/* ── DESKTOP & TABLET: 3 Diverging Government Routes & Blackout (sm:block) ── */}
+      <div className="hidden sm:block relative w-full space-y-3 py-1">
         {/* Subtle background blueprint dots */}
         <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:20px_20px] opacity-60 pointer-events-none -z-10" />
 
-        {/* ── TOP HEADER SEQUENCE RIBBON ── */}
-        <div className="bg-white border border-zinc-300 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between mb-4">
+        {/* ── TOP HEADER SEQUENCE RIBBON & CONTINUOUS CONNECTORS ── */}
+        <div className="bg-white border border-zinc-300 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between">
           <div className="flex items-center gap-2 font-mono">
             <span className="w-2.5 h-2.5 rounded-full border-2 border-black bg-white" />
             <span className="text-[10px] font-bold uppercase tracking-wider text-black">
-              {p.pathTitle}
+              THE CITA PREVIA LABYRINTH
             </span>
             <span className="text-[8.5px] text-zinc-500 font-normal hidden md:inline">
-              · {p.pathSub}
+              · 3 Conflicting Paths · 0 Available Slots
             </span>
           </div>
           <div className="flex items-center gap-2 font-mono text-[8px] font-bold">
-            <span className="text-zinc-400 uppercase">THE FRAGILE ROUTE</span>
-            <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
             <span className="px-2.5 py-1 rounded-full bg-white border-2 border-black text-black font-black uppercase tracking-wider flex items-center gap-1.5 shadow-xs">
-              <X className="w-3.5 h-3.5 stroke-[3] text-black" />
-              <span>REJECTED AT DESK</span>
+              <Compass className="w-3.5 h-3.5 text-black stroke-[2.5]" />
+              <span>LOST IN THE MAZE</span>
             </span>
           </div>
         </div>
 
-        {/* ── THE 3 STEPS WITH EXPLICIT, BOLD DOTTED CONNECTORS ── */}
-        <div className="flex items-stretch justify-between gap-1.5">
-          {/* STEP 01 */}
-          <div className="flex-1 bg-white border border-zinc-300 rounded-2xl p-3.5 shadow-xs hover:border-black transition-colors flex flex-col justify-between min-h-[175px]">
+        {/* ── 3 CONFLICTING BUREAUCRATIC PATHWAYS (HORIZONTAL GRID) ── */}
+        <div className="grid grid-cols-3 gap-3">
+          {/* Path 1: Sede Electrónica (Web Portal) */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs flex flex-col justify-between min-h-[265px] hover:border-black transition-all">
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-mono font-black text-black px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-200">
-                  {p.step1.num}
-                </span>
-                <span className="text-[7.5px] font-mono text-zinc-500 font-bold uppercase">
-                  {p.step1.tag}
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">PATH 01 · WEB PORTAL</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <ServerCrash className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Error 504</span>
                 </span>
               </div>
-              <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight mb-1.5">
-                {p.step1.title}
-              </h5>
-              <p className="text-[8.5px] font-mono text-zinc-600 leading-snug mb-2">
-                {p.step1.action}
-              </p>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Globe className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">Sede Electrónica</h5>
+              </div>
+
+              {/* Simulated Portal Dropdown Box */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 font-mono text-[8px] space-y-1.5">
+                <div className="text-zinc-500 text-[7px] uppercase font-bold">Trámite Seleccionado</div>
+                <div className="bg-white border border-zinc-300 px-2 py-1 rounded text-zinc-900 font-bold text-[7.5px] truncate">
+                  POLICÍA - ASIGNACIÓN NIE
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1 bg-zinc-100 p-1.5 rounded border border-zinc-200">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black shrink-0" />
+                  <span className="leading-tight">"En este momento no hay citas disponibles."</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-zinc-50 border border-zinc-200/80 rounded-xl p-2.5 font-mono text-[8px] text-zinc-900 font-semibold flex items-start gap-2">
-              <div className="w-4 h-4 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-              </div>
-              <span className="leading-snug">{p.step1.trap}</span>
+
+            {/* Pain Comment Callout */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 leading-snug">
+              <span className="font-bold text-black block mb-0.5">Intento #184 · 00:00:01 AM</span>
+              Página colapsada por bots. IP temporalmente bloqueada por exceso de peticiones.
             </div>
           </div>
 
-          {/* DOTTED CONNECTOR 1 -> 2 (CLEAN SVG VECTOR ARROW) */}
-          <div className="flex items-center justify-center w-8 lg:w-10 shrink-0 px-0.5">
-            <svg className="w-full h-5 overflow-visible" viewBox="0 0 36 20" fill="none">
-              <line
-                x1="0"
-                y1="10"
-                x2="24"
-                y2="10"
-                stroke="#000000"
-                strokeWidth="2"
-                strokeDasharray="4 3"
-              />
-              <polygon points="22,5 32,10 22,15" fill="#000000" />
-            </svg>
-          </div>
-
-          {/* STEP 02 */}
-          <div className="flex-1 bg-white border border-zinc-300 rounded-2xl p-3.5 shadow-xs hover:border-black transition-colors flex flex-col justify-between min-h-[175px]">
+          {/* Path 2: Teléfono 060 (Citizen Info Call Center) */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs flex flex-col justify-between min-h-[265px] hover:border-black transition-all">
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-mono font-black text-black px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-200">
-                  {p.step2.num}
-                </span>
-                <span className="text-[7.5px] font-mono text-zinc-500 font-bold uppercase">
-                  {p.step2.tag}
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">PATH 02 · CALL CENTER</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <PhoneCall className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Saturado</span>
                 </span>
               </div>
-              <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight mb-1.5">
-                {p.step2.title}
-              </h5>
-              <p className="text-[8.5px] font-mono text-zinc-600 leading-snug mb-2">
-                {p.step2.action}
-              </p>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <PhoneCall className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">Teléfono Oficial 060</h5>
+              </div>
+
+              {/* Simulated Call Hold Box */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 font-mono text-[8px] space-y-1.5">
+                <div className="flex justify-between text-zinc-500 text-[7px] uppercase font-bold">
+                  <span>Tiempo en Espera</span>
+                  <span className="text-black font-bold">42 min 18s</span>
+                </div>
+                <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-black w-[88%] h-full rounded-full animate-pulse" />
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1 bg-zinc-100 p-1.5 rounded border border-zinc-200">
+                  <WifiOff className="w-2.5 h-2.5 stroke-[3] text-black shrink-0" />
+                  <span className="leading-tight">"Línea saturada. Llamada cortada por el servidor."</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-zinc-50 border border-zinc-200/80 rounded-xl p-2.5 font-mono text-[8px] text-zinc-900 font-semibold flex items-start gap-2">
-              <div className="w-4 h-4 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-              </div>
-              <span className="leading-snug">{p.step2.trap}</span>
+
+            {/* Pain Comment Callout */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 leading-snug">
+              <span className="font-bold text-black block mb-0.5">Pausa de comida perdida</span>
+              14 menús interactivos automáticos. Cero agentes humanos disponibles.
             </div>
           </div>
 
-          {/* DOTTED CONNECTOR 2 -> 3 (CLEAN SVG VECTOR ARROW) */}
-          <div className="flex items-center justify-center w-8 lg:w-10 shrink-0 px-0.5">
-            <svg className="w-full h-5 overflow-visible" viewBox="0 0 36 20" fill="none">
-              <line
-                x1="0"
-                y1="10"
-                x2="24"
-                y2="10"
-                stroke="#000000"
-                strokeWidth="2"
-                strokeDasharray="4 3"
-              />
-              <polygon points="22,5 32,10 22,15" fill="#000000" />
-            </svg>
-          </div>
-
-          {/* STEP 03 */}
-          <div className="flex-1 bg-white border border-zinc-300 rounded-2xl p-3.5 shadow-xs hover:border-black transition-colors flex flex-col justify-between min-h-[175px]">
+          {/* Path 3: Black Market & Scalper Bots */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs flex flex-col justify-between min-h-[265px] hover:border-black transition-all">
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-mono font-black text-black px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-200">
-                  {p.step3.num}
-                </span>
-                <span className="text-[7.5px] font-mono text-zinc-500 font-bold uppercase">
-                  {p.step3.tag}
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">PATH 03 · MAFIAS / BOTS</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <AlertTriangle className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>150€ / Cita</span>
                 </span>
               </div>
-              <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight mb-1.5">
-                {p.step3.title}
-              </h5>
-              <p className="text-[8.5px] font-mono text-zinc-600 leading-snug mb-2">
-                {p.step3.action}
-              </p>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">Mercado Negro / Telegram</h5>
+              </div>
+
+              {/* Scalper Chat Box */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 font-mono text-[8px] space-y-1.5">
+                <div className="text-zinc-500 text-[7px] uppercase font-bold">Canal Citas Express</div>
+                <div className="bg-white border border-zinc-300 p-1.5 rounded text-zinc-800 text-[7px] leading-tight">
+                  "Cita NIE Barcelona asegurada en 48h. Pago por Bizum previo."
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1 bg-zinc-100 p-1.5 rounded border border-zinc-200">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black shrink-0" />
+                  <span className="leading-tight">Ilegal · Alto riesgo de estafa o cita falsa.</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-zinc-50 border border-zinc-200/80 rounded-xl p-2.5 font-mono text-[8px] text-zinc-900 font-semibold flex items-start gap-2">
-              <div className="w-4 h-4 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-              </div>
-              <span className="leading-snug">{p.step3.trap}</span>
+
+            {/* Pain Comment Callout */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 leading-snug">
+              <span className="font-bold text-black block mb-0.5">Captura en 250ms</span>
+              Scripts automatizados acaparan las citas públicas gratuitas al instante.
             </div>
           </div>
         </div>
 
-        {/* ── VERTICAL CONNECTOR + TARGET BADGE IN EXACT SAME COLUMN ── */}
-        <div className="flex items-stretch justify-between gap-1.5 relative z-20 pointer-events-none -mb-3.5 mt-1">
-          <div className="flex-1" />
-          <div className="w-8 lg:w-10 shrink-0" />
-          <div className="flex-1" />
-          <div className="w-8 lg:w-10 shrink-0" />
-          <div className="flex-1 flex flex-col items-center">
-            {/* Perfectly centered vertical vector arrow */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="overflow-visible">
-              <line
-                x1="12"
-                y1="0"
-                x2="12"
-                y2="13"
-                stroke="#000000"
-                strokeWidth="2"
-                strokeDasharray="4 3"
-              />
-              <polygon points="7,11 12,21 17,11" fill="#000000" />
-            </svg>
-            {/* VERDICT BADGE — Centered on the exact same column as the arrow and Step 03! */}
-            <div className="pointer-events-auto flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white border-2 border-black text-black shadow-md">
-              <div className="w-6 h-6 rounded-lg bg-zinc-50 border-2 border-black flex items-center justify-center shrink-0">
-                <X className="w-4 h-4 text-black stroke-[3.5]" />
-              </div>
-              <div className="font-mono text-left">
-                <span className="text-[6.5px] text-zinc-500 block uppercase font-bold tracking-wider leading-none">VERDICT</span>
-                <span className="text-[9.5px] font-black uppercase tracking-wider leading-tight text-black">{p.failDesk.badge}</span>
-              </div>
+        {/* ── CENTRAL LABYRINTH STATUS & FRAGILE ESCAPE CONNECTOR ── */}
+        <div className="bg-white border-2 border-black rounded-2xl p-3.5 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-zinc-50 border-2 border-black flex items-center justify-center shrink-0">
+              <Compass className="w-5 h-5 text-black stroke-[2.5]" />
             </div>
-          </div>
-        </div>
-
-        {/* ── STEP 04: THE TERMINAL FAILURE (IN-PERSON DESK COLLISION) ── */}
-        <div className="bg-white border-2 border-black rounded-2xl p-4 pt-5 shadow-sm relative">
-          {/* Header */}
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-zinc-200">
-            <div className="flex items-center gap-2.5">
-              <span className="text-[11px] font-mono font-black text-black px-2.5 py-0.5 rounded-full bg-white border-2 border-black">
-                {p.failDesk.stepNum}
+            <div className="font-mono">
+              <span className="text-[9.5px] font-black uppercase text-black block leading-snug">
+                STATUS: PERDIDO EN EL LABERINTO · 3 SEMANAS PERDIDAS
               </span>
-              <div>
-                <h4 className="text-xs lg:text-sm font-bold text-black font-syne">
-                  {p.failDesk.title}
-                </h4>
-                <span className="text-[8px] font-mono text-zinc-500 font-semibold">
-                  Day 30+ · Comisaría / Extranjería Appointment Window
-                </span>
-              </div>
-            </div>
-
-            <div className="font-mono text-[7.5px] text-zinc-400 font-bold uppercase tracking-wider hidden sm:block">
-              <span>DAY 30 COLLISION POINT</span>
+              <span className="text-[8px] text-zinc-600 block leading-tight mt-0.5">
+                Siguiendo decenas de foros y vídeos contradictorios sin conseguir cita oficial
+              </span>
             </div>
           </div>
 
-          {/* Dialogue vs Consequence */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3.5 items-start">
-            {/* Left Column (3 of 5): Dialogue + Concrete Audit Mismatch Breakdown */}
-            <div className="md:col-span-3 space-y-2">
-              {/* Officer Rejection Dialogue */}
-              <div className="bg-zinc-50 border border-zinc-300 rounded-xl p-3 font-mono text-[9px]">
-                <div className="text-zinc-500 text-[7px] font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full border border-black bg-white" />
-                  <span>{p.failDesk.officerLabel}</span>
-                </div>
-                <p className="text-zinc-900 font-semibold italic leading-relaxed">
-                  {p.failDesk.quote}
-                </p>
-              </div>
-
-              {/* Explicit Audit Mismatches (What fails) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 font-mono text-[7.5px]">
-                <div className="bg-zinc-100/90 border border-zinc-300 rounded-lg p-2 flex items-start gap-2">
-                  <div className="w-4 h-4 rounded bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                    <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-                  </div>
-                  <div>
-                    <span className="text-[6.5px] text-zinc-500 font-bold uppercase block">{p.failDesk.auditRow1Label}</span>
-                    <span className="text-zinc-900 font-bold leading-tight block">{p.failDesk.auditRow1Val}</span>
-                  </div>
-                </div>
-
-                <div className="bg-zinc-100/90 border border-zinc-300 rounded-lg p-2 flex items-start gap-2">
-                  <div className="w-4 h-4 rounded bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                    <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-                  </div>
-                  <div>
-                    <span className="text-[6.5px] text-zinc-500 font-bold uppercase block">{p.failDesk.auditRow2Label}</span>
-                    <span className="text-zinc-900 font-bold leading-tight block">{p.failDesk.auditRow2Val}</span>
-                  </div>
-                </div>
-              </div>
+          {/* Fragile Escape Conduit */}
+          <div className="flex items-center gap-2 bg-zinc-50 border border-zinc-300 rounded-xl px-3 py-1.5 font-mono text-[8px] shrink-0">
+            <div className="w-2 h-2 rounded-full bg-black animate-ping shrink-0" />
+            <div>
+              <span className="font-bold text-black block">Cita encontrada a las 03:14 AM (a 45 km)</span>
+              <span className="text-zinc-500 block text-[7.5px]">Comisaría comarcal asignada</span>
             </div>
-
-            {/* Right Column (2 of 5): Impact Pills with Thick Black Borders */}
-            <div className="md:col-span-2 space-y-1.5 font-mono text-[8px] lg:text-[8.5px]">
-              <div className="bg-white border-2 border-zinc-300 rounded-lg px-2.5 py-2 text-black font-bold flex items-center justify-between">
-                <span>{p.failDesk.impact1}</span>
-                <div className="w-4 h-4 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0">
-                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-                </div>
-              </div>
-              <div className="bg-white border-2 border-zinc-300 rounded-lg px-2.5 py-2 text-black font-bold flex items-center justify-between">
-                <span>{p.failDesk.impact2}</span>
-                <div className="w-4 h-4 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0">
-                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-                </div>
-              </div>
-              <div className="bg-white border-2 border-black text-black rounded-lg px-2.5 py-2 font-black flex items-center justify-between shadow-xs">
-                <span>{p.failDesk.impact3}</span>
-                <RefreshCw className="w-3.5 h-3.5 text-black animate-spin [animation-duration:8s]" />
-              </div>
-            </div>
-          </div>
-
-          {/* Footnote */}
-          <div className="mt-3 pt-2.5 border-t border-dashed border-zinc-200 flex items-center justify-between font-mono text-[7.5px] text-zinc-500">
-            <span>{p.failDesk.footnote}</span>
-            <span className="font-bold text-black uppercase tracking-wider">ZERO DESK CORRECTIONS</span>
           </div>
         </div>
       </div>
 
-      {/* ── MOBILE: Responsive Vertical Timeline (sm:hidden) ── */}
-      <div className="sm:hidden space-y-2 py-2 font-mono">
-        <div className="px-3 py-2 rounded-xl bg-white border border-zinc-300 shadow-xs flex items-center justify-between text-[8.5px]">
-          <span className="font-bold text-black">{p.pathTitle}</span>
-          <span className="bg-white border-2 border-black text-black font-black px-2 py-0.5 rounded-full text-[7px] flex items-center gap-1">
-            <X className="w-2.5 h-2.5 stroke-[3] text-black" />
-            <span>REJECTED AT DESK</span>
-          </span>
+      {/* ── MOBILE: Responsive Vertical Stack (sm:hidden) ── */}
+      <div className="sm:hidden space-y-2.5 py-2 font-mono">
+        <div className="p-3 rounded-2xl bg-white border-2 border-black text-black text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs">
+          <Compass className="w-4 h-4 text-black stroke-[2.5]" />
+          <span>El Laberinto de la Cita Previa</span>
         </div>
 
-        {[p.step1, p.step2, p.step3].map((step, idx) => (
-          <React.Fragment key={idx}>
-            <div className="p-3 rounded-xl bg-white border border-zinc-300 shadow-xs space-y-1.5 text-[8.5px]">
+        {[
+          { title: "Sede Electrónica", tag: "Error 504", desc: "No hay citas disponibles · 184 intentos fallidos", icon: Globe },
+          { title: "Teléfono 060", tag: "Línea Saturada", desc: "42 minutos en espera · Llamada cortada por servidor", icon: PhoneCall },
+          { title: "Mercado Negro", tag: "Mafias 150€", desc: "Bots automáticos acaparan las citas gratuitas", icon: ShieldAlert },
+        ].map((item, idx) => {
+          const Icon = item.icon;
+          return (
+            <div key={idx} className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs space-y-1.5 text-[8.5px]">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-black bg-zinc-100 px-1.5 py-0.5 rounded text-[8px]">{step.num}</span>
-                <span className="text-zinc-500 text-[7px] font-bold uppercase">{step.tag}</span>
-              </div>
-              <div className="font-bold text-black font-syne text-[11px]">{step.title}</div>
-              <p className="text-zinc-600 text-[8px]">{step.action}</p>
-              <div className="bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 text-black font-bold text-[7.5px] flex items-center gap-1.5">
-                <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0">
-                  <X className="w-2 h-2 stroke-[3] text-black" />
+                <div className="flex items-center gap-1.5 font-bold text-black font-syne text-[11px]">
+                  <Icon className="w-3.5 h-3.5 text-black" />
+                  <span>{item.title}</span>
                 </div>
-                <span>{step.trap}</span>
+                <span className="text-[7.5px] bg-white border-2 border-black px-2 py-0.5 rounded-full font-black uppercase flex items-center gap-1">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>{item.tag}</span>
+                </span>
+              </div>
+              <div className="bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 text-zinc-700 text-[8px] leading-snug">
+                {item.desc}
               </div>
             </div>
+          );
+        })}
 
-            {/* Dotted connector between cards (Clean SVG vector arrow) */}
-            <div className="flex flex-col items-center justify-center py-1">
-              <svg width="16" height="22" viewBox="0 0 16 22" fill="none" className="overflow-visible">
-                <line
-                  x1="8"
-                  y1="0"
-                  x2="8"
-                  y2="13"
-                  stroke="#000000"
-                  strokeWidth="2"
-                  strokeDasharray="3 3"
-                />
-                <polygon points="4,11 8,19 12,11" fill="#000000" />
-              </svg>
-            </div>
-          </React.Fragment>
-        ))}
-
-        {/* Mobile Terminal Failure Block */}
-        <div className="p-3.5 rounded-xl bg-white border-2 border-black text-black shadow-xs space-y-2 text-[8.5px]">
-          <div className="flex justify-between items-center">
-            <span className="font-bold text-black bg-white border-2 border-black px-2.5 py-1 rounded-full text-[7.5px] uppercase flex items-center gap-1.5">
-              <X className="w-3 h-3 stroke-[3] text-black" />
-              <span>{p.failDesk.badge}</span>
-            </span>
-            <span className="text-[7.5px] text-zinc-600 font-bold">{p.failDesk.stepNum}</span>
-          </div>
-
-          <div className="font-bold text-black font-syne text-xs">{p.failDesk.title}</div>
-
-          <div className="bg-zinc-50 border border-zinc-300 rounded-lg p-2.5 text-[8px] text-zinc-800 italic leading-snug">
-            {p.failDesk.quote}
-          </div>
-
-          <div className="space-y-1 text-[7.5px] font-mono">
-            <div className="bg-zinc-100 p-2 rounded border border-zinc-200 flex items-start gap-1.5">
-              <div className="w-3.5 h-3.5 rounded bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                <X className="w-2 h-2 stroke-[3] text-black" />
-              </div>
-              <div>
-                <span className="text-[6px] text-zinc-500 font-bold uppercase block">{p.failDesk.auditRow1Label}</span>
-                <span className="text-zinc-900 font-bold block">{p.failDesk.auditRow1Val}</span>
-              </div>
-            </div>
-
-            <div className="bg-zinc-100 p-2 rounded border border-zinc-200 flex items-start gap-1.5">
-              <div className="w-3.5 h-3.5 rounded bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
-                <X className="w-2 h-2 stroke-[3] text-black" />
-              </div>
-              <div>
-                <span className="text-[6px] text-zinc-500 font-bold uppercase block">{p.failDesk.auditRow2Label}</span>
-                <span className="text-zinc-900 font-bold block">{p.failDesk.auditRow2Val}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-1 text-[7.5px] pt-1.5 border-t border-zinc-200">
-            <div className="bg-zinc-100 px-2.5 py-1.5 rounded border border-zinc-200 text-black font-bold flex justify-between items-center">
-              <span>{p.failDesk.impact1}</span>
-              <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-black text-black flex items-center justify-center shrink-0">
-                <X className="w-2 h-2 stroke-[3] text-black" />
-              </div>
-            </div>
-            <div className="bg-white border-2 border-black text-black px-2.5 py-1.5 rounded font-black flex justify-between items-center">
-              <span>{p.failDesk.impact3}</span>
-              <RefreshCw className="w-2.5 h-2.5 text-black animate-spin [animation-duration:8s]" />
-            </div>
-          </div>
+        <div className="p-3 rounded-xl bg-white border-2 border-black text-center text-[8.5px] font-black text-black shadow-xs flex items-center justify-center gap-2">
+          <Compass className="w-3.5 h-3.5 text-black stroke-[2.5]" />
+          <span>Perdido en el laberinto · 3 semanas sin cita</span>
         </div>
       </div>
     </div>
   );
 }
 
-// ─── Visual 3: The Window Ambush (Official Audit Conveyor & Cascade Rejection) ──
+// ─── Visual 3: The Window Ambush (In-Person Audit & Total Failure) ──────────
 function WindowAmbushVisual({
   audit,
 }: {
@@ -828,12 +644,12 @@ function WindowAmbushVisual({
 }) {
   return (
     <div className="relative w-full max-w-[740px] mx-auto select-none">
-      {/* ── DESKTOP & TABLET: Open Spatial Audit Conveyor (sm:block) ── */}
+      {/* ── DESKTOP & TABLET: Open Spatial Audit Conveyor & Rejection (sm:block) ── */}
       <div className="hidden sm:block relative w-full space-y-3 py-1">
         {/* Faint spatial blueprint grid */}
         <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none -z-10" />
 
-        {/* Top Official Placard Header - Clean Monochrome with NO black bg */}
+        {/* Top Official Placard Header with Incoming Line */}
         <div className="bg-white border border-zinc-300 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center font-mono font-black text-xs shadow-xs">
@@ -972,33 +788,46 @@ function WindowAmbushVisual({
           </div>
         </div>
 
-        {/* ── OFFICIAL REJECTION STAMP & RESET TIMELINE (THICK BORDER, NO BLACK BG) ── */}
-        <div className="bg-white border-2 border-black rounded-2xl p-3.5 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          {/* Rejection Rubber Stamp */}
-          <div className="flex items-center gap-3">
-            <div className="rotate-[-2deg] border-2 border-black bg-white text-black px-3.5 py-1.5 rounded-xl font-mono font-black text-[11px] tracking-wider uppercase shadow-xs flex items-center gap-2 shrink-0">
-              <div className="w-5 h-5 rounded-md bg-zinc-100 border border-black flex items-center justify-center">
-                <X className="w-3.5 h-3.5 text-black stroke-[3.5]" />
+        {/* ── THE CLIMACTIC REJECTION SLAM & LOOP BACK TO START (FAIL) ── */}
+        <div className="bg-white border-2 border-black rounded-2xl p-4 shadow-sm relative overflow-hidden">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 relative z-10">
+            {/* Rejection Rubber Stamp */}
+            <div className="flex items-center gap-3">
+              <div className="rotate-[-2deg] border-3 border-black bg-white text-black px-4 py-2 rounded-xl font-mono font-black text-xs tracking-wider uppercase shadow-md flex items-center gap-2 shrink-0">
+                <div className="w-5 h-5 rounded-md bg-zinc-100 border border-black flex items-center justify-center">
+                  <X className="w-4 h-4 text-black stroke-[3.5]" />
+                </div>
+                <span>{audit.rejectionStamp}</span>
               </div>
-              <span>{audit.rejectionStamp}</span>
+              <div className="font-mono">
+                <span className="text-[10px] font-black uppercase text-black block leading-snug">
+                  1 Fallo Formal = Desestimación Inmediata
+                </span>
+                <span className="text-[8px] text-zinc-600 block leading-tight mt-0.5">
+                  "No le puedo recoger el expediente. Pida nueva cita por internet."
+                </span>
+              </div>
             </div>
-            <div className="font-mono">
-              <span className="text-[9.5px] font-black uppercase text-black block leading-snug">
-                1 Documento Incorrecto = Archivo Total
-              </span>
-              <span className="text-[8px] text-zinc-600 block leading-tight mt-0.5">
-                Cita anulada en el acto · Sin periodo de subsanación inmediata
-              </span>
+
+            {/* Loop Back to Day 0 (Complete Failure) */}
+            <div className="flex items-center gap-2.5 bg-zinc-50 border-2 border-black rounded-xl px-3.5 py-2 font-mono text-[8.5px] shadow-xs shrink-0">
+              <RefreshCw className="w-4 h-4 text-black animate-spin [animation-duration:8s] shrink-0" />
+              <div>
+                <span className="font-black text-black block leading-none">↺ RESET AL DÍA 0 (FAIL)</span>
+                <span className="text-[7.5px] text-zinc-600 block leading-none mt-1">4–6 semanas perdidas · Vuelta a empezar</span>
+              </div>
             </div>
           </div>
 
-          {/* Reset Pipeline Indicator */}
-          <div className="flex items-center gap-2.5 bg-white border-2 border-black rounded-xl px-3 py-2 font-mono text-[8.5px] shadow-xs shrink-0">
-            <RefreshCw className="w-4 h-4 text-black animate-spin [animation-duration:8s] shrink-0" />
-            <div>
-              <span className="font-black text-black block leading-none">{audit.resetWarning}</span>
-              <span className="text-[7.5px] text-zinc-500 block leading-none mt-1">El plazo legal del visado no se detiene</span>
-            </div>
+          {/* Retrograde Loop Dotted Path Graphic */}
+          <div className="mt-3 pt-2 border-t border-dashed border-zinc-200 flex items-center justify-between font-mono text-[8px] text-zinc-500">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-black" />
+              <span>Cero tolerancia en ventanilla · Sin subsanación presencial</span>
+            </span>
+            <span className="font-bold text-black uppercase tracking-wider">
+              ARCHIVO DEFINITIVO
+            </span>
           </div>
         </div>
       </div>
@@ -1033,7 +862,7 @@ function WindowAmbushVisual({
 
         <div className="p-3 rounded-xl bg-white border-2 border-black text-center text-[8.5px] font-black text-black shadow-xs flex items-center justify-center gap-2">
           <RefreshCw className="w-3.5 h-3.5 text-black animate-spin [animation-duration:8s]" />
-          <span>{audit.resetWarning}</span>
+          <span>↺ RESET AL DÍA 0: 4–6 SEMANAS PERDIDAS</span>
         </div>
       </div>
     </div>
@@ -1279,6 +1108,8 @@ function SlideDots({ total, active }: { total: number; active: number }) {
   );
 }
 
+
+
 // ─── Route discovery map ─────────────────────────────────────────────────────
 const PROCEDURES = [
   { name: "Right to stay", hint: "EU or non-EU · under or over 3 months" },
@@ -1327,20 +1158,22 @@ export default function HeroAndPain() {
   const m3 = { x: interp(progress, 0, 0.18, 18, -3),  y: interp(progress, 0, 0.18, -18, 27),  r: interp(progress, 0, 0.18,  -8, -8) };
   const m4 = { x: interp(progress, 0, 0.18, 30,  2),  y: interp(progress, 0, 0.18, -34, 22),  r: interp(progress, 0, 0.18,   5,  4) };
 
-  const SW = 100 / 4;
+  const SW = 100 / 5;
 
   const getStickyTranslate = (p: number): number => {
-    if (p < 0.32) return 0;
-    if (p < 0.36) return interp(p, 0.32, 0.36, 0, SW);
-    if (p < 0.50) return SW;
-    if (p < 0.54) return interp(p, 0.50, 0.54, SW, SW * 2);
-    if (p < 0.68) return SW * 2;
-    if (p < 0.72) return interp(p, 0.68, 0.72, SW * 2, SW * 3);
-    return SW * 3;
+    if (p < 0.30) return 0;
+    if (p < 0.34) return interp(p, 0.30, 0.34, 0, SW);
+    if (p < 0.46) return SW;
+    if (p < 0.50) return interp(p, 0.46, 0.50, SW, SW * 2);
+    if (p < 0.62) return SW * 2;
+    if (p < 0.66) return interp(p, 0.62, 0.66, SW * 2, SW * 3);
+    if (p < 0.78) return SW * 3;
+    if (p < 0.82) return interp(p, 0.78, 0.82, SW * 3, SW * 4);
+    return SW * 4;
   };
 
   const translatePercent = progress >= 0.18 ? getStickyTranslate(progress) : 0;
-  const activeSlide = Math.min(3, Math.round(translatePercent / SW));
+  const activeSlide = Math.min(4, Math.round(translatePercent / SW));
   const sliderOpacity = interp(progress, 0.97, 1.0, 1, 0);
 
   const headlineLeft = dict.hero.headlineLeft;
@@ -1549,11 +1382,76 @@ export default function HeroAndPain() {
               className="flex h-full"
               style={{
                 transform: `translateX(-${translatePercent}%)`,
-                width: "400%",
+                width: "500%",
               }}
             >
 
-              {/* SLIDE 0 — The Circular Trap (The Spanish Catch-22) */}
+              {/* SLIDE 0 — The First Request / Document Pile */}
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  {/* Faint spatial blueprint grid background matching subsequent slides */}
+                  <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none -z-10" />
+                  <div className="absolute top-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute top-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+
+                  <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
+                    <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.mondayTime}</span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.08] font-syne">
+                      {dict.pain.moveDone}
+                      <br />
+                      <span className="text-zinc-500 font-normal text-lg sm:text-2xl md:text-3xl">{dict.pain.moveDoneSub}</span>
+                    </h2>
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-sm">
+                      {dict.pain.employerAsks}
+                    </p>
+                    <div className="flex items-start gap-2 sm:gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3 sm:px-3.5 py-2.5 sm:py-3 max-w-sm">
+                      <AlertTriangle className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0 mt-0.5" />
+                      <p className="text-[11px] sm:text-xs text-black leading-snug font-mono font-medium">
+                        {dict.pain.alertOneQuestion}
+                      </p>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-2 text-zinc-500 font-mono text-[9px] font-medium pt-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+                      <span>Scroll to start processing your NIE →</span>
+                    </div>
+                  </div>
+
+                  <div className="pain-slide-visual pain-slide-pile-visual relative z-[1] flex w-full items-center justify-center lg:w-6/12 h-56 sm:h-64 md:h-72 lg:h-[380px]">
+                    <div className="pain-document-visual relative w-full h-full flex items-center justify-center">
+                      {/* Visual link pointing to top document in pile */}
+                      <div className="absolute -top-7 sm:-top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[8px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1.5 whitespace-nowrap z-20">
+                        <span>Target 01: NIE Card</span>
+                        <span className="text-zinc-400">→</span>
+                      </div>
+
+                      <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-1, -6px)), calc(-50% + var(--pile-y-1, -4px))) rotate(-4deg)" }}>
+                          <DocumentCard type="nie" status="chaos" shadow="shadow-md" />
+                        </div>
+                      </div>
+                      <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-1.4s]" style={{ "--paper-rotate": "8deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-2, 10px)), calc(-50% + var(--pile-y-2, 8px))) rotate(8deg)" }}>
+                          <DocumentCard type="seg_social" status="chaos" shadow="shadow-lg" />
+                        </div>
+                      </div>
+                      <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-2.7s]" style={{ "--paper-rotate": "-8deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-3, -8px)), calc(-50% + var(--pile-y-3, 6px))) rotate(-8deg)" }}>
+                          <DocumentCard type="padron" status="chaos" shadow="shadow-xl" />
+                        </div>
+                      </div>
+                      <div className="absolute left-1/2 top-1/2 paper-float [animation-delay:-3.6s]" style={{ "--paper-rotate": "4deg" } as React.CSSProperties}>
+                        <div style={{ transform: "translate(calc(-50% + var(--pile-x-4, 8px)), calc(-50% + var(--pile-y-4, -6px))) rotate(4deg)" }}>
+                          <DocumentCard type="hacienda" status="chaos" shadow="shadow-2xl" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* SLIDE 1 — The Circular Trap (The Spanish Catch-22) */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 gap-4 sm:gap-8">
                   <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-2 lg:w-[38%]">
@@ -1583,7 +1481,7 @@ export default function HeroAndPain() {
                 </div>
               </div>
 
-              {/* SLIDE 1 — Which Office, Which Website, Which Form */}
+              {/* SLIDE 2 — Which Office, Which Website, Which Form */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 gap-4 sm:gap-8">
                   <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-2 lg:w-[38%]">
@@ -1620,7 +1518,7 @@ export default function HeroAndPain() {
                 </div>
               </div>
 
-              {/* SLIDE 2 — The Window Ambush */}
+              {/* SLIDE 3 — The Window Ambush */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
                 <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 gap-4 sm:gap-8">
                   <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-2 lg:w-[38%]">
@@ -1664,9 +1562,15 @@ export default function HeroAndPain() {
                 </div>
               </div>
 
-              {/* SLIDE 3 (FINAL SLIDE) — The real cost (KEPT AS IT IS) */}
+              {/* SLIDE 4 (FINAL SLIDE) — The real cost (KEPT AS IT IS) */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  {/* Faint spatial blueprint grid background matching earlier slides */}
+                  <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none -z-10" />
+                  <div className="absolute top-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute top-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
                   <div
                     className="pain-slide-copy pain-cost-copy glass-card-subtle relative z-30 flex w-full flex-col justify-center gap-3 rounded-2xl p-4 transition-all sm:gap-4 sm:rounded-3xl sm:p-6 md:p-8 lg:w-5/12"
                   >
@@ -1702,13 +1606,13 @@ export default function HeroAndPain() {
                         target={6}
                         label={dict.pain.stats.officialSystems.label}
                         sublabel={dict.pain.stats.officialSystems.sublabel}
-                        isActive={activeSlide === 3}
+                        isActive={activeSlide === 4}
                       />
                       <StatCounter
                         target={3}
                         label={dict.pain.stats.similarForms.label}
                         sublabel={dict.pain.stats.similarForms.sublabel}
-                        isActive={activeSlide === 3}
+                        isActive={activeSlide === 4}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -1716,13 +1620,13 @@ export default function HeroAndPain() {
                         target={2}
                         label={dict.pain.stats.bookingPortals.label}
                         sublabel={dict.pain.stats.bookingPortals.sublabel}
-                        isActive={activeSlide === 3}
+                        isActive={activeSlide === 4}
                       />
                       <StatCounter
                         target={1}
                         label={dict.pain.stats.missingSignature.label}
                         sublabel={dict.pain.stats.missingSignature.sublabel}
-                        isActive={activeSlide === 3}
+                        isActive={activeSlide === 4}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -1730,12 +1634,12 @@ export default function HeroAndPain() {
                         target={5}
                         label={dict.pain.stats.repeatedDetails.label}
                         sublabel={dict.pain.stats.repeatedDetails.sublabel}
-                        isActive={activeSlide === 3}
+                        isActive={activeSlide === 4}
                       />
                       <StatCounter
                         target={0}
                         label={dict.pain.stats.openTabs.label}
-                        isActive={activeSlide === 3}
+                        isActive={activeSlide === 4}
                         variant="infinity"
                       />
                     </div>
@@ -1758,7 +1662,7 @@ export default function HeroAndPain() {
             className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
             style={{ opacity: sliderOpacity }}
           >
-            <SlideDots total={4} active={activeSlide} />
+            <SlideDots total={5} active={activeSlide} />
           </div>
         )}
 
@@ -1804,22 +1708,7 @@ export default function HeroAndPain() {
           </div>
         )}
 
-        {/* ── SLIDE LABEL (top left) ── */}
-        {progress >= 0.18 && (
-          <div
-            className="absolute top-14 sm:top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
-            style={{ opacity: interp(progress, 0.18, 0.26, 0, 1) * sliderOpacity }}
-          >
-            <div className="max-w-[1440px] w-full px-4 sm:px-6 md:px-12 lg:px-20">
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
-                  {dict.pain.slideLabels[activeSlide] ?? ""}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
+
 
       </div>
     </div>

@@ -29,7 +29,13 @@ export interface Translations {
   };
   pain: {
     slideLabels: string[];
-    // Slide 0: The Circular Trap
+    // Slide 0: The First Request / Document Pile
+    mondayTime: string;
+    moveDone: string;
+    moveDoneSub: string;
+    employerAsks: string;
+    alertOneQuestion: string;
+    // Slide 1: The Circular Trap
     circularTrapTag: string;
     circularTrapTitle: string;
     circularTrapSub: string;
