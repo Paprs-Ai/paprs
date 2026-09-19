@@ -1,14 +1,13 @@
 "use client";
 
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { useLanguage } from "./context/LanguageContext";
 import AILearns from "./sections/AILearns";
-import AutonomoEngine from "./sections/AutonomoEngine";
 import BureaucracyFAQ from "./sections/BureaucracyFAQ";
 import Countries from "./sections/Countries";
 import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
-import { useLanguage } from "./context/LanguageContext";
-import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 export default function Home() {
   const { dict } = useLanguage();
@@ -58,7 +57,7 @@ export default function Home() {
       <main className="flex-1">
         <HeroAndPain />
         <HowItWorks />
-        <AutonomoEngine />
+        {/* <AutonomoEngine /> */}
         <AILearns />
         <Countries />
         <BureaucracyFAQ />

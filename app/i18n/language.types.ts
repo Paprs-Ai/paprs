@@ -29,47 +29,103 @@ export interface Translations {
   };
   pain: {
     slideLabels: string[];
-    // Slide 0
-    mondayTime: string;
-    moveDone: string;
-    moveDoneSub: string;
-    employerAsks: string;
-    alertOneQuestion: string;
-    // Slide 1
-    search1Tag: string;
-    beforeTheForm: string;
-    beforeTheFormSub: string;
-    euOrNonEu: string;
-    sameMoveBadge: string;
-    procedures: Array<{ name: string; hint: string }>;
-    chooseRouteAlert: string;
-    // Slide 2
-    search2Tag: string;
-    appointmentGate: string;
-    appointmentGateSub: string;
-    portalAsks: string;
+    // Slide 0: The Circular Trap
+    circularTrapTag: string;
+    circularTrapTitle: string;
+    circularTrapSub: string;
+    circularTrapDesc: string;
+    circularTrapAlert: string;
+    deadlockCenter: {
+      question: string;
+      sub: string;
+      badge: string;
+    };
+    circularNodes: {
+      nie: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+      padron: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+      rental: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+      bank: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+    };
+    // Slide 1: The Cita Blackout
+    citaBlackoutTag: string;
+    citaBlackoutTitle: string;
+    citaBlackoutSub: string;
+    citaBlackoutDesc: string;
     noSlotsStatus: string;
     alt060: string;
-    bookingLoopTitle: string;
-    painStepsSlide2: Array<{ label: string; sublabel?: string; warning?: string }>;
-    // Slide 3
-    search3Tag: string;
-    similarLanguage: string;
-    similarLanguageSub: string;
-    formExplanations: string;
-    easyToConfuseTitle: string;
-    confuseBadges: string[];
-    checklistBehindTitle: string;
-    painStepsSlide3: Array<{ label: string; sublabel?: string; cost?: string; warning?: string }>;
-    // Slide 4
-    search4Tag: string;
-    addressIsReal: string;
-    addressIsRealSub: string;
-    leaseExplanation: string;
-    alertIncomplete: string;
-    flatShareTitle: string;
-    painStepsSlide4: Array<{ label: string; sublabel?: string; warning?: string }>;
-    // Slide 5
+    sedeAlertTitle: string;
+    sedeAlertMessage: string;
+    sedeSim: {
+      portalTitle: string;
+      provinceLabel: string;
+      provinceVal: string;
+      procedureLabel: string;
+      procedureVal: string;
+      attemptsLabel: string;
+      caseMatchCaption: string;
+      callCenterStatus: string;
+    };
+    painPath: {
+      pathTitle: string;
+      pathSub: string;
+      step1: {
+        num: string;
+        tag: string;
+        title: string;
+        action: string;
+        trap: string;
+      };
+      step2: {
+        num: string;
+        tag: string;
+        title: string;
+        action: string;
+        trap: string;
+      };
+      step3: {
+        num: string;
+        tag: string;
+        title: string;
+        action: string;
+        trap: string;
+      };
+      failDesk: {
+        stepNum: string;
+        badge: string;
+        title: string;
+        officerLabel: string;
+        quote: string;
+        auditRow1Label: string;
+        auditRow1Val: string;
+        auditRow2Label: string;
+        auditRow2Val: string;
+        impact1: string;
+        impact2: string;
+        impact3: string;
+        footnote: string;
+      };
+    };
+    // Slide 2: The Window Ambush
+    windowAmbushTag: string;
+    windowAmbushTitle: string;
+    windowAmbushSub: string;
+    windowAmbushDesc: string;
+    deskAudit: {
+      windowLabel: string;
+      dossierTitle: string;
+      rejectionStamp: string;
+      item1Title: string;
+      item1Sub: string;
+      item1Reason: string;
+      item2Title: string;
+      item2Sub: string;
+      item2Reason: string;
+      item3Title: string;
+      item3Sub: string;
+      item3Reason: string;
+      resetWarning: string;
+    };
+    // Slide 3: The Hidden Workload (KEPT AS IT IS)
     hiddenWorkloadTag: string;
     hardPartTitle: string;
     hardPartDesc: string;
