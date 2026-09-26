@@ -1108,7 +1108,108 @@ function SlideDots({ total, active }: { total: number; active: number }) {
   );
 }
 
+// ─── Continuity HUD: the one case file that survives every slide cut ───────
+// Docks in below the nav once the 4 hero documents "become" a single dossier
+// (Slide 0 → 1), then picks up one scar per wall the user hits. Fades out
+// before Slide 4 so the final slide renders exactly as it always has.
+function PainCaseFileHUD({
+  opacity,
+  scar1,
+  scar2,
+  scar3,
+}: {
+  opacity: number;
+  scar1: boolean;
+  scar2: boolean;
+  scar3: boolean;
+}) {
+  const scars = [
+    { key: "scar1", active: scar1, Icon: Lock, pos: "-top-1.5 -left-1.5", rotate: "0deg" },
+    { key: "scar2", active: scar2, Icon: Search, pos: "-bottom-1.5 -left-1.5", rotate: "0deg" },
+    { key: "scar3", active: scar3, Icon: XCircle, pos: "-top-1.5 -right-1.5", rotate: "-8deg" },
+  ];
 
+  return (
+    <div
+      className="pointer-events-none absolute top-20 right-4 sm:top-24 sm:right-8 z-40 hidden sm:flex"
+      style={{ opacity, transition: "opacity 300ms ease-out" }}
+      aria-hidden="true"
+    >
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white border-2 border-black shadow-lg flex items-center justify-center">
+        <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+        {scars.map(({ key, active, Icon, pos, rotate }) => (
+          <div
+            key={key}
+            className={`absolute ${pos} w-4 h-4 rounded-full bg-black border border-white flex items-center justify-center shadow-sm`}
+            style={{
+              opacity: active ? 1 : 0,
+              transform: `scale(${active ? 1 : 0.4}) rotate(${rotate})`,
+              transition: "opacity 350ms ease-out, transform 350ms cubic-bezier(0.34,1.56,0.64,1)",
+            }}
+          >
+            <Icon className="w-2 h-2 text-white" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Continuity HUD: the story rail (one path, not five separate pages) ────
+function PainStoryRail({
+  opacity,
+  fill,
+  scar1,
+  scar2,
+  scar3,
+}: {
+  opacity: number;
+  fill: number;
+  scar1: boolean;
+  scar2: boolean;
+  scar3: boolean;
+}) {
+  const stations = [
+    { at: 0.14, active: scar1, Icon: Lock },
+    { at: 0.5, active: scar2, Icon: Search },
+    { at: 0.86, active: scar3, Icon: XCircle },
+  ];
+
+  return (
+    <div
+      className="pointer-events-none absolute top-20 left-1/2 sm:top-24 z-40 hidden w-[min(420px,55vw)] sm:block"
+      style={{ opacity, transition: "opacity 300ms ease-out", transform: "translateX(-50%)" }}
+      aria-hidden="true"
+    >
+      <div className="relative h-1 rounded-full bg-zinc-200 overflow-hidden">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full bg-black"
+          style={{ width: `${fill * 100}%`, transition: "width 250ms linear" }}
+        />
+      </div>
+      {stations.map(({ at, active, Icon }, i) => (
+        <div
+          key={i}
+          className="absolute top-1/2"
+          style={{ left: `${at * 100}%`, transform: "translate(-50%, -50%)" }}
+        >
+          <div
+            className="flex items-center justify-center rounded-full border-2 transition-all duration-300"
+            style={{
+              width: 16,
+              height: 16,
+              backgroundColor: active ? "#000000" : "#ffffff",
+              borderColor: active ? "#000000" : "#d4d4d8",
+              transform: `scale(${active ? 1 : 0.85})`,
+            }}
+          >
+            <Icon className={`w-2.5 h-2.5 ${active ? "text-white" : "text-zinc-300"}`} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // ─── Route discovery map ─────────────────────────────────────────────────────
 const PROCEDURES = [
@@ -1160,21 +1261,40 @@ export default function HeroAndPain() {
 
   const SW = 100 / 5;
 
+  // Cubic ease on each slide-to-slide crossing so the handoff reads as one
+  // continuous swoosh instead of a linear (mechanical) slide-snap.
+  const easedZone = (p: number, start: number, end: number, from: number, to: number) => {
+    const t = interp(p, start, end, 0, 1);
+    const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    return from + (to - from) * eased;
+  };
+
   const getStickyTranslate = (p: number): number => {
     if (p < 0.30) return 0;
-    if (p < 0.34) return interp(p, 0.30, 0.34, 0, SW);
+    if (p < 0.34) return easedZone(p, 0.30, 0.34, 0, SW);
     if (p < 0.46) return SW;
-    if (p < 0.50) return interp(p, 0.46, 0.50, SW, SW * 2);
+    if (p < 0.50) return easedZone(p, 0.46, 0.50, SW, SW * 2);
     if (p < 0.62) return SW * 2;
-    if (p < 0.66) return interp(p, 0.62, 0.66, SW * 2, SW * 3);
+    if (p < 0.66) return easedZone(p, 0.62, 0.66, SW * 2, SW * 3);
     if (p < 0.78) return SW * 3;
-    if (p < 0.82) return interp(p, 0.78, 0.82, SW * 3, SW * 4);
+    if (p < 0.82) return easedZone(p, 0.78, 0.82, SW * 3, SW * 4);
     return SW * 4;
   };
 
   const translatePercent = progress >= 0.18 ? getStickyTranslate(progress) : 0;
   const activeSlide = Math.min(4, Math.round(translatePercent / SW));
   const sliderOpacity = interp(progress, 0.97, 1.0, 1, 0);
+
+  // Continuity HUD: case file scars + story rail — visible only across the
+  // "wall" slides (1–3). Fades out before Slide 4 so it renders untouched.
+  const scar1 = activeSlide >= 1;
+  const scar2 = activeSlide >= 2;
+  const scar3 = activeSlide >= 3;
+  const hudOpacity = Math.min(
+    interp(progress, 0.26, 0.34, 0, 1),
+    interp(progress, 0.78, 0.85, 1, 0)
+  );
+  const railFill = interp(translatePercent, 0, SW * 3, 0, 1);
 
   const headlineLeft = dict.hero.headlineLeft;
   const headlineRight = dict.hero.headlineRight;
@@ -1654,7 +1774,13 @@ export default function HeroAndPain() {
           </div>
         )}
 
-
+        {/* ── CONTINUITY HUD: case file + story rail (Slides 1–3 only, fades out before Slide 4) ── */}
+        {progress >= 0.18 && (
+          <>
+            <PainStoryRail opacity={hudOpacity} fill={railFill} scar1={scar1} scar2={scar2} scar3={scar3} />
+            <PainCaseFileHUD opacity={hudOpacity} scar1={scar1} scar2={scar2} scar3={scar3} />
+          </>
+        )}
 
         {/* ── SLIDE DOTS ── */}
         {progress >= 0.18 && (
