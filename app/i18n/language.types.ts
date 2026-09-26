@@ -403,6 +403,8 @@ export interface Translations {
     badge: string;
     title: string;
     subtitle: string;
+    factsTitle: string;
+    facts: Array<{ value: string; label: string }>;
     items: Array<{
       question: string;
       answer: string;
