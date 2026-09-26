@@ -146,20 +146,8 @@ export default function CareerPage() {
 
         {/* Navigation Links */}
         <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
-          <Link href="/#pain" className="transition-colors hover:text-black font-bold apple-press">
-            {dict.nav.reality}
-          </Link>
           <Link href="/#how-it-works" className="transition-colors hover:text-black font-bold apple-press">
             {dict.nav.howItWorks}
-          </Link>
-          <Link href="/#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">
-            {dict.nav.autonomoEngine}
-          </Link>
-          <Link href="/#ai-learns" className="transition-colors hover:text-black font-bold apple-press">
-            {dict.nav.intelligence}
-          </Link>
-          <Link href="/#countries" className="transition-colors hover:text-black font-bold apple-press">
-            {dict.nav.europe}
           </Link>
           <Link href="/#faq" className="transition-colors hover:text-black font-bold apple-press">
             {dict.nav.faq}

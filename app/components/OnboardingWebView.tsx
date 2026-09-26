@@ -62,10 +62,12 @@ export function OnboardingWebView({ s1p = 0.5, className = "" }: OnboardingWebVi
       `}</style>
 
       {/* ── Left Column: Stepper Sidebar (Matching Web App) ── */}
-      <aside className="w-[38%] border-r border-zinc-200 bg-zinc-50/40 p-3 sm:p-3.5 flex flex-col justify-between shrink-0">
+      <aside className="relative w-[38%] bg-zinc-50/40 p-3.5 sm:p-4 flex flex-col justify-between shrink-0">
+        {/* Inset divider: stops short of the top and bottom edges */}
+        <div className="absolute right-0 top-4 bottom-4 w-px bg-zinc-200" aria-hidden="true" />
         <div className="flex flex-col gap-3">
           {/* Header with Circular Progress Gauge */}
-          <div className="flex items-center justify-between gap-1.5 pb-2 border-b border-zinc-200/80">
+          <div className="flex h-11 items-center justify-between gap-1.5 border-b border-zinc-200/80 box-border">
             <div>
               <h4 className="font-syne font-extrabold text-[11px] text-black tracking-tight leading-tight">
                 {dict.onboarding.title}
@@ -173,7 +175,7 @@ export function OnboardingWebView({ s1p = 0.5, className = "" }: OnboardingWebVi
         </div>
 
         {/* Sidebar Footer Hint */}
-        <div className="pt-2 border-t border-zinc-200/80 flex items-center justify-between text-[6.5px] font-mono text-zinc-400">
+        <div className="h-10 border-t border-zinc-200/80 flex items-center justify-between text-[6.5px] font-mono text-zinc-400 box-border">
           <span className="flex items-center gap-1">
             <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
             Logic Engine
@@ -185,19 +187,8 @@ export function OnboardingWebView({ s1p = 0.5, className = "" }: OnboardingWebVi
       {/* ── Right Column: Interactive Questionnaire Canvas ── */}
       <section className="flex-1 p-3.5 sm:p-4 bg-white flex flex-col justify-between overflow-y-auto scrollbar-none">
         {/* Step Header */}
-        <div className="flex flex-col gap-0.5 pb-2.5 border-b border-zinc-100">
-          <div className="flex items-center gap-1.5">
-            <span className="rounded-full bg-zinc-100 border border-zinc-200 px-2 py-0.5 text-[7px] font-mono font-bold text-zinc-700 uppercase tracking-wider">
-              {dict.onboarding.stepCount.replace("{step}", String(activeStepIndex + 1)).replace("{total}", String(steps.length))}
-            </span>
-            {percentage === 100 && (
-              <span className="rounded-full bg-black text-white px-2 py-0.5 text-[7px] font-mono font-bold uppercase tracking-wider flex items-center gap-1">
-                <Check className="w-2 h-2 text-white" /> {dict.onboarding.complete}
-              </span>
-            )}
-          </div>
-
-          <h3 className="text-[12px] sm:text-[13px] font-syne font-extrabold text-black tracking-tight leading-tight mt-1">
+        <div className="flex h-11 flex-col justify-center border-b border-zinc-200/80 box-border">
+          <h3 className="text-[12px] sm:text-[13px] font-syne font-extrabold text-black tracking-tight leading-tight">
             {currentStage === 0
               ? dict.onboarding.stage0.title
               : currentStage === 1
@@ -484,7 +475,7 @@ export function OnboardingWebView({ s1p = 0.5, className = "" }: OnboardingWebVi
         </div>
 
         {/* ── Navigation Action Footer (Matching Web App) ── */}
-        <div className="pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-2">
+        <div className="h-10 border-t border-zinc-200/80 flex items-center justify-between gap-2 box-border">
           {currentStage > 0 ? (
             <div className="px-2.5 py-1.5 rounded-xl bg-zinc-100 text-[7.5px] font-mono font-bold text-zinc-700 flex items-center gap-1 cursor-pointer">
               {dict.onboarding.back}

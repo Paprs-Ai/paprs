@@ -22,7 +22,7 @@ export function WebFloatingNav({
   activeTab = "dashboard",
   className = "",
 }: {
-  activeTab?: "dashboard" | "todo" | "vault" | "assistant";
+  activeTab?: "dashboard" | "todo" | "vault";
   className?: string;
 }) {
   const { dict } = useLanguage();
@@ -30,11 +30,10 @@ export function WebFloatingNav({
     { id: "dashboard", label: dict.nav.overview, icon: Home },
     { id: "todo", label: dict.nav.actionPlan, icon: Layers },
     { id: "vault", label: dict.nav.vault, icon: FileText },
-    { id: "assistant", label: dict.nav.assistant, icon: Sparkles },
   ];
 
   return (
-    <div className={`px-3.5 py-2 bg-white border-b border-zinc-100 flex items-center justify-between gap-2 shrink-0 select-none ${className}`}>
+    <div className={`px-3.5 py-2 bg-zinc-50/40 flex items-center justify-between gap-2 shrink-0 select-none ${className}`}>
       {/* Brand */}
       <div className="flex items-center gap-1.5">
         <span className="font-syne font-black text-[13px] tracking-tight text-black">
@@ -148,7 +147,13 @@ export function BrowserPlaceholder({
 // Alias for convenience
 export const BrowserWindow = BrowserPlaceholder;
 
-export function HeroDashboardView() {
+export function HeroDashboardView({
+  hideNav = false,
+  pressedIndex = -1,
+}: {
+  hideNav?: boolean;
+  pressedIndex?: number;
+}) {
   const docs: Array<{
     title: string;
     subtitle: string;
@@ -188,7 +193,7 @@ export function HeroDashboardView() {
   return (
     <div className="flex-1 flex flex-col justify-between h-full bg-zinc-50/40">
       {/* Top Floating Nav Bar matching real Web App */}
-      <WebFloatingNav activeTab="dashboard" />
+      {!hideNav && <WebFloatingNav activeTab="dashboard" />}
 
       {/* Main Canvas */}
       <div className="p-3.5 sm:p-4 flex flex-col justify-between gap-3 flex-1 overflow-y-auto scrollbar-none">
@@ -274,7 +279,7 @@ export function HeroDashboardView() {
                     }`}
                     style={{
                       opacity: mounted ? 1 : 0,
-                      transform: mounted ? "translateY(0)" : "translateY(8px)",
+                      transform: !mounted ? "translateY(8px)" : i === pressedIndex ? "scale(0.97)" : "translateY(0)",
                       transitionDuration: "400ms",
                       transitionDelay: `${i * 50}ms`,
                     }}
@@ -378,116 +383,233 @@ export function HeroDashboardView() {
 
 export const RelocationHubView = HeroDashboardView;
 
-export function SeguridadSocialRouteView() {
-  const tasks: Array<{ title: string; sublabel: string; status: "done" | "active" | "pending" }> = [
-    { title: "Verify identity & padrón record", sublabel: "Valid passport/NIE & Barcelona residency certificate matched", status: "done" },
-    { title: "Generate Modelo TA.1 application", sublabel: "Official TGSS affiliation form pre-filled with applicant details", status: "done" },
-    { title: "Submit digital filing via Import@ss", sublabel: "Tesorería General (TGSS) portal via Cl@ve or selfie verification", status: "active" },
-    { title: "Download official NUSS certificate", sublabel: "12-digit permanent social security identifier (NUSS/NAF) issued", status: "pending" },
+export type ActionPlanId = "nie" | "nuss";
+
+type PlanStatus = "done" | "active" | "pending";
+
+const PLAN_DETAILS: Record<
+  ActionPlanId,
+  {
+    title: string;
+    stepLabel: string;
+    meta: Array<{ icon: React.ReactNode; label: string }>;
+    steps: Array<{ title: string; sublabel: string; status: PlanStatus; chips?: string[] }>;
+    cta: string;
+  }
+> = {
+  nuss: {
+    title: "Seguridad Social (NUSS) Application",
+    stepLabel: "Step 3 of 4 Ready",
+    meta: [
+      { icon: <Clock className="w-2 h-2" />, label: "~10 min" },
+      { icon: <CreditCard className="w-2 h-2" />, label: "Free" },
+      { icon: <Lock className="w-2 h-2" />, label: "Cl@ve" },
+    ],
+    steps: [
+      { title: "Verify identity & padrón record", sublabel: "Passport/NIE and Barcelona residency certificate matched", status: "done" },
+      { title: "Generate Modelo TA.1 application", sublabel: "Official TGSS affiliation form pre-filled with your details", status: "done" },
+      {
+        title: "Submit digital filing via Import@ss",
+        sublabel: "Tesorería General portal, sign in with Cl@ve or selfie verification",
+        status: "active",
+        chips: ["Modelo TA.1 PDF", "Padrón certificate", "Passport scan"],
+      },
+      { title: "Download official NUSS certificate", sublabel: "12-digit permanent social security number (NUSS/NAF) issued", status: "pending" },
+    ],
+    cta: "Submit via Import@ss",
+  },
+  nie: {
+    title: "NIE Certificate Route (EX-15)",
+    stepLabel: "Step 3 of 4 Ready",
+    meta: [
+      { icon: <Clock className="w-2 h-2" />, label: "In person" },
+      { icon: <CreditCard className="w-2 h-2" />, label: "€12.24 fee" },
+      { icon: <MapPin className="w-2 h-2" />, label: "Barcelona" },
+    ],
+    steps: [
+      { title: "Generate Tax Model 790-012", sublabel: "Official PDF with pre-calculated fee (€12.24)", status: "done" },
+      { title: "Pay €12.24 tax fee", sublabel: "At any ATM / bank, payment proof verified", status: "done" },
+      {
+        title: "Present EX-15 form in person",
+        sublabel: "Carrer de Múrcia 36, Barcelona (confirmed)",
+        status: "active",
+        chips: ["EX-15 PDF", "Fee receipt", "Passport"],
+      },
+      { title: "Pick up your NIE certificate", sublabel: "After office processing, in-person collection", status: "pending" },
+    ],
+    cta: "View Action Packet",
+  },
+};
+
+export function ActionPlanDetailView({
+  plan = "nuss",
+  hideNav = false,
+}: {
+  plan?: ActionPlanId;
+  hideNav?: boolean;
+}) {
+  const details = PLAN_DETAILS[plan];
+
+  // Everything Paprs detected for this user's case (left column)
+  const detected: Array<{
+    title: string;
+    subtitle: string;
+    badge: string;
+    icon: React.ReactNode;
+    done: number;
+    total: number;
+    id?: ActionPlanId;
+  }> = [
+    { title: "NIE Certificate", subtitle: "Ministerio del Interior", badge: "In progress", icon: <FileText className="w-3 h-3 text-black" />, done: 2, total: 4, id: "nie" },
+    { title: "Social Security (NUSS)", subtitle: "Tesorería General (TGSS)", badge: "Next", icon: <Layers className="w-3 h-3 text-black" />, done: 2, total: 4, id: "nuss" },
+    { title: "Empadronamiento", subtitle: "Ajuntament de Barcelona", badge: "Done", icon: <MapPin className="w-3 h-3 text-black" />, done: 4, total: 4 },
+    { title: "Modelo 030 / Tax ID", subtitle: "Agencia Tributaria", badge: "Queued", icon: <CreditCard className="w-3 h-3 text-black" />, done: 0, total: 3 },
+    { title: "Certificado Digital", subtitle: "FNMT", badge: "Queued", icon: <Lock className="w-3 h-3 text-black" />, done: 0, total: 2 },
   ];
 
   return (
     <div className="flex-1 flex flex-col justify-between h-full bg-zinc-50/40">
       {/* Top Floating Nav Bar matching real Web App */}
-      <WebFloatingNav activeTab="todo" />
+      {!hideNav && <WebFloatingNav activeTab="todo" />}
 
       {/* Main Canvas */}
-      <div className="p-3.5 sm:p-4 flex flex-col justify-between gap-3 flex-1 overflow-y-auto scrollbar-none">
-        {/* Breadcrumb Header */}
-        <div className="flex items-center justify-between border-b border-zinc-200/80 pb-2">
-          <div>
-            <span className="font-mono text-[7px] text-zinc-400 uppercase tracking-wider font-bold">
-              Action Plan · Social Security
-            </span>
-            <h3 className="font-syne font-extrabold text-[12px] text-black leading-tight mt-0.5">
-              Seguridad Social (NUSS) Application
-            </h3>
-          </div>
-          <span className="font-mono text-[7px] bg-zinc-100 border border-zinc-200 text-black px-2 py-0.5 rounded-full font-bold uppercase">
-            Step 3 of 4 Ready
-          </span>
-        </div>
-
+      <div className="p-3.5 sm:p-4 flex flex-col gap-3 flex-1 min-h-0 overflow-y-auto scrollbar-none">
         {/* 2-Column Grid */}
-        <div className="how-dashboard-grid grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
-          {/* Left: Sequential Task List (7 cols) */}
-          <div className="how-dashboard-grid-primary sm:col-span-7 flex flex-col justify-between gap-1.5">
-            <div className="flex items-center justify-between px-0.5">
-              <span className="font-mono text-[8px] uppercase tracking-wider text-zinc-400 font-bold">Action Pipeline</span>
-              <span className="font-mono text-[7.5px] text-zinc-400">4 Steps</span>
+        <div className="how-dashboard-grid grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1 min-h-0">
+          {/* Left: Everything Paprs detected (5 cols) */}
+          <div className="how-dashboard-grid-secondary sm:col-span-5 flex flex-col gap-1.5 min-h-0">
+            <div className="flex items-center justify-between px-0.5 shrink-0">
+              <span className="font-mono text-[8px] uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-1">
+                <Sparkles className="w-2.5 h-2.5 text-black" /> Action Plans
+              </span>
             </div>
 
-            <div className="bg-white border border-zinc-200/80 rounded-xl p-2.5 shadow-2xs flex flex-col justify-between flex-1 gap-1">
-              {tasks.map((t, i) => (
-                <div key={i} className="flex items-start gap-2.5 relative flex-1 min-h-[38px]">
-                  {/* Left indicator track with continuous line */}
-                  <div className="relative flex flex-col items-center flex-shrink-0 self-stretch">
-                    {t.status === "done" ? (
-                      <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs mt-0.5">
-                        <Check className="w-2 h-2 text-white stroke-[2.5]" />
+            <div className="flex flex-col gap-1.5">
+              {detected.map((d) => {
+                const pct = Math.round((d.done / d.total) * 100);
+                const isSelected = d.id === plan;
+                return (
+                  <div
+                    key={d.title}
+                    className={`rounded-xl px-2.5 py-3 flex items-center gap-2 border transition-all ${
+                      isSelected
+                        ? "bg-white border-black shadow-xs ring-1 ring-black/5"
+                        : "bg-white border-zinc-200/80 shadow-2xs"
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 ${
+                        "bg-zinc-100 border-zinc-200"
+                      }`}
+                    >
+                      {d.icon}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className={`text-[8.5px] font-extrabold font-syne leading-tight truncate text-black`}>
+                        {d.title}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <div className={`h-[3px] flex-1 rounded-full overflow-hidden bg-zinc-200`}>
+                          <div className={`h-full rounded-full bg-black`} style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className={`text-[6px] font-mono shrink-0 text-zinc-400`}>
+                          {d.done}/{d.total}
+                        </span>
                       </div>
-                    ) : t.status === "active" ? (
-                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border border-black flex items-center justify-center text-black z-10 shadow-2xs mt-0.5">
-                        <Clock className="w-2 h-2 text-black" />
-                      </div>
-                    ) : (
-                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center text-zinc-400 z-10 shadow-2xs mt-0.5">
-                        <div className="w-1 h-1 rounded-full bg-zinc-400" />
-                      </div>
-                    )}
-
-                    {/* Continuous connector line down to next circle */}
-                    {i < tasks.length - 1 && (
-                      <div className="w-[1.5px] bg-zinc-200 flex-1 my-0.5" />
-                    )}
+                    </div>
+                    <span
+                      className={`text-[6px] font-mono border px-1.5 py-0.5 rounded font-bold uppercase tracking-wider whitespace-nowrap shrink-0 ${
+                        isSelected
+                          ? "bg-black text-white border-black"
+                          : d.badge === "Done"
+                          ? "bg-black text-white border-black"
+                          : d.badge === "In progress"
+                          ? "bg-zinc-100 text-zinc-900 border-zinc-300"
+                          : "bg-zinc-50 text-zinc-500 border-zinc-200"
+                      }`}
+                    >
+                      {d.badge}
+                    </span>
+                    {isSelected && <ChevronRight className="w-2.5 h-2.5 text-black shrink-0 -ml-0.5" />}
                   </div>
+                );
+              })}
+            </div>
 
-                  <div className="flex-1 min-w-0 pb-1">
-                    <p className={`text-[9px] font-bold leading-tight ${t.status === "done" ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>
-                      {t.title}
-                    </p>
-                    <p className="text-[7px] text-zinc-500 font-mono mt-0.5 leading-tight">{t.sublabel}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-auto flex items-center gap-1.5 px-0.5 font-mono text-[6.5px] text-zinc-400">
+              <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+              Ordered by dependency · updates as you file
             </div>
           </div>
 
-          {/* Right: Active Priority Action (5 cols) */}
-          <div className="how-dashboard-grid-secondary sm:col-span-5 flex flex-col justify-between gap-1.5">
-            <div className="flex items-center justify-between px-0.5">
-              <span className="font-mono text-[8px] uppercase tracking-wider text-black font-bold flex items-center gap-1">
-                <Sparkles className="w-2.5 h-2.5 text-black" /> Next Action
-              </span>
-              <span className="font-mono text-[7.5px] bg-zinc-100 border border-zinc-200 text-black px-1.5 py-0.2 rounded font-bold">Action Ready</span>
-            </div>
+          {/* Right: Step-by-step for the selected procedure (7 cols) */}
+          <div className="how-dashboard-grid-primary sm:col-span-7 flex flex-col gap-1.5 min-h-0">
+            {/* Spacer keeps the card aligned with the first row on the left */}
+            <div className="px-0.5 shrink-0 invisible font-mono text-[8px]" aria-hidden="true">.</div>
 
-            <div className="bg-white border border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
-              <div>
-                <div className="flex items-center gap-1 text-[7px] font-mono text-zinc-400 uppercase tracking-wider font-bold">
-                  <span>Step 3 Verification</span>
+            <div className="bg-white border border-black rounded-xl p-2.5 shadow-xs flex flex-col flex-1 gap-2 min-h-0">
+              <div className="shrink-0">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-syne font-extrabold text-[11.5px] text-black leading-tight">
+                    {details.title}
+                  </h3>
+                  <span className="font-mono text-[6.5px] bg-zinc-100 border border-zinc-200 text-black px-2 py-0.5 rounded-full font-bold uppercase whitespace-nowrap shrink-0">
+                    {details.stepLabel}
+                  </span>
                 </div>
-                <h4 className="font-syne font-extrabold text-[10.5px] text-black leading-tight mt-0.5">
-                  Submit NUSS Application
-                </h4>
-                <p className="text-[7.5px] text-zinc-500 mt-1 leading-snug">
-                  Tesorería General (TGSS). Modelo TA.1 is generated and verified with your passport.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1 border-t border-zinc-100 pt-1.5 font-mono text-[7px]">
-                <div className="flex items-center gap-1 text-black font-medium">
-                  <Check className="w-2 h-2 text-black shrink-0" />
-                  <span>Modelo TA.1 PDF completed</span>
-                </div>
-                <div className="flex items-center gap-1 text-black font-medium">
-                  <Check className="w-2 h-2 text-black shrink-0" />
-                  <span>Padrón certificate attached</span>
+                <div className="flex items-center gap-2 mt-1 font-mono text-[6.5px] text-zinc-500">
+                  {details.meta.map((m) => (
+                    <span key={m.label} className="flex items-center gap-0.5">{m.icon} {m.label}</span>
+                  ))}
                 </div>
               </div>
 
-              <div className="w-full py-1.5 bg-black text-white rounded-lg font-mono font-bold text-[8px] uppercase tracking-wider flex items-center justify-center gap-1 shadow-xs cursor-pointer hover:bg-zinc-800 transition-colors">
-                Submit via Import@ss <ChevronRight className="w-2.5 h-2.5 text-white" />
+              {/* Vertical step timeline */}
+              <div className="flex flex-col border-t border-zinc-100 pt-2.5">
+                {details.steps.map((s, i) => (
+                  <div key={s.title} className={`flex items-start gap-2.5 relative min-h-[30px]`}>
+                    <div className="relative flex flex-col items-center flex-shrink-0 self-stretch">
+                      {s.status === "done" ? (
+                        <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center z-10 mt-0.5">
+                          <Check className="w-2 h-2 text-white stroke-[2.5]" />
+                        </div>
+                      ) : s.status === "active" ? (
+                        <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border border-black flex items-center justify-center z-10 mt-0.5 ring-2 ring-black/10">
+                          <Clock className="w-2 h-2 text-black" />
+                        </div>
+                      ) : (
+                        <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center z-10 mt-0.5">
+                          <div className="w-1 h-1 rounded-full bg-zinc-400" />
+                        </div>
+                      )}
+                      {i < details.steps.length - 1 && (
+                        <div className={`w-[1.5px] flex-1 my-0.5 ${s.status === "done" ? "bg-black" : "bg-zinc-200"}`} />
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0 pb-5">
+                      <p className={`text-[9px] font-bold leading-tight ${s.status === "done" ? "text-zinc-400 line-through decoration-black" : "text-black"}`}>
+                        {s.title}
+                      </p>
+                      <p className="text-[7px] text-zinc-500 font-mono mt-0.5 leading-snug">{s.sublabel}</p>
+
+                      {s.status === "active" && s.chips && (
+                        <>
+                          <div className="flex flex-wrap gap-1 mt-1.5">
+                            {s.chips.map((c) => (
+                              <span key={c} className="inline-flex items-center gap-1 rounded-full bg-zinc-100 border border-zinc-200 px-1.5 py-0.5 font-mono text-[6.5px] font-bold text-black">
+                                <Check className="w-2 h-2 text-black" /> {c}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="mt-2 w-full py-1.5 bg-white text-black border border-black rounded-lg font-mono font-bold text-[8px] uppercase tracking-wider flex items-center justify-center gap-1 shadow-xs cursor-pointer hover:bg-zinc-100 transition-colors">
+                            {details.cta} <ChevronRight className="w-2.5 h-2.5 text-black" />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -508,134 +630,12 @@ export function SeguridadSocialRouteView() {
   );
 }
 
+export function SeguridadSocialRouteView() {
+  return <ActionPlanDetailView plan="nuss" />;
+}
+
 export function NieCertificateRouteView() {
-  const tasks: Array<{ title: string; sublabel: string; status: "done" | "active" | "pending" }> = [
-    { title: "Generate Tax Model 790-012", sublabel: "Official PDF with pre-calculated fee (€12.24)", status: "done" },
-    { title: "Pay €12.24 tax fee", sublabel: "At any ATM / Bank, payment proof verified", status: "done" },
-    { title: "Present EX-15 form in person", sublabel: "Carrer de Múrcia 36, Barcelona (Confirmed)", status: "active" },
-    { title: "Pick up your NIE certificate", sublabel: "After office processing, in-person collection", status: "pending" },
-  ];
-
-  return (
-    <div className="flex-1 flex flex-col justify-between h-full bg-zinc-50/40">
-      {/* Top Floating Nav Bar matching real Web App */}
-      <WebFloatingNav activeTab="todo" />
-
-      {/* Main Canvas */}
-      <div className="p-3.5 sm:p-4 flex flex-col justify-between gap-3 flex-1 overflow-y-auto scrollbar-none">
-        {/* Breadcrumb Header */}
-        <div className="flex items-center justify-between border-b border-zinc-200/80 pb-2">
-          <div>
-            <span className="font-mono text-[7px] text-zinc-400 uppercase tracking-wider font-bold">
-              Action Plan · NIE Number
-            </span>
-            <h3 className="font-syne font-extrabold text-[12px] text-black leading-tight mt-0.5">
-              NIE Certificate Route (EX-15)
-            </h3>
-          </div>
-          <span className="font-mono text-[7px] bg-zinc-100 border border-zinc-200 text-black px-2 py-0.5 rounded-full font-bold uppercase">
-            Step 3 of 4 Ready
-          </span>
-        </div>
-
-        {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
-          {/* Left: Sequential Task List (7 cols) */}
-          <div className="sm:col-span-7 flex flex-col justify-between gap-1.5">
-            <div className="flex items-center justify-between px-0.5">
-              <span className="font-mono text-[8px] uppercase tracking-wider text-zinc-400 font-bold">Action Pipeline</span>
-              <span className="font-mono text-[7.5px] text-zinc-400">4 Steps</span>
-            </div>
-
-            <div className="bg-white border border-zinc-200/80 rounded-xl p-2.5 shadow-2xs flex flex-col justify-between flex-1 gap-1">
-              {tasks.map((t, i) => (
-                <div key={i} className="flex items-start gap-2.5 relative flex-1 min-h-[38px]">
-                  {/* Left indicator track with continuous line */}
-                  <div className="relative flex flex-col items-center flex-shrink-0 self-stretch">
-                    {t.status === "done" ? (
-                      <div className="w-3.5 h-3.5 rounded-full bg-black border border-black flex items-center justify-center text-white z-10 shadow-2xs mt-0.5">
-                        <Check className="w-2 h-2 text-white stroke-[2.5]" />
-                      </div>
-                    ) : t.status === "active" ? (
-                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-100 border border-black flex items-center justify-center text-black z-10 shadow-2xs mt-0.5">
-                        <Clock className="w-2 h-2 text-black" />
-                      </div>
-                    ) : (
-                      <div className="w-3.5 h-3.5 rounded-full bg-zinc-50 border border-zinc-300 flex items-center justify-center text-zinc-400 z-10 shadow-2xs mt-0.5">
-                        <div className="w-1 h-1 rounded-full bg-zinc-400" />
-                      </div>
-                    )}
-
-                    {/* Continuous connector line down to next circle */}
-                    {i < tasks.length - 1 && (
-                      <div className="w-[1.5px] bg-zinc-200 flex-1 my-0.5" />
-                    )}
-                  </div>
-
-                  <div className="flex-1 min-w-0 pb-1">
-                    <p className={`text-[9px] font-bold leading-tight ${t.status === "done" ? "text-zinc-400 line-through decoration-zinc-300" : "text-black"}`}>
-                      {t.title}
-                    </p>
-                    <p className="text-[7px] text-zinc-500 font-mono mt-0.5 leading-tight">{t.sublabel}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right: Active Priority Action (5 cols) */}
-          <div className="sm:col-span-5 flex flex-col justify-between gap-1.5">
-            <div className="flex items-center justify-between px-0.5">
-              <span className="font-mono text-[8px] uppercase tracking-wider text-black font-bold flex items-center gap-1">
-                <Sparkles className="w-2.5 h-2.5 text-black" /> Next Action
-              </span>
-              <span className="font-mono text-[7.5px] bg-zinc-100 border border-zinc-200 text-black px-1.5 py-0.2 rounded font-bold">Action Ready</span>
-            </div>
-
-            <div className="bg-white border border-black rounded-xl p-2.5 shadow-xs flex flex-col justify-between flex-1 gap-2">
-              <div>
-                <div className="flex items-center gap-1 text-[7px] font-mono text-zinc-400 uppercase tracking-wider font-bold">
-                  <span>Step 3 Verification</span>
-                </div>
-                <h4 className="font-syne font-extrabold text-[10.5px] text-black leading-tight mt-0.5">
-                  Present In-Person Application
-                </h4>
-                <p className="text-[7.5px] text-zinc-500 mt-1 leading-snug">
-                  Carrer de Múrcia 36, Barcelona. Bring your original passport and fee receipt.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1 border-t border-zinc-100 pt-1.5 font-mono text-[7px]">
-                <div className="flex items-center gap-1 text-black font-medium">
-                  <Check className="w-2 h-2 text-black shrink-0" />
-                  <span>EX-15 PDF downloaded</span>
-                </div>
-                <div className="flex items-center gap-1 text-black font-medium">
-                  <Check className="w-2 h-2 text-black shrink-0" />
-                  <span>Fee receipt stamped</span>
-                </div>
-              </div>
-
-              <div className="w-full py-1.5 bg-black text-white rounded-lg font-mono font-bold text-[8px] uppercase tracking-wider flex items-center justify-center gap-1 shadow-xs cursor-pointer hover:bg-zinc-800 transition-colors">
-                View Action Packet <ChevronRight className="w-2.5 h-2.5 text-white" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Command Bar */}
-        <div className="bg-white border border-zinc-200 px-3 py-1.5 rounded-xl flex items-center justify-between gap-2 shadow-2xs shrink-0">
-          <div className="flex items-center gap-2 min-w-0 flex-1 text-zinc-400">
-            <Sparkles className="w-3 h-3 text-black shrink-0" />
-            <span className="font-mono text-[7.5px] text-zinc-500 truncate">Ask Paprs anything or drop official PDFs to auto-index...</span>
-          </div>
-          <div className="flex items-center gap-1 shrink-0 font-mono text-[7px] text-zinc-500 bg-zinc-100 border border-zinc-200 px-1.5 py-0.2 rounded">
-            <span>⌘K</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <ActionPlanDetailView plan="nie" />;
 }
 
 export const NieRouteView = NieCertificateRouteView;

@@ -1,14 +1,14 @@
 "use client";
 
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { useLanguage } from "./context/LanguageContext";
 import AILearns from "./sections/AILearns";
-import AutonomoEngine from "./sections/AutonomoEngine";
 import BureaucracyFAQ from "./sections/BureaucracyFAQ";
 import Countries from "./sections/Countries";
 import FinalCTA from "./sections/FinalCTA";
 import HeroAndPain from "./sections/HeroAndPain";
 import HowItWorks from "./sections/HowItWorks";
-import { useLanguage } from "./context/LanguageContext";
-import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import DocumentPileBridge from "./components/DocumentPileBridge";
 
 export default function Home() {
   const { dict } = useLanguage();
@@ -34,11 +34,7 @@ export default function Home() {
 
         {/* Navigation Links */}
         <nav className="hidden lg:flex gap-5 text-[10px] font-mono uppercase tracking-widest text-black/75">
-          <a href="#pain" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.reality}</a>
           <a href="#how-it-works" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.howItWorks}</a>
-          <a href="#autonomo-engine" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.autonomoEngine}</a>
-          <a href="#ai-learns" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.intelligence}</a>
-          <a href="#countries" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.europe}</a>
           <a href="#faq" className="transition-colors hover:text-black font-bold apple-press">{dict.nav.faq}</a>
         </nav>
 
@@ -58,7 +54,8 @@ export default function Home() {
       <main className="flex-1">
         <HeroAndPain />
         <HowItWorks />
-        <AutonomoEngine />
+        <DocumentPileBridge />
+        {/* <AutonomoEngine /> */}
         <AILearns />
         <Countries />
         <BureaucracyFAQ />

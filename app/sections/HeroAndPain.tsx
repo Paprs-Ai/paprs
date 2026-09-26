@@ -2,18 +2,31 @@
 
 import {
   AlertTriangle,
-  CalendarX2,
+  ArrowDown,
+  ArrowRight,
+  Building2,
   Check,
+  ChevronDown,
   ChevronRight,
   Clock,
+  Compass,
   CreditCard,
   FileText,
+  FileWarning,
   Globe,
   Home,
-  Layers,
+  Landmark,
   Lock,
   MapPin,
+  PhoneCall,
+  Play,
+  RefreshCw,
+  Search,
+  ServerCrash,
+  ShieldAlert,
   Sparkles,
+  WifiOff,
+  X,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import DocumentCard from "../components/DocumentCard";
@@ -28,56 +41,827 @@ import {
 import { useScrollProgress } from "../hooks/useScrollProgress";
 import { useLanguage } from "../context/LanguageContext";
 
-// ─── Process Step ──────────────────────────────────────────────────────────────
-function PainStep({
-  num,
-  label,
-  sublabel,
-  warning,
-  cost,
-  isLast = false,
-  isPrereq = false,
+// ─── Visual 1: The Circular Trap (Proper Geometric Circle & Continuous Motion) ──────
+function CircularTrapVisual({
+  nodes,
+  deadlock,
 }: {
-  num: number | string;
-  label: string;
-  sublabel?: string;
-  warning?: string;
-  cost?: string;
-  isLast?: boolean;
-  isPrereq?: boolean;
+  nodes: {
+    nie: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+    padron: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+    rental: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+    bank: { title: string; subtitle: string; blockReason: string; startTag: string; docCode: string; status: string };
+  };
+  deadlock: {
+    question: string;
+    sub: string;
+    badge: string;
+  };
 }) {
   return (
-    <div className="pain-step flex gap-3">
-      <div className="flex flex-col items-center flex-shrink-0">
+    <div className="relative w-full max-w-[740px] mx-auto select-none">
+      {/* ── DESKTOP & TABLET: Open Spatial Continuous Canvas (sm:block) ── */}
+      <div className="hidden sm:block relative w-full h-[470px] lg:h-[490px]">
+        {/* Faint spatial blueprint grid background without bounding box */}
+        <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none" />
+
+        {/* Corner registration crosshairs */}
+        <div className="absolute top-0 left-0 text-zinc-300 font-mono text-xs pointer-events-none">+</div>
+        <div className="absolute top-0 right-0 text-zinc-300 font-mono text-xs pointer-events-none">+</div>
+        <div className="absolute bottom-0 left-0 text-zinc-300 font-mono text-xs pointer-events-none">+</div>
+        <div className="absolute bottom-0 right-0 text-zinc-300 font-mono text-xs pointer-events-none">+</div>
+
+
+        {/* ── SVG DEPENDENCY LOOP (BEHIND CARDS: z-0) ── */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 700 480" fill="none">
+          {/* Inner subtle guide circle framing center hub */}
+          <circle cx="350" cy="240" r="130" stroke="#e4e4e7" strokeWidth="1" strokeDasharray="3 3" />
+          
+          {/* Outer faint boundary orbit */}
+          <circle cx="350" cy="240" r="226" stroke="#f4f4f5" strokeWidth="1" strokeDasharray="4 4" />
+
+          {/* THE EXPANDED CONTINUOUS DOTTED CIRCLE (Active animated motion) */}
+          <circle
+            cx="350"
+            cy="240"
+            r="210"
+            stroke="#18181b"
+            strokeWidth="2"
+            strokeDasharray="6 6"
+            className="animate-line-dash"
+          />
+
+          {/* Traveling Pulse Indicators on the Orbit */}
+          <circle cx="350" cy="30" r="4" fill="#000000" className="animate-ping opacity-60" />
+          <circle cx="560" cy="240" r="4" fill="#000000" className="animate-ping opacity-60" />
+          <circle cx="350" cy="450" r="4" fill="#000000" className="animate-ping opacity-60" />
+          <circle cx="140" cy="240" r="4" fill="#000000" className="animate-ping opacity-60" />
+
+          {/* 4 Clockwise Directional Arrowheads */}
+          {/* 1. Touching Rental Card (x=432, y=48) */}
+          <g transform="translate(432, 48) rotate(24)">
+            <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
+          </g>
+
+          {/* 2. Touching Padrón Card (x=539, y=332) */}
+          <g transform="translate(539, 332) rotate(116)">
+            <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
+          </g>
+
+          {/* 3. Touching NIE Card (x=266, y=432) */}
+          <g transform="translate(266, 432) rotate(204)">
+            <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
+          </g>
+
+          {/* 4. Touching Bank Card (x=161, y=148) */}
+          <g transform="translate(161, 148) rotate(296)">
+            <path d="M 0 0 L -9 -4.5 L -7 0 L -9 4.5 z" fill="#18181b" />
+          </g>
+        </svg>
+
+        {/* Midpoint Lock Badges along the 210px Expanded Circle (z-10) */}
         <div
-          className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold font-mono border-2 flex-shrink-0 ${
-            isPrereq
-              ? "bg-black border-black text-white"
-              : "bg-zinc-100 border-zinc-400 text-black"
-          }`}
+          className="absolute z-10 pointer-events-none"
+          style={{ top: "calc(50% - 210px)", left: "50%", transform: "translate(-50%, -50%)" }}
         >
-          {isPrereq ? <Check className="w-3 h-3 text-white" /> : num}
-        </div>
-        {!isLast && <div className="w-px flex-1 min-h-[14px] mt-1 bg-zinc-200" />}
-      </div>
-      <div className={`${isLast ? "pb-0" : "pb-3.5"} min-w-0`}>
-        <div className={`text-sm font-semibold leading-snug ${isPrereq ? "text-black" : "text-zinc-800"}`}>
-          {label}
-        </div>
-        {sublabel && (
-          <div className="text-[11px] text-zinc-500 mt-0.5 leading-snug font-mono">{sublabel}</div>
-        )}
-        {warning && (
-          <div className="mt-1.5 bg-zinc-100 border border-zinc-300 rounded-lg px-2.5 py-1.5 text-[11px] text-black flex items-start gap-1.5 leading-snug">
-            <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5 text-black" />
-            <span>{warning}</span>
-          </div>
-        )}
-        {cost && (
-          <span className="mt-1.5 font-mono text-[11px] text-black bg-zinc-100 border border-zinc-300 rounded px-2 py-0.5 inline-block font-semibold">
-            {cost}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-zinc-300 text-zinc-900 text-[8.5px] font-mono font-semibold shadow-xs whitespace-nowrap">
+            <Lock className="w-2.5 h-2.5 text-black" /> Locks Lease (Requires IBAN)
           </span>
-        )}
+        </div>
+        <div
+          className="absolute z-10 pointer-events-none"
+          style={{ top: "50%", left: "calc(50% + 210px)", transform: "translate(-50%, -50%)" }}
+        >
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-zinc-300 text-zinc-900 text-[8.5px] font-mono font-semibold shadow-xs whitespace-nowrap">
+            <Lock className="w-2.5 h-2.5 text-black" /> Locks Padrón (Requires Lease)
+          </span>
+        </div>
+        <div
+          className="absolute z-10 pointer-events-none"
+          style={{ top: "calc(50% + 210px)", left: "50%", transform: "translate(-50%, -50%)" }}
+        >
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-zinc-300 text-zinc-900 text-[8.5px] font-mono font-semibold shadow-xs whitespace-nowrap">
+            <Lock className="w-2.5 h-2.5 text-black" /> Locks NIE (Requires Padrón)
+          </span>
+        </div>
+        <div
+          className="absolute z-10 pointer-events-none"
+          style={{ top: "50%", left: "calc(50% - 210px)", transform: "translate(-50%, -50%)" }}
+        >
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-zinc-300 text-zinc-900 text-[8.5px] font-mono font-semibold shadow-xs whitespace-nowrap">
+            <Lock className="w-2.5 h-2.5 text-black" /> Locks Account (Requires NIE)
+          </span>
+        </div>
+
+        {/* ── CENTER DEADLOCK HUB: "Where Do I Start?" (z-20) ── */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center text-center pointer-events-none">
+          <div className="relative">
+            <div className="w-20 h-20 rounded-full bg-white border-2 border-black shadow-xl flex flex-col items-center justify-center p-2 text-center">
+              <span className="text-2xl font-black text-black font-syne leading-none">?</span>
+              <span className="text-[8px] font-mono font-extrabold text-zinc-700 uppercase tracking-tight mt-1 leading-none">
+                {deadlock.question}
+              </span>
+            </div>
+            <div className="absolute -inset-2 rounded-full border border-zinc-300/80 animate-ping pointer-events-none" />
+          </div>
+          <div className="mt-2.5 bg-black text-white text-[9px] font-mono font-bold px-3 py-0.5 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1.5 whitespace-nowrap">
+            <RefreshCw className="w-2.5 h-2.5 text-zinc-400 animate-spin [animation-duration:8s]" />
+            {deadlock.badge}
+          </div>
+        </div>
+
+        {/* ── 4 FRAGMENTED CARDS WITH LIVE PAIN COMMENT ANNOTATIONS (z-10) ── */}
+        {/* Card 1: Bank (Top Left) */}
+        <div className="absolute top-2 left-2 w-[255px] lg:w-[270px] -rotate-1 transition-transform hover:rotate-0 z-10 hover:z-30">
+          <div className="absolute -top-3 left-4 z-30 bg-zinc-950 text-white font-mono text-[8.5px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md border border-zinc-800">
+            <span>{nodes.bank.startTag}</span>
+            <span className="text-zinc-400 font-extrabold">✕ Blocked</span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-200 shadow-md">
+            <div className="flex items-start justify-between gap-1">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-900 flex-shrink-0 border border-zinc-200">
+                  <Landmark className="w-3.5 h-3.5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[8px] font-mono text-zinc-500 font-bold block leading-none">{nodes.bank.docCode}</span>
+                  <h4 className="text-xs font-bold text-black leading-tight font-syne truncate mt-0.5">{nodes.bank.title}</h4>
+                </div>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-300 text-zinc-800 text-[8px] font-mono font-bold uppercase flex-shrink-0">
+                Locked
+              </span>
+            </div>
+
+            <div className="mt-2.5 bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 font-mono text-[9px]">
+              <div className="flex items-center justify-between text-zinc-500 text-[8px] mb-1">
+                <span>IBAN DOMICILIACIÓN</span>
+                <span className="text-[7.5px] bg-zinc-200 text-zinc-800 font-bold px-1 rounded">RECHAZADO</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-zinc-800 font-semibold tracking-wider text-[9.5px]">
+                <span className="w-3 h-2 rounded bg-zinc-400 inline-block" />
+                <span>ES91 •••• •••• •••• 4821</span>
+              </div>
+            </div>
+
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Banco: 'Ley 10/2010 impide abrir cuenta a extranjeros sin NIE asignado.'"
+            </div>
+
+            <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
+              <Lock className="w-2.5 h-2.5 text-black flex-shrink-0" />
+              <span className="truncate">{nodes.bank.blockReason}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 2: Rental (Top Right) */}
+        <div className="absolute top-2 right-2 w-[255px] lg:w-[270px] rotate-1 transition-transform hover:rotate-0 z-10 hover:z-30">
+          <div className="absolute -top-3 right-4 z-30 bg-zinc-950 text-white font-mono text-[8.5px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md border border-zinc-800">
+            <span>{nodes.rental.startTag}</span>
+            <span className="text-zinc-400 font-extrabold">✕ Blocked</span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-200 shadow-md">
+            <div className="flex items-start justify-between gap-1">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-900 flex-shrink-0 border border-zinc-200">
+                  <Home className="w-3.5 h-3.5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[8px] font-mono text-zinc-500 font-bold block leading-none">{nodes.rental.docCode}</span>
+                  <h4 className="text-xs font-bold text-black leading-tight font-syne truncate mt-0.5">{nodes.rental.title}</h4>
+                </div>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-300 text-zinc-800 text-[8px] font-mono font-bold uppercase flex-shrink-0">
+                Locked
+              </span>
+            </div>
+
+            <div className="mt-2.5 bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 font-mono text-[9px]">
+              <div className="flex items-center justify-between text-zinc-500 text-[8px] mb-1">
+                <span>CONTRATO VIVIENDA</span>
+                <span className="text-[7.5px] bg-zinc-200 text-zinc-800 font-bold px-1 rounded">PARALIZADO</span>
+              </div>
+              <div className="text-[9px] text-zinc-800 font-semibold leading-tight truncate">
+                Fianza legal (LAU) · Exige SEPA ES
+              </div>
+            </div>
+
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Propietario: 'El seguro de impagos rechaza IBAN extranjero sin NIE.'"
+            </div>
+
+            <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
+              <Lock className="w-2.5 h-2.5 text-black flex-shrink-0" />
+              <span className="truncate">{nodes.rental.blockReason}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 3: Padrón (Bottom Right) */}
+        <div className="absolute bottom-2 right-2 w-[255px] lg:w-[270px] -rotate-1 transition-transform hover:rotate-0 z-10 hover:z-30">
+          <div className="absolute -bottom-3 right-4 z-30 bg-zinc-950 text-white font-mono text-[8.5px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md border border-zinc-800">
+            <span>{nodes.padron.startTag}</span>
+            <span className="text-zinc-400 font-extrabold">✕ Blocked</span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-200 shadow-md">
+            <div className="flex items-start justify-between gap-1">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-900 flex-shrink-0 border border-zinc-200">
+                  <Building2 className="w-3.5 h-3.5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[8px] font-mono text-zinc-500 font-bold block leading-none">{nodes.padron.docCode}</span>
+                  <h4 className="text-xs font-bold text-black leading-tight font-syne truncate mt-0.5">{nodes.padron.title}</h4>
+                </div>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-300 text-zinc-800 text-[8px] font-mono font-bold uppercase flex-shrink-0">
+                Locked
+              </span>
+            </div>
+
+            <div className="mt-2.5 bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 font-mono text-[9px]">
+              <div className="flex items-center justify-between text-zinc-500 text-[8px] mb-1">
+                <span>AYUNTAMIENTO REGISTRO</span>
+                <span className="text-[7.5px] bg-zinc-200 text-zinc-800 font-bold px-1 rounded">DENEGADO</span>
+              </div>
+              <div className="text-[9px] text-zinc-800 font-semibold leading-tight truncate">
+                Volante de Empadronamiento
+              </div>
+            </div>
+
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Ayuntamiento: 'Sin contrato firmado de 6 meses y DNI del casero no hay padrón.'"
+            </div>
+
+            <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
+              <Lock className="w-2.5 h-2.5 text-black flex-shrink-0" />
+              <span className="truncate">{nodes.padron.blockReason}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4: NIE (Bottom Left) */}
+        <div className="absolute bottom-2 left-2 w-[255px] lg:w-[270px] rotate-1.5 transition-transform hover:rotate-0 z-10 hover:z-30">
+          <div className="absolute -bottom-3 left-4 z-30 bg-zinc-950 text-white font-mono text-[8.5px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md border border-zinc-800">
+            <span>{nodes.nie.startTag}</span>
+            <span className="text-zinc-400 font-extrabold">✕ Blocked</span>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-200 shadow-md">
+            <div className="flex items-start justify-between gap-1">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-900 flex-shrink-0 border border-zinc-200">
+                  <FileText className="w-3.5 h-3.5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[8px] font-mono text-zinc-500 font-bold block leading-none">{nodes.nie.docCode}</span>
+                  <h4 className="text-xs font-bold text-black leading-tight font-syne truncate mt-0.5">{nodes.nie.title}</h4>
+                </div>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-300 text-zinc-800 text-[8px] font-mono font-bold uppercase flex-shrink-0">
+                Locked
+              </span>
+            </div>
+
+            <div className="mt-2.5 bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 font-mono text-[9px]">
+              <div className="flex items-center justify-between text-zinc-500 text-[8px] mb-1">
+                <span>POLICÍA NACIONAL</span>
+                <span className="text-[7.5px] bg-zinc-200 text-zinc-800 font-bold px-1 rounded">INCOMPLETO</span>
+              </div>
+              <div className="text-[9px] text-zinc-800 font-semibold leading-tight truncate">
+                Expediente T.I.E. / NIE
+              </div>
+            </div>
+
+            {/* Pain Callout Note */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-md p-1.5 font-mono text-[7.5px] text-zinc-700 italic">
+              "Policía: 'Sin padrón histórico municipal menor a 90 días no se tramita el NIE.'"
+            </div>
+
+            <div className="mt-2 flex items-center gap-1.5 text-[9px] text-zinc-700 font-mono">
+              <Lock className="w-2.5 h-2.5 text-black flex-shrink-0" />
+              <span className="truncate">{nodes.nie.blockReason}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE: Responsive Staggered Fragment Stream (sm:hidden) ── */}
+      <div className="sm:hidden space-y-2.5 py-2">
+        <div className="p-3 rounded-2xl bg-zinc-100 border border-zinc-300 text-center">
+          <div className="inline-flex items-center gap-1.5 text-zinc-900 text-[10px] font-mono font-bold uppercase">
+            <RefreshCw className="w-3 h-3 animate-spin [animation-duration:8s]" />
+            <span>{deadlock.question} · {deadlock.badge}</span>
+          </div>
+        </div>
+
+        {[
+          { key: "bank", data: nodes.bank, icon: Landmark, next: "Locks Long-Term Rental", quote: "Banco: Exige NIE para abrir cuenta española." },
+          { key: "rental", data: nodes.rental, icon: Home, next: "Locks Padrón Municipal", quote: "Inmobiliaria: Rechaza cuenta extranjera para la fianza." },
+          { key: "padron", data: nodes.padron, icon: Building2, next: "Locks NIE / TIE Card", quote: "Ayuntamiento: Exige contrato de alquiler registrado." },
+          { key: "nie", data: nodes.nie, icon: FileText, next: "Locks Spanish Bank Account", quote: "Policía: Exige padrón reciente para expedir el NIE." },
+        ].map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.key} className="p-3 rounded-2xl bg-white border border-zinc-200 shadow-sm relative space-y-1.5">
+              <div className="flex items-start justify-between gap-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-900 flex-shrink-0">
+                    <Icon className="w-3 h-3" />
+                  </div>
+                  <div>
+                    <span className="text-[7.5px] font-mono text-zinc-500 block leading-none">{item.data.docCode}</span>
+                    <h4 className="text-xs font-bold text-black font-syne leading-tight">{item.data.title}</h4>
+                  </div>
+                </div>
+                <span className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-300 text-zinc-800 text-[7.5px] font-mono font-bold uppercase">
+                  Locked
+                </span>
+              </div>
+              <div className="bg-zinc-100/90 border border-zinc-200 rounded p-1.5 text-[7.5px] font-mono text-zinc-700 italic">
+                {item.quote}
+              </div>
+              <div className="flex items-center justify-between text-[8.5px] font-mono text-zinc-600 bg-zinc-50 border border-zinc-200/80 rounded-md px-2 py-1">
+                <span className="text-zinc-900 font-semibold flex items-center gap-1">
+                  <Lock className="w-2.5 h-2.5 text-black" />
+                  {item.data.blockReason}
+                </span>
+                <span className="text-zinc-400">➔ {item.next}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Visual 2: The Sede Labyrinth & Appointment Blackout (Getting Lost in the Maze) ──
+function SedeBlackoutVisual({
+  path,
+  sim,
+  alertTitle,
+  alertMessage,
+}: {
+  path?: any;
+  sim?: any;
+  alertTitle?: string;
+  alertMessage?: string;
+}) {
+  return (
+    <div className="relative w-full max-w-[740px] mx-auto select-none">
+      {/* ── DESKTOP & TABLET: 3 Diverging Government Routes & Blackout (sm:block) ── */}
+      <div className="hidden sm:block relative w-full space-y-3 py-1">
+        {/* Subtle background blueprint dots */}
+        <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:20px_20px] opacity-60 pointer-events-none -z-10" />
+
+        {/* ── TOP HEADER SEQUENCE RIBBON & CONTINUOUS CONNECTORS ── */}
+        <div className="bg-white border border-zinc-300 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between">
+          <div className="flex items-center gap-2 font-mono">
+            <span className="w-2.5 h-2.5 rounded-full border-2 border-black bg-white" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-black">
+              THE CITA PREVIA LABYRINTH
+            </span>
+            <span className="text-[8.5px] text-zinc-500 font-normal hidden md:inline">
+              · 3 Conflicting Paths · 0 Available Slots
+            </span>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-[8px] font-bold">
+            <span className="px-2.5 py-1 rounded-full bg-white border-2 border-black text-black font-black uppercase tracking-wider flex items-center gap-1.5 shadow-xs">
+              <Compass className="w-3.5 h-3.5 text-black stroke-[2.5]" />
+              <span>LOST IN THE MAZE</span>
+            </span>
+          </div>
+        </div>
+
+        {/* ── 3 CONFLICTING BUREAUCRATIC PATHWAYS (HORIZONTAL GRID) ── */}
+        <div className="grid grid-cols-3 gap-3">
+          {/* Path 1: Sede Electrónica (Web Portal) */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs flex flex-col justify-between min-h-[265px] hover:border-black transition-all">
+            <div>
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">PATH 01 · WEB PORTAL</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <ServerCrash className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Error 504</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Globe className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">Sede Electrónica</h5>
+              </div>
+
+              {/* Simulated Portal Dropdown Box */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 font-mono text-[8px] space-y-1.5">
+                <div className="text-zinc-500 text-[7px] uppercase font-bold">Trámite Seleccionado</div>
+                <div className="bg-white border border-zinc-300 px-2 py-1 rounded text-zinc-900 font-bold text-[7.5px] truncate">
+                  POLICÍA - ASIGNACIÓN NIE
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1 bg-zinc-100 p-1.5 rounded border border-zinc-200">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black shrink-0" />
+                  <span className="leading-tight">"En este momento no hay citas disponibles."</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Pain Comment Callout */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 leading-snug">
+              <span className="font-bold text-black block mb-0.5">Intento #184 · 00:00:01 AM</span>
+              Página colapsada por bots. IP temporalmente bloqueada por exceso de peticiones.
+            </div>
+          </div>
+
+          {/* Path 2: Teléfono 060 (Citizen Info Call Center) */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs flex flex-col justify-between min-h-[265px] hover:border-black transition-all">
+            <div>
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">PATH 02 · CALL CENTER</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <PhoneCall className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Saturado</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <PhoneCall className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">Teléfono Oficial 060</h5>
+              </div>
+
+              {/* Simulated Call Hold Box */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 font-mono text-[8px] space-y-1.5">
+                <div className="flex justify-between text-zinc-500 text-[7px] uppercase font-bold">
+                  <span>Tiempo en Espera</span>
+                  <span className="text-black font-bold">42 min 18s</span>
+                </div>
+                <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-black w-[88%] h-full rounded-full animate-pulse" />
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1 bg-zinc-100 p-1.5 rounded border border-zinc-200">
+                  <WifiOff className="w-2.5 h-2.5 stroke-[3] text-black shrink-0" />
+                  <span className="leading-tight">"Línea saturada. Llamada cortada por el servidor."</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Pain Comment Callout */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 leading-snug">
+              <span className="font-bold text-black block mb-0.5">Pausa de comida perdida</span>
+              14 menús interactivos automáticos. Cero agentes humanos disponibles.
+            </div>
+          </div>
+
+          {/* Path 3: Black Market & Scalper Bots */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs flex flex-col justify-between min-h-[265px] hover:border-black transition-all">
+            <div>
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">PATH 03 · MAFIAS / BOTS</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <AlertTriangle className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>150€ / Cita</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">Mercado Negro / Telegram</h5>
+              </div>
+
+              {/* Scalper Chat Box */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200 rounded-xl p-2.5 font-mono text-[8px] space-y-1.5">
+                <div className="text-zinc-500 text-[7px] uppercase font-bold">Canal Citas Express</div>
+                <div className="bg-white border border-zinc-300 p-1.5 rounded text-zinc-800 text-[7px] leading-tight">
+                  "Cita NIE Barcelona asegurada en 48h. Pago por Bizum previo."
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1 bg-zinc-100 p-1.5 rounded border border-zinc-200">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black shrink-0" />
+                  <span className="leading-tight">Ilegal · Alto riesgo de estafa o cita falsa.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Pain Comment Callout */}
+            <div className="mt-2 bg-zinc-100/90 border border-zinc-200 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 leading-snug">
+              <span className="font-bold text-black block mb-0.5">Captura en 250ms</span>
+              Scripts automatizados acaparan las citas públicas gratuitas al instante.
+            </div>
+          </div>
+        </div>
+
+        {/* ── CENTRAL LABYRINTH STATUS & FRAGILE ESCAPE CONNECTOR ── */}
+        <div className="bg-white border-2 border-black rounded-2xl p-3.5 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-zinc-50 border-2 border-black flex items-center justify-center shrink-0">
+              <Compass className="w-5 h-5 text-black stroke-[2.5]" />
+            </div>
+            <div className="font-mono">
+              <span className="text-[9.5px] font-black uppercase text-black block leading-snug">
+                STATUS: PERDIDO EN EL LABERINTO · 3 SEMANAS PERDIDAS
+              </span>
+              <span className="text-[8px] text-zinc-600 block leading-tight mt-0.5">
+                Siguiendo decenas de foros y vídeos contradictorios sin conseguir cita oficial
+              </span>
+            </div>
+          </div>
+
+          {/* Fragile Escape Conduit */}
+          <div className="flex items-center gap-2 bg-zinc-50 border border-zinc-300 rounded-xl px-3 py-1.5 font-mono text-[8px] shrink-0">
+            <div className="w-2 h-2 rounded-full bg-black animate-ping shrink-0" />
+            <div>
+              <span className="font-bold text-black block">Cita encontrada a las 03:14 AM (a 45 km)</span>
+              <span className="text-zinc-500 block text-[7.5px]">Comisaría comarcal asignada</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE: Responsive Vertical Stack (sm:hidden) ── */}
+      <div className="sm:hidden space-y-2.5 py-2 font-mono">
+        <div className="p-3 rounded-2xl bg-white border-2 border-black text-black text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs">
+          <Compass className="w-4 h-4 text-black stroke-[2.5]" />
+          <span>El Laberinto de la Cita Previa</span>
+        </div>
+
+        {[
+          { title: "Sede Electrónica", tag: "Error 504", desc: "No hay citas disponibles · 184 intentos fallidos", icon: Globe },
+          { title: "Teléfono 060", tag: "Línea Saturada", desc: "42 minutos en espera · Llamada cortada por servidor", icon: PhoneCall },
+          { title: "Mercado Negro", tag: "Mafias 150€", desc: "Bots automáticos acaparan las citas gratuitas", icon: ShieldAlert },
+        ].map((item, idx) => {
+          const Icon = item.icon;
+          return (
+            <div key={idx} className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs space-y-1.5 text-[8.5px]">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-1.5 font-bold text-black font-syne text-[11px]">
+                  <Icon className="w-3.5 h-3.5 text-black" />
+                  <span>{item.title}</span>
+                </div>
+                <span className="text-[7.5px] bg-white border-2 border-black px-2 py-0.5 rounded-full font-black uppercase flex items-center gap-1">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>{item.tag}</span>
+                </span>
+              </div>
+              <div className="bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 text-zinc-700 text-[8px] leading-snug">
+                {item.desc}
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="p-3 rounded-xl bg-white border-2 border-black text-center text-[8.5px] font-black text-black shadow-xs flex items-center justify-center gap-2">
+          <Compass className="w-3.5 h-3.5 text-black stroke-[2.5]" />
+          <span>Perdido en el laberinto · 3 semanas sin cita</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Visual 3: The Window Ambush (In-Person Audit & Total Failure) ──────────
+function WindowAmbushVisual({
+  audit,
+}: {
+  audit: {
+    windowLabel: string;
+    dossierTitle: string;
+    rejectionStamp: string;
+    item1Title: string;
+    item1Sub: string;
+    item1Reason: string;
+    item2Title: string;
+    item2Sub: string;
+    item2Reason: string;
+    item3Title: string;
+    item3Sub: string;
+    item3Reason: string;
+    resetWarning: string;
+  };
+}) {
+  return (
+    <div className="relative w-full max-w-[740px] mx-auto select-none">
+      {/* ── DESKTOP & TABLET: Open Spatial Audit Conveyor & Rejection (sm:block) ── */}
+      <div className="hidden sm:block relative w-full space-y-3 py-1">
+        {/* Faint spatial blueprint grid */}
+        <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none -z-10" />
+
+        {/* Top Official Placard Header with Incoming Line */}
+        <div className="bg-white border border-zinc-300 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center font-mono font-black text-xs shadow-xs">
+              04
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-black font-syne leading-tight">
+                {audit.windowLabel}
+              </h4>
+              <span className="text-[8.5px] font-mono text-zinc-500 block leading-none mt-0.5">
+                {audit.dossierTitle} · Auditoría Presencial de Expediente
+              </span>
+            </div>
+          </div>
+          <div className="px-3 py-1 rounded-full bg-white border-2 border-black font-mono text-[8.5px] font-black text-black uppercase tracking-wider flex items-center gap-1.5 shadow-xs">
+            <Clock className="w-3 h-3 text-black stroke-[2.5]" />
+            <span>Revisión en 90 Segundos</span>
+          </div>
+        </div>
+
+        {/* ── 3 CASCADING INSPECTION TRIPWIRE DOSSIERS (Horizontal Grid) ── */}
+        <div className="grid grid-cols-3 gap-3">
+          {/* Tripwire 1: Expired Padrón */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs hover:border-black transition-all flex flex-col justify-between min-h-[265px]">
+            <div>
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">DOC-01 · AYTO</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Caducado</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Building2 className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">{audit.item1Title}</h5>
+              </div>
+              
+              {/* Validity timeline gauge */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200/80 rounded-xl p-2.5 font-mono text-[8px]">
+                <div className="flex justify-between text-zinc-500 mb-1">
+                  <span>{audit.item1Sub}</span>
+                  <span className="font-bold text-black">Límite: 90 días</span>
+                </div>
+                {/* Visual timeline bar */}
+                <div className="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden mb-1.5 relative">
+                  <div className="w-[100%] h-full bg-black rounded-full" />
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1">
+                  <div className="w-4 h-4 rounded-full bg-white border-2 border-black flex items-center justify-center shrink-0">
+                    <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  </div>
+                  <span>Excede por 4 días naturales</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-2 bg-zinc-100/80 border border-zinc-200/90 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 font-semibold leading-snug">
+              {audit.item1Reason}
+            </div>
+          </div>
+
+          {/* Tripwire 2: Fee 790-012 Missing Stamp */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs hover:border-black transition-all flex flex-col justify-between min-h-[265px]">
+            <div>
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">DOC-02 · HACIENDA</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Sin Sello</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <FileText className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">{audit.item2Title}</h5>
+              </div>
+
+              {/* Receipt validation gauge */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200/80 rounded-xl p-2.5 font-mono text-[8px]">
+                <div className="flex justify-between text-zinc-500 mb-1">
+                  <span>{audit.item2Sub}</span>
+                  <span className="text-zinc-500 font-bold">NRC: OK</span>
+                </div>
+                <div className="border border-dashed border-zinc-300 bg-white rounded-lg p-1.5 text-center text-[7.5px] text-zinc-400 font-bold uppercase tracking-wider mb-1.5">
+                  [ ESPACIO PARA SELLO BANCARIO ]
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1">
+                  <div className="w-4 h-4 rounded-full bg-white border-2 border-black flex items-center justify-center shrink-0">
+                    <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  </div>
+                  <span>Sin cuño mecánico de ventanilla</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-2 bg-zinc-100/80 border border-zinc-200/90 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 font-semibold leading-snug">
+              {audit.item2Reason}
+            </div>
+          </div>
+
+          {/* Tripwire 3: Health Insurance Copay */}
+          <div className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs hover:border-black transition-all flex flex-col justify-between min-h-[265px]">
+            <div>
+              <div className="flex items-center justify-between gap-1 mb-2">
+                <span className="text-[8px] font-mono text-zinc-500 font-bold uppercase">DOC-03 · SANIDAD</span>
+                <span className="px-2 py-0.5 rounded-full bg-white border-2 border-black text-black text-[7.5px] font-mono font-black uppercase flex items-center gap-1 shadow-2xs">
+                  <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  <span>Con Copago</span>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-black flex-shrink-0" />
+                <h5 className="text-[11.5px] font-bold text-black font-syne leading-tight">{audit.item3Title}</h5>
+              </div>
+
+              {/* Policy clause gauge */}
+              <div className="mt-2 bg-zinc-50 border border-zinc-200/80 rounded-xl p-2.5 font-mono text-[8px]">
+                <div className="flex justify-between text-zinc-500 mb-1">
+                  <span>{audit.item3Sub}</span>
+                  <span className="font-bold text-black">Exige: Sin Copago</span>
+                </div>
+                <div className="border border-zinc-200 bg-white rounded-lg p-1.5 text-[7.5px] text-zinc-700 font-semibold mb-1.5">
+                  Cláusula 4.1: Copago 5€/visita
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-black text-[7.5px] pt-1">
+                  <div className="w-4 h-4 rounded-full bg-white border-2 border-black flex items-center justify-center shrink-0">
+                    <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                  </div>
+                  <span>Invalida requisito de residencia</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-2 bg-zinc-100/80 border border-zinc-200/90 rounded-lg p-2 font-mono text-[7.5px] text-zinc-700 font-semibold leading-snug">
+              {audit.item3Reason}
+            </div>
+          </div>
+        </div>
+
+        {/* ── THE CLIMACTIC REJECTION SLAM & LOOP BACK TO START (FAIL) ── */}
+        <div className="bg-white border-2 border-black rounded-2xl p-4 shadow-sm relative overflow-hidden">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 relative z-10">
+            {/* Rejection Rubber Stamp */}
+            <div className="flex items-center gap-3">
+              <div className="rotate-[-2deg] border-3 border-black bg-white text-black px-4 py-2 rounded-xl font-mono font-black text-xs tracking-wider uppercase shadow-md flex items-center gap-2 shrink-0">
+                <div className="w-5 h-5 rounded-md bg-zinc-100 border border-black flex items-center justify-center">
+                  <X className="w-4 h-4 text-black stroke-[3.5]" />
+                </div>
+                <span>{audit.rejectionStamp}</span>
+              </div>
+              <div className="font-mono">
+                <span className="text-[10px] font-black uppercase text-black block leading-snug">
+                  1 Fallo Formal = Desestimación Inmediata
+                </span>
+                <span className="text-[8px] text-zinc-600 block leading-tight mt-0.5">
+                  "No le puedo recoger el expediente. Pida nueva cita por internet."
+                </span>
+              </div>
+            </div>
+
+            {/* Loop Back to Day 0 (Complete Failure) */}
+            <div className="flex items-center gap-2.5 bg-zinc-50 border-2 border-black rounded-xl px-3.5 py-2 font-mono text-[8.5px] shadow-xs shrink-0">
+              <RefreshCw className="w-4 h-4 text-black animate-spin [animation-duration:8s] shrink-0" />
+              <div>
+                <span className="font-black text-black block leading-none">↺ RESET AL DÍA 0 (FAIL)</span>
+                <span className="text-[7.5px] text-zinc-600 block leading-none mt-1">4–6 semanas perdidas · Vuelta a empezar</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Retrograde Loop Dotted Path Graphic */}
+          <div className="mt-3 pt-2 border-t border-dashed border-zinc-200 flex items-center justify-between font-mono text-[8px] text-zinc-500">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-black" />
+              <span>Cero tolerancia en ventanilla · Sin subsanación presencial</span>
+            </span>
+            <span className="font-bold text-black uppercase tracking-wider">
+              ARCHIVO DEFINITIVO
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE: Responsive Stack (sm:hidden) ── */}
+      <div className="sm:hidden space-y-2.5 py-2 font-mono">
+        <div className="p-3 rounded-2xl bg-white border-2 border-black text-black text-center text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs">
+          <div className="w-5 h-5 rounded-md bg-zinc-100 border border-black flex items-center justify-center">
+            <X className="w-3.5 h-3.5 text-black stroke-[3.5]" />
+          </div>
+          <span>Ventanilla 04 · {audit.rejectionStamp}</span>
+        </div>
+
+        {[
+          { doc: audit.item1Title, rule: audit.item1Reason, tag: "Caducado" },
+          { doc: audit.item2Title, rule: audit.item2Reason, tag: "Sin Sello" },
+          { doc: audit.item3Title, rule: audit.item3Reason, tag: "Con Copago" },
+        ].map((item, idx) => (
+          <div key={idx} className="p-3.5 rounded-2xl bg-white border border-zinc-300 shadow-xs space-y-2 text-[8.5px]">
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-black font-syne text-[11px]">{item.doc}</span>
+              <span className="text-[7.5px] bg-white border-2 border-black px-2 py-0.5 rounded-full font-black uppercase flex items-center gap-1">
+                <X className="w-2.5 h-2.5 stroke-[3] text-black" />
+                <span>{item.tag}</span>
+              </span>
+            </div>
+            <div className="bg-zinc-50 border border-zinc-200/80 rounded-lg p-2 text-zinc-700 text-[8px] leading-snug">
+              {item.rule}
+            </div>
+          </div>
+        ))}
+
+        <div className="p-3 rounded-xl bg-white border-2 border-black text-center text-[8.5px] font-black text-black shadow-xs flex items-center justify-center gap-2">
+          <RefreshCw className="w-3.5 h-3.5 text-black animate-spin [animation-duration:8s]" />
+          <span>↺ RESET AL DÍA 0: 4–6 SEMANAS PERDIDAS</span>
+        </div>
       </div>
     </div>
   );
@@ -336,26 +1120,7 @@ export default function HeroAndPain() {
   const [lettersAnimate, setLettersAnimate] = useState(false);
   const { dict } = useLanguage();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const viewHeight = window.innerHeight;
-      const totalScrollable = rect.height - viewHeight;
-      const scrolledPast = -rect.top - totalScrollable;
-      const progressValue = Math.max(0, Math.min(1, scrolledPast / viewHeight));
-      document.documentElement.style.setProperty('--doc-transition-progress', `${progressValue}`);
-      document.documentElement.style.setProperty('--viewport-height-px', `${viewHeight}px`);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, [ref]);
+
 
   useEffect(() => {
     const t = setTimeout(() => setLettersAnimate(true), 500);
@@ -389,46 +1154,38 @@ export default function HeroAndPain() {
   const m3 = { x: interp(progress, 0, 0.18, 18, -3),  y: interp(progress, 0, 0.18, -18, 27),  r: interp(progress, 0, 0.18,  -8, -8) };
   const m4 = { x: interp(progress, 0, 0.18, 30,  2),  y: interp(progress, 0, 0.18, -34, 22),  r: interp(progress, 0, 0.18,   5,  4) };
 
-  const SW = 100 / 6;
+  const SW = 100 / 5;
+
+  // Cubic ease on each slide-to-slide crossing so the handoff reads as one
+  // continuous swoosh instead of a linear (mechanical) slide-snap.
+  const easedZone = (p: number, start: number, end: number, from: number, to: number) => {
+    const t = interp(p, start, end, 0, 1);
+    const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    return from + (to - from) * eased;
+  };
 
   const getStickyTranslate = (p: number): number => {
-    if (p < 0.28) return 0;
-    if (p < 0.31) return interp(p, 0.28, 0.31, 0, SW);
-    if (p < 0.41) return SW;
-    if (p < 0.44) return interp(p, 0.41, 0.44, SW, SW * 2);
-    if (p < 0.54) return SW * 2;
-    if (p < 0.57) return interp(p, 0.54, 0.57, SW * 2, SW * 3);
-    if (p < 0.67) return SW * 3;
-    if (p < 0.70) return interp(p, 0.67, 0.70, SW * 3, SW * 4);
-    if (p < 0.80) return SW * 4;
-    if (p < 0.83) return interp(p, 0.80, 0.83, SW * 4, SW * 5);
-    return SW * 5;
+    if (p < 0.30) return 0;
+    if (p < 0.34) return easedZone(p, 0.30, 0.34, 0, SW);
+    if (p < 0.46) return SW;
+    if (p < 0.50) return easedZone(p, 0.46, 0.50, SW, SW * 2);
+    if (p < 0.62) return SW * 2;
+    if (p < 0.66) return easedZone(p, 0.62, 0.66, SW * 2, SW * 3);
+    if (p < 0.78) return SW * 3;
+    if (p < 0.82) return easedZone(p, 0.78, 0.82, SW * 3, SW * 4);
+    return SW * 4;
   };
 
   const translatePercent = progress >= 0.18 ? getStickyTranslate(progress) : 0;
-  const activeSlide = Math.round((translatePercent / SW));
+  const activeSlide = Math.min(4, Math.round(translatePercent / SW));
   const sliderOpacity = interp(progress, 0.97, 1.0, 1, 0);
-
-  const bridgeGather = interp(progress, 0.83, 0.97, 0, 1);
-  const bc1 = { x: interp(bridgeGather, 0, 1, -32, -30), y: interp(bridgeGather, 0, 1, -22, -10), r: interp(bridgeGather, 0, 1, -15, -8) };
-  const bc2 = { x: interp(bridgeGather, 0, 1, -24, -26), y: interp(bridgeGather, 0, 1,  18,   8), r: interp(bridgeGather, 0, 1,  12,  6) };
-  const bc3 = { x: interp(bridgeGather, 0, 1,   2, -28), y: interp(bridgeGather, 0, 1, -32,  -4), r: interp(bridgeGather, 0, 1,  -5, -12) };
-  const bc4 = { x: interp(bridgeGather, 0, 1,   8, -22), y: interp(bridgeGather, 0, 1,  24,  12), r: interp(bridgeGather, 0, 1,  20, 10) };
-  const bc5 = { x: interp(bridgeGather, 0, 1,  34, -24), y: interp(bridgeGather, 0, 1, -20,  -8), r: interp(bridgeGather, 0, 1, -18, -5) };
-  const bc6 = { x: interp(bridgeGather, 0, 1,  24, -20), y: interp(bridgeGather, 0, 1,  30,   4), r: interp(bridgeGather, 0, 1,   8,  4) };
 
   const headlineLeft = dict.hero.headlineLeft;
   const headlineRight = dict.hero.headlineRight;
 
   return (
-    <div ref={ref} id="pain" className="story-section story-section--hero relative h-[500svh] w-full">
-      <div
-        className="story-viewport sticky top-0 flex h-[100svh] w-full flex-col lg:flex-row"
-        style={{
-          opacity: `calc(1 - clamp(0, (var(--doc-transition-progress, 0) - 0.1) * 1.25, 1))`,
-          zIndex: `calc(35 - clamp(0, (var(--doc-transition-progress, 0) - 0.5) * 1000000, 10))`,
-        } as React.CSSProperties}
-      >
+    <div ref={ref} id="pain" className="story-section story-section--hero relative h-[500svh] w-full z-30">
+      <div className="story-viewport sticky top-0 flex h-[100svh] w-full flex-col lg:flex-row z-30">
 
         {/* ── BACKGROUNDS ── */}
         {progress < 0.18 && (
@@ -624,18 +1381,25 @@ export default function HeroAndPain() {
 
         {/* ── PAIN SLIDES (progress >= 0.18) ── */}
         {progress >= 0.18 && (
-          <div className="absolute inset-0 w-full h-full overflow-hidden z-20 flex items-center" style={{ opacity: sliderOpacity }}>
+          <div className="absolute inset-0 w-full h-full overflow-hidden z-30 flex items-center">
             <div
               className="flex h-full"
               style={{
                 transform: `translateX(-${translatePercent}%)`,
-                width: "600%",
+                width: "500%",
               }}
             >
 
-              {/* SLIDE 0 */}
+              {/* SLIDE 0 — The First Request / Document Pile */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  {/* Faint spatial blueprint grid background matching subsequent slides */}
+                  <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none -z-10" />
+                  <div className="absolute top-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute top-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+
                   <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
                     <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.mondayTime}</span>
                     <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.08] font-syne">
@@ -652,10 +1416,20 @@ export default function HeroAndPain() {
                         {dict.pain.alertOneQuestion}
                       </p>
                     </div>
+                    <div className="hidden sm:flex items-center gap-2 text-zinc-500 font-mono text-[9px] font-medium pt-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+                      <span>Scroll to start processing your NIE →</span>
+                    </div>
                   </div>
 
                   <div className="pain-slide-visual pain-slide-pile-visual relative z-[1] flex w-full items-center justify-center lg:w-6/12 h-56 sm:h-64 md:h-72 lg:h-[380px]">
                     <div className="pain-document-visual relative w-full h-full flex items-center justify-center">
+                      {/* Visual link pointing to top document in pile */}
+                      <div className="absolute -top-7 sm:-top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[8px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1.5 whitespace-nowrap z-20">
+                        <span>Target 01: NIE Card</span>
+                        <span className="text-zinc-400">→</span>
+                      </div>
+
                       <div className="absolute left-1/2 top-1/2 paper-float" style={{ "--paper-rotate": "-4deg" } as React.CSSProperties}>
                         <div style={{ transform: "translate(calc(-50% + var(--pile-x-1, -6px)), calc(-50% + var(--pile-y-1, -4px))) rotate(-4deg)" }}>
                           <DocumentCard type="nie" status="chaos" shadow="shadow-md" />
@@ -681,68 +1455,54 @@ export default function HeroAndPain() {
                 </div>
               </div>
 
-              {/* SLIDE 1 — What's waiting */}
+              {/* SLIDE 1 — The Circular Trap (The Spanish Catch-22) */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
-                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
-                  <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
-                    <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search1Tag}</span>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
-                      {dict.pain.beforeTheForm}
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 gap-4 sm:gap-8">
+                  <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-2 lg:w-[38%]">
+                    <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.circularTrapTag}</span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black leading-[1.08] font-syne">
+                      {dict.pain.circularTrapTitle}
                       <br />
-                      <span className="text-zinc-500 font-sans font-normal text-base sm:text-lg md:text-xl">{dict.pain.beforeTheFormSub}</span>
+                      <span className="text-zinc-500 font-normal text-lg sm:text-2xl md:text-3xl">{dict.pain.circularTrapSub}</span>
                     </h2>
-                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      {dict.pain.euOrNonEu}
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-sm">
+                      {dict.pain.circularTrapDesc}
                     </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="w-2 h-2 rounded-full bg-black" />
-                      <span className="font-mono text-[11px] sm:text-xs text-zinc-600 font-medium">{dict.pain.sameMoveBadge}</span>
+                    <div className="flex items-start gap-2 sm:gap-2.5 bg-zinc-100 border border-zinc-300 rounded-xl px-3 sm:px-3.5 py-2.5 sm:py-3 max-w-sm">
+                      <AlertTriangle className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black flex-shrink-0 mt-0.5" />
+                      <p className="text-[11px] sm:text-xs text-black leading-snug font-mono font-medium">
+                        {dict.pain.circularTrapAlert}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="pain-slide-visual relative z-[3] flex w-full flex-col justify-center lg:w-6/12">
-                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-3.5 sm:p-5 shadow-md">
-                      {dict.pain.procedures.map((proc, i) => (
-                        <div key={i} className="flex items-start gap-2.5 sm:gap-3">
-                          <div className="flex flex-col items-center flex-shrink-0">
-                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-zinc-400 bg-zinc-100 flex items-center justify-center text-black font-bold font-mono text-[11px] sm:text-xs">?</div>
-                            {i < dict.pain.procedures.length - 1 && <div className="w-px h-3 sm:h-5 bg-zinc-200 my-0.5" />}
-                          </div>
-                          <div className={`${i < dict.pain.procedures.length - 1 ? "pb-0.5 sm:pb-1" : ""}`}>
-                            <div className="text-xs sm:text-sm font-semibold text-black leading-tight">{proc.name}</div>
-                            <div className="text-[10px] sm:text-[11px] text-zinc-500 font-mono">{proc.hint}</div>
-                          </div>
-                        </div>
-                      ))}
-                      <div className="pt-2.5 sm:pt-3 border-t border-zinc-200 mt-2">
-                        <div className="flex items-center gap-2">
-                          <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0" />
-                          <span className="text-[10px] sm:text-[11px] text-black font-mono font-bold leading-tight">{dict.pain.chooseRouteAlert}</span>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="pain-slide-visual relative z-[1] flex w-full items-center justify-center lg:w-[62%]">
+                    <CircularTrapVisual
+                      nodes={dict.pain.circularNodes}
+                      deadlock={dict.pain.deadlockCenter}
+                    />
                   </div>
                 </div>
               </div>
 
-              {/* SLIDE 2 — Appointment gate */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
-                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
+              {/* SLIDE 2 — Which Office, Which Website, Which Form */}
+              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 gap-4 sm:gap-8">
+                  <div className="pain-slide-copy relative z-[2] flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-2 lg:w-[38%]">
                     <div className="flex items-center gap-2">
-                      <CalendarX2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
-                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search2Tag}</span>
+                      <Search className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
+                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.citaBlackoutTag}</span>
                     </div>
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
-                      {dict.pain.appointmentGate}
-                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.appointmentGateSub}</span>
+                      {dict.pain.citaBlackoutTitle}
+                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.citaBlackoutSub}</span>
                     </h2>
-                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      {dict.pain.portalAsks}
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-sm">
+                      {dict.pain.citaBlackoutDesc}
                     </p>
                     <div className="flex items-center gap-2 sm:gap-3 mt-1">
                       <div className="inline-flex items-center gap-1.5 h-7 sm:h-8 px-2.5 sm:px-3 rounded-lg border border-zinc-300 bg-zinc-100 font-mono text-[11px] sm:text-xs font-bold text-black leading-none select-none">
-                        <Clock className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black flex-shrink-0" />
+                        <Search className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-black flex-shrink-0" />
                         <span>{dict.pain.noSlotsStatus}</span>
                       </div>
                       <div className="inline-flex items-center justify-center h-7 sm:h-8 px-2.5 sm:px-3 rounded-lg border border-zinc-300 bg-zinc-100 font-mono text-[11px] sm:text-xs font-semibold text-black leading-none select-none">
@@ -751,112 +1511,70 @@ export default function HeroAndPain() {
                     </div>
                   </div>
 
-                  <div className="pain-slide-visual w-full lg:w-6/12">
-                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-4 shadow-md sm:p-5">
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.bookingLoopTitle}</div>
-                      {dict.pain.painStepsSlide2.map((step, idx) => (
-                        <PainStep
-                          key={idx}
-                          num={idx + 1}
-                          label={step.label}
-                          sublabel={step.sublabel}
-                          warning={step.warning}
-                          isLast={idx === dict.pain.painStepsSlide2.length - 1}
-                        />
-                      ))}
-                    </div>
+                  <div className="pain-slide-visual relative z-[3] flex w-full items-center justify-center lg:w-[62%]">
+                    <SedeBlackoutVisual
+                      path={dict.pain.painPath}
+                      sim={dict.pain.sedeSim}
+                      alertTitle={dict.pain.sedeAlertTitle}
+                      alertMessage={dict.pain.sedeAlertMessage}
+                    />
                   </div>
                 </div>
               </div>
 
-              {/* SLIDE 3 — Forms and evidence */}
+              {/* SLIDE 3 — The Window Ambush */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
-                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
+                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-10 lg:px-16 gap-4 sm:gap-8">
+                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-2 lg:w-[38%]">
                     <div className="flex items-center gap-2">
                       <FileText className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
-                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search3Tag}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.windowAmbushTag}</span>
                     </div>
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne">
-                      {dict.pain.similarLanguage}
-                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.similarLanguageSub}</span>
+                      {dict.pain.windowAmbushTitle}
+                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.windowAmbushSub}</span>
                     </h2>
-                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      {dict.pain.formExplanations}
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-sm">
+                      {dict.pain.windowAmbushDesc}
                     </p>
-                    <div className="space-y-1.5 mt-1">
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1 font-bold">{dict.pain.easyToConfuseTitle}</div>
-                      {dict.pain.confuseBadges.map((dep) => (
-                        <div key={dep} className="inline-flex items-center gap-1 bg-zinc-100 border border-zinc-200 rounded-full px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-black mr-1 sm:mr-1.5 mb-1 font-semibold">
-                          <div className="w-1.5 h-1.5 rounded-full bg-black" />{dep}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[8.5px]">
+                      <div className="bg-white border border-zinc-300 rounded-xl p-2.5 shadow-2xs flex items-start gap-2">
+                        <div className="w-4 h-4 rounded bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
+                          <Clock className="w-2.5 h-2.5 stroke-[2.5]" />
                         </div>
-                      ))}
+                        <div>
+                          <span className="text-[7px] text-zinc-500 font-bold uppercase block">Official Speed</span>
+                          <span className="text-zinc-900 font-bold leading-tight block">90-Sec Desk Verdict</span>
+                        </div>
+                      </div>
+                      <div className="bg-white border border-zinc-300 rounded-xl p-2.5 shadow-2xs flex items-start gap-2">
+                        <div className="w-4 h-4 rounded bg-white border-2 border-black text-black flex items-center justify-center shrink-0 mt-0.5">
+                          <X className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <div>
+                          <span className="text-[7px] text-zinc-500 font-bold uppercase block">Grace Period</span>
+                          <span className="text-zinc-900 font-bold leading-tight block">0 Days (Dismissed)</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="pain-slide-visual w-full lg:w-6/12">
-                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-4 shadow-md sm:p-5">
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.checklistBehindTitle}</div>
-                      {dict.pain.painStepsSlide3.map((step, idx) => (
-                        <PainStep
-                          key={idx}
-                          num={idx + 1}
-                          label={step.label}
-                          sublabel={step.sublabel}
-                          cost={step.cost}
-                          warning={step.warning}
-                          isLast={idx === dict.pain.painStepsSlide3.length - 1}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* SLIDE 4 — Local rules */}
-              <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none">
-                <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
-                  <div className="pain-slide-copy flex w-full flex-col justify-center gap-3 pr-0 sm:gap-4 sm:pr-4 lg:w-5/12">
-                    <div className="flex items-center gap-2">
-                      <Home className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-black" />
-                      <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-black font-extrabold">{dict.pain.search4Tag}</span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-black leading-tight font-syne whitespace-pre-line">
-                      {dict.pain.addressIsReal}
-                      <span className="block text-zinc-500 font-sans text-sm sm:text-base font-normal mt-1">{dict.pain.addressIsRealSub}</span>
-                    </h2>
-                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                      {dict.pain.leaseExplanation}
-                    </p>
-                    <div className="bg-zinc-100 border border-zinc-300 rounded-xl p-2.5 sm:p-3 mt-1 flex items-start gap-2">
-                      <AlertTriangle className="w-3.5 h-3.5 text-black flex-shrink-0 mt-0.5" />
-                      <p className="text-[11px] sm:text-xs text-black leading-snug font-mono">
-                        {dict.pain.alertIncomplete}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pain-slide-visual w-full lg:w-6/12">
-                    <div className="pain-slide-card rounded-2xl border border-zinc-200 bg-white p-4 shadow-md sm:p-5">
-                      <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-4 font-bold">{dict.pain.flatShareTitle}</div>
-                      {dict.pain.painStepsSlide4.map((step, idx) => (
-                        <PainStep
-                          key={idx}
-                          num={idx + 1}
-                          label={step.label}
-                          sublabel={step.sublabel}
-                          warning={step.warning}
-                          isLast={idx === dict.pain.painStepsSlide4.length - 1}
-                        />
-                      ))}
-                    </div>
+                  <div className="pain-slide-visual w-full lg:w-[62%] flex items-center justify-center">
+                    <WindowAmbushVisual audit={dict.pain.deskAudit} />
                   </div>
                 </div>
               </div>
 
-              {/* SLIDE 5 — The real cost */}
+              {/* SLIDE 4 (FINAL SLIDE) — The real cost (KEPT AS IT IS) */}
               <div className="w-screen h-full flex-shrink-0 flex items-center justify-center select-none relative overflow-hidden">
                 <div className="pain-slide-layout relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20">
+                  {/* Faint spatial blueprint grid background matching earlier slides */}
+                  <div className="absolute inset-0 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none -z-10" />
+                  <div className="absolute top-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute top-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 left-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
+                  <div className="absolute bottom-12 right-6 text-zinc-300 font-mono text-xs pointer-events-none hidden sm:block">+</div>
                   <div
                     className="pain-slide-copy pain-cost-copy glass-card-subtle relative z-30 flex w-full flex-col justify-center gap-3 rounded-2xl p-4 transition-all sm:gap-4 sm:rounded-3xl sm:p-6 md:p-8 lg:w-5/12"
                   >
@@ -892,13 +1610,13 @@ export default function HeroAndPain() {
                         target={6}
                         label={dict.pain.stats.officialSystems.label}
                         sublabel={dict.pain.stats.officialSystems.sublabel}
-                        isActive={activeSlide === 5}
+                        isActive={activeSlide === 4}
                       />
                       <StatCounter
                         target={3}
                         label={dict.pain.stats.similarForms.label}
                         sublabel={dict.pain.stats.similarForms.sublabel}
-                        isActive={activeSlide === 5}
+                        isActive={activeSlide === 4}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -906,13 +1624,13 @@ export default function HeroAndPain() {
                         target={2}
                         label={dict.pain.stats.bookingPortals.label}
                         sublabel={dict.pain.stats.bookingPortals.sublabel}
-                        isActive={activeSlide === 5}
+                        isActive={activeSlide === 4}
                       />
                       <StatCounter
                         target={1}
                         label={dict.pain.stats.missingSignature.label}
                         sublabel={dict.pain.stats.missingSignature.sublabel}
-                        isActive={activeSlide === 5}
+                        isActive={activeSlide === 4}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -920,12 +1638,12 @@ export default function HeroAndPain() {
                         target={5}
                         label={dict.pain.stats.repeatedDetails.label}
                         sublabel={dict.pain.stats.repeatedDetails.sublabel}
-                        isActive={activeSlide === 5}
+                        isActive={activeSlide === 4}
                       />
                       <StatCounter
                         target={0}
                         label={dict.pain.stats.openTabs.label}
-                        isActive={activeSlide === 5}
+                        isActive={activeSlide === 4}
                         variant="infinity"
                       />
                     </div>
@@ -940,56 +1658,13 @@ export default function HeroAndPain() {
           </div>
         )}
 
-        {/* ── BRIDGE CHAOS CARDS ── */}
-        {progress >= 0.80 && (
-          <div
-            className="pointer-events-none absolute inset-0 hidden lg:block"
-            style={{
-              opacity: interp(progress, 0.80, 0.86, 0, 0.65),
-              transform: `translateY(calc(var(--doc-transition-progress, 0) * var(--viewport-height-px, 100vh)))`,
-              zIndex: `calc(15 + clamp(0, var(--doc-transition-progress, 0) * 1000000, 25))` as unknown as number,
-            }}
-          >
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc1.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc1.x}vw), calc(-50% + ${bc1.y}vh)) rotate(${bc1.r}deg)` }}>
-                <DocumentCard type="nie" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc2.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc2.x}vw), calc(-50% + ${bc2.y}vh)) rotate(${bc2.r}deg)` }}>
-                <DocumentCard type="padron" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc3.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc3.x}vw), calc(-50% + ${bc3.y}vh)) rotate(${bc3.r}deg)` }}>
-                <DocumentCard type="seg_social" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc4.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc4.x}vw), calc(-50% + ${bc4.y}vh)) rotate(${bc4.r}deg)` }}>
-                <DocumentCard type="hacienda" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc5.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc5.x}vw), calc(-50% + ${bc5.y}vh)) rotate(${bc5.r}deg)` }}>
-                <DocumentCard type="nie" status="chaos" />
-              </div>
-            </div>
-            <div className="absolute left-1/2 top-1/2" style={{ "--paper-rotate": `${bc6.r}deg` } as React.CSSProperties}>
-              <div style={{ transform: `translate(calc(-50% + ${bc6.x}vw), calc(-50% + ${bc6.y}vh)) rotate(${bc6.r}deg)` }}>
-                <DocumentCard type="seg_social" status="chaos" />
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* ── SLIDE DOTS ── */}
         {progress >= 0.18 && (
           <div
             className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
             style={{ opacity: sliderOpacity }}
           >
-            <SlideDots total={6} active={activeSlide} />
+            <SlideDots total={5} active={activeSlide} />
           </div>
         )}
 
@@ -1035,22 +1710,7 @@ export default function HeroAndPain() {
           </div>
         )}
 
-        {/* ── SLIDE LABEL (top left) ── */}
-        {progress >= 0.18 && (
-          <div
-            className="absolute top-14 sm:top-8 left-0 right-0 z-40 pointer-events-none transition-opacity duration-500 flex justify-center"
-            style={{ opacity: interp(progress, 0.18, 0.26, 0, 1) * sliderOpacity }}
-          >
-            <div className="max-w-[1440px] w-full px-4 sm:px-6 md:px-12 lg:px-20">
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-zinc-600 font-bold">
-                  {dict.pain.slideLabels[activeSlide] ?? ""}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
+
 
       </div>
     </div>

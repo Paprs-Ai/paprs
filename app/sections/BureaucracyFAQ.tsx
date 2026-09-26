@@ -20,27 +20,44 @@ export default function BureaucracyFAQ() {
       className="w-full bg-[#FFFFFF] py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 text-black scroll-mt-20"
       aria-labelledby="faq-heading"
     >
-      <div className="max-w-3xl mx-auto">
-        {/* Section Header — Compact & High-Impact */}
-        <div className="flex flex-col items-center text-center gap-2.5 mb-8 md:mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-black/10 bg-zinc-100 font-mono text-[9px] font-bold uppercase tracking-widest text-black">
-            <BookOpen className="w-3 h-3" aria-hidden="true" />
-            {dict.faq.badge}
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-12 lg:gap-0">
+        {/* Left: heading + facts */}
+        <div className="flex flex-col gap-6 lg:col-span-5 lg:sticky lg:top-28 lg:self-start lg:pr-12">
+          <div className="flex flex-col items-start gap-2.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-black/10 bg-zinc-100 font-mono text-[9px] font-bold uppercase tracking-widest text-black">
+              <BookOpen className="w-3 h-3" aria-hidden="true" />
+              {dict.faq.badge}
+            </div>
+
+            <h2
+              id="faq-heading"
+              className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-syne tracking-tight leading-tight text-black whitespace-pre-line"
+            >
+              {dict.faq.title}
+            </h2>
+
+            <p className="font-sans text-xs sm:text-sm text-zinc-500 font-medium max-w-md leading-relaxed">
+              {dict.faq.subtitle}
+            </p>
           </div>
 
-          <h2
-            id="faq-heading"
-            className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-syne tracking-tight leading-tight text-black whitespace-pre-line"
-          >
-            {dict.faq.title}
-          </h2>
-
-          <p className="font-sans text-xs sm:text-sm text-zinc-500 font-medium max-w-lg leading-relaxed">
-            {dict.faq.subtitle}
-          </p>
+          <div>
+            <p className="mb-2.5 font-mono text-[9px] font-bold uppercase tracking-widest text-zinc-400">
+              {dict.faq.factsTitle}
+            </p>
+            <div className="grid grid-cols-2 gap-2.5">
+              {dict.faq.facts.map((fact) => (
+                <div key={fact.value + fact.label} className="rounded-2xl border border-zinc-200 bg-zinc-50/60 p-4">
+                  <p className="font-syne text-3xl font-extrabold leading-none tracking-tight text-black">{fact.value}</p>
+                  <p className="mt-2 font-sans text-[11px] leading-snug text-zinc-500">{fact.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* FAQ Accordion List — Compact Stack */}
+        {/* Right: accordion */}
+        <div className="lg:col-span-7 lg:flex lg:flex-col lg:justify-center lg:border-l lg:border-zinc-200 lg:pl-12">
         <div className="flex flex-col gap-2 sm:gap-2.5">
           {dict.faq.items.map((item, idx) => {
             const isOpen = openIndex === idx;
@@ -99,6 +116,7 @@ export default function BureaucracyFAQ() {
               </article>
             );
           })}
+        </div>
         </div>
       </div>
     </section>
